@@ -10,7 +10,7 @@ bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
 
-
+var curDungeon= new dungeon();
 
 var showMap=false;
 
@@ -259,7 +259,14 @@ function startGame()
 	mode=1;	
 	//setTimeout(computePortPaths(curMap,true),1000);
 	//build whole dungeon. 
-	curRoom.buildRoom("dungeon1/room2")
+
+	var edgar=null;
+	for(var i=0;i<5;i++){
+		edgar=new room();
+		var parth="dungeon1/room"+String(i);
+		edgar.buildRoom(parth)
+		curDungeon.rooms.push(edgar);
+     }
 	/*var enDoor=new door();
 	var benDoor=new door();
 	benDoor.orient(1);
@@ -344,7 +351,9 @@ function mainMenuUpdate(){
 
 //------------MAIN DRAW-----------------------------------------
 function mainDraw() {
-	curRoom.draw(canvas,camera);
+	curDungeon.draw(canvas,camera);
+	//curRoom.draw(canvas,camera);
+	//curRoom.draw(canvas,camera);
 	if(customConsole)
 	{
 		bConsoleBox.draw(concanvas);

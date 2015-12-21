@@ -1,11 +1,12 @@
-
+var snake=0;
 function dungeon()
 {
 	this.rooms=new Array();
 	
-	this.draw=function(can,cam,dCam) //maybe dcam is a player variable and you pass this a playeR? 
+	this.draw=function(can,cam,player) //maybe dcam is a player variable and you pass this a playeR? 
 	{ 
-		this.rooms[dCam.rX][dCam.rY].draw(can,cam);
+		//this.rooms[player.dX][player.dY].draw(can,cam);
+		this.rooms[snake].draw(can,cam);
 	}
 	this.drawMiniMap=function(can,player)
 	{
@@ -18,7 +19,7 @@ function dungeon()
 					//draw black square? nothing?
 				}else
 				{
-					if(this.rooms[i][k].eplored)
+					if(this.rooms[i][k].explored)
 					{
 						
 					}else
