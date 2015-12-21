@@ -17,6 +17,8 @@ var showMap=false;
 //lights.push(new light(7092,3748,14));
 //lights.push(new light(7208,3777,14));
 
+var upkey=new akey("up");
+var downkey=new akey("down");
 
 var miles=new dude();
 miles.AI=false;
@@ -330,6 +332,7 @@ function mainMenuUpdate(){
 		document.getElementById("titleAudio").pause();
 		//monsta.startOrbit(40000,Math.floor(Math.random()*CANVAS_WIDTH),Math.floor(Math.random()*CANVAS_HEIGHT),60);
 	 }
+
 	
 	
 	
@@ -423,6 +426,20 @@ function mainUpdate()
     tick++;
 	thyme.update();
 	
+	 if(upkey.check())
+	 {
+		if(snake<curDungeon.rooms.length-1)
+		{
+			snake++;
+		}
+	 }
+	 if(downkey.check())
+	 {
+		if(snake>0)
+		{
+			snake--;
+		}
+	 }
 
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 	

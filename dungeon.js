@@ -1,4 +1,4 @@
-var snake=0;
+
 function dungeon()
 {
 	this.rooms=new Array();
