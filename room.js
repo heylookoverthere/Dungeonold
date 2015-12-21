@@ -18,11 +18,21 @@ var doorSprite=new Array();
 	doorSprite[2]=Sprite("dungeontiles/door2");
 	doorSprite[3]=Sprite("dungeontiles/door3");
 
+
+var doorClosedSprite=new Array();
+
+//doorSprite.push(new Array());
+doorClosedSprite[0]=Sprite("dungeontiles/doorclosed0");
+doorClosedSprite[1]=Sprite("dungeontiles/doorclosed1");
+doorClosedSprite[2]=Sprite("dungeontiles/doorclosed2");
+doorClosedSprite[3]=Sprite("dungeontiles/doorclosed3");
+	
 function door(or)
 {
 	if(!or){or=0;}
 	this.x=0;
 	this.y=0; 
+	this.closed=true;
 	this.locked=false; 
 	//this.source=sorc;
 	this.dest=null;
@@ -59,6 +69,10 @@ function door(or)
 	{
 	   //this.orient(0);
 	   doorSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+	   if(this.closed)
+	   {
+			doorClosedSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+	   }
 	}
 
 }
