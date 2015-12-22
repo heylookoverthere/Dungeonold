@@ -431,6 +431,14 @@ function mainUpdate()
     tick++;
 	thyme.update();
 	
+	if(pageupkey.check())
+	{
+		curDungeon.changeFloors(true);
+	}
+	if(pagedownkey.check())
+	{
+		curDungeon.changeFloors(false);
+	}
 	 if((leftkey.check()) && (curDungeon.roomX>0))
 	 {
 		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(3))
