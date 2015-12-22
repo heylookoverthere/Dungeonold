@@ -9,7 +9,7 @@ var stayDay=true;
 var graphboat=null;
 var graph=null;
 
-var snake=0;
+//var snake=0;
 
 var graphicsLevel=3;//turn off transparency, tone down snow. less map dirties? leave map a little dirt
 //less lighting?

@@ -10,7 +10,7 @@ bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
 
-var curDungeon= new dungeon();
+var curDungeon= new dungeon("Dungeon1");
 
 var showMap=false;
 
@@ -144,7 +144,7 @@ function drawGUI(can)
 	can.fillStyle="blue";
 	canvas.fillRect(6,6,221,22);
 	can.fillStyle="yellow";
-	can.fillText("<3: ",8,25);
+	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].name,8,25);
 	var cont=0;
 	/*can.fillText("Men at Wall: "+theWatch.men.length,8,41);
 	
@@ -262,13 +262,14 @@ function startGame()
 	//setTimeout(computePortPaths(curMap,true),1000);
 	//build whole dungeon. 
 
-	var edgar=null;
-	for(var i=0;i<5;i++){
+	/*var edgar=null;
+	for(var i=0;i<8;i++){
 		edgar=new room();
 		var parth="dungeon1/room"+String(i);
 		edgar.buildRoom(parth)
+		edgar.name="room"+String(i);
 		curDungeon.rooms.push(edgar);
-     }
+     }*/
 	/*var enDoor=new door();
 	var benDoor=new door();
 	benDoor.orient(1);
@@ -426,18 +427,32 @@ function mainUpdate()
     tick++;
 	thyme.update();
 	
-	 if(upkey.check())
+	 if((leftkey.check()) && (curDungeon.roomX>0))
 	 {
-		if(snake<curDungeon.rooms.length-1)
+		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(3))
 		{
-			snake++;
+			curDungeon.roomX--;
 		}
 	 }
-	 if(downkey.check())
+	 if((rightkey.check())  && (curDungeon.roomX<curDungeon.width-1))
 	 {
-		if(snake>0)
+		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(1))
 		{
-			snake--;
+			curDungeon.roomX++;
+		}
+	 }
+	 if((upkey.check())  && (curDungeon.roomY>0))
+	 {
+		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(0))
+		{
+			curDungeon.roomY--;
+		}
+	 }
+	 if((downkey.check())  && (curDungeon.roomY<curDungeon.height-1))
+	 {
+		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(2))
+		{
+			curDungeon.roomY++;
 		}
 	 }
 

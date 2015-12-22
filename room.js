@@ -241,6 +241,17 @@ function room(I) { //room object
         
     };
 	
+	I.hasDoor=function(dir)
+	{
+		for(var i=0;i<4;i++)
+		{
+			if((I.exits[i]) && (I.exits[i].orientation==dir))
+			{
+				return true;
+			}
+		}
+		return false;
+	};
 	
 	I.sailable=function(x,y){//,b){
 		if((I.tiles[x][y].data==TileType.Ocean)) {return true;}
@@ -339,7 +350,11 @@ function room(I) { //room object
 				if((!this.fogOfWar) || (this.seenMap[i][j])|| (true))
 				{
 					if(dominantType.type && dominantType.type <20) {
-						dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
+					//HACK to get rid of error
+						if(dungeonTileSprite[dominantType.type])
+						{
+							dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
+						}
 					}else if(dominantType.type&& dominantType.type<24){
 						dungeonTileSprite[20+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
 					}else if (dominantType.type&& dominantType.type<28) {
