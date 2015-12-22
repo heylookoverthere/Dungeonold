@@ -3,7 +3,7 @@ var fires=[];
 var gameOver=null;
 
 bConsoleBox=new textbox();
-bConsoleBox.width=400;
+bConsoleBox.width=300;
 bConsoleBox.height=CANVAS_HEIGHT-12;
 bConsoleBox.log("Loading...");
 bConsoleBox.y=18;
@@ -394,6 +394,7 @@ function mainDraw() {
 	}*/
 	drawGUI(canvas);
 	drawDebug(canvas);
+	curDungeon.drawMiniMap(canvas);//,player
 	
 	if(gameOver)
 	{
