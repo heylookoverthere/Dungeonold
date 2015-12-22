@@ -1,4 +1,4 @@
-
+//oh god I forgot about floors! add another layer 
 function dungeon(path)
 {
 	
@@ -15,12 +15,13 @@ function dungeon(path)
 		{
 			var edgar=new room();
 			var parth=path+"/roomX"+String(i)+"Y"+String(j);
-			edgar.buildRoom(parth)
+			edgar.buildRoom(parth);
 			edgar.name="roomX"+String(i)+"Y"+String(j);
 			this.rooms[i].push(edgar);
 		}
      }
 	 this.rooms[this.roomX][this.roomY].explored=true;
+
 	this.draw=function(can,cam,player) //maybe dcam is a player variable and you pass this a playeR? 
 	{ 
 		//this.rooms[player.dX][player.dY].draw(can,cam);

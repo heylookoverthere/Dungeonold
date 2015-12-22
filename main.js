@@ -127,9 +127,6 @@ function playSound(name){
     
 }
 
-var curRoom = new room();
-curRoom.clear();
-
 controller= new virtualGamePad();
 
 var ksavekey=new akey("o"); //define the different keys
@@ -278,10 +275,10 @@ function startGame()
 	camera.tileX=0;
 	camera.tileY=0;
 	
-	graphboat = mapToGraph(curRoom,true);
-	graph = mapToGraph(curRoom,false);
+	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY],true);
+	graph = mapToGraph(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY],false);
 	starter();
-
+	console.log(curDungeon.rooms[1][2].exits.length); //todo why don't rooms have their exits yet?
 }
 
 function starter()
@@ -419,6 +416,7 @@ function mainUpdate()
 {
 	if(!gamestart) return;
 	if(gameOver) return;
+	//hack
 	controller.update();
 	//mel.x=miles.x;
 	//mel.y=miles.y-26+miles.headHeight;

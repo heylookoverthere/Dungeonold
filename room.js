@@ -32,7 +32,7 @@ function door(or)
 	if(!or){or=0;}
 	this.x=0;
 	this.y=0; 
-	this.closed=true;
+	this.closed=false;
 	this.locked=false; 
 	//this.source=sorc;
 	this.dest=null;
