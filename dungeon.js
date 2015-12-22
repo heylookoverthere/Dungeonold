@@ -1,5 +1,7 @@
-//oh god I forgot about floors! add another layer 
+//TODO
+//oh god I forgot about floors! add another layer - sorta done
 //when changing floors, mark new room explored. - add stairs in general. 
+//right door on mini-map is dark, probably overwritten by border of adjacent tile 
 function dungeon(path)
 {
 	
@@ -92,26 +94,7 @@ function dungeon(path)
 							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
 							can.fillStyle="blue";
 							canvas.fillRect(xFset+size*i,yFset+size*k,size,size);
-							if(this.rooms[this.roomZ][i][k].hasDoor(0))
-							{
-								can.fillStyle="white";
-								canvas.fillRect(xFset+size*i+size/2,yFset+size*k,2,1);
-							}
-							if(this.rooms[this.roomZ][i][k].hasDoor(2))
-							{
-								can.fillStyle="white";
-								canvas.fillRect(xFset+size*i+size/2,yFset+size*k+size,2,1);
-							}
-							if(this.rooms[this.roomZ][i][k].hasDoor(1))
-							{
-								can.fillStyle="white";
-								canvas.fillRect(xFset+size*i+size,yFset+size*k+size/2,1,2);
-							}
-							if(this.rooms[this.roomZ][i][k].hasDoor(3))
-							{
-								can.fillStyle="white";
-								canvas.fillRect(xFset+size*i,yFset+size*k+size/2,1,2);
-							}
+							
 						}else
 						{
 							can.fillStyle="black";
@@ -119,14 +102,44 @@ function dungeon(path)
 							can.fillStyle="black";
 							canvas.fillRect(xFset+size*i,yFset+size*k,size,size);
 						}
+						
 						if((i==this.roomX) && (k==this.roomY)) //todo and right floor?
 						{
 							can.fillStyle="yellow";
 							canvas.fillRect(xFset+size*i+3,yFset+size*k+3,size-6,size-6); //todo: scalig issues.
 						}					
 					}
+				}
 			}
-		}
+			for(i=0;i<this.width[this.roomZ];i++)
+		    {
+				for (k=0;k<this.height[this.roomZ];k++)
+				{
+					if(this.rooms[this.roomZ][i][k].explored)
+					{
+						if(this.rooms[this.roomZ][i][k].hasDoor(0))
+						{
+							can.fillStyle="white";
+							canvas.fillRect(xFset+size*i+size/2,yFset+size*k,2,1);
+						}
+						if(this.rooms[this.roomZ][i][k].hasDoor(2))
+						{
+							can.fillStyle="white";
+							canvas.fillRect(xFset+size*i+size/2,yFset+size*k+size,2,1);
+						}
+						if(this.rooms[this.roomZ][i][k].hasDoor(1))
+						{
+							can.fillStyle="white";
+							canvas.fillRect(xFset+size*i+size,yFset+size*k+size/2,1,2);
+						}
+						if(this.rooms[this.roomZ][i][k].hasDoor(3))
+						{
+							can.fillStyle="white";
+							canvas.fillRect(xFset+size*i,yFset+size*k+size/2,1,2);
+						}
+					}
+				}
+			}
 		can.globalAlpha=1;
 	}
 
