@@ -187,7 +187,7 @@ function room(I) { //room object
 	I.y=0;
 	I.miniMapX=0;
 	I.miniMapY=0;
-	I.explored=true;//TODO
+	I.explored=false;//TODO
 
 	I.log=new Array();
 	I.log.push("Constructed at "+thyme.getString());

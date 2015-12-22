@@ -288,6 +288,7 @@ function starter()
 {		
 	gamestart=true;	
 	//bees=true;
+	
 	bConsoleBox.log("started");
 }
 
@@ -433,6 +434,7 @@ function mainUpdate()
 		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(3))
 		{
 			curDungeon.roomX--;
+			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 	 if((rightkey.check())  && (curDungeon.roomX<curDungeon.width-1))
@@ -440,6 +442,7 @@ function mainUpdate()
 		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(1))
 		{
 			curDungeon.roomX++;
+			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 	 if((upkey.check())  && (curDungeon.roomY>0))
@@ -447,6 +450,7 @@ function mainUpdate()
 		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(0))
 		{
 			curDungeon.roomY--;
+			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 	 if((downkey.check())  && (curDungeon.roomY<curDungeon.height-1))
@@ -454,6 +458,7 @@ function mainUpdate()
 		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(2))
 		{
 			curDungeon.roomY++;
+			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 
