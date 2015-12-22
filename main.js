@@ -353,6 +353,10 @@ function mainMenuUpdate(){
 
 //------------MAIN DRAW-----------------------------------------
 function mainDraw() {
+	//SHOULDN'T
+		canvas.fillStyle = "black";
+	canvas.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+
 	curDungeon.draw(canvas,camera);
 	//curRoom.draw(canvas,camera);
 	//curRoom.draw(canvas,camera);
@@ -435,7 +439,7 @@ function mainUpdate()
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
-	 if((rightkey.check())  && (curDungeon.roomX<curDungeon.width-1))
+	 if((rightkey.check())  && (curDungeon.roomX<curDungeon.getWidth()-1))
 	 {
 		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(1))
 		{
@@ -451,7 +455,7 @@ function mainUpdate()
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
-	 if((downkey.check())  && (curDungeon.roomY<curDungeon.height-1))
+	 if((downkey.check())  && (curDungeon.roomY<curDungeon.getHeight()-1))
 	 {
 		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(2))
 		{
@@ -560,4 +564,5 @@ function mainUpdate()
 };
 merp();
 startGame();
+
 //console.log(curMap.tiles[Skagos.x/16][Skagos.y/16].data);
