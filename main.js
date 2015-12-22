@@ -91,7 +91,7 @@ var radarCanvas = radarElement.get(0).getContext("2d");
 var mapCanvasElement = $("<canvas width='" + MAP_WIDTH + "' height='" + MAP_HEIGHT + "'></canvas");
 var mapCanvas = mapCanvasElement.get(0).getContext("2d");
 
-var concanvasElement = $("<canvas width='" + 432 + "' height='" + CANVAS_HEIGHT + "'></canvas");
+var concanvasElement = $("<canvas width='" + 290 + "' height='" + CANVAS_HEIGHT + "'></canvas");
 var concanvas = concanvasElement.get(0).getContext("2d");
 
 concanvasElement.css("position", "absolute").css("z-index", "2").css("top", canvasElement.position().top).css("left", CANVAS_WIDTH);

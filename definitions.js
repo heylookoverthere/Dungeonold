@@ -235,7 +235,7 @@ function textbox()
 	this.y=370;
 	this.scroll=0;
 	this.width=600;
-	this.textLim=66;
+	this.textLim=44;
 	this.label=false;
 	this.height=55;
 	this.options=2;
