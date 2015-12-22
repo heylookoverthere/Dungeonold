@@ -141,7 +141,7 @@ function drawGUI(can)
 	can.fillStyle="blue";
 	canvas.fillRect(6,6,221,22);
 	can.fillStyle="yellow";
-	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].name,8,25);
+	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,25);
 	var cont=0;
 	/*can.fillText("Men at Wall: "+theWatch.men.length,8,41);
 	
@@ -275,10 +275,10 @@ function startGame()
 	camera.tileX=0;
 	camera.tileY=0;
 	
-	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY],true);
-	graph = mapToGraph(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY],false);
+	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
+	graph = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],false);
 	starter();
-	console.log(curDungeon.rooms[1][2].exits.length); //todo why don't rooms have their exits yet?
+	console.log(curDungeon.rooms[0][1][2].exits.length); //todo why don't rooms have their exits yet?
 }
 
 function starter()
@@ -429,34 +429,34 @@ function mainUpdate()
 	
 	 if((leftkey.check()) && (curDungeon.roomX>0))
 	 {
-		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(3))
+		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(3))
 		{
 			curDungeon.roomX--;
-			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 	 if((rightkey.check())  && (curDungeon.roomX<curDungeon.width-1))
 	 {
-		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(1))
+		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(1))
 		{
 			curDungeon.roomX++;
-			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 	 if((upkey.check())  && (curDungeon.roomY>0))
 	 {
-		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(0))
+		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(0))
 		{
 			curDungeon.roomY--;
-			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 	 if((downkey.check())  && (curDungeon.roomY<curDungeon.height-1))
 	 {
-		if(curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].hasDoor(2))
+		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(2))
 		{
 			curDungeon.roomY++;
-			curDungeon.rooms[curDungeon.roomX][curDungeon.roomY].explored=true;
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
 	 }
 
