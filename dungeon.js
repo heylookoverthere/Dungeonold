@@ -156,7 +156,7 @@ function dungeon(path)
 							can.fillStyle="black";
 							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
 							can.fillStyle="black";
-							if(OPTIONS.showUnexploredRooms)
+							if((OPTIONS.showUnexploredRooms) && (!this.rooms[this.roomZ][i][k].hidden))
 							{
 								can.fillStyle="grey";
 							}							
@@ -175,7 +175,7 @@ function dungeon(path)
 		    {
 				for (k=0;k<this.height[this.roomZ];k++)
 				{
-					if((this.rooms[this.roomZ][i][k].explored) || (OPTIONS.showUnexploredDoors))
+					if((this.rooms[this.roomZ][i][k].explored) || ((OPTIONS.showUnexploredDoors) && (!this.rooms[this.roomZ][i][k].hidden)) )
 					{
 						if(this.rooms[this.roomZ][i][k].hasDoor(0))
 						{

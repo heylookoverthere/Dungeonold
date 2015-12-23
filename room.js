@@ -34,6 +34,13 @@ doorClosedSprite[0]=Sprite("dungeontiles/doorclosed0");
 doorClosedSprite[1]=Sprite("dungeontiles/doorclosed1");
 doorClosedSprite[2]=Sprite("dungeontiles/doorclosed2");
 doorClosedSprite[3]=Sprite("dungeontiles/doorclosed3");
+
+function staircase(up)
+{
+	this.x=0;
+	this.y=0;
+	this.up=up;
+}
 	
 function door(or)
 {
@@ -196,7 +203,7 @@ function room(I) { //room object
 	I.miniMapX=0;
 	I.miniMapY=0;
 	I.explored=false;//TODO
-
+	I.hidden=false;
 	I.log=new Array();
 	I.log.push("Constructed at "+thyme.getString());
 	I.name=""; //simple string of it's coords? 
@@ -204,6 +211,7 @@ function room(I) { //room object
 	//eventually give tiles backgrounds random elements like rocks or cobwebs
 	I.backgroundImage=null; // could be 32x32 tiles or whatever x whatever .png image. 
 	I.exits=new Array(); //of doors, ladders and stairs
+	I.stairs=new Array();
 	//I.exits.push(new door(null,0));
 	I.windows=new Array();
 	I.lights=new Array();
@@ -468,6 +476,8 @@ function room(I) { //room object
 			  var waterrgb =[0,100,255,0];
 			  var lavargb =[255,0,0,0];
 			  var grassrgb=[0,165,0,0];
+			  var upstairrgb =[240,240,240,0];
+			  var downstairrgb=[220,245,220,0];
 			  var yPos = Math.floor(i / 4 / ROOM_WIDTH);
 			  var xPos = (i / 4) % ROOM_WIDTH;
 			if(closeEnough(rgba,stonergb)) {
@@ -488,6 +498,18 @@ function room(I) { //room object
 				I.setTile(xPos, yPos, DungeonTileType.Grass);
 			  }else if (closeEnough(rgba,greenwallrgb)) {
 				I.setTile(xPos, yPos, DungeonTileType.GreenWall);
+			  }else if (closeEnough(rgba,upstairrgb)) {
+				I.setTile(xPos, yPos, DungeonTileType.UpStair);
+				var mindy= new staircase(true);
+				mindy.x=xPos;
+				mindy.y=yPos;
+				I.stairs.push(mindy);
+			  }else if (closeEnough(rgba,downstairrgb)) {
+				I.setTile(xPos, yPos, DungeonTileType.DownStair);
+				var mindy= new staircase(false);
+				mindy.x=xPos;
+				mindy.y=yPos;
+				I.stairs.push(mindy);
 			  }else if (closeEnough(rgba,doorrgb)) {
 				I.setTile(xPos, yPos, DungeonTileType.Door);
 				if((xPos==18) && (yPos==7))

@@ -419,7 +419,8 @@ DungeonTileType.WallTop=14;
 DungeonTileType.WallLeft=15;
 DungeonTileType.WallRight=16;
 DungeonTileType.WallBottom=17;
-
+DungeonTileType.UpStair=18;
+DungeonTileType.DownStair=19;
 
 var lastEventX=0;
 var lastEventY=0;
@@ -591,6 +592,8 @@ dungeonTileSprite[DungeonTileType.BirdHead] = Sprite("dungeontiles/dungeonthing"
 dungeonTileSprite[DungeonTileType.Wall] = Sprite("dungeontiles/wall");
 dungeonTileSprite[DungeonTileType.GreenWall] = Sprite("dungeontiles/wall");   
 dungeonTileSprite[DungeonTileType.Door] = Sprite("dungeontiles/wood");
+dungeonTileSprite[DungeonTileType.UpStair]= Sprite("dungeontiles/stairsup");
+dungeonTileSprite[DungeonTileType.DownStair]= Sprite("dungeontiles/stairsdown");
 dungeonTileSprite[DungeonTileType.WallCornerA] = Sprite("dungeontiles/wall1");
 dungeonTileSprite[DungeonTileType.WallCornerB] = Sprite("dungeontiles/wall2");
 dungeonTileSprite[DungeonTileType.WallCornerC] = Sprite("dungeontiles/wall3");
