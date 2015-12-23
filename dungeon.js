@@ -16,7 +16,9 @@ function dungeon(path)
 	this.height.push(3);
 	this.width.push(4);
 	this.height.push(3);
-	this.floors=2;
+	this.width.push(8);
+	this.height.push(7);
+	this.floors=3;
 
 	for(var p=0;p<this.floors;p++)
 	{
@@ -41,7 +43,106 @@ function dungeon(path)
 		return this.rooms[this.roomZ][this.roomX][this.roomY];
 	}
 	
-	this.changeFloors=function(up)
+	this.changeRoom=function(dir,limited) //used for arrowing through rooms rather than player movement limited determines if you can go through walls/closed doors/ into inactive rooms
+	{
+		//either way, check map boundries to prevent errors. then if limited, check that a player could actually go that way. 
+		if(dir==0) //going north
+		{
+			if(this.roomY<1)
+			{	
+				console.log("That would take out off the map");
+				return;
+			}
+			
+			if(!this.rooms[this.roomZ][this.roomX][this.roomY-1].active)
+			{
+				console.log("No valid room in that direction.");
+				return; 
+			}
+			
+			if((this.curRoom().hasDoor(0)) || (!limited))
+			{
+				this.roomY--;
+				this.curRoom().explored=true;
+			}else
+			{
+				console.log("No door!");
+			}
+		}else if(dir==2) //going south
+		{
+			if(this.roomY>this.getHeight())
+			{	
+				console.log("That would take out off the map");
+				return;
+			}
+			
+			if(!this.rooms[this.roomZ][this.roomX][this.roomY+1].active)
+			{
+				console.log("No valid room in that direction.");
+				return; 
+			}
+			
+			if((this.curRoom().hasDoor(2)) || (!limited))
+			{
+				this.roomY++;
+				this.curRoom().explored=true;
+			}else
+			{
+				console.log("No door!");
+			}
+		}else if(dir==1) //going east
+		{
+			if(this.roomX>this.getWidth())
+			{	
+				console.log("That would take out off the map");
+				return;
+			}
+			
+			if(!this.rooms[this.roomZ][this.roomX+1][this.roomY].active)
+			{
+				console.log("No valid room in that direction.");
+				return; 
+			}
+			
+			if((this.curRoom().hasDoor(1)) || (!limited))
+			{
+				this.roomX++;
+				this.curRoom().explored=true;
+			}else
+			{
+				console.log("No door!");
+			}
+		}else if(dir==3) //going west
+		{
+			if(this.roomX<1) 
+			{	
+				console.log("That would take out off the map");
+				return;
+			}
+			
+			if(!this.rooms[this.roomZ][this.roomX-1][this.roomY].active)
+			{
+				console.log("No valid room in that direction.");
+				return; 
+			}
+			
+			if((this.curRoom().hasDoor(3)) || (!limited))
+			{
+				this.roomX--;
+				this.curRoom().explored=true;
+			}else
+			{
+				console.log("No door!");
+			}
+		}
+	}
+	
+	this.useDoor=function(which) //link to other doors
+	{
+		
+	}
+	
+	this.changeFloor=function(up,limited)
 	{
 		if(up)
 		{
@@ -61,9 +162,14 @@ function dungeon(path)
 				console.log("No active room above");
 				return;
 			}
-			
-			this.roomZ++;
-			this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
+			if((this.curRoom().hasStairs(true)) || (!limited))
+			{
+				this.roomZ++;
+				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
+			}else
+			{
+				console.log("No stairs going up.");
+			}
 	
 		}else
 		{
@@ -85,9 +191,15 @@ function dungeon(path)
 				return;
 			}
 			
-		
-			this.roomZ--;
-			this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
+			if((this.curRoom().hasStairs(false)) || (!limited))
+			{
+				this.roomZ--;
+				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
+			}else
+			{
+				console.log("No stairs going down.");
+			}
+
 	
 		}
 	}
@@ -105,7 +217,7 @@ function dungeon(path)
 		//this.rooms[player.dX][player.dY].draw(can,cam);
 		this.rooms[this.roomZ][this.roomX][this.roomY].draw(can,cam);
 	}
-	this.drawMiniMap=function(can,player)
+	this.drawMiniMap=function(can,player) //should also draw stairs, exit door in different color, goal/boss. 
 	{
 		var xFset=600;
 		var yFset=655;
@@ -196,6 +308,15 @@ function dungeon(path)
 						{
 							can.fillStyle="white";
 							canvas.fillRect(xFset+size*i,yFset+size*k+size/2,1,2);
+						}
+						for(var g=0;g<this.rooms[this.roomZ][i][k].stairs.length;g++)
+						{
+							can.fillStyle="orange";
+							if(this.rooms[this.roomZ][i][k].stairs[g].up)
+							{
+								can.fillStyle="pink";
+							}
+							canvas.fillRect(xFset+size*i+this.rooms[this.roomZ][i][k].stairs[g].x,yFset+size*k+this.rooms[this.roomZ][i][k].stairs[g].y,1,1);
 						}
 					}
 				}

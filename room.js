@@ -271,6 +271,18 @@ function room(I) { //room object
 		return false;
 	};
 	
+	I.hasStairs=function(up)
+	{
+		for(var i=0;i<I.stairs.length;i++)
+		{
+			if((I.stairs[i]) && (I.stairs[i].up==up))
+			{
+				return true;
+			}
+		}
+		return false;
+	};
+	
 	I.sailable=function(x,y){//,b){
 		if((I.tiles[x][y].data==TileType.Ocean)) {return true;}
 		if(true)//(b.navigateRivers)

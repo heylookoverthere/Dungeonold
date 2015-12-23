@@ -433,13 +433,13 @@ function mainUpdate()
 	
 	if(pageupkey.check())
 	{
-		curDungeon.changeFloors(true);
+		curDungeon.changeFloor(true,true);
 	}
 	if(pagedownkey.check())
 	{
-		curDungeon.changeFloors(false);
+		curDungeon.changeFloor(false,true);
 	}
-	 if((leftkey.check()) && (curDungeon.roomX>0))
+	/* if((leftkey.check()) && (curDungeon.roomX>0))
 	 {
 		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(3))
 		{
@@ -470,8 +470,23 @@ function mainUpdate()
 			curDungeon.roomY++;
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
 		}
+	 }*/
+	 if(leftkey.check())
+	 {
+		curDungeon.changeRoom(3,true);
 	 }
-
+	 if(rightkey.check())
+	 {
+		curDungeon.changeRoom(1,true);
+	 }
+	 if(upkey.check())
+	 {
+		curDungeon.changeRoom(0,true);
+	 }
+	 if(downkey.check())
+	 {
+		curDungeon.changeRoom(2,true);
+	 }
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 	
 	for(var i=0;i<fires.length;i++)
