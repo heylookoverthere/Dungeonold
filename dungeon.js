@@ -70,7 +70,7 @@ function dungeon(path)
 			}
 		}else if(dir==2) //going south
 		{
-			if(this.roomY>this.getHeight())
+			if(this.roomY>this.getHeight()-2)
 			{	
 				console.log("That would take out off the map");
 				return;
@@ -92,9 +92,9 @@ function dungeon(path)
 			}
 		}else if(dir==1) //going east
 		{
-			if(this.roomX>this.getWidth())
+			if(this.roomX>this.getWidth()-2)
 			{	
-				console.log("That would take out off the map");
+				console.log("That would take you out off the map");
 				return;
 			}
 			
