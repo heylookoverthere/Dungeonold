@@ -425,6 +425,11 @@ var logsetkey=new akey("v");
 logsetkey.desc="debug"
 edskeys.push(logsetkey);
 
+var editclickkey=new akey("return");
+editclickkey.desc="your mother";
+edskeys.push(editclickkey);
+
+
 var letterkeys=[];
 letterkeys.push(new akey("a"));
 letterkeys.push(new akey("b"));

@@ -76,8 +76,29 @@ function mouseClick(e) {  //represents the mouse
 	tx=Math.floor(mX/16) * Math.pow(2, 1);//curMap.zoom-1);
 	ty=Math.floor(mY/16) * Math.pow(2, 1);//curMap.zoom-1);
 	
+	for(var i=0;i<buttons.length;i++)
+	{
+		if((isOver(buttons[i]))  && (buttons[i].visible))
+		{
+			if((!buttons[i].greyed) && (!buttons[i].decorative)){
+				//clearFocus();
+				
+				
+				//buttons[i].on=!buttons[i].on;
+				for(var k=0;k<buttons[i].linked.length;k++)
+				{
+					buttons[i].linked[k].on=false;
+				}
+				buttons[i].doThings();
+				//console.log(buttons[i].object.name);
+			}
+
+			return;
+		}
+	}
+		//clearFocus();
 	
-		switch (e.which)
+		/*switch (e.which)
 		{
 			case 1:
 				//alert('Left mouse button pressed');
@@ -93,7 +114,7 @@ function mouseClick(e) {  //represents the mouse
 				break;
 			default:
 				//alert('You have a strange mouse');
-		}
+		}*/
 };
 
 mouseXY= function(e) {
@@ -132,7 +153,12 @@ function drawMouseText(can,targ,cam) { //draws unit status info
     can.restore();
 }
 
-isOver= function(targ,cam){ //is the mouse over the player/object 
+isOver= function(targ){ //is the mouse over the player/object 
+    if((mX>targ.x) && (mX<(targ.x+targ.width)) && (mY>(targ.y)) && (mY<(targ.y+targ.height))) {return true;}
+    return false;
+};
+
+isOverTiled= function(targ,cam){ //is the mouse over the player/object 
     if((mX>(targ.tileX-cam.tileX)*16/curMap.zoom) && (mX<((targ.tileX-cam.tileX)*16+targ.width*curMap.zoom)/curMap.zoom) &&(mY>((targ.tileY-cam.tileY)*16)/curMap.zoom) &&(mY<((targ.tileY-cam.tileY)*16+targ.height)/curMap.zoom)) {return true;}
     return false;
 };

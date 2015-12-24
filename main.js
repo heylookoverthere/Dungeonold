@@ -1,6 +1,8 @@
 var debugInfo=true;
+var editMode=false;
 var fires=[];
 var gameOver=null;
+var editor=new editCursor();
 
 bConsoleBox=new textbox();
 bConsoleBox.width=300;
@@ -14,6 +16,67 @@ var curDungeon= new dungeon("Dungeon1");
 
 var showMap=false;
 
+var buttons=new Array();
+var timy=new button();
+timy.text="North";
+timy.x=200;
+timy.y=640;
+timy.visible=true;
+timy.doThings=function()
+{
+	curDungeon.changeRoom(0,true);
+}
+buttons.push(timy);
+timy=new button();
+timy.text="South";
+timy.x=200;
+timy.y=680;
+timy.visible=true;
+timy.doThings=function()
+{
+	curDungeon.changeRoom(2,true);
+}
+buttons.push(timy);
+timy=new button();
+timy.text="East";
+timy.x=235;
+timy.y=660;
+timy.visible=true;
+timy.doThings=function()
+{
+	curDungeon.changeRoom(1,true);
+}
+buttons.push(timy);
+timy=new button();
+timy.text="West";
+timy.x=165;
+timy.y=660;
+timy.visible=true;
+timy.doThings=function()
+{
+	curDungeon.changeRoom(3,true);
+}
+buttons.push(timy);
+timy=new button();
+timy.text="Up";
+timy.x=270;
+timy.y=640;
+timy.visible=true;
+timy.doThings=function()
+{
+	curDungeon.changeFloor(true,true);
+}
+buttons.push(timy);
+timy=new button();
+timy.text="Down";
+timy.x=270;
+timy.y=680;
+timy.visible=true;
+timy.doThings=function()
+{
+	curDungeon.changeFloor(false,true);
+}
+buttons.push(timy);
 //lights.push(new light(7092,3748,14));
 //lights.push(new light(7208,3777,14));
 
@@ -139,9 +202,10 @@ function drawGUI(can)
 {
 	can.globalAlpha=0.75;
 	can.fillStyle="blue";
-	canvas.fillRect(6,6,221,22);
+	canvas.fillRect(6,6,221,54);
 	can.fillStyle="yellow";
-	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,25);
+	can.fillText("Floor: "+curDungeon.roomZ,8,22);
+	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,46);
 	var cont=0;
 	/*can.fillText("Men at Wall: "+theWatch.men.length,8,41);
 	
@@ -394,9 +458,29 @@ function mainDraw() {
 		canvas.globalAlpha=1;//0.4;
 		curMap.drawRadar(camera,665,475);
 	}*/
+	
+	if(editMode)
+	{
+		canvas.fillStyle="yellow";
+		canvas.font = "32pt Calibri";
+		canvas.fillText("Edit Mode",380,125);
+		canvas.font = "16pt Calibri";
+	}	
+	
 	drawGUI(canvas);
 	drawDebug(canvas);
 	curDungeon.drawMiniMap(canvas);//,player
+	
+	
+	for (var h=0;h<buttons.length;h++)
+	{
+		buttons[h].draw(canvas);
+	}
+	
+	if(editMode)
+	{
+		editor.draw(canvas);
+	}
 	
 	if(gameOver)
 	{
@@ -430,62 +514,61 @@ function mainUpdate()
     milliseconds = timestamp.getTime();
     tick++;
 	thyme.update();
-	
-	if(pageupkey.check())
+	if(editMode)
 	{
-		curDungeon.changeFloor(true,true);
-	}
-	if(pagedownkey.check())
+		if(upkey.check())
+		{
+			editor.move(0);
+		}
+		if(downkey.check())
+		{
+			editor.move(2);
+		}
+		if(leftkey.check())
+		{
+			editor.move(3);
+		}
+		if(rightkey.check())
+		{
+			editor.move(1);
+		}
+		if (editclickkey.check())
+		{
+			console.log("OH YEAH");
+			console.log(editor.getTile(curDungeon.curRoom()));
+			
+		}
+	}else
 	{
-		curDungeon.changeFloor(false,true);
-	}
-	/* if((leftkey.check()) && (curDungeon.roomX>0))
-	 {
-		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(3))
+		for (var h=0;h<buttons.length;h++)
 		{
-			curDungeon.roomX--;
-			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
+			buttons[h].update();
 		}
-	 }
-	 if((rightkey.check())  && (curDungeon.roomX<curDungeon.getWidth()-1))
-	 {
-		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(1))
+		
+		if(pageupkey.check())
 		{
-			curDungeon.roomX++;
-			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
+			curDungeon.changeFloor(true,true);
 		}
-	 }
-	 if((upkey.check())  && (curDungeon.roomY>0))
-	 {
-		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(0))
+		if(pagedownkey.check())
 		{
-			curDungeon.roomY--;
-			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
+			curDungeon.changeFloor(false,true);
 		}
-	 }
-	 if((downkey.check())  && (curDungeon.roomY<curDungeon.getHeight()-1))
-	 {
-		if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].hasDoor(2))
-		{
-			curDungeon.roomY++;
-			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].explored=true;
-		}
-	 }*/
-	 if(leftkey.check())
-	 {
-		curDungeon.changeRoom(3,true);
-	 }
-	 if(rightkey.check())
-	 {
-		curDungeon.changeRoom(1,true);
-	 }
-	 if(upkey.check())
-	 {
-		curDungeon.changeRoom(0,true);
-	 }
-	 if(downkey.check())
-	 {
-		curDungeon.changeRoom(2,true);
+		 if(leftkey.check())
+		 {
+			curDungeon.changeRoom(3,true);
+		 }
+		 if(rightkey.check())
+		 {
+			curDungeon.changeRoom(1,true);
+		 }
+		 if(upkey.check())
+		 {
+			curDungeon.changeRoom(0,true);
+		 }
+		 if(downkey.check())
+		 {
+			curDungeon.changeRoom(2,true);
+		 }
 	 }
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 	
@@ -500,10 +583,7 @@ function mainUpdate()
 	
 	if(logsetkey.check())
 	{
-		console.log(settlements[trackTown].name);
-		console.log("coords: "+settlements[trackTown].tileX,settlements[trackTown].tileY);
-		console.log("Port: "+settlements[trackTown].portTileX,settlements[trackTown].portTileY);
-		console.log("Entrance: "+settlements[trackTown].entranceTileX(),settlements[trackTown].entranceTileY());
+		
 	}	
 	
 	if(homekey.check())
@@ -514,27 +594,7 @@ function mainUpdate()
 	}
 	if(debugkey.check())
 	{
-		//platformer=!platformer;
-		//debugInfo=!debugInfo;
-		//allPoint(miles);
-		//miles.equip(helmetList[Math.floor(Math.random()*helmetList.length)]);
-		/*for(var i=0;i<people.length;i++)
-		{
-			people[i].setDestination(75,26,curMap);
-		}*/
-		//mode=2;
-		//monsta.startOrbit(40000,Math.floor(Math.random()*CANVAS_WIDTH),Math.floor(Math.random()*CANVAS_HEIGHT),60);
-		//monsta.snow(10000,4,1);
-		//console.log(Math.floor(ships[0].x/16),Math.floor(ships[0].y/16));
-		//console.log(curMap.tiles[69][11].data);
-		//ships[0].setDestination(Math.floor(Skagos.x/16),Math.floor(Skagos.y/16),curMap);
-		for(var i=1;i<people.length;i++)
-		{
-		
-			//people[i].setDestination(settlements[0].tileX,settlements[0].tileY-5,curMap);
-		}
-		bees=true;
-		//camera.follow(ships[0]);
+		editMode=!editMode;
 	}
 		
 	if ((milliseconds-lastani>WATER_RATE) &&(!isBattle))

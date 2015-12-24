@@ -614,3 +614,51 @@ function room(I) { //room object
 	};
     return I;
 }
+
+function editCursor()
+{
+	this.x=2;
+	this.y=2; 
+	this.sprite=Sprite("cursor");
+}
+
+editCursor.prototype.draw=function(can)
+{
+	this.sprite.draw(can,this.x*32+xOffset,this.y*32+yOffset);
+}
+
+editCursor.prototype.getTile=function(cRoom)
+{
+	console.log(cRoom.tiles[this.x][this.y]);
+}
+
+
+editCursor.prototype.move=function(dir)
+{
+	if(dir==0) //up 
+	{
+		if(this.y>2)
+		{
+			this.y--;
+		}
+	}else if(dir==2) //down
+	{
+		if(this.y<12)
+		{
+			this.y++;
+		}
+	}else if(dir==3) //right
+	{
+		if(this.x>2)
+		{
+			this.x--;
+		}
+	}else if(dir==1) //left
+	{
+		if(this.x<17)
+		{
+			this.x++;
+		}
+	}
+	
+};

@@ -1,7 +1,8 @@
 //TODO
+//maybe draw up or down arrows in middle of rooms with stairs to represent them? what about multiples?
+
 //oh god I forgot about floors! add another layer - sorta done
-//when changing floors, mark new room explored. - add stairs in general. 
-//right door on mini-map is dark, probably overwritten by border of adjacent tile 
+
 function dungeon(path)
 {
 	
@@ -50,13 +51,13 @@ function dungeon(path)
 		{
 			if(this.roomY<1)
 			{	
-				console.log("That would take out off the map");
+				bConsoleBox.log("That would take you off the map");
 				return;
 			}
 			
 			if(!this.rooms[this.roomZ][this.roomX][this.roomY-1].active)
 			{
-				console.log("No valid room in that direction.");
+				bConsoleBox.log("No valid room in that direction.");
 				return; 
 			}
 			
@@ -66,19 +67,19 @@ function dungeon(path)
 				this.curRoom().explored=true;
 			}else
 			{
-				console.log("No door!");
+				bConsoleBox.log("No door!");
 			}
 		}else if(dir==2) //going south
 		{
 			if(this.roomY>this.getHeight()-2)
 			{	
-				console.log("That would take out off the map");
+				bConsoleBox.log("That would take you off the map");
 				return;
 			}
 			
 			if(!this.rooms[this.roomZ][this.roomX][this.roomY+1].active)
 			{
-				console.log("No valid room in that direction.");
+				bConsoleBox.log("No valid room in that direction.");
 				return; 
 			}
 			
@@ -88,19 +89,19 @@ function dungeon(path)
 				this.curRoom().explored=true;
 			}else
 			{
-				console.log("No door!");
+				bConsoleBox.log("No door!");
 			}
 		}else if(dir==1) //going east
 		{
 			if(this.roomX>this.getWidth()-2)
 			{	
-				console.log("That would take you out off the map");
+				bConsoleBox.log("That would take you off the map");
 				return;
 			}
 			
 			if(!this.rooms[this.roomZ][this.roomX+1][this.roomY].active)
 			{
-				console.log("No valid room in that direction.");
+				bConsoleBox.log("No valid room in that direction.");
 				return; 
 			}
 			
@@ -110,19 +111,19 @@ function dungeon(path)
 				this.curRoom().explored=true;
 			}else
 			{
-				console.log("No door!");
+				bConsoleBox.log("No door!");
 			}
 		}else if(dir==3) //going west
 		{
 			if(this.roomX<1) 
 			{	
-				console.log("That would take out off the map");
+				bConsoleBox.log("That would take you off the map");
 				return;
 			}
 			
 			if(!this.rooms[this.roomZ][this.roomX-1][this.roomY].active)
 			{
-				console.log("No valid room in that direction.");
+				bConsoleBox.log("No valid room in that direction.");
 				return; 
 			}
 			
@@ -132,7 +133,7 @@ function dungeon(path)
 				this.curRoom().explored=true;
 			}else
 			{
-				console.log("No door!");
+				bConsoleBox.log("No door!");
 			}
 		}
 	}
@@ -148,18 +149,18 @@ function dungeon(path)
 		{
 			if(this.roomZ>this.floors-2)
 			{
-				console.log("Already on top floor");
+				bConsoleBox.log("Already on top floor");
 				return;
 			}
 			
 			if((this.roomX>this.width[this.roomZ+1]-1) || (this.roomY>this.height[this.roomZ+1]-1))
 			{
-				console.log("would be off that floor's map boundaries");
+				bConsoleBox.log("would be off that floor's map boundaries");
 				return;
 			}
 			
 			if(!this.rooms[this.roomZ+1][this.roomX][this.roomY].active){
-				console.log("No active room above");
+				bConsoleBox.log("No active room above");
 				return;
 			}
 			if((this.curRoom().hasStairs(true)) || (!limited))
@@ -168,26 +169,26 @@ function dungeon(path)
 				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
 			}else
 			{
-				console.log("No stairs going up.");
+				bConsoleBox.log("No stairs going up.");
 			}
 	
 		}else
 		{
 			if(this.roomZ<1) 
 			{
-				console.log("Already on lowest floor");
+				bConsoleBox.log("Already on lowest floor");
 				return
 			}
 			
 			if((this.roomX>this.width[this.roomZ-1]-1) || (this.roomY>this.height[this.roomZ-1]-1))
 			{
-				console.log("would be off that floor's map boundaries");
+				bConsoleBox.log("would be off that floor's map boundaries");
 				return;
 			}
 			
 			if(!this.rooms[this.roomZ-1][this.roomX][this.roomY].active)
 			{
-				console.log("No active room below");
+				bConsoleBox.log("No active room below");
 				return;
 			}
 			
@@ -197,7 +198,7 @@ function dungeon(path)
 				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
 			}else
 			{
-				console.log("No stairs going down.");
+				bConsoleBox.log("No stairs going down.");
 			}
 
 	
