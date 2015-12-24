@@ -535,7 +535,7 @@ function mainUpdate()
 		if (editclickkey.check())
 		{
 			console.log("OH YEAH");
-			console.log(editor.getTile(curDungeon.curRoom()));
+			editor.getTile(curDungeon.curRoom()).data=(Math.floor(Math.random()*19));
 			
 		}
 	}else

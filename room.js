@@ -629,7 +629,7 @@ editCursor.prototype.draw=function(can)
 
 editCursor.prototype.getTile=function(cRoom)
 {
-	console.log(cRoom.tiles[this.x][this.y]);
+	return cRoom.tiles[this.x][this.y];
 }
 
 
