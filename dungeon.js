@@ -7,19 +7,20 @@ function dungeon(path)
 {
 	
 	this.rooms=new Array();
-	this.roomX=1;
-	this.roomY=2;
+	this.roomX=7;
+	this.roomY=7;
 	this.roomZ=0;
 	this.entranceFloor=0;
 	this.width=new Array();
 	this.height=new Array();
-	this.width.push(9);
-	this.height.push(6);
-	this.width.push(9);
-	this.height.push(6);
-	this.width.push(9);
-	this.height.push(6);
+	
 	this.floors=3;
+	for(var i=0;i<this.floors;i++)
+	{
+		this.width.push(15);
+		this.height.push(9);
+	}
+
 
 	for(var p=0;p<this.floors;p++)
 	{
@@ -368,12 +369,12 @@ function dungeon(path)
 	 
 	this.createRoom=function(z,x,y,clone)
 	{
-		if(x>this.width[z]-1)
+		if(x>this.getWidth()-2)
 		{
 			//his.width=x;
 			return false;
 		}
-		if(y>this.height[z]-1)
+		if(y>this.getHeight()-2)
 		{
 			//this.height=y;
 			return false;
@@ -426,7 +427,7 @@ function dungeon(path)
 			kitchen.tiles[18][13].data=13;
 		}
 		bConsoleBox.log("Room created at " +z+","+x+","+y);
-		kitchen.name="roomX"+String(i)+"Y"+String(j);
+		kitchen.name="roomX"+String(x)+"Y"+String(y);
 		this.rooms[z][x][y]=kitchen;
 		return true;
 	}
@@ -447,10 +448,10 @@ function dungeon(path)
 	}
 	this.drawMiniMap=function(can,player) //should also draw stairs, exit door in different color, goal/boss. 
 	{
-		var xFset=600;
-		var yFset=655;
+		var xFset=640;
+		var yFset=609;
 		var size=18;
-		can.globalAlpha=0.5;
+		
 		canvas.font = "16pt Calibri";
 		can.fillStyle="white";
 		var suffix="Who knows";
@@ -471,9 +472,10 @@ function dungeon(path)
 			suffix="Fourth Floor";
 		}
 		can.fillText(suffix,xFset,yFset-6);
-		   for(i=0;i<this.width[this.roomZ];i++)
+		can.globalAlpha=0.5;
+		   for(i=0;i<this.width[this.roomZ]-1;i++)
 		   {
-				for (k=0;k<this.height[this.roomZ];k++)
+				for (k=0;k<this.height[this.roomZ]-1;k++)
 				{
 					if(!this.rooms[this.roomZ][i][k].active)
 					{
@@ -484,7 +486,7 @@ function dungeon(path)
 					}else
 					{
 						
-						if((this.rooms[this.roomZ][i][k].explored) && (!this.rooms[this.roomZ][i][k].hidden))
+						if((this.rooms[this.roomZ][i][k].explored) && (!this.rooms[this.roomZ][i][k].hidden) || (editMode))
 						{
 							can.fillStyle="black";
 							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
@@ -515,7 +517,7 @@ function dungeon(path)
 		    {
 				for (k=0;k<this.height[this.roomZ];k++)
 				{
-					if(((this.rooms[this.roomZ][i][k].explored) || (OPTIONS.showUnexploredDoors)) && (!this.rooms[this.roomZ][i][k].hidden)) 
+					if(((this.rooms[this.roomZ][i][k].explored) || (OPTIONS.showUnexploredDoors)) && (!this.rooms[this.roomZ][i][k].hidden) || (editMode)) 
 					{
 						if(this.rooms[this.roomZ][i][k].hasDoor(0))
 						{

@@ -1,4 +1,4 @@
-var debugInfo=true;
+var debugInfo=false;
 var editMode=false;
 var fires=[];
 var gameOver=null;
@@ -16,20 +16,25 @@ var curDungeon= new dungeon("Dungeon1");
 
 var showMap=false;
 
+var buttonX=136;
+
 var buttons=new Array();
 var timy=new button();
 timy.text="North";
-timy.x=200;
+timy.x=200-buttonX;
 timy.y=640;
 timy.visible=true;
 timy.doThings=function()
 {
 	curDungeon.changeRoom(0,true);
 }
+
+
+
 buttons.push(timy);
 timy=new button();
 timy.text="South";
-timy.x=200;
+timy.x=200-buttonX;
 timy.y=680;
 timy.visible=true;
 timy.doThings=function()
@@ -39,7 +44,7 @@ timy.doThings=function()
 buttons.push(timy);
 timy=new button();
 timy.text="East";
-timy.x=235;
+timy.x=235-buttonX;
 timy.y=660;
 timy.visible=true;
 timy.doThings=function()
@@ -49,7 +54,7 @@ timy.doThings=function()
 buttons.push(timy);
 timy=new button();
 timy.text="West";
-timy.x=165;
+timy.x=165-buttonX;
 timy.y=660;
 timy.visible=true;
 timy.doThings=function()
@@ -59,7 +64,7 @@ timy.doThings=function()
 buttons.push(timy);
 timy=new button();
 timy.text="Up";
-timy.x=270;
+timy.x=270-buttonX;
 timy.y=640;
 timy.visible=true;
 timy.doThings=function()
@@ -69,7 +74,7 @@ timy.doThings=function()
 buttons.push(timy);
 timy=new button();
 timy.text="Down";
-timy.x=270;
+timy.x=270-buttonX;
 timy.y=680;
 timy.visible=true;
 timy.doThings=function()
@@ -83,6 +88,7 @@ buttons.push(timy);
 var upkey=new akey("up");
 var downkey=new akey("down");
 var deletekey=new akey("del");
+var helpkey=new akey("F1");
 
 var miles=new dude();
 miles.AI=false;
@@ -518,8 +524,24 @@ function mainUpdate()
     tick++;
 	thyme.update();
 
+	if (editclickkey.check())
+	{
+		editor.getTile(curDungeon.curRoom()).data=(Math.floor(Math.random()*19));
+			
+	}
 	if(editMode)
 	{
+		if(helpkey.check())
+		{
+			bConsole.log("Arrow Keys - Move room");
+			bConsole.log("Page Up/Down - Move floors");
+			bConsole.log("Shift + Arrow keys/Page keys - New room");
+			bConsole.log("W A S D - Move cursor");
+			bConsole.log("Shift + Arrow Keys - Add Door");
+			bConsole.log("Delete - Delete room");
+			bConsole.log("H - Toggle hidden room");
+
+		}
 		if(letterkeys[7].check())
 		{
 			curDungeon.curRoom().hidden=!curDungeon.curRoom().hidden
