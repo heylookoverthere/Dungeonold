@@ -1,7 +1,7 @@
 //TODO
 //maybe draw up or down arrows in middle of rooms with stairs to represent them? what about multiples?
 
-//oh god I forgot about floors! add another layer - sorta done
+//way to delete doors and place/delete stars!
 
 function dungeon(path)
 {
@@ -203,6 +203,13 @@ function dungeon(path)
 
 	
 		}
+	}
+	 
+	this.findNearestRoom=function()
+	{
+		//do better
+		this.roomX=0;
+		this.roomY=0;
 	}
 	 
 	this.createRoom=function(z,x,y,clone)

@@ -82,6 +82,7 @@ buttons.push(timy);
 
 var upkey=new akey("up");
 var downkey=new akey("down");
+var deletekey=new akey("del");
 
 var miles=new dude();
 miles.AI=false;
@@ -519,7 +520,13 @@ function mainUpdate()
 
 	if(editMode)
 	{
-
+		if(deletekey.check())
+		{	
+			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name);
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;
+			curDungeon.findNearestRoom();
+		}
 		if(shiftkey.checkDown())
 		{
 			
