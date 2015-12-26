@@ -12,7 +12,7 @@ bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
 
-var curDungeon= new dungeon("Dungeon1");
+var curDungeon= new dungeon("dungeon1");
 
 var showMap=false;
 
