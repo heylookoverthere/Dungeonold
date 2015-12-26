@@ -271,6 +271,19 @@ function room(I) { //room object
 		return false;
 	};
 	
+	I.getDoor=function(dir)
+	{
+		if(!I.hasDoor(dir))		{return null;}
+		for(var i=0;i<4;i++)
+		{
+			if((I.exits[i]) && (I.exits[i].orientation==dir))
+			{
+				return I.exits[i];
+			}
+		}
+		return null;
+	};
+	
 	I.hasStairs=function(up)
 	{
 		for(var i=0;i<I.stairs.length;i++)

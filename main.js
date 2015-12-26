@@ -520,6 +520,10 @@ function mainUpdate()
 
 	if(editMode)
 	{
+		if(letterkeys[7].check())
+		{
+			curDungeon.curRoom().hidden=!curDungeon.curRoom().hidden
+		}
 		if(deletekey.check())
 		{	
 			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name);

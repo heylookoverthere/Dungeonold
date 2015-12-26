@@ -10,8 +10,8 @@ var graphboat=null;
 var graph=null;
 
 var OPTIONS={};
-OPTIONS.showUnexploredRooms=true;
-OPTIONS.showUnexploredDoors=true;
+OPTIONS.showUnexploredRooms=false;
+OPTIONS.showUnexploredDoors=false;
 
 //var snake=0;
 

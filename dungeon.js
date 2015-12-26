@@ -204,6 +204,160 @@ function dungeon(path)
 	
 		}
 	}
+	
+	this.drawAdjacent=function(can,cam)
+	{
+		var tyOffset=-331; //top
+		if((this.roomY>0) && (this.rooms[this.roomZ][this.roomX][this.roomY-1].active) && (!this.rooms[this.roomZ][this.roomX][this.roomY-1].hidden))
+		{
+			for (i=0;i<ROOM_WIDTH; i++)
+			{
+				for (j=ROOM_HEIGHT-4;j<ROOM_HEIGHT; j++)
+				{
+					var aTile=this.rooms[this.roomZ][this.roomX][this.roomY-1].tiles[i][j];
+					if(aTile && aTile.data <20)
+					{
+						//HACK to get rid of error
+						if(dungeonTileSprite[aTile.data])
+						{
+							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+						}
+					}else if(aTile&& aTile<24)
+					{
+						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}else if (aTile&& aTile<28) 
+					{
+						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}else 
+					{
+						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}
+				}
+			}
+			if(this.rooms[this.roomZ][this.roomX][this.roomY-1].hasDoor(2))
+			{
+				var aDoor=this.rooms[this.roomZ][this.roomX][this.roomY-1].getDoor(2);
+				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-4);
+				if(this.closed)
+				{
+					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-4);
+				}
+			}
+		}
+	
+		
+		var tyOffset=631;//bottom
+		if((this.roomY<this.getHeight()) && (this.rooms[this.roomZ][this.roomX][this.roomY+1].active)&& (!this.rooms[this.roomZ][this.roomX][this.roomY+1].hidden))
+		{
+			for (i=0;i<ROOM_WIDTH; i++)
+			{
+				for (j=0;j<4; j++)
+				{
+					var aTile=this.rooms[this.roomZ][this.roomX][this.roomY+1].tiles[i][j];
+					if(aTile && aTile.data <20)
+					{
+						//HACK to get rid of error
+						if(dungeonTileSprite[aTile.data])
+						{
+							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+						}
+					}else if(aTile&& aTile<24)
+					{
+						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}else if (aTile&& aTile<28) 
+					{
+						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}else 
+					{
+						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}
+				}
+			}
+			if(this.rooms[this.roomZ][this.roomX][this.roomY+1].hasDoor(0))
+			{
+				var aDoor=this.rooms[this.roomZ][this.roomX][this.roomY+1].getDoor(0);
+				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-4);
+				if(this.closed)
+				{
+					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-4);
+				}
+			}
+		}
+	var txOffset=-491;//left
+		if((this.roomX>0) && (this.rooms[this.roomZ][this.roomX-1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX-1][this.roomY].hidden))
+		{
+			for (i=ROOM_WIDTH-4;i<ROOM_WIDTH; i++)
+			{
+				for (j=0;j<ROOM_HEIGHT; j++)
+				{
+					var aTile=this.rooms[this.roomZ][this.roomX-1][this.roomY].tiles[i][j];
+					if(aTile && aTile.data <20)
+					{
+						//HACK to get rid of error
+						if(dungeonTileSprite[aTile.data])
+						{
+							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+						}
+					}else if(aTile&& aTile<24)
+					{
+						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+					}else if (aTile&& aTile<28) 
+					{
+						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+					}else 
+					{
+						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+txOffset, (j-0)*32+yOffset);
+					}
+				}
+			}
+			if(this.rooms[this.roomZ][this.roomX-1][this.roomY].hasDoor(1))
+			{
+				var aDoor=this.rooms[this.roomZ][this.roomX-1][this.roomY].getDoor(1);
+				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+				if(this.closed)
+				{
+					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+				}
+			}
+		}
+		var txOffset=791;//right
+		if((this.roomX<this.getWidth()) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX+1][this.roomY].hidden))
+		{
+			for (i=0;i<4; i++)
+			{
+				for (j=0;j<ROOM_HEIGHT; j++)
+				{
+					var aTile=this.rooms[this.roomZ][this.roomX+1][this.roomY].tiles[i][j];
+					if(aTile && aTile.data <20)
+					{
+						//HACK to get rid of error
+						if(dungeonTileSprite[aTile.data])
+						{
+							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+						}
+					}else if(aTile&& aTile<24)
+					{
+						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+					}else if (aTile&& aTile<28) 
+					{
+						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+					}else 
+					{
+						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+txOffset, (j-0)*32+yOffset);
+					}
+				}
+			}
+			if(this.rooms[this.roomZ][this.roomX+1][this.roomY].hasDoor(3))
+			{
+				var aDoor=this.rooms[this.roomZ][this.roomX+1][this.roomY].getDoor(3);
+				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+				if(this.closed)
+				{
+					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-10, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+				}
+			}
+		}
+	}
 	 
 	this.findNearestRoom=function()
 	{
@@ -288,6 +442,7 @@ function dungeon(path)
 	this.draw=function(can,cam,player) //maybe dcam is a player variable and you pass this a playeR? 
 	{ 
 		//this.rooms[player.dX][player.dY].draw(can,cam);
+		this.drawAdjacent(can,cam);
 		this.rooms[this.roomZ][this.roomX][this.roomY].draw(can,cam);
 	}
 	this.drawMiniMap=function(can,player) //should also draw stairs, exit door in different color, goal/boss. 
@@ -329,7 +484,7 @@ function dungeon(path)
 					}else
 					{
 						
-						if(this.rooms[this.roomZ][i][k].explored)
+						if((this.rooms[this.roomZ][i][k].explored) && (!this.rooms[this.roomZ][i][k].hidden))
 						{
 							can.fillStyle="black";
 							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
@@ -360,7 +515,7 @@ function dungeon(path)
 		    {
 				for (k=0;k<this.height[this.roomZ];k++)
 				{
-					if((this.rooms[this.roomZ][i][k].explored) || ((OPTIONS.showUnexploredDoors) && (!this.rooms[this.roomZ][i][k].hidden)) )
+					if(((this.rooms[this.roomZ][i][k].explored) || (OPTIONS.showUnexploredDoors)) && (!this.rooms[this.roomZ][i][k].hidden)) 
 					{
 						if(this.rooms[this.roomZ][i][k].hasDoor(0))
 						{
