@@ -194,6 +194,8 @@ controller= new virtualGamePad();
 
 var ksavekey=new akey("o"); //define the different keys
 var loadkey=new akey("l");
+var shiftkey=new akey("shift");
+
 
 var gamestart=false;
 var radar=true;
@@ -514,62 +516,122 @@ function mainUpdate()
     milliseconds = timestamp.getTime();
     tick++;
 	thyme.update();
+
 	if(editMode)
 	{
-		if(upkey.check())
+
+		if(shiftkey.checkDown())
 		{
-			editor.move(0);
-		}
-		if(downkey.check())
-		{
-			editor.move(2);
-		}
-		if(leftkey.check())
-		{
-			editor.move(3);
-		}
-		if(rightkey.check())
-		{
-			editor.move(1);
-		}
-		if (editclickkey.check())
-		{
-			console.log("OH YEAH");
-			editor.getTile(curDungeon.curRoom()).data=(Math.floor(Math.random()*19));
 			
+			if(letterkeys[22].check())
+			{
+				curDungeon.curRoom().addDoor(0);
+			}
+			if(letterkeys[0].check())
+			{
+				curDungeon.curRoom().addDoor(3);
+			}
+			if(letterkeys[18].check())
+			{
+				curDungeon.curRoom().addDoor(2);
+			}
+			if(letterkeys[3].check())
+			{
+				curDungeon.curRoom().addDoor(1);
+			}
+			if(pageupkey.check())
+			{
+				if(curDungeon.createRoom(curDungeon.roomZ+1,curDungeon.roomX,curDungeon.roomY))
+				{
+					curDungeon.changeFloor(true,!editMode);
+				}
+			}
+			if(pagedownkey.check())
+			{
+				if(curDungeon.createRoom(curDungeon.roomZ-1,curDungeon.roomX,curDungeon.roomY))
+				{
+					curDungeon.changeFloor(false,!editMode);
+				}
+			}
+			if(leftkey.check())
+			{
+				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX-1,curDungeon.roomY))
+				{
+					curDungeon.changeRoom(3,!editMode);
+				}
+			}
+			if(rightkey.check())
+			{
+				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX+1,curDungeon.roomY))
+				{
+					curDungeon.changeRoom(1,!editMode);
+				}
+			}
+			if(upkey.check())
+			{
+				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY-1))
+				{
+					curDungeon.changeRoom(0,!editMode);
+				}
+			}
+			if(downkey.check())
+			{
+				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY+1))
+				{
+					curDungeon.changeRoom(2,!editMode);
+				}
+			}
+		}else
+		{
+			if(letterkeys[22].check())
+			{
+				editor.move(0);
+			}
+			if(letterkeys[0].check())
+			{
+				editor.move(3);
+			}
+			if(letterkeys[18].check())
+			{
+				editor.move(2);
+			}
+			if(letterkeys[3].check())
+			{
+				editor.move(1);
+			}
 		}
-	}else
+	}
+	
+	for (var h=0;h<buttons.length;h++)
 	{
-		for (var h=0;h<buttons.length;h++)
-		{
-			buttons[h].update();
-		}
-		
-		if(pageupkey.check())
-		{
-			curDungeon.changeFloor(true,true);
-		}
-		if(pagedownkey.check())
-		{
-			curDungeon.changeFloor(false,true);
-		}
-		 if(leftkey.check())
-		 {
-			curDungeon.changeRoom(3,true);
-		 }
-		 if(rightkey.check())
-		 {
-			curDungeon.changeRoom(1,true);
-		 }
-		 if(upkey.check())
-		 {
-			curDungeon.changeRoom(0,true);
-		 }
-		 if(downkey.check())
-		 {
-			curDungeon.changeRoom(2,true);
-		 }
+		buttons[h].update();
+	}
+	
+	if(pageupkey.check())
+	{
+		curDungeon.changeFloor(true,!editMode);
+	}
+	if(pagedownkey.check())
+	{
+		curDungeon.changeFloor(false,!editMode);
+	}
+	 if(leftkey.check())
+	 {
+		curDungeon.changeRoom(3,!editMode);
 	 }
+	 if(rightkey.check())
+	 {
+		curDungeon.changeRoom(1,!editMode);
+	 }
+	 if(upkey.check())
+	 {
+		curDungeon.changeRoom(0,!editMode);
+	 }
+	 if(downkey.check())
+	 {
+		curDungeon.changeRoom(2,!editMode);
+	 }
+
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 	
 	for(var i=0;i<fires.length;i++)

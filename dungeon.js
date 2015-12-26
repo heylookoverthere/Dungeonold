@@ -13,12 +13,12 @@ function dungeon(path)
 	this.entranceFloor=0;
 	this.width=new Array();
 	this.height=new Array();
-	this.width.push(3);
-	this.height.push(3);
-	this.width.push(4);
-	this.height.push(3);
-	this.width.push(8);
-	this.height.push(7);
+	this.width.push(9);
+	this.height.push(6);
+	this.width.push(9);
+	this.height.push(6);
+	this.width.push(9);
+	this.height.push(6);
 	this.floors=3;
 
 	for(var p=0;p<this.floors;p++)
@@ -203,6 +203,71 @@ function dungeon(path)
 
 	
 		}
+	}
+	 
+	this.createRoom=function(z,x,y,clone)
+	{
+		if(x>this.width[z]-1)
+		{
+			//his.width=x;
+			return false;
+		}
+		if(y>this.height[z]-1)
+		{
+			//this.height=y;
+			return false;
+		}
+		if(z>this.floors-1)
+		{
+			//this.floors=z;
+			return false;
+		}
+		if((z<0) || (x<0) || (y<0)) 
+		{
+			return false;
+		}
+		if(clone)
+		{
+			//var kitchen=new room(clone);
+			return false;
+		}else
+		{
+		
+			var kitchen=new room();
+			kitchen.x=x;
+			kitchen.y=y;
+			kitchen.fill(DungeonTileType.GreenFloor);
+			for(var i=0;i<kitchen.width;i++)
+			{
+				kitchen.tiles[i][0].data=14;
+				kitchen.tiles[i][1].data=14;
+				
+				kitchen.tiles[i][14].data=17;
+				kitchen.tiles[i][13].data=17;
+			}
+			for(var i=1;i<kitchen.height-1;i++)
+			{
+				kitchen.tiles[0][i].data=15;
+				kitchen.tiles[1][i].data=15;
+				
+				kitchen.tiles[18][i].data=16;
+				kitchen.tiles[19][i].data=16;
+			}
+			
+			
+			kitchen.tiles[0][0].data=10;
+			kitchen.tiles[1][1].data=10;
+			kitchen.tiles[0][14].data=12;
+			kitchen.tiles[1][13].data=12;
+			kitchen.tiles[19][0].data=11;
+			kitchen.tiles[18][1].data=11;
+			kitchen.tiles[19][14].data=13;
+			kitchen.tiles[18][13].data=13;
+		}
+		bConsoleBox.log("Room created at " +z+","+x+","+y);
+		kitchen.name="roomX"+String(i)+"Y"+String(j);
+		this.rooms[z][x][y]=kitchen;
+		return true;
 	}
 	 
 	this.getWidth=function()

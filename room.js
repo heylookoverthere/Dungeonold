@@ -283,6 +283,18 @@ function room(I) { //room object
 		return false;
 	};
 	
+	I.fill=function(id)
+	{
+		for(var i=2;i<I.width-2;i++)
+		{
+			for(var j=2;j<I.height-2;j++)
+			{
+				I.tiles[i][j].data=id;
+			}
+			
+		}
+	};
+	
 	I.sailable=function(x,y){//,b){
 		if((I.tiles[x][y].data==TileType.Ocean)) {return true;}
 		if(true)//(b.navigateRivers)
@@ -575,6 +587,35 @@ function room(I) { //room object
 		//}, 2000);
     };
 	
+	I.addDoor=function(dir)
+	{
+		if(I.hasDoor(dir)) {return;}
+		if(dir==0)
+		{
+			var mindy= new door(0);
+			mindy.x=8;
+			mindy.y=0;
+			I.exits.push(mindy);
+		}else if (dir==1)
+		{
+			var mindy= new door(1);
+			mindy.x=18;
+			mindy.y=6;
+			I.exits.push(mindy);
+		}else if(dir==3)
+		{
+			var mindy= new door(3);
+			mindy.x=0;
+			mindy.y=6;
+			I.exits.push(mindy);
+		}else if(dir==2)
+		{
+			var mindy= new door(2);
+			mindy.x=8;
+			mindy.y=13;
+			I.exits.push(mindy);
+		}
+	};
 	
 	I.getSubMap=function(tilex1,tiley1,tilex2,tiley2)
 	{
