@@ -362,6 +362,7 @@ function starter()
 	//bees=true;
 	
 	bConsoleBox.log("started");
+	bConsoleBox.log("Hit L for Edit Mode");
 }
 
 function inventoryScreenUpdate(){
@@ -557,13 +558,14 @@ function mainUpdate()
 			bConsoleBox.log("Page Up/Down - Move floors");
 			bConsoleBox.log("Shift + Arrow keys/Page keys - New room");
 			bConsoleBox.log("W A S D - Move cursor");
-			bConsoleBox.log("Shift + Arrow Keys - Add Door");
+			bConsoleBox.log("Shift + W A S D - Add Door");
 			bConsoleBox.log("Delete - Delete room");
 			bConsoleBox.log("Insert - Create Room");
 			bConsoleBox.log("0 - Toggle hidden room");
-			bConsoleBox.log("Enter - Change Tile");
+			bConsoleBox.log("Tab - Change selected tile");
+			bConsoleBox.log("Space - Set Tile");
 			
-			bConsoleBox.log("Someting - Fill!");
+			//bConsoleBox.log("Someting - Fill!");
 
 		}
 		if(numberkeys[0].check())
@@ -726,6 +728,8 @@ function mainUpdate()
 	if(debugkey.check())
 	{
 		editMode=!editMode;
+		if(editMode)
+		bConsoleBox.log("Welcome to edit mode. Hit H for help.");
 	}
 		
 	if ((milliseconds-lastani>WATER_RATE) &&(!isBattle))
