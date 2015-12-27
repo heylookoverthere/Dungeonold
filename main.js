@@ -611,7 +611,8 @@ function mainUpdate()
 		{
 		
 			//HELP
-			bConsoleBox.log("CONTORLS:");
+			bConsoleBox.colors.push("yellow")
+			bConsoleBox.log("CONTROLS:");
 			bConsoleBox.log("Arrow Keys - Move room");
 			bConsoleBox.log("Page Up/Down - Move floors");
 			bConsoleBox.log("Shift + Arrow keys/Page keys - New room");
@@ -622,10 +623,11 @@ function mainUpdate()
 			bConsoleBox.log("0 - Toggle hidden room");
 			bConsoleBox.log("Tab - Change selected tile");
 			bConsoleBox.log("F - Fill floor");
-			bConsoleBox.log("P  - Toggle pen down mode");
-		    bConsoleBox.log("Space - Set Tile / Pen Down");
-			
-			//bConsoleBox.log("Someting - Fill!");
+			bConsoleBox.log("M  - Cycle edit modes");
+			//bConsoleBox.log("P  - Toggle pen down");
+		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill");
+			bConsoleBox.log("Hit L to leave edit mode");
+				//bConsoleBox.log("Someting - Fill!");
 
 		}
 		if(numberkeys[0].check())
