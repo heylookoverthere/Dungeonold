@@ -90,6 +90,7 @@ var downkey=new akey("down");
 var deletekey=new akey("del");
 var helpkey=letterkeys[7].check()
 var insertkey=new akey("insert");
+var tabkey=new akey("tab");
 
 var miles=new dude();
 miles.AI=false;
@@ -479,6 +480,8 @@ function mainDraw() {
 		{
 			canvas.fillText("Hidden Room",580,145);
 		}
+		canvas.fillText("Selected: ",22,120);
+		dungeonTileSprite[editor.brushType].draw(canvas,110,100);
 	}	
 	
 	drawGUI(canvas);
@@ -528,10 +531,22 @@ function mainUpdate()
     milliseconds = timestamp.getTime();
     tick++;
 	thyme.update();
-
+	if(tabkey.check())
+	{
+		editor.brushType++;
+		if(editor.brushType>23)
+		{
+			editor.brushType=28;
+		}
+		if(editor.brushType>27)
+		{
+			editor.brushType=0;
+		}
+	}
 	if (editclickkey.check())
 	{
-		editor.getTile(curDungeon.curRoom()).data=(Math.floor(Math.random()*19));
+		editor.getTile(curDungeon.curRoom()).data=editor.brushType;
+		//special case for stairs!!
 			
 	}
 	if(editMode)

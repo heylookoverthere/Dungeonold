@@ -114,6 +114,8 @@ Tile.prototype.draw = function(can,cam) {
         tileSprite[DungeonTileType.Lava+tileani].draw(can, (this.x-cam.tileX)*ROOM_TILE_SIZE, (this.y-cam.tileY)*ROOM_TILE_SIZE);
     }else if(this.data==DungeonTileType.BirdHead){
         tileSprite[DungeonTileType.BirdHead].draw(can, (this.x-cam.tileX)*ROOM_TILE_SIZE, (this.y-cam.tileY)*ROOM_TILE_SIZE);
+    }else if(false){//this.data==DungeonTileType.Ice){
+        tileSprite[DungeonTileType.Ice].draw(can, (this.x-cam.tileX)*ROOM_TILE_SIZE, (this.y-cam.tileY)*ROOM_TILE_SIZE);
     }else if(this.data==DungeonTileType.GreenFloor){
         tileSprite[DungeonTileType.GreenFloor].draw(can, (this.x-cam.tileX)*ROOM_TILE_SIZE, (this.y-cam.tileY)*ROOM_TILE_SIZE);
     }else if(this.data==DungeonTileType.Ocean){
@@ -538,8 +540,9 @@ function room(I) { //room object
 			  var plainsrgb =[128,64,64,0];
 			  var stonergb =[230,230,230,0];
 			  var hillrgb =[0,75,75,0];
-			  var icergb =[210,220,235,0];
+			  var icergb =[120,64,53,7];
 			  var icemountainrgb=[205,205,205,0]
+			  var orangebrickrgb=[20,205,20,0]
 			  var waterrgb =[0,100,255,0];
 			  var lavargb =[255,0,0,0];
 			  var grassrgb=[0,165,0,0];
@@ -549,8 +552,12 @@ function room(I) { //room object
 			  var xPos = (i / 4) % ROOM_WIDTH;
 			if(closeEnough(rgba,stonergb)) {
 				I.setTile(xPos, yPos, DungeonTileType.Stone);
-			  } else if (closeEnough(rgba,greenfloorrgb)){
+			  }else if (closeEnough(rgba,icergb)) {
+				I.setTile(xPos, yPos, DungeonTileType.Ice);
+			  }else if (closeEnough(rgba,greenfloorrgb)){
 				I.setTile(xPos, yPos, DungeonTileType.GreenFloor);
+			  }else if (closeEnough(rgba,orangebrickrgb)){
+				I.setTile(xPos, yPos, DungeonTileTypeOrangeBrick);
 			  } else if (closeEnough(rgba,birdheadrgb)){
 				I.setTile(xPos, yPos, DungeonTileType.BirdHead);
 			  } else if (closeEnough(rgba,sandrgb)){
@@ -701,9 +708,11 @@ function room(I) { //room object
 
 function editCursor()
 {
-	this.x=2;
-	this.y=2; 
+	this.x=9;
+	this.y=7; 
 	this.sprite=Sprite("cursor");
+	this.brush=0;
+	this.brushType=0;
 }
 
 editCursor.prototype.draw=function(can)

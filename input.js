@@ -425,7 +425,7 @@ var logsetkey=new akey("v");
 logsetkey.desc="debug"
 edskeys.push(logsetkey);
 
-var editclickkey=new akey("return");
+var editclickkey=new akey("space");
 editclickkey.desc="your mother";
 edskeys.push(editclickkey);
 
