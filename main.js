@@ -2,7 +2,11 @@ var debugInfo=false;
 var editMode=false;
 var fires=[];
 var gameOver=null;
+
+
 var editor=new editCursor();
+
+
 
 bConsoleBox=new textbox();
 bConsoleBox.width=300;
@@ -92,6 +96,7 @@ var helpkey=letterkeys[7].check()
 var insertkey=new akey("insert");
 var tabkey=new akey("tab");
 var fillkey=letterkeys[5];
+var modekey=letterkeys[12];
 
 
 var miles=new dude();
@@ -484,7 +489,7 @@ function mainDraw() {
 			canvas.fillText("Hidden Room",580,145);
 		}
 		canvas.fillText("Selected: ",18,96);
-		if(editor.penDownMode)
+		if(editor.mode==editModes.Pen)
 		{
 			if(editor.penDown)
 			{	
@@ -495,8 +500,13 @@ function mainDraw() {
 			}
 			
 		}
-		else{
+		else if(editor.mode==editModes.Stamp){
 			canvas.fillText("Stamp mode",18,126);
+		}else if(editor.mode==editModes.Fill){
+			canvas.fillText("Fill mode",18,126);
+		}else
+		{
+			canvas.fillText("Pen Mode",18,126);
 		}
 		dungeonTileSprite[editor.brushType].draw(canvas,110,73);
 		
@@ -549,6 +559,17 @@ function mainUpdate()
     milliseconds = timestamp.getTime();
     tick++;
 	thyme.update();
+	if((editMode) && (modekey.check()))
+	{
+		console.log("mode");
+		editor.mode++;
+		editor.penDown=false;
+		if(editor.mode>editor.numModes)
+		{
+			editor.mode=0;
+		}
+		
+	}
 	if((editMode) && (fillkey.check()))
 	{
 		curDungeon.curRoom().fill(editor.brushType);
@@ -566,12 +587,15 @@ function mainUpdate()
 	}
 	if (editclickkey.check())
 	{
-		if(editor.penDownMode)
+		if(editor.mode==editModes.Pen)
 		{
 			editor.penDown=!editor.penDown;
-		}else
+		}else if(editor.mode==editModes.Stamp)
 		{
 			editor.getTile(curDungeon.curRoom()).data=editor.brushType;
+		}else if(editor.mode==editModes.Fill)
+		{
+			curDungeon.curRoom().fill(editor.brushType);
 		}
 		
 		//special case for stairs!!

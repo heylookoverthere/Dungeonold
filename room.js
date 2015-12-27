@@ -715,6 +715,8 @@ function editCursor()
 	this.brushType=0;
 	this.penDown=false;
 	this.penDownMode=false;
+	this.mode=0;
+	this.numModes=2;
 }
 
 editCursor.prototype.draw=function(can)

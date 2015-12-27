@@ -9,6 +9,11 @@ var stayDay=true;
 var graphboat=null;
 var graph=null;
 
+var editModes={};
+editModes.Pen=0;
+editModes.Stamp=1;
+editModes.Fill=2;
+
 var OPTIONS={};
 OPTIONS.showUnexploredRooms=false;
 OPTIONS.showUnexploredDoors=false;
