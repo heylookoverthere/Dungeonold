@@ -16,7 +16,7 @@ var curDungeon= new dungeon("dungeon1");
 
 var showMap=false;
 
-var buttonX=136;
+var buttonX=156;
 
 var buttons=new Array();
 var timy=new button();
@@ -539,13 +539,12 @@ function mainUpdate()
 	if(tabkey.check())
 	{
 		editor.brushType++;
-		if(editor.brushType>23)
-		{
-			editor.brushType=28;
-		}
-		if(editor.brushType>27)
+		if(editor.brushType>28)
 		{
 			editor.brushType=0;
+		}else if(editor.brushType>20)
+		{
+			editor.brushType=28;
 		}
 	}
 	if (editclickkey.check())

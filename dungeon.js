@@ -13,8 +13,9 @@ function dungeon(path)
 	this.entranceFloor=0;
 	this.width=new Array();
 	this.height=new Array();
+	this.depth=0; //254;
 	
-	this.floors=3;
+	this.floors=4;
 	for(var i=0;i<this.floors;i++)
 	{
 		this.width.push(15);
@@ -22,7 +23,7 @@ function dungeon(path)
 	}
 
 
-	for(var p=0;p<this.floors;p++)
+	for(var p=this.depth;p<this.floors;p++)
 	{
 		this.rooms.push(new Array());
 		for(var i=0;i<this.width[p];i++)
@@ -470,6 +471,29 @@ function dungeon(path)
 		}else if(this.roomZ==4)
 		{
 			suffix="Fourth Floor";
+		}
+		else if(this.roomZ==5)
+		{
+			suffix="Fifth Floor";
+		}
+		else if(this.roomZ==6)
+		{
+			suffix="Sixth Floor";
+		}
+		else if(this.roomZ==7)
+		{
+			suffix="Seventh Floor";
+		}
+		else if(this.roomZ==8)
+		{
+			suffix="Eighth Floor";
+		}
+		else if(this.roomZ==9)
+		{
+			suffix="Ninth Floor";
+		}else 
+		{
+			suffix=String(this.roomZ)+"th Floor";
 		}
 		can.fillText(suffix,xFset,yFset-6);
 		can.globalAlpha=0.5;
