@@ -72,7 +72,7 @@ function dungeon(path)
 			}
 		}else if(dir==2) //going south
 		{
-			if(this.roomY>this.getHeight()-2)
+			if(this.roomY>this.getHeight()-3)
 			{	
 				bConsoleBox.log("That would take you off the map");
 				return;
@@ -94,7 +94,7 @@ function dungeon(path)
 			}
 		}else if(dir==1) //going east
 		{
-			if(this.roomX>this.getWidth()-2)
+			if(this.roomX>this.getWidth()-3)
 			{	
 				bConsoleBox.log("That would take you off the map");
 				return;
@@ -493,7 +493,7 @@ function dungeon(path)
 							can.fillStyle="blue";
 							canvas.fillRect(xFset+size*i,yFset+size*k,size,size);
 							
-						}else
+						}else 
 						{
 							can.fillStyle="black";
 							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
@@ -505,12 +505,13 @@ function dungeon(path)
 							canvas.fillRect(xFset+size*i,yFset+size*k,size,size);
 						}
 						
-						if((i==this.roomX) && (k==this.roomY)) //todo and right floor?
-						{
-							can.fillStyle="yellow";
-							canvas.fillRect(xFset+size*i+3,yFset+size*k+3,size-6,size-6); //todo: scalig issues.
-						}					
+							
 					}
+					if((i==this.roomX) && (k==this.roomY)) //todo and right floor?
+					{
+						can.fillStyle="yellow";
+						canvas.fillRect(xFset+size*i+3,yFset+size*k+3,size-6,size-6); //todo: scalig issues.
+					}	
 				}
 			}
 			for(i=0;i<this.width[this.roomZ];i++)
