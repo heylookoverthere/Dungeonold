@@ -365,6 +365,7 @@ function room(I) { //room object
 			tempstring += ","
 			}
 		}
+		return tempstring;
 	};
 	
 	I.loadTiles = function (name) {
@@ -374,9 +375,52 @@ function room(I) { //room object
 	
 	I.buildMapFromLoadedTiles = function(name, hempstring) {
 		tempstring=hempstring.split(",");
+		I.exits=new Array();
+		I.stairs=new Array();
 		for (i=0;i<ROOM_WIDTH; i++){
-			for (j=0;j<ROOM_HEIGHT; j++){
-			I.tiles[i][j].data = tempstring[j+ROOM_HEIGHT*i];
+			for (j=0;j<ROOM_HEIGHT; j++)
+			{
+				I.tiles[i][j].data = tempstring[j+ROOM_HEIGHT*i];
+				if(I.tiles[i][j].data==DungeonTileType.Door)
+				{
+					if((i==18))
+					{
+						var mindy= new door(1);
+						mindy.x=i;
+						mindy.y=j-1;
+						I.exits.push(mindy);
+					}else if((i==1))
+					{
+						var mindy= new door(3);
+						mindy.x=0;
+						mindy.y=6;
+						I.exits.push(mindy);
+					}else if((j==0))
+					{
+						var mindy= new door(0);
+						mindy.x=i-1;
+						mindy.y=j;
+						I.exits.push(mindy);
+					}else// if((xPos==9) && (yPos==18))
+					{
+						var mindy= new door(2);
+						mindy.x=i-1;
+						mindy.y=j;
+						I.exits.push(mindy);
+					}
+				}else if(I.tiles[i][j].data==DungeonTileType.UpStair)
+				{
+					var mindy= new staircase(true);
+					mindy.x=i;
+					mindy.y=j;
+					I.stairs.push(mindy);
+				}else if(I.tiles[i][j].data==DungeonTileType.DownStair)
+				{
+					var mindy= new staircase(false);
+					mindy.x=i;
+					mindy.y=j;
+					I.stairs.push(mindy);
+				}
 			}
 		}
     };

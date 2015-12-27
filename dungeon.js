@@ -10,6 +10,7 @@ function dungeon(path)
 	this.roomX=7;
 	this.roomY=7;
 	this.roomZ=0;
+	this.name=path;
 	this.entranceFloor=0;
 	this.width=new Array();
 	this.height=new Array();

@@ -73,8 +73,17 @@ function mouseClick(e) {  //represents the mouse
 	mY = e.pageY - canvasElement.get(0).offsetTop;
 	var tm=new Date();
 	var mili=tm.getTime();
-	tx=Math.floor(mX/16) * Math.pow(2, 1);//curMap.zoom-1);
-	ty=Math.floor(mY/16) * Math.pow(2, 1);//curMap.zoom-1);
+	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	
+	console.log(editMode);
+	console.log(editCursor.x);
+	
+	if(editMode)
+	{
+		editor.x=tx;
+		editor.y=ty;
+	}
 	
 	for(var i=0;i<buttons.length;i++)
 	{

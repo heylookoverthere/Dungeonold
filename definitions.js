@@ -13,12 +13,32 @@ var editModes={};
 editModes.Pen=0;
 editModes.Stamp=1;
 editModes.Fill=2;
+editModes.CopyArea=3;
 
 var OPTIONS={};
 OPTIONS.showUnexploredRooms=false;
 OPTIONS.showUnexploredDoors=false;
 
+var editHistory=[];
+
 //var snake=0;
+
+function addEdit(merp){
+    //if(editHistory.length>6) {editHistory.shift();}
+	var obj= {};
+    obj.tiles=merp.stringifyTiles();
+	//obj.walls=merp.stringifyWalls();
+    editHistory.push(obj);
+}
+function undoEdit(mop){
+    if(editHistory.length<1){ return;}
+    var obj=editHistory.pop();
+
+    if (!obj) {  alert ("Nothing to undo.");return;}
+    mop.buildMapFromLoadedTiles( "name", obj.tiles);
+    //maps[0].buildMapFromLoadedWalls( "name", obj.walls);
+};
+
 
 var graphicsLevel=3;//turn off transparency, tone down snow. less map dirties? leave map a little dirt
 //less lighting?

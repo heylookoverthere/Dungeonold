@@ -97,7 +97,7 @@ var insertkey=new akey("insert");
 var tabkey=new akey("tab");
 var fillkey=letterkeys[5];
 var modekey=letterkeys[12];
-
+var undokey=new akey("z");
 
 var miles=new dude();
 miles.AI=false;
@@ -208,7 +208,7 @@ function playSound(name){
 
 controller= new virtualGamePad();
 
-var ksavekey=new akey("o"); //define the different keys
+var savekey=new akey("o"); //define the different keys
 var loadkey=new akey("l");
 var shiftkey=new akey("shift");
 
@@ -559,6 +559,12 @@ function mainUpdate()
     milliseconds = timestamp.getTime();
     tick++;
 	thyme.update();
+	if((editMode) && (savekey.check()))
+	{
+		smath=curDungeon.name+"/"+curDungeon.curRoom().name+".txt";
+		bConsoleBox.log(smath);
+		$.post("/save/", {"data": stringifiedString, "path": smath}).done(function(response) { bConsoleBox.log("saved"); });
+	}
 	if((editMode) && (modekey.check()))
 	{
 		console.log("mode");
@@ -569,6 +575,10 @@ function mainUpdate()
 			editor.mode=0;
 		}
 		
+	}
+	if((editMode) &&(undokey.check()))
+	{
+	    undoEdit(curDungeon.curRoom());
 	}
 	if((editMode) && (fillkey.check()))
 	{
@@ -626,6 +636,7 @@ function mainUpdate()
 			bConsoleBox.log("M  - Cycle edit modes");
 			//bConsoleBox.log("P  - Toggle pen down");
 		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill");
+			//bConsoleBox.log("Z - Undo");
 			bConsoleBox.log("Hit L to leave edit mode");
 				//bConsoleBox.log("Someting - Fill!");
 
@@ -639,7 +650,6 @@ function mainUpdate()
 			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name);
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;
-			//curDungeon.findNearestRoom();
 		}
 		if((!curDungeon.curRoom().active) &&(insertkey.check()))
 		{
@@ -735,6 +745,7 @@ function mainUpdate()
 			if(editor.penDown)
 			{
 				curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType;
+				addEdit(curDungeon.curRoom());
 			}
 		}
 	}
