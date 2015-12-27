@@ -91,6 +91,8 @@ var deletekey=new akey("del");
 var helpkey=letterkeys[7].check()
 var insertkey=new akey("insert");
 var tabkey=new akey("tab");
+var fillkey=letterkeys[5];
+
 
 var miles=new dude();
 miles.AI=false;
@@ -481,12 +483,23 @@ function mainDraw() {
 		{
 			canvas.fillText("Hidden Room",580,145);
 		}
-		canvas.fillText("Selected: ",22,96);
-		dungeonTileSprite[editor.brushType].draw(canvas,110,76);
-		if(editor.penDown)
+		canvas.fillText("Selected: ",18,96);
+		if(editor.penDownMode)
 		{
-			canvas.fillText("Pen Down",22,126);
+			if(editor.penDown)
+			{	
+				canvas.fillText("Pen Down",18,126);
+			}else
+			{
+				canvas.fillText("Pen Up",18,126);
+			}
+			
 		}
+		else{
+			canvas.fillText("Stamp mode",18,126);
+		}
+		dungeonTileSprite[editor.brushType].draw(canvas,110,73);
+		
 	}	
 	
 	drawGUI(canvas);
@@ -536,6 +549,10 @@ function mainUpdate()
     milliseconds = timestamp.getTime();
     tick++;
 	thyme.update();
+	if((editMode) && (fillkey.check()))
+	{
+		curDungeon.curRoom().fill(editor.brushType);
+	}
 	if(tabkey.check())
 	{
 		editor.brushType++;
@@ -549,7 +566,14 @@ function mainUpdate()
 	}
 	if (editclickkey.check())
 	{
-		editor.getTile(curDungeon.curRoom()).data=editor.brushType;
+		if(editor.penDownMode)
+		{
+			editor.penDown=!editor.penDown;
+		}else
+		{
+			editor.getTile(curDungeon.curRoom()).data=editor.brushType;
+		}
+		
 		//special case for stairs!!
 			
 	}
@@ -557,10 +581,13 @@ function mainUpdate()
 	{
 		if(letterkeys[15].check())
 		{
-			editor.penDown=!editor.penDown;
+			editor.penDownMode=!editor.penDownMode;
 		}
 		if(letterkeys[7].check())
 		{
+		
+			//HELP
+			bConsoleBox.log("CONTORLS:");
 			bConsoleBox.log("Arrow Keys - Move room");
 			bConsoleBox.log("Page Up/Down - Move floors");
 			bConsoleBox.log("Shift + Arrow keys/Page keys - New room");
@@ -570,7 +597,9 @@ function mainUpdate()
 			bConsoleBox.log("Insert - Create Room");
 			bConsoleBox.log("0 - Toggle hidden room");
 			bConsoleBox.log("Tab - Change selected tile");
-			bConsoleBox.log("Space - Set Tile");
+			bConsoleBox.log("F - Fill floor");
+			bConsoleBox.log("P  - Toggle pen down mode");
+		    bConsoleBox.log("Space - Set Tile / Pen Down");
 			
 			//bConsoleBox.log("Someting - Fill!");
 
