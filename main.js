@@ -88,7 +88,7 @@ buttons.push(timy);
 var upkey=new akey("up");
 var downkey=new akey("down");
 var deletekey=new akey("del");
-var helpkey=new akey("F1");
+var helpkey=letterkeys[7].check()
 
 var miles=new dude();
 miles.AI=false;
@@ -474,6 +474,10 @@ function mainDraw() {
 		canvas.font = "32pt Calibri";
 		canvas.fillText("Edit Mode",380,125);
 		canvas.font = "16pt Calibri";
+		if(curDungeon.curRoom().hidden)
+		{
+			canvas.fillText("Hidden Room",580,145);
+		}
 	}	
 	
 	drawGUI(canvas);
@@ -531,18 +535,18 @@ function mainUpdate()
 	}
 	if(editMode)
 	{
-		if(helpkey.check())
+		if(letterkeys[7].check())
 		{
-			bConsole.log("Arrow Keys - Move room");
-			bConsole.log("Page Up/Down - Move floors");
-			bConsole.log("Shift + Arrow keys/Page keys - New room");
-			bConsole.log("W A S D - Move cursor");
-			bConsole.log("Shift + Arrow Keys - Add Door");
-			bConsole.log("Delete - Delete room");
-			bConsole.log("H - Toggle hidden room");
+			bConsoleBox.log("Arrow Keys - Move room");
+			bConsoleBox.log("Page Up/Down - Move floors");
+			bConsoleBox.log("Shift + Arrow keys/Page keys - New room");
+			bConsoleBox.log("W A S D - Move cursor");
+			bConsoleBox.log("Shift + Arrow Keys - Add Door");
+			bConsoleBox.log("Delete - Delete room");
+			bConsoleBox.log("0 - Toggle hidden room");
 
 		}
-		if(letterkeys[7].check())
+		if(numberkeys[0].check())
 		{
 			curDungeon.curRoom().hidden=!curDungeon.curRoom().hidden
 		}

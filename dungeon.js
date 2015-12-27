@@ -56,7 +56,7 @@ function dungeon(path)
 				return;
 			}
 			
-			if(!this.rooms[this.roomZ][this.roomX][this.roomY-1].active)
+			if((!this.rooms[this.roomZ][this.roomX][this.roomY-1].active) && (limited))
 			{
 				bConsoleBox.log("No valid room in that direction.");
 				return; 
@@ -78,7 +78,7 @@ function dungeon(path)
 				return;
 			}
 			
-			if(!this.rooms[this.roomZ][this.roomX][this.roomY+1].active)
+			if((!this.rooms[this.roomZ][this.roomX][this.roomY+1].active) && (limited))
 			{
 				bConsoleBox.log("No valid room in that direction.");
 				return; 
@@ -100,7 +100,7 @@ function dungeon(path)
 				return;
 			}
 			
-			if(!this.rooms[this.roomZ][this.roomX+1][this.roomY].active)
+			if((!this.rooms[this.roomZ][this.roomX+1][this.roomY].active) && (limited))
 			{
 				bConsoleBox.log("No valid room in that direction.");
 				return; 
@@ -122,7 +122,7 @@ function dungeon(path)
 				return;
 			}
 			
-			if(!this.rooms[this.roomZ][this.roomX-1][this.roomY].active)
+			if((!this.rooms[this.roomZ][this.roomX-1][this.roomY].active) && (limited))
 			{
 				bConsoleBox.log("No valid room in that direction.");
 				return; 
@@ -477,7 +477,7 @@ function dungeon(path)
 		   {
 				for (k=0;k<this.height[this.roomZ]-1;k++)
 				{
-					if(!this.rooms[this.roomZ][i][k].active)
+					if((!this.rooms[this.roomZ][i][k].active))
 					{
 						//draw black square? nothing?
 						
@@ -486,7 +486,7 @@ function dungeon(path)
 					}else
 					{
 						
-						if((this.rooms[this.roomZ][i][k].explored) && (!this.rooms[this.roomZ][i][k].hidden) || (editMode))
+						if(((this.rooms[this.roomZ][i][k].explored) && (!this.rooms[this.roomZ][i][k].hidden)) || (editMode))
 						{
 							can.fillStyle="black";
 							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
