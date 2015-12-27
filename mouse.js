@@ -76,9 +76,6 @@ function mouseClick(e) {  //represents the mouse
 	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	
-	console.log(editMode);
-	console.log(editCursor.x);
-	
 	if(editMode)
 	{
 		if((tx>-1) && (tx<20) && (ty>-1) &&(ty<15))

@@ -563,7 +563,7 @@ function mainUpdate()
 	{
 		smath=curDungeon.name+"/"+curDungeon.curRoom().name+".txt";
 		bConsoleBox.log(smath);
-		$.post("/save/", {"data": stringifiedString, "path": smath}).done(function(response) { bConsoleBox.log("saved"); });
+		$.post("/save/", {"data": curDungeon.curRoom().stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("saved"); });
 	}
 	if((editMode) && (modekey.check()))
 	{
