@@ -43,7 +43,7 @@ timy.y=680;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeRoom(2,true);
+	curDungeon.changeRoom(2,!editMode);
 }
 buttons.push(timy);
 timy=new button();
@@ -53,7 +53,7 @@ timy.y=660;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeRoom(1,true);
+	curDungeon.changeRoom(1,!editMode);
 }
 buttons.push(timy);
 timy=new button();
@@ -63,7 +63,7 @@ timy.y=660;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeRoom(3,true);
+	curDungeon.changeRoom(3,!editMode);
 }
 buttons.push(timy);
 timy=new button();
@@ -73,7 +73,7 @@ timy.y=640;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeFloor(true,true);
+	curDungeon.changeFloor(true,!editMode);
 }
 buttons.push(timy);
 timy=new button();
@@ -83,7 +83,7 @@ timy.y=680;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeFloor(false,true);
+	curDungeon.changeFloor(false,!editMode);
 }
 buttons.push(timy);
 //lights.push(new light(7092,3748,14));

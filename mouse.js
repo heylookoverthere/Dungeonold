@@ -81,8 +81,11 @@ function mouseClick(e) {  //represents the mouse
 	
 	if(editMode)
 	{
-		editor.x=tx;
-		editor.y=ty;
+		if((tx>-1) && (tx<20) && (ty>-1) &&(ty<15))
+		{
+			editor.x=tx;
+			editor.y=ty;
+		}
 	}
 	
 	for(var i=0;i<buttons.length;i++)
