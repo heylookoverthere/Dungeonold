@@ -89,6 +89,7 @@ var upkey=new akey("up");
 var downkey=new akey("down");
 var deletekey=new akey("del");
 var helpkey=letterkeys[7].check()
+var insertkey=new akey("insert");
 
 var miles=new dude();
 miles.AI=false;
@@ -543,7 +544,11 @@ function mainUpdate()
 			bConsoleBox.log("W A S D - Move cursor");
 			bConsoleBox.log("Shift + Arrow Keys - Add Door");
 			bConsoleBox.log("Delete - Delete room");
+			bConsoleBox.log("Insert - Create Room");
 			bConsoleBox.log("0 - Toggle hidden room");
+			bConsoleBox.log("Enter - Change Tile");
+			
+			bConsoleBox.log("Someting - Fill!");
 
 		}
 		if(numberkeys[0].check())
@@ -556,6 +561,10 @@ function mainUpdate()
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;
 			curDungeon.findNearestRoom();
+		}
+		if((!curDungeon.curRoom().active) &&(insertkey.check()))
+		{
+			curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 		}
 		if(shiftkey.checkDown())
 		{
@@ -594,6 +603,8 @@ function mainUpdate()
 			{
 				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX-1,curDungeon.roomY))
 				{
+					curDungeon.curRoom().addDoor(3)
+					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].addDoor(1);
 					curDungeon.changeRoom(3,!editMode);
 				}
 			}
@@ -601,6 +612,8 @@ function mainUpdate()
 			{
 				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX+1,curDungeon.roomY))
 				{
+					curDungeon.curRoom().addDoor(1)
+					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].addDoor(3);
 					curDungeon.changeRoom(1,!editMode);
 				}
 			}
@@ -608,6 +621,8 @@ function mainUpdate()
 			{
 				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY-1))
 				{
+					curDungeon.curRoom().addDoor(0)
+					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].addDoor(2);
 					curDungeon.changeRoom(0,!editMode);
 				}
 			}
@@ -615,6 +630,8 @@ function mainUpdate()
 			{
 				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY+1))
 				{
+					curDungeon.curRoom().addDoor(2)
+					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].addDoor(0);
 					curDungeon.changeRoom(2,!editMode);
 				}
 			}

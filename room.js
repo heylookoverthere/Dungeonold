@@ -284,6 +284,36 @@ function room(I) { //room object
 		return null;
 	};
 	
+	I.addDoor=function(dir)
+	{
+		//if(I.hasDoor(dir))	{return false;}
+		if(dir==0)
+		{
+			var mindy= new door(0);
+			mindy.x=8;
+			mindy.y=0;
+			I.exits.push(mindy);
+		}else if (dir==1)
+		{
+			var mindy= new door(1);
+			mindy.x=18;
+			mindy.y=6;
+			I.exits.push(mindy);
+		}else if(dir==3)
+		{
+			var mindy= new door(3);
+			mindy.x=0;
+			mindy.y=6;
+			I.exits.push(mindy);
+		}else if(dir==2)
+		{
+			var mindy= new door(2);
+			mindy.x=8;
+			mindy.y=13;
+			I.exits.push(mindy);
+		}
+	};
+	
 	I.hasStairs=function(up)
 	{
 		for(var i=0;i<I.stairs.length;i++)
