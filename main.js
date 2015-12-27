@@ -693,26 +693,32 @@ function mainUpdate()
 	if(pageupkey.check())
 	{
 		curDungeon.changeFloor(true,!editMode);
+		editor.penDown=false;
 	}
 	if(pagedownkey.check())
 	{
 		curDungeon.changeFloor(false,!editMode);
+		editor.penDown=false;
 	}
 	 if(leftkey.check())
 	 {
 		curDungeon.changeRoom(3,!editMode);
+		editor.penDown=false;
 	 }
 	 if(rightkey.check())
 	 {
 		curDungeon.changeRoom(1,!editMode);
+		editor.penDown=false;
 	 }
 	 if(upkey.check())
 	 {
 		curDungeon.changeRoom(0,!editMode);
+		editor.penDown=false;
 	 }
 	 if(downkey.check())
 	 {
 		curDungeon.changeRoom(2,!editMode);
+		editor.penDown=false;
 	 }
 
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
