@@ -481,8 +481,12 @@ function mainDraw() {
 		{
 			canvas.fillText("Hidden Room",580,145);
 		}
-		canvas.fillText("Selected: ",22,120);
-		dungeonTileSprite[editor.brushType].draw(canvas,110,100);
+		canvas.fillText("Selected: ",22,96);
+		dungeonTileSprite[editor.brushType].draw(canvas,110,76);
+		if(editor.penDown)
+		{
+			canvas.fillText("Pen Down",22,126);
+		}
 	}	
 	
 	drawGUI(canvas);
@@ -552,6 +556,10 @@ function mainUpdate()
 	}
 	if(editMode)
 	{
+		if(letterkeys[15].check())
+		{
+			editor.penDown=!editor.penDown;
+		}
 		if(letterkeys[7].check())
 		{
 			bConsoleBox.log("Arrow Keys - Move room");
@@ -669,6 +677,10 @@ function mainUpdate()
 			if(letterkeys[3].check())
 			{
 				editor.move(1);
+			}
+			if(editor.penDown)
+			{
+				curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType;
 			}
 		}
 	}

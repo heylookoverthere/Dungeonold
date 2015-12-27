@@ -713,6 +713,7 @@ function editCursor()
 	this.sprite=Sprite("cursor");
 	this.brush=0;
 	this.brushType=0;
+	this.penDown=false;
 }
 
 editCursor.prototype.draw=function(can)
@@ -724,7 +725,6 @@ editCursor.prototype.getTile=function(cRoom)
 {
 	return cRoom.tiles[this.x][this.y];
 }
-
 
 editCursor.prototype.move=function(dir)
 {
