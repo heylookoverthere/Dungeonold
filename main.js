@@ -577,7 +577,7 @@ function mainUpdate()
 			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name);
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
 			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;
-			curDungeon.findNearestRoom();
+			//curDungeon.findNearestRoom();
 		}
 		if((!curDungeon.curRoom().active) &&(insertkey.check()))
 		{
