@@ -83,10 +83,10 @@ function door(or)
 	door.prototype.draw=function(can,cam)
 	{
 	   //this.orient(0);
-	   doorSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+	   doorSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
 	   if(this.closed)
 	   {
-			doorClosedSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-10, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-4);
+			doorClosedSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
 	   }
 	}
 
@@ -286,36 +286,6 @@ function room(I) { //room object
 		return null;
 	};
 	
-	I.addDoor=function(dir)
-	{
-		//if(I.hasDoor(dir))	{return false;}
-		if(dir==0)
-		{
-			var mindy= new door(0);
-			mindy.x=8;
-			mindy.y=0;
-			I.exits.push(mindy);
-		}else if (dir==1)
-		{
-			var mindy= new door(1);
-			mindy.x=18;
-			mindy.y=6;
-			I.exits.push(mindy);
-		}else if(dir==3)
-		{
-			var mindy= new door(3);
-			mindy.x=0;
-			mindy.y=6;
-			I.exits.push(mindy);
-		}else if(dir==2)
-		{
-			var mindy= new door(2);
-			mindy.x=8;
-			mindy.y=13;
-			I.exits.push(mindy);
-		}
-	};
-	
 	I.hasStairs=function(up)
 	{
 		for(var i=0;i<I.stairs.length;i++)
@@ -387,24 +357,24 @@ function room(I) { //room object
 					{
 						var mindy= new door(1);
 						mindy.x=i;
-						mindy.y=j-1;
+						mindy.y=j;
 						I.exits.push(mindy);
 					}else if((i==1))
 					{
 						var mindy= new door(3);
-						mindy.x=0;
-						mindy.y=6;
-						I.exits.push(mindy);
-					}else if((j==0))
-					{
-						var mindy= new door(0);
-						mindy.x=i-1;
+						mindy.x=i;
 						mindy.y=j;
 						I.exits.push(mindy);
-					}else// if((xPos==9) && (yPos==18))
+					}else if((j==1))
+					{
+						var mindy= new door(0);
+						mindy.x=i;
+						mindy.y=j;
+						I.exits.push(mindy);
+					}else if(j==13)
 					{
 						var mindy= new door(2);
-						mindy.x=i-1;
+						mindy.x=i;
 						mindy.y=j;
 						I.exits.push(mindy);
 					}
@@ -630,29 +600,29 @@ function room(I) { //room object
 				I.stairs.push(mindy);
 			  }else if (closeEnough(rgba,doorrgb)) {
 				I.setTile(xPos, yPos, DungeonTileType.Door);
-				if((xPos==18) && (yPos==7))
+				if(xPos==18)
 				{
 					var mindy= new door(1);
-					mindy.x=18;
-					mindy.y=6;
+					mindy.x=xPos;
+					mindy.y=yPos;
 					I.exits.push(mindy);
-				}else if((xPos==1) && (yPos==7))
+				}else if(xPos==1)
 				{
 					var mindy= new door(3);
-					mindy.x=0;
-					mindy.y=6;
+					mindy.x=xPos;
+					mindy.y=yPos;
 					I.exits.push(mindy);
-				}else if((xPos==9) && (yPos==0))
+				}else if(yPos==1)
 				{
 					var mindy= new door(0);
-					mindy.x=8;
-					mindy.y=0;
+					mindy.x=xPos;
+					mindy.y=yPos;
 					I.exits.push(mindy);
-				}else// if((xPos==9) && (yPos==18))
+				}else if (yPos==13)
 				{
 					var mindy= new door(2);
-					mindy.x=8;
-					mindy.y=13;
+					mindy.x=xPos;
+					mindy.y=yPos;
 					I.exits.push(mindy);
 				}
 			  }else if (closeEnough(rgba,wallcornerargb)) {
@@ -680,35 +650,54 @@ function room(I) { //room object
 		imageObj.src = "images/"+name+".png";
 		//}, 2000);
     };
-	
+	I.addStair=function(x,y,up)
+	{
+		var mindy= new staircase(up);
+		mindy.x=x;
+		mindy.y=y;
+		I.stairs.push(mindy);
+		if(up)
+		{
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.UpStair;
+		}else
+		{
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.DownStair;
+		}
+	};
 	I.addDoor=function(dir)
 	{
+		if(dir>3) {return;}
 		if(I.hasDoor(dir)) {return;}
 		if(dir==0)
 		{
 			var mindy= new door(0);
 			mindy.x=8;
-			mindy.y=0;
+			mindy.y=1;
 			I.exits.push(mindy);
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
 		}else if (dir==1)
 		{
 			var mindy= new door(1);
 			mindy.x=18;
 			mindy.y=6;
 			I.exits.push(mindy);
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
 		}else if(dir==3)
 		{
 			var mindy= new door(3);
-			mindy.x=0;
+			mindy.x=1;
 			mindy.y=6;
 			I.exits.push(mindy);
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
 		}else if(dir==2)
 		{
 			var mindy= new door(2);
 			mindy.x=8;
 			mindy.y=13;
 			I.exits.push(mindy);
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
 		}
+		
 	};
 	
 	I.getSubMap=function(tilex1,tiley1,tilex2,tiley2)

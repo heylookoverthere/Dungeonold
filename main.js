@@ -561,11 +561,18 @@ function mainUpdate()
 	thyme.update();
 	if((editMode) && (savekey.check()))
 	{
-		smath="Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
-		$.post("/save/", {"data": curDungeon.curRoom().stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
+		if(curDungeon.curRoom().active)
+		{
+			smath="Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
+			$.post("/save/", {"data": curDungeon.curRoom().stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
+		}else
+		{
+			//edit floor file to make clear there's no room.
+		}
 	}
 	if((editMode) && (loadkey.check()))
 	{
+		//check floor file to make sure there's a room first. 
 		smath="dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
 		$.get(smath, function(data) { curDungeon.curRoom().buildMapFromLoadedTiles("whatever",data)});  
 		bConsoleBox.log("Loaded Dungeon/"+smath); 
@@ -609,6 +616,13 @@ function mainUpdate()
 		}else if(editor.mode==editModes.Stamp)
 		{
 			editor.getTile(curDungeon.curRoom()).data=editor.brushType;
+			if(editor.brushType==DungeonTileType.UpStair)
+			{
+				curDungeon.curRoom().addStair(editor.x,editor.y,true);
+			}else if(editor.brushType==DungeonTileType.DownStair)
+			{
+				curDungeon.curRoom().addStair(editor.x,editor.y,false);
+			}
 		}else if(editor.mode==editModes.Fill)
 		{
 			curDungeon.curRoom().fill(editor.brushType);
@@ -751,8 +765,14 @@ function mainUpdate()
 			}
 			if(editor.penDown)
 			{
-				curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType;
-				addEdit(curDungeon.curRoom());
+				if(editor.mode==editModes.Pen)
+				{
+					if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
+					{
+						curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType;
+					}
+				}
+				//addEdit(curDungeon.curRoom());
 			}
 		}
 	}
