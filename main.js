@@ -98,6 +98,7 @@ var tabkey=new akey("tab");
 var fillkey=letterkeys[5];
 var modekey=letterkeys[12];
 var undokey=new akey("z");
+var editkey=new akey("e");
 
 var miles=new dude();
 miles.AI=false;
@@ -369,7 +370,7 @@ function starter()
 	//bees=true;
 	
 	bConsoleBox.log("started");
-	bConsoleBox.log("Hit L for Edit Mode");
+	bConsoleBox.log("Hit E for Edit Mode");
 }
 
 function inventoryScreenUpdate(){
@@ -678,7 +679,7 @@ function mainUpdate()
 			bConsoleBox.log("P  - Load room");
 		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill");
 			//bConsoleBox.log("Z - Undo");
-			bConsoleBox.log("Hit L to leave edit mode");
+			bConsoleBox.log("Hit E to leave edit mode");
 				//bConsoleBox.log("Someting - Fill!");
 
 		}
@@ -865,7 +866,7 @@ function mainUpdate()
 		//camera.tileX=92+326;
 		//camera.tileY=212;
 	}
-	if(debugkey.check())
+	if(editkey.check())
 	{
 		editMode=!editMode;
 		if(editMode)

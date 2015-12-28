@@ -16,11 +16,11 @@ function dungeon(path)
 	this.height=new Array();
 	this.depth=0; //254;
 	
-	this.floors=4;
+	this.floors=3;
 	for(var i=0;i<this.floors;i++)
 	{
 		this.width.push(15);
-		this.height.push(9);
+		this.height.push(8);
 	}
 
 
@@ -74,7 +74,7 @@ function dungeon(path)
 			}
 		}else if(dir==2) //going south
 		{
-			if(this.roomY>this.getHeight()-3)
+			if(this.roomY>this.getHeight()-2)
 			{	
 				bConsoleBox.log("That would take you off the map");
 				return;
@@ -96,7 +96,7 @@ function dungeon(path)
 			}
 		}else if(dir==1) //going east
 		{
-			if(this.roomX>this.getWidth()-3)
+			if(this.roomX>this.getWidth()-2)
 			{	
 				bConsoleBox.log("That would take you off the map");
 				return;
@@ -182,27 +182,28 @@ function dungeon(path)
 	
 	dungeon.prototype.load=function()
 	{
+		var dung=this;
 		for(var i=0;i<this.floors;i++)
 		{
 			pmath="dungeons/"+this.name+"/"+"floor"+i+"/map.txt";
 			$.get(pmath, function(data) 
 			{
-				for(var p=0;p<this.getWidth();p++)
+				for(var p=0;p<dung.getWidth();p++)
 				{
-					for(var q=0;q<this.getHeight();q++)
+					for(var q=0;q<dung.getHeight()-1;q++)
 					{
-						if(data[p+q*this.getWidth()]==0)//no room
+						if(data[p+q*dung.getWidth()]==1)//load room
 						{
-								
-						}else //load room.
-						{
-							smath="dungeons/"+this.name+"/"+"floor"+i+"/"+"roomX"+p+"Y"+q+".txt";
+							smath="dungeons/"+dung.name+"/"+"floor"+i+"/"+"roomX"+p+"Y"+q+".txt";
 							$.get(smath, function(datap) 
 							{ 
-								var pol=this.createRoom(i,p,q,null);
+								var pol=dung.createRoom(i,p,q,null);
 								pol.buildMapFromLoadedTiles("whatever",datap);  
 								bConsoleBox.log("Loaded Dungeon/"+smath); 	
 							});
+						}else //no room
+						{
+							
 						}
 					}
 				}
@@ -315,7 +316,7 @@ function dungeon(path)
 	
 		
 		var tyOffset=631;//bottom
-		if((this.roomY<this.getHeight()) && (this.rooms[this.roomZ][this.roomX][this.roomY+1].active)&& (!this.rooms[this.roomZ][this.roomX][this.roomY+1].hidden))
+		if((this.roomY<this.getHeight()-1) && (this.rooms[this.roomZ][this.roomX][this.roomY+1].active)&& (!this.rooms[this.roomZ][this.roomX][this.roomY+1].hidden))
 		{
 			for (i=0;i<ROOM_WIDTH; i++)
 			{
@@ -389,7 +390,7 @@ function dungeon(path)
 			}
 		}
 		var txOffset=791;//right
-		if((this.roomX<this.getWidth()) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX+1][this.roomY].hidden))
+		if((this.roomX<this.getWidth()-1) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX+1][this.roomY].hidden))
 		{
 			for (i=0;i<4; i++)
 			{
@@ -436,12 +437,12 @@ function dungeon(path)
 	 
 	this.createRoom=function(z,x,y,clone)
 	{
-		if(x>this.getWidth()-2)
+		if(x>this.getWidth()-1)
 		{
 			//his.width=x;
 			return false;
 		}
-		if(y>this.getHeight()-2)
+		if(y>this.getHeight()-1)
 		{
 			//this.height=y;
 			return false;
@@ -508,7 +509,7 @@ function dungeon(path)
 	}
 	this.drawMiniMap=function(can,player) //should also draw stairs, exit door in different color, goal/boss. 
 	{
-		var xFset=640;
+		var xFset=620;
 		var yFset=609;
 		var size=18;
 		
@@ -556,9 +557,9 @@ function dungeon(path)
 		}
 		can.fillText(suffix,xFset,yFset-6);
 		can.globalAlpha=0.5;
-		   for(i=0;i<this.width[this.roomZ]-1;i++)
+		   for(i=0;i<this.width[this.roomZ];i++)
 		   {
-				for (k=0;k<this.height[this.roomZ]-1;k++)
+				for (k=0;k<this.height[this.roomZ];k++)
 				{
 					if((!this.rooms[this.roomZ][i][k].active))
 					{
