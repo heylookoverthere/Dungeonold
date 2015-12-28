@@ -145,6 +145,71 @@ function dungeon(path)
 	{
 		
 	}
+	this.getWidth=function()
+	{
+		return(this.width[this.roomZ]);
+	}
+	 this.getHeight=function()
+	{
+		return(this.height[this.roomZ]);
+	}
+	this.stringifyFloor=function()
+	{
+		var tempstring= "";
+		for (i=0;i<this.getWidth(this.roomZ); i++)
+		{
+			for (j=0;j<this.getHeight(this.roomZ); j++)
+			{
+				if(this.rooms[this.roomZ][i][j].active)
+				{
+					tempstring = tempstring +"1"
+					tempstring += ","
+				}else
+				{
+					tempstring = tempstring +"0"
+					tempstring += ","
+				}
+			}
+		}
+		return tempstring;
+	}
+	
+	this.saveFloor=function()
+	{
+		smath="Dungeon/dungeons/"+this.name+"/"+"floor"+this.roomZ+"/"+"map.txt";
+			$.post("/save/", {"data": this.stringifyFloor(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
+	}
+	
+	dungeon.prototype.load=function()
+	{
+		for(var i=0;i<this.floors;i++)
+		{
+			pmath="dungeons/"+this.name+"/"+"floor"+i+"/map.txt";
+			$.get(pmath, function(data) 
+			{
+				for(var p=0;p<this.getWidth();p++)
+				{
+					for(var q=0;q<this.getHeight();q++)
+					{
+						if(data[p+q*this.getWidth()]==0)//no room
+						{
+								
+						}else //load room.
+						{
+							smath="dungeons/"+this.name+"/"+"floor"+i+"/"+"roomX"+p+"Y"+q+".txt";
+							$.get(smath, function(datap) 
+							{ 
+								var pol=this.createRoom(i,p,q,null);
+								pol.buildMapFromLoadedTiles("whatever",datap);  
+								bConsoleBox.log("Loaded Dungeon/"+smath); 	
+							});
+						}
+					}
+				}
+				
+			});  
+		}
+	}
 	
 	this.changeFloor=function(up,limited)
 	{
@@ -434,14 +499,7 @@ function dungeon(path)
 		return true;
 	}
 	 
-	this.getWidth=function()
-	{
-		return(this.width[this.roomZ]);
-	}
-	 this.getHeight=function()
-	{
-		return(this.height[this.roomZ]);
-	}
+
 	this.draw=function(can,cam,player) //maybe dcam is a player variable and you pass this a playeR? 
 	{ 
 		//this.rooms[player.dX][player.dY].draw(can,cam);
