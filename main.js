@@ -209,7 +209,7 @@ function playSound(name){
 controller= new virtualGamePad();
 
 var savekey=new akey("o"); //define the different keys
-var loadkey=new akey("l");
+var loadkey=new akey("p");
 var shiftkey=new akey("shift");
 
 
@@ -561,10 +561,16 @@ function mainUpdate()
 	thyme.update();
 	if((editMode) && (savekey.check()))
 	{
-		smath=curDungeon.name+"/"+curDungeon.curRoom().name+".txt";
-		bConsoleBox.log(smath);
-		$.post("/save/", {"data": curDungeon.curRoom().stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("saved"); });
+		smath="Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
+		$.post("/save/", {"data": curDungeon.curRoom().stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
 	}
+	if((editMode) && (loadkey.check()))
+	{
+		smath="dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
+		$.get(smath, function(data) { curDungeon.curRoom().buildMapFromLoadedTiles("whatever",data)});  
+		bConsoleBox.log("Loaded Dungeon/"+smath); 
+	}
+		
 	if((editMode) && (modekey.check()))
 	{
 		console.log("mode");
@@ -613,10 +619,10 @@ function mainUpdate()
 	}
 	if(editMode)
 	{
-		if(letterkeys[15].check())
+		/*if(letterkeys[15].check())
 		{
 			editor.penDownMode=!editor.penDownMode;
-		}
+		}*/
 		if(letterkeys[7].check())
 		{
 		
@@ -634,7 +640,8 @@ function mainUpdate()
 			bConsoleBox.log("Tab - Change selected tile");
 			bConsoleBox.log("F - Fill floor");
 			bConsoleBox.log("M  - Cycle edit modes");
-			//bConsoleBox.log("P  - Toggle pen down");
+			bConsoleBox.log("O  - Save room");
+			bConsoleBox.log("P  - Load room");
 		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill");
 			//bConsoleBox.log("Z - Undo");
 			bConsoleBox.log("Hit L to leave edit mode");
