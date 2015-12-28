@@ -580,7 +580,6 @@ function mainUpdate()
 		
 	if((editMode) && (modekey.check()))
 	{
-		console.log("mode");
 		editor.mode++;
 		editor.penDown=false;
 		if(editor.mode>editor.numModes)
@@ -595,7 +594,14 @@ function mainUpdate()
 	}
 	if((editMode) && (fillkey.check()))
 	{
-		curDungeon.curRoom().fill(editor.brushType);
+		if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
+		{
+			curDungeon.curRoom().fill(editor.brushType);
+			curDungeon.curRoom().stairs = new Array();
+		}else
+		{
+			bConsoleBox.log("Can't fill with stairs");
+		}
 	}
 	if(tabkey.check())
 	{
@@ -616,6 +622,13 @@ function mainUpdate()
 		}else if(editor.mode==editModes.Stamp)
 		{
 			editor.getTile(curDungeon.curRoom()).data=editor.brushType;
+			for(var i=0;i<curDungeon.curRoom().stairs.length;i++)
+			{
+				if((curDungeon.curRoom().stairs[i].x==editor.x) &&(curDungeon.curRoom().stairs[i].y==editor.y) )
+				{
+					curDungeon.curRoom().stairs.splice(i,1);
+				}
+			}
 			if(editor.brushType==DungeonTileType.UpStair)
 			{
 				curDungeon.curRoom().addStair(editor.x,editor.y,true);
@@ -625,7 +638,14 @@ function mainUpdate()
 			}
 		}else if(editor.mode==editModes.Fill)
 		{
-			curDungeon.curRoom().fill(editor.brushType);
+			if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
+			{
+				curDungeon.curRoom().fill(editor.brushType);
+				curDungeon.curRoom().stairs = new Array();
+			}else
+			{
+				bConsoleBox.log("Can't fill with stairs");
+			}
 		}
 		
 		//special case for stairs!!
@@ -770,6 +790,16 @@ function mainUpdate()
 					if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
 					{
 						curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType;
+						for(var i=0;i<curDungeon.curRoom().stairs.length;i++)
+						{
+							if((curDungeon.curRoom().stairs[i].x==editor.x) &&(curDungeon.curRoom().stairs[i].y==editor.y) )
+							{
+								curDungeon.curRoom().stairs.splice(i,1);
+							}
+						}
+					}else{
+						bConsoleBox.log("Can't paint with stairs");
+						editor.penDown=false;
 					}
 				}
 				//addEdit(curDungeon.curRoom());
