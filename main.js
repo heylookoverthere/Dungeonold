@@ -223,7 +223,7 @@ function drawGUI(can)
 	can.fillStyle="blue";
 	canvas.fillRect(6,6,221,54);
 	can.fillStyle="yellow";
-	can.fillText("Floor: "+curDungeon.roomZ,8,22);
+	can.fillText("Floor: "+curDungeon.roomZ+"/"+curDungeon.floors,8,22);
 	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,46);
 	var cont=0;
 	/*can.fillText("Men at Wall: "+theWatch.men.length,8,41);

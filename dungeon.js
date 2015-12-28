@@ -16,7 +16,7 @@ function dungeon(path)
 	this.height=new Array();
 	this.depth=0; //254;
 	
-	this.floors=3;
+	this.floors=4;
 	for(var i=0;i<this.floors;i++)
 	{
 		this.width.push(15);
@@ -183,13 +183,21 @@ function dungeon(path)
 	dungeon.prototype.load=function()
 	{
 		var dung=this;
-		for(var i=0;i<this.floors;i++)
+		dung.rooms=new Array();
+		for(var p=this.depth;p<this.floors;p++)
 		{
+			dung.rooms.push(new Array());
+			
+		}
+		for(var i=0;i<dung.floors-1;i++)
+		{
+			//dung.rooms.push(new Array());
 			pmath="dungeons/"+this.name+"/"+"floor"+i+"/map.txt";
 			$.get(pmath, function(data) 
 			{
 				for(var p=0;p<dung.getWidth();p++)
 				{
+					dung.rooms[i].push(new Array());
 					for(var q=0;q<dung.getHeight()-1;q++)
 					{
 						if(data[p+q*dung.getWidth()]==1)//load room
@@ -197,13 +205,17 @@ function dungeon(path)
 							smath="dungeons/"+dung.name+"/"+"floor"+i+"/"+"roomX"+p+"Y"+q+".txt";
 							$.get(smath, function(datap) 
 							{ 
-								var pol=dung.createRoom(i,p,q,null);
-								pol.buildMapFromLoadedTiles("whatever",datap);  
-								bConsoleBox.log("Loaded Dungeon/"+smath); 	
+								//if(dung.createRoom(i,p,q,false))
+								var edgar=new room();
+								//edgar.fill(1);
+								//edgar.buildMapFromLoadedTiles("whatever",datap);  
+								dung.rooms[i][p].push(edgar);
 							});
 						}else //no room
 						{
-							
+							var edgar=new room();
+							edgar.active=false; 
+							dung.rooms[i][p].push(edgar);
 						}
 					}
 				}
@@ -216,7 +228,7 @@ function dungeon(path)
 	{
 		if(up)
 		{
-			if(this.roomZ>this.floors-2)
+			if(this.roomZ>this.floors-1)
 			{
 				bConsoleBox.log("Already on top floor");
 				return;
