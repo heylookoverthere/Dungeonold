@@ -332,7 +332,7 @@ function room(I) { //room object
 	I.getDoor=function(dir)
 	{
 		if(!I.hasDoor(dir))		{return null;}
-		for(var i=0;i<4;i++)
+		for(var i=0;i<I.exits.length;i++)
 		{
 			if((I.exits[i]) && (I.exits[i].orientation==dir))
 			{
@@ -366,6 +366,11 @@ function room(I) { //room object
 			}
 		}
 		return null;
+	};
+	
+	I.getOpenDoors=function(dir)
+	{
+	
 	};
 	
 	I.hasStairs=function(up)
@@ -812,6 +817,7 @@ function room(I) { //room object
 			I.tiles[mindy.x][mindy.y].data=DungeonTileType.DownStair;
 		}
 	};
+	
 	I.removeDoor=function(dir)
 	{
 		if(!I.hasDoor(dir))
@@ -841,38 +847,45 @@ function room(I) { //room object
 			}
 		}
 	};
-	I.addDoor=function(dir)
+	I.addDoor=function(dir,x,y,type)
 	{
 		if(dir>3) {return;}
-		if(I.hasDoor(dir)) {return;}
+		//if(I.hasDoor(dir)) {return;}
+		if(!x) {x=8;}
+		if(!y) {y=6;}
+		if(type==null) {type=0}
 		if(dir==0)
 		{
 			var mindy= new door(0);
-			mindy.x=8;
+			mindy.x=x;
 			mindy.y=1;
+			mindy.type=type;
 			I.exits.push(mindy);
-			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}else if (dir==1)
 		{
 			var mindy= new door(1);
 			mindy.x=18;
-			mindy.y=6;
+			mindy.y=y;
+			mindy.type=type;
 			I.exits.push(mindy);
-			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}else if(dir==3)
 		{
 			var mindy= new door(3);
 			mindy.x=1;
-			mindy.y=6;
+			mindy.y=y;
+			mindy.type=type;
 			I.exits.push(mindy);
-			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}else if(dir==2)
 		{
 			var mindy= new door(2);
-			mindy.x=8;
+			mindy.x=x;
 			mindy.y=13;
+			mindy.type=type;
 			I.exits.push(mindy);
-			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door;
+			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}
 		
 	};

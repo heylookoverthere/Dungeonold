@@ -686,39 +686,24 @@ function mainUpdate()
 			}
 		}else if(editor.mode==editModes.Door)
 		{
-			var york=new door();
 			if(editor.x==2) //left
 			{
-				york.orient(3);
-				york.x=1;
-				york.y=editor.y-1;
+				curDungeon.smartAddDoor(1,editor.y,3,editor.doorType);
 			}else if(editor.x==17) //right
 			{
-				york.orient(1);
-				york.x=18;
-				york.y=editor.y-1;
+			    curDungeon.smartAddDoor(18,editor.y,1,editor.doorType);
 			}else if(editor.y==2) //top
 			{
-				york.orient(0);
-				york.y=1;
-				york.x=editor.x-1;
+				curDungeon.smartAddDoor(editor.x,1,0,editor.doorType);
 			}else if(editor.y==12) //bottom
 			{
-				york.orient(2);
-				york.y=13;
-				york.x=editor.x-1;
+				curDungeon.smartAddDoor(editor.x,13,2,editor.doorType);
 			}else
 			{
 				bConsoleBox.log("Not the best spot for a door.");
 				return;
 			}
-			
-			curDungeon.curRoom().tiles[york.x][york.y].data=DungeonTileType.Door+york.type;
-			
-			york.type=editor.doorType;
-		
-			curDungeon.curRoom().exits.push(york);
-			
+				
 		}
 		//special case for stairs!!
 			
@@ -737,7 +722,7 @@ function mainUpdate()
 			bConsoleBox.log("CONTROLS:");
 			bConsoleBox.log("Arrow Keys - Move room");
 			bConsoleBox.log("Page Up/Down - Move floors");
-			bConsoleBox.log("Shift + Arrow keys/Page keys - New room");
+			bConsoleBox.log("Shift + Arrow/Page keys - create exit in that direction, making a new room if nessicary");
 			bConsoleBox.log("W A S D - Move cursor");
 			bConsoleBox.log("Shift + W A S D - Remove door");
 			bConsoleBox.log("Delete - Delete room");
@@ -793,52 +778,86 @@ function mainUpdate()
 			}
 			if(pageupkey.check())
 			{
-				if(curDungeon.createRoom(curDungeon.roomZ+1,curDungeon.roomX,curDungeon.roomY))
+				if(curDungeon.roomZ<curDungeon.floors)
 				{
-					curDungeon.changeFloor(true,!editMode);
+					if((curDungeon.rooms[curDungeon.roomZ+1][curDungeon.roomX][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ+1,curDungeon.roomX,curDungeon.roomY)))
+					{
+						curDungeon.smartAddStair(editor.x,editor.y,true);
+						curDungeon.changeFloor(true,!editMode);
+					}
+				}else
+				{
+					bConsoleBox.log("Can't go off the map");
 				}
 			}
 			if(pagedownkey.check())
 			{
-				if(curDungeon.createRoom(curDungeon.roomZ-1,curDungeon.roomX,curDungeon.roomY))
+				if(curDungeon.roomZ>0)
 				{
-					curDungeon.changeFloor(false,!editMode);
+					if((curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ-1,curDungeon.roomX,curDungeon.roomY)))
+					{
+						curDungeon.smartAddStair(editor.x,editor.y,false);
+						curDungeon.changeFloor(false,!editMode);
+					}
+				}else
+				{
+					bConsoleBox.log("Can't go off the map");
 				}
 			}
 			if(leftkey.check())
 			{
-				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX-1,curDungeon.roomY))
+				if(curDungeon.roomX>0)
 				{
-					curDungeon.curRoom().addDoor(3)
-					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].addDoor(1);
-					curDungeon.changeRoom(3,!editMode);
+					if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX-1,curDungeon.roomY)))
+					{
+						//curDungeon.curRoom().addDoor(3)
+						//curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].addDoor(1);
+						curDungeon.smartAddDoor(1,6,3);
+						curDungeon.changeRoom(3,!editMode);
+					}
+				}else
+				{
+					bConsoleBox.log("Can't go off the map");
 				}
 			}
 			if(rightkey.check())
 			{
-				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX+1,curDungeon.roomY))
+				if(curDungeon.roomX<curDungeon.getWidth()-1)
 				{
-					curDungeon.curRoom().addDoor(1)
-					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].addDoor(3);
-					curDungeon.changeRoom(1,!editMode);
+					if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].active)|| (curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX+1,curDungeon.roomY)))
+					{
+						curDungeon.smartAddDoor(18,6,1);
+						curDungeon.changeRoom(1,!editMode);
+					}
+				}else{
+					bConsoleBox.log("Can't go off the map");
 				}
 			}
 			if(upkey.check())
 			{
-				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY-1))
+				if(curDungeon.roomY>0)
 				{
-					curDungeon.curRoom().addDoor(0)
-					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].addDoor(2);
-					curDungeon.changeRoom(0,!editMode);
+					if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY-1)))
+					{
+						curDungeon.smartAddDoor(8,1,0);
+						curDungeon.changeRoom(0,!editMode);
+					}
+				}else{
+					bConsoleBox.log("Can't go off the map");
 				}
 			}
 			if(downkey.check())
-			{
-				if(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY+1))
+			{	
+				if(curDungeon.roomY<curDungeon.getHeight()-1)
 				{
-					curDungeon.curRoom().addDoor(2)
-					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].addDoor(0);
-					curDungeon.changeRoom(2,!editMode);
+					if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY+1)))
+					{
+						curDungeon.smartAddDoor(8,13,2);
+						curDungeon.changeRoom(2,!editMode);
+					}
+				}else
+				{
+					bConsoleBox.log("Can't go off the map");
 				}
 			}
 		}else

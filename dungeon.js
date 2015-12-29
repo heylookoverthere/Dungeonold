@@ -262,6 +262,22 @@ function dungeon(path)
 		}
 	}
 	
+	this.smartAddStair=function(x,y,up,croom)
+	{ //todo, add other stair.
+		if(!croom) {croom=this.curRoom();}
+		var mindy= new staircase(up);
+		mindy.x=x;
+		mindy.y=y;
+		croom.stairs.push(mindy);
+		if(up)
+		{
+			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.UpStair;
+		}else
+		{
+			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.DownStair;
+		}
+	};
+	
 	this.changeFloor=function(up,limited)
 	{
 		if(up)
@@ -323,6 +339,67 @@ function dungeon(path)
 	
 		}
 	}
+	
+	dungeon.prototype.smartAddDoor=function(x,y,dir,type,croom)
+	{
+		if(type==null) {type=0;}
+		if(dir>3) {return;}
+		if(!croom)
+		{
+			croom=this.curRoom();
+		}
+		//if(croom.hasDoor(dir)) {return;}
+		if(dir==0)
+		{
+			var mindy= new door(0);
+			mindy.x=x;
+			mindy.y=1;
+			mindy.type=type;
+			croom.exits.push(mindy);
+			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
+			if((this.roomY>0) && (this.rooms[this.roomZ][this.roomX][this.roomY-1].active))
+			{
+				this.rooms[this.roomZ][this.roomX][this.roomY-1].addDoor(2,x,13,type);
+			}
+		}else if (dir==1)
+		{
+			var mindy= new door(1);
+			mindy.x=18;
+			mindy.y=y;
+			mindy.type=type;
+			croom.exits.push(mindy);
+			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
+			if((this.roomX<this.getWidth()-1) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active))
+			{
+				this.rooms[this.roomZ][this.roomX+1][this.roomY].addDoor(3,1,y,type);
+			}
+		}else if(dir==3)
+		{
+			var mindy= new door(3);
+			mindy.x=1;
+			mindy.y=y;
+			mindy.type=type;
+			croom.exits.push(mindy);
+			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
+			if((this.roomX>0) && (this.rooms[this.roomZ][this.roomX-1][this.roomY].active))
+			{
+				this.rooms[this.roomZ][this.roomX-1][this.roomY].addDoor(1,18,y,type);
+			}
+		}else if(dir==2)
+		{
+			var mindy= new door(2);
+			mindy.x=x;
+			mindy.y=13;
+			mindy.type=type;
+			croom.exits.push(mindy);
+			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
+			if((this.roomY<this.getHeight()-1) && (this.rooms[this.roomZ][this.roomX][this.roomY+1].active))
+			{
+				this.rooms[this.roomZ][this.roomX][this.roomY+1].addDoor(0,x,1,type);
+			}
+		}
+		
+	};
 	
 	this.drawAdjacent=function(can,cam)
 	{
