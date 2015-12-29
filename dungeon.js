@@ -70,7 +70,7 @@ function dungeon(path)
 				if((this.curRoom().getOpenDoor(0)) &&(this.curRoom().getOpenDoor(0).passable()) || (!limited))
 				{
 					this.roomY--;
-					this.curRoom().explored=true;
+					if(limited){this.curRoom().explored=true;}
 				}else
 				{
 					bConsoleBox.log("No open door!");
@@ -98,7 +98,7 @@ function dungeon(path)
 				if((this.curRoom().getOpenDoor(2)) &&(this.curRoom().getOpenDoor(2).passable()) || (!limited))
 				{
 					this.roomY++;
-					this.curRoom().explored=true;
+					if(limited){this.curRoom().explored=true;}
 				}else
 				{
 					bConsoleBox.log("No open door!");
@@ -126,7 +126,7 @@ function dungeon(path)
 				if((this.curRoom().getOpenDoor(1)) && (this.curRoom().getOpenDoor(1).passable()) || (!limited))
 				{
 					this.roomX++;
-					this.curRoom().explored=true;
+					if(limited){this.curRoom().explored=true;}
 				}else
 				{
 					bConsoleBox.log("No open door!");
@@ -154,7 +154,7 @@ function dungeon(path)
 				if((this.curRoom().getOpenDoor(3)) &&(this.curRoom().getOpenDoor(3).passable()) || (!limited))
 				{
 					this.roomX--;
-					this.curRoom().explored=true;
+					if(limited){this.curRoom().explored=true;}
 				}else
 				{
 					bConsoleBox.log("No open door!");
@@ -331,7 +331,7 @@ function dungeon(path)
 			if((this.curRoom().hasStairs(false)) || (!limited))
 			{
 				this.roomZ--;
-				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
+				if(limited){this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;}
 			}else
 			{
 				bConsoleBox.log("No stairs going down.");

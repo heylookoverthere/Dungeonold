@@ -1119,6 +1119,7 @@ if (yui==0){
 
 document.title = tt;
 curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+curDungeon.curRoom().explored=true;
 startGame();
 
 //console.log(curMap.tiles[Skagos.x/16][Skagos.y/16].data);
