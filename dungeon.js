@@ -147,11 +147,13 @@ function dungeon(path)
 	}
 	this.getWidth=function()
 	{
-		return(this.width[this.roomZ]);
+		//return(this.width[this.roomZ]);
+		return 15;
 	}
 	 this.getHeight=function()
 	{
-		return(this.height[this.roomZ]);
+		//return(this.height[this.roomZ]);
+		return 8;
 	}
 	this.stringifyFloor=function()
 	{
@@ -180,42 +182,54 @@ function dungeon(path)
 			$.post("/save/", {"data": this.stringifyFloor(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
 	}
 	
-	dungeon.prototype.load=function()
+	dungeon.prototype.blank=function()
 	{
-		var dung=this;
-		dung.rooms=new Array();
+		this.rooms=new Array();
 		for(var p=this.depth;p<this.floors;p++)
 		{
-			dung.rooms.push(new Array());
-			
+			this.rooms.push(new Array());
+			for(var i=0;i<this.width[p];i++)
+			{
+				this.rooms[p].push(new Array());
+				for(j=0;j<this.height[p];j++)
+				{
+					var edgar=new room();
+					//var parth=path+"/floor"+String(p)+"/roomX"+String(i)+"Y"+String(j);
+					//edgar.buildRoom(parth);
+					//edgar.name="roomX"+String(i)+"Y"+String(j);
+					edgar.fillAll(1);
+					edgar.active=false;
+					this.rooms[p][i].push(edgar);
+				}
+			 }
 		}
-		for(var i=0;i<dung.floors-1;i++)
+	}
+	
+	dungeon.prototype.load=function() // maybe done wipe rooms? just clear all rooms / set to inactive? 
+	{
+		var dung=this;
+		dung.blank();
+		for(var i=dung.depth;i<dung.floors-1;i++)
 		{
-			//dung.rooms.push(new Array());
-			pmath="dungeons/"+this.name+"/"+"floor"+i+"/map.txt";
+			pmath="dungeons/"+dung.name+"/"+"floor"+i+"/map.txt";
 			$.get(pmath, function(data) 
 			{
 				for(var p=0;p<dung.getWidth();p++)
 				{
-					dung.rooms[i].push(new Array());
-					for(var q=0;q<dung.getHeight()-1;q++)
+					for(var q=0;q<dung.getHeight();q++)
 					{
 						if(data[p+q*dung.getWidth()]==1)//load room
 						{
 							smath="dungeons/"+dung.name+"/"+"floor"+i+"/"+"roomX"+p+"Y"+q+".txt";
 							$.get(smath, function(datap) 
 							{ 
-								//if(dung.createRoom(i,p,q,false))
-								var edgar=new room();
-								//edgar.fill(1);
-								//edgar.buildMapFromLoadedTiles("whatever",datap);  
-								dung.rooms[i][p].push(edgar);
+								console.log("Loading room at Floor "+i+" X: "+p+" Y: "+q); //NO WTF IT's NOT
+								dung.rooms[i][p][q].buildMapFromLoadedTiles("whatever",datap);  
+								dung.rooms[i][p][q].active=true;
 							});
 						}else //no room
 						{
-							var edgar=new room();
-							edgar.active=false; 
-							dung.rooms[i][p].push(edgar);
+							//shouldn't really have to do anything since I blanked the map before
 						}
 					}
 				}
@@ -318,11 +332,8 @@ function dungeon(path)
 			if(this.rooms[this.roomZ][this.roomX][this.roomY-1].hasDoor(2))
 			{
 				var aDoor=this.rooms[this.roomZ][this.roomX][this.roomY-1].getDoor(2);
-				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-20);
-				if(this.closed)
-				{
-					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-20);
-				}
+				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-20);
+				
 			}
 		}
 	
@@ -357,11 +368,7 @@ function dungeon(path)
 			if(this.rooms[this.roomZ][this.roomX][this.roomY+1].hasDoor(0))
 			{
 				var aDoor=this.rooms[this.roomZ][this.roomX][this.roomY+1].getDoor(0);
-				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-20);
-				if(this.closed)
-				{
-					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-20);
-				}
+				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-20);
 			}
 		}
 	var txOffset=-491;//left
@@ -394,11 +401,7 @@ function dungeon(path)
 			if(this.rooms[this.roomZ][this.roomX-1][this.roomY].hasDoor(1))
 			{
 				var aDoor=this.rooms[this.roomZ][this.roomX-1][this.roomY].getDoor(1);
-				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
-				if(this.closed)
-				{
-					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
-				}
+				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
 			}
 		}
 		var txOffset=791;//right
@@ -431,11 +434,7 @@ function dungeon(path)
 			if(this.rooms[this.roomZ][this.roomX+1][this.roomY].hasDoor(3))
 			{
 				var aDoor=this.rooms[this.roomZ][this.roomX+1][this.roomY].getDoor(3);
-				doorSprite[aDoor.orientation].draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
-				if(this.closed)
-				{
-					doorClosedSprite[aDoor.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
-				}
+				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-20, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
 			}
 		}
 	}
@@ -478,7 +477,7 @@ function dungeon(path)
 			var kitchen=new room();
 			kitchen.x=x;
 			kitchen.y=y;
-			kitchen.fill(DungeonTileType.GreenFloor);
+			kitchen.fillAll(DungeonTileType.GreenFloor);
 			for(var i=0;i<kitchen.width;i++)
 			{
 				kitchen.tiles[i][0].data=14;

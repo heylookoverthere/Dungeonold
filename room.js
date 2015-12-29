@@ -9,6 +9,7 @@ var ROOM_HEIGHT=15;
 var ROOM_TILE_SIZE=32;
 var xOffset = 150;
 var yOffset= 150;
+var doorTypes=2;
 
 function imageExists(url) 
 {
@@ -20,20 +21,42 @@ function imageExists(url)
 
 var doorSprite=new Array();
 
-    //doorSprite.push(new Array());
-	doorSprite[0]=Sprite("dungeontiles/door0");
-	doorSprite[1]=Sprite("dungeontiles/door1");
-	doorSprite[2]=Sprite("dungeontiles/door2");
-	doorSprite[3]=Sprite("dungeontiles/door3");
+//doorSprite.push(new Array());
+for(var i=0;i<doorTypes;i++)
+{
+	doorSprite.push(new Array());
+}
+doorSprite[0][0]=Sprite("dungeontiles/door0");
+doorSprite[0][1]=Sprite("dungeontiles/door1");
+doorSprite[0][2]=Sprite("dungeontiles/door2");
+doorSprite[0][3]=Sprite("dungeontiles/door3");
 
+doorSprite[1][0]=Sprite("dungeontiles/blowncrack0");
+doorSprite[1][1]=Sprite("dungeontiles/blowncrack1");
+doorSprite[1][2]=Sprite("dungeontiles/blowncrack2");
+doorSprite[1][3]=Sprite("dungeontiles/blowncrack3");
+
+var lockedDoorSprite=new Array();
+lockedDoorSprite[0]=Sprite("dungeontiles/lockeddoor0");
+lockedDoorSprite[1]=Sprite("dungeontiles/lockeddoor1");
+lockedDoorSprite[2]=Sprite("dungeontiles/lockeddoor2");
+lockedDoorSprite[3]=Sprite("dungeontiles/lockeddoor3");
 
 var doorClosedSprite=new Array();
+for(var i=0;i<doorTypes;i++)
+{
+	doorClosedSprite.push(new Array());
+}
 
-//doorSprite.push(new Array());
-doorClosedSprite[0]=Sprite("dungeontiles/doorclosed0");
-doorClosedSprite[1]=Sprite("dungeontiles/doorclosed1");
-doorClosedSprite[2]=Sprite("dungeontiles/doorclosed2");
-doorClosedSprite[3]=Sprite("dungeontiles/doorclosed3");
+doorClosedSprite[0][0]=Sprite("dungeontiles/doorclosed0");
+doorClosedSprite[0][1]=Sprite("dungeontiles/doorclosed1");
+doorClosedSprite[0][2]=Sprite("dungeontiles/doorclosed2");
+doorClosedSprite[0][3]=Sprite("dungeontiles/doorclosed3");
+
+doorClosedSprite[1][0]=Sprite("dungeontiles/closedcrack0");
+doorClosedSprite[1][1]=Sprite("dungeontiles/closedcrack1");
+doorClosedSprite[1][2]=Sprite("dungeontiles/closedcrack2");
+doorClosedSprite[1][3]=Sprite("dungeontiles/closedcrack3");
 
 function staircase(up)
 {
@@ -41,6 +64,10 @@ function staircase(up)
 	this.y=0;
 	this.up=up;
 }
+	
+var doorType={};
+doorType.Regular=0;
+doorType.Bombable=1;
 	
 function door(or)
 {
@@ -80,13 +107,42 @@ function door(or)
 		}
 	};
 	
+	door.prototype.getSprite=function()
+	{
+	   if(this.locked)
+	   {
+			return lockedDoorSprite[this.orientation];
+	   }	   
+	
+	   if(this.closed)
+	   {
+			if((this.type!=doorType.Bombable) || (editMode) ||(OPTIONS.ShowCracks))
+			{
+				return doorClosedSprite[this.type][this.orientation]
+			}
+	   }
+	   return doorSprite[this.type][this.orientation];
+	
+	}
+	
 	door.prototype.draw=function(can,cam)
 	{
 	   //this.orient(0);
-	   doorSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
+	   if(this.type==doorType.Bombable)
+	   {
+			if(!this.closed)
+			{
+				this.getSprite().draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
+			}
+	   }else{
+		this.getSprite().draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
+	   }
 	   if(this.closed)
 	   {
-			doorClosedSprite[this.orientation].draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
+			if((this.type!=doorType.Bombable) || (editMode))
+			{
+				this.getSprite().draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-20, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-20);
+			}
 	   }
 	}
 
@@ -298,7 +354,71 @@ function room(I) { //room object
 		return false;
 	};
 	
-	I.fill=function(id)
+		
+	I.fill=function(x,y,id)
+	{
+		pixelStack = [[x, y]];
+		var startID=I.tiles[x][y].id;
+		while(pixelStack.length)
+		{
+		  var newPos, x, y, pixelPos, reachLeft, reachRight;
+		  newPos = pixelStack.pop();
+		  x = newPos[0];
+		  y = newPos[1];
+		  
+		  pixelPos = (y*I.width + x) * 4;
+		  while(y-- >= 0 && I.tiles[x][y].id==startID)
+		  {
+			pixelPos -= I.width * 4;
+		  }
+		  pixelPos += I.width * 4;
+		  ++y;
+		  reachLeft = false;
+		  reachRight = false;
+		  while(y++ < I.height-1 && I.tiles[x][y].id==startID)
+		  {
+			I.setTile(x,y,id);
+
+			if(x > 0)
+			{
+			  if(I.tiles[x][y-1].id==startID)//(matchStartColor(pixelPos - 4))
+			  {
+				if(!reachLeft){
+				  pixelStack.push([x - 1, y]);
+				  reachLeft = true;
+				}
+			  }
+			  else if(reachLeft)
+			  {
+				reachLeft = false;
+			  }
+			}
+			
+			if(x < I.width-1)
+			{
+			  if(I.tiles[x][y+1].id==startID)
+			  {
+				if(!reachRight)
+				{
+				  pixelStack.push([x + 1, y]);
+				  reachRight = true;
+				}
+			  }
+			  else if(reachRight)
+			  {
+				reachRight = false;
+			  }
+			}
+					
+			pixelPos += I.width * 4;
+		  }
+	}
+
+  
+
+	};
+	
+	I.fillAll=function(id)
 	{
 		for(var i=2;i<I.width-2;i++)
 		{
@@ -664,6 +784,22 @@ function room(I) { //room object
 			I.tiles[mindy.x][mindy.y].data=DungeonTileType.DownStair;
 		}
 	};
+	I.removeDoor=function(dir)
+	{
+		if(!I.hasDoor(dir))
+		{
+			return;
+		}
+		coor=I.getDoor(dir);
+		for(var i=0;i<I.exits.length;i++)
+		{
+			if(coor==I.exits[i])
+			{
+				I.exits.splice(i,1)
+				i--;
+			}
+		}
+	};
 	I.addDoor=function(dir)
 	{
 		if(dir>3) {return;}
@@ -746,10 +882,12 @@ function editCursor()
 	this.sprite=Sprite("cursor");
 	this.brush=0;
 	this.brushType=0;
+	this.doorType=0;
 	this.penDown=false;
 	this.penDownMode=false;
 	this.mode=0;
-	this.numModes=2;
+	this.numModes=3;
+	this.numDoorTypes=3;
 }
 
 editCursor.prototype.draw=function(can)

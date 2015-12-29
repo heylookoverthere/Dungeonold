@@ -223,7 +223,7 @@ function drawGUI(can)
 	can.fillStyle="blue";
 	canvas.fillRect(6,6,221,54);
 	can.fillStyle="yellow";
-	can.fillText("Floor: "+curDungeon.roomZ+"/"+curDungeon.floors,8,22);
+	can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,22);
 	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,46);
 	var cont=0;
 	/*can.fillText("Men at Wall: "+theWatch.men.length,8,41);
@@ -489,7 +489,8 @@ function mainDraw() {
 		{
 			canvas.fillText("Hidden Room",580,145);
 		}
-		canvas.fillText("Selected: ",18,96);
+		
+		
 		if(editor.mode==editModes.Pen)
 		{
 			if(editor.penDown)
@@ -505,11 +506,34 @@ function mainDraw() {
 			canvas.fillText("Stamp mode",18,126);
 		}else if(editor.mode==editModes.Fill){
 			canvas.fillText("Fill mode",18,126);
+		}else if (editor.mode==editModes.Door)
+		{
+			canvas.fillText("Door Mode",18,126);
 		}else
 		{
 			canvas.fillText("Pen Mode",18,126);
 		}
-		dungeonTileSprite[editor.brushType].draw(canvas,110,73);
+		if(editor.mode==editModes.Door)
+		{
+			if(editor.doorType==0)
+			{
+				canvas.fillText("Regular Door",18,96);
+			}else if(editor.doorType==1)
+			{
+				canvas.fillText("Closed Door",18,96);
+			}else if(editor.doorType==2)
+			{
+				canvas.fillText("Locked Door",18,96);
+			}else if(editor.doorType==3)
+			{
+				canvas.fillText("Bombable Door",18,96);
+			}
+			
+		}else
+		{
+			canvas.fillText("Selected: ",18,96);
+			dungeonTileSprite[editor.brushType].draw(canvas,110,73);
+		}
 		
 	}	
 	
@@ -597,7 +621,7 @@ function mainUpdate()
 	{
 		if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
 		{
-			curDungeon.curRoom().fill(editor.brushType);
+			curDungeon.curRoom().fillAll(editor.brushType);
 			curDungeon.curRoom().stairs = new Array();
 		}else
 		{
@@ -606,13 +630,23 @@ function mainUpdate()
 	}
 	if(tabkey.check())
 	{
-		editor.brushType++;
-		if(editor.brushType>28)
+		if(editor.mode==editModes.Door)
 		{
-			editor.brushType=0;
-		}else if(editor.brushType>20)
+			editor.doorType++;
+			if(editor.doorType>editor.numDoorTypes)
+			{
+				editor.doorType=0;
+			}
+		}else
 		{
-			editor.brushType=28;
+			editor.brushType++;
+			if(editor.brushType>28)
+			{
+				editor.brushType=0;
+			}else if(editor.brushType>20)
+			{
+				editor.brushType=28;
+			}
 		}
 	}
 	if (editclickkey.check())
@@ -641,14 +675,59 @@ function mainUpdate()
 		{
 			if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
 			{
-				curDungeon.curRoom().fill(editor.brushType);
+				curDungeon.curRoom().fill(editor.x,editor.y,editor.brushType);
 				curDungeon.curRoom().stairs = new Array();
 			}else
 			{
 				bConsoleBox.log("Can't fill with stairs");
 			}
+		}else if(editor.mode==editModes.Door)
+		{
+			var york=new door();
+			if(editor.x==2) //left
+			{
+				york.orient(3);
+				york.x=1;
+				york.y=editor.y-1;
+			}else if(editor.x==17) //right
+			{
+				york.orient(1);
+				york.x=18;
+				york.y=editor.y-1;
+			}else if(editor.y==2) //top
+			{
+				york.orient(0);
+				york.y=1;
+				york.x=editor.x-1;
+			}else if(editor.y==12) //bottom
+			{
+				york.orient(2);
+				york.y=13;
+				york.x=editor.x-1;
+			}else
+			{
+				bConsoleBox.log("Not the best spot for a door.");
+				return;
+			}
+			
+			
+			if(editor.doorType==0)
+			{
+				//do nothing?
+			}else if(editor.doorType==1) //closed
+			{
+				york.closed=true;
+			}else if(editor.doorType==2) //locked
+			{
+				york.locked=true;
+				
+			}else if(editor.doorType==3) //bomb
+			{
+				york.type=1;
+			}
+			curDungeon.curRoom().exits.push(york);
+			
 		}
-		
 		//special case for stairs!!
 			
 	}
@@ -668,7 +747,7 @@ function mainUpdate()
 			bConsoleBox.log("Page Up/Down - Move floors");
 			bConsoleBox.log("Shift + Arrow keys/Page keys - New room");
 			bConsoleBox.log("W A S D - Move cursor");
-			bConsoleBox.log("Shift + W A S D - Add Door");
+			bConsoleBox.log("Shift + W A S D - Remove door");
 			bConsoleBox.log("Delete - Delete room");
 			bConsoleBox.log("Insert - Create Room");
 			bConsoleBox.log("0 - Toggle hidden room");
@@ -702,19 +781,23 @@ function mainUpdate()
 			
 			if(letterkeys[22].check())
 			{
-				curDungeon.curRoom().addDoor(0);
+				//curDungeon.curRoom().addDoor(0);
+				curDungeon.curRoom().removeDoor(0);
 			}
 			if(letterkeys[0].check())
 			{
-				curDungeon.curRoom().addDoor(3);
+				//curDungeon.curRoom().addDoor(3);
+				curDungeon.curRoom().removeDoor(3);
 			}
 			if(letterkeys[18].check())
 			{
-				curDungeon.curRoom().addDoor(2);
+				//curDungeon.curRoom().addDoor(2);
+				curDungeon.curRoom().removeDoor(2);
 			}
 			if(letterkeys[3].check())
 			{
-				curDungeon.curRoom().addDoor(1);
+				//curDungeon.curRoom().addDoor(1);
+				curDungeon.curRoom().removeDoor(1);
 			}
 			if(pageupkey.check())
 			{

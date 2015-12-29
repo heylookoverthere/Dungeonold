@@ -13,10 +13,12 @@ var editModes={};
 editModes.Pen=0;
 editModes.Stamp=1;
 editModes.Fill=2;
-editModes.CopyArea=3;
+editModes.Door=3;
+editModes.CopyArea=4;
 
 var OPTIONS={};
 OPTIONS.showUnexploredRooms=false;
+OPTIONS.showCracks=false;
 OPTIONS.showUnexploredDoors=false;
 
 var editHistory=[];
