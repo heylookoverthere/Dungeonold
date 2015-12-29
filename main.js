@@ -101,6 +101,9 @@ var undokey=new akey("z");
 var editkey=new akey("e");
 var yeskey=new akey("y");
 var nokey=new akey("n");
+var controlkey=new akey("cntrl");
+var copykey=new akey("c");
+var pastekey=new akey("p");
 
 var miles=new dude();
 miles.AI=false;
@@ -212,7 +215,7 @@ function playSound(name){
 controller= new virtualGamePad();
 
 var savekey=new akey("o"); //define the different keys
-var loadkey=new akey("p");
+var loadkey=new akey("i");
 var shiftkey=new akey("shift");
 
 
@@ -622,6 +625,29 @@ function mainUpdate()
 	{
 	    undoEdit(curDungeon.curRoom());
 	}
+	if((editMode))// &&(controlkey.checkDown()))
+	{
+	    if(copykey.check())
+		{
+			editor.clipBoard.copyTiles(curDungeon.curRoom());
+			editor.clipBoard.copyExits(curDungeon.curRoom());
+			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name+" copied to clipboard.");
+		}else if(pastekey.check())
+		{
+			if(!curDungeon.curRoom().active)
+			{
+				curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,editor.clipBoard);
+			}else
+			{
+				bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be overwritten. Confirm? (Y/N)","yellow");
+				editor.confirming=true;
+				editor.confirmingWhat=function(){
+					curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,editor.clipBoard);
+				}
+			}
+		}
+	}
+	
 	if((editMode) && (fillkey.check()))
 	{
 		if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
@@ -645,12 +671,18 @@ function mainUpdate()
 		}else
 		{
 			editor.brushType++;
-			if(editor.brushType>28)
+			if(editor.brushType>33)
 			{
 				editor.brushType=0;
-			}else if(editor.brushType>20)
+			}else if(editor.brushType==21)//skip water animation tiles
 			{
-				editor.brushType=28;
+				editor.brushType=24;
+			}else if(editor.brushType==25)//skip lava animation tiles.
+			{
+				editor.brushType=33;
+			}else if((editor.brushType==10) && (OPTIONS.skipWallTiles))//skip lava animation tiles.
+			{
+				editor.brushType=18;
 			}
 		}
 	}
@@ -733,7 +765,9 @@ function mainUpdate()
 			bConsoleBox.log("F - Fill floor");
 			bConsoleBox.log("M  - Cycle edit modes");
 			bConsoleBox.log("O  - Save room");
-			bConsoleBox.log("P  - Load room");
+			bConsoleBox.log("I  - Load room");
+			bConsoleBox.log("C  - Copy room");
+			bConsoleBox.log("P  - Paste room");
 		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill");
 			//bConsoleBox.log("Z - Undo");
 			bConsoleBox.log("Hit E to leave edit mode");
@@ -760,21 +794,22 @@ function mainUpdate()
 		}
 		if(deletekey.check())
 		{	
-			if(!editor.confirmed)
-			{
-				bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)","yellow");
-				editor.confirming=true;
-				editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
+			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)","yellow");
+			editor.confirming=true;
+			editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
 				curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;}
 				
-			}else{
-				
-				editor.confirmed=false;
-			}
 		}
-		if((!curDungeon.curRoom().active) &&(insertkey.check()))
+		if(insertkey.check())
 		{
-			curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+			if(!curDungeon.curRoom().active)
+			{
+				curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+			}else
+			{
+				bConsoleBox.log("Room already exists!");
+			}
+			
 		}
 		if(shiftkey.checkDown())
 		{

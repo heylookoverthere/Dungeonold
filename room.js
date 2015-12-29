@@ -52,11 +52,16 @@ doorSprite[2][2]=Sprite("dungeontiles/lockeddoor2");
 doorSprite[2][3]=Sprite("dungeontiles/lockeddoor3");
 
 
-function staircase(up)
+function staircase(up,clone)
 {
 	this.x=0;
 	this.y=0;
 	this.up=up;
+	if(clone){
+		this.x=clone.x;
+		this.y=clone.y;
+		this.up=clone.up;
+	}
 }
 	
 var doorType={};
@@ -66,7 +71,7 @@ doorType.Locked=2;
 doorType.Bombable=3;
 doorType.Bombed=4;
 	
-function door(or)
+function door(or,clone)
 {
 	if(!or){or=0;}
 	this.x=0;
@@ -75,6 +80,15 @@ function door(or)
 	this.dest=null;
 	this.orientation=or; //0=top, 1=right, 2= bottom, 3= left. 
 	this.type=0;
+	
+	if(clone)
+	{
+		this.x=clone.x;
+		this.y=clone.y; 
+		this.dest=null;
+		this.orientation=clone.orientation; //0=top, 1=right, 2= bottom, 3= left. 
+		this.type=clone.type;
+	}
 	
 	door.prototype.orient=function(dir)
 	{
@@ -298,6 +312,32 @@ function room(I) { //room object
             I.seenMap[i][j]= false;
         }
     }
+	
+	I.copyTiles=function(clone)
+	{
+		for(var i=0;i<I.width;i++)
+			{
+				for(var j=0;j<I.height;j++)
+				{
+					I.tiles[i][j].data=clone.tiles[i][j].data;
+				}
+			}
+	}
+	
+	I.copyExits=function(clone)
+	{
+		I.exits=new Array();
+		for(var i=0;i<clone.exits.length;i++)
+		{
+			I.exits.push(new door(0,clone.exits[i]));
+		}
+		I.stairs=new Array();
+		for(var i=0;i<clone.stairs.length;i++)
+		{
+			I.stairs.push(new staircase(0,clone.stairs[i]));
+		}
+	}
+	
     I.getPath = function(startX, startY, endX, endY,booat) {
 		//var snerd=I.getSubMap(0,0,ROOM_WIDTH,ROOM_HEIGHT);//(startX,startY,endX,endY);
 		if(booat){
@@ -602,21 +642,22 @@ function room(I) { //room object
                 }
 				if((!this.fogOfWar) || (this.seenMap[i][j])|| (true))
 				{
-					if(dominantType.type && dominantType.type <20) {
+					if(dominantType.type && dominantType.type <22) {
 					//HACK to get rid of error
 						if(dungeonTileSprite[dominantType.type])
 						{
 							dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
 						}
-					}else if(dominantType.type&& dominantType.type<24){
+					}if(dominantType.type&& (dominantType.type<24)&&(dominantType.type>19)){ //water
 						dungeonTileSprite[20+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
-					}else if (dominantType.type&& dominantType.type<28) {
+					}else if (dominantType.type&& (dominantType.type<28)&&(dominantType.type>23)) {
 						dungeonTileSprite[24+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
-					}else if (dominantType.type&& dominantType.type>37) {
-						
-					}else 
+					}else if(dungeonTileSprite[dominantType.type])
 					{
-						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
+						dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
+					}else //for now draw still lava if problem
+					{
+							dungeonTileSprite[DungeonTileType.Lava].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
 					}
 				}else
 				{
@@ -945,6 +986,8 @@ function editCursor()
 	this.mode=0;
 	this.numModes=3;
 	this.numDoorTypes=4;
+	this.clipBoard=new room();
+	this.clipBoard.active=false;
 }
 
 editCursor.prototype.clearConfirm=function()

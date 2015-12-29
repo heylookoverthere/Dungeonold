@@ -576,16 +576,25 @@ function dungeon(path)
 		{
 			return false;
 		}
+		
+		var kitchen=new room();
+		kitchen.x=x;
+		kitchen.y=y;
 		if(clone)
 		{
 			//var kitchen=new room(clone);
-			return false;
+			/*for(var i=0;i<kitchen.width;i++)
+			{
+				for(var j=0;j<kitchen.height;j++)
+				{
+					kitchen.tiles[i][j].data=clone.tiles[i][j].data;
+				}
+			}*/
+			kitchen.copyTiles(clone);
+			kitchen.copyExits(clone);
+			
 		}else
 		{
-		
-			var kitchen=new room();
-			kitchen.x=x;
-			kitchen.y=y;
 			kitchen.fillAll(DungeonTileType.GreenFloor);
 			for(var i=0;i<kitchen.width;i++)
 			{
