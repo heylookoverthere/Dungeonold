@@ -118,6 +118,15 @@ function door(or)
 		return doorSprite[this.type][this.orientation];
 	}
 	
+	door.prototype.passable=function()
+	{
+		if((this.type==0) || (this.type==doorType.Bombed))
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	door.prototype.draw=function(can,cam)
 	{
 		if((this.type!=doorType.Bombable) || (editMode))
