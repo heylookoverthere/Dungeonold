@@ -66,7 +66,7 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(0)) || (!limited))
 			{
-				if((this.curRoom().getDoor(0).passable()) || (!limited))
+				if((this.curRoom().getOpenDoor(0)) &&(this.curRoom().getOpenDoor(0).passable()) || (!limited))
 				{
 					this.roomY--;
 					this.curRoom().explored=true;
@@ -94,7 +94,7 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(2)) || (!limited))
 			{
-				if((this.curRoom().getDoor(2).passable()) || (!limited))
+				if((this.curRoom().getOpenDoor(2)) &&(this.curRoom().getOpenDoor(2).passable()) || (!limited))
 				{
 					this.roomY++;
 					this.curRoom().explored=true;
@@ -122,7 +122,7 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(1)) || (!limited))
 			{
-				if((this.curRoom().getDoor(1).passable()) || (!limited))
+				if((this.curRoom().getOpenDoor(1)) && (this.curRoom().getOpenDoor(1).passable()) || (!limited))
 				{
 					this.roomX++;
 					this.curRoom().explored=true;
@@ -150,7 +150,7 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(3)) || (!limited))
 			{
-				if((this.curRoom().getDoor(3).passable()) || (!limited))
+				if((this.curRoom().getOpenDoor(3)) &&(this.curRoom().getOpenDoor(3).passable()) || (!limited))
 				{
 					this.roomX--;
 					this.curRoom().explored=true;
@@ -355,9 +355,10 @@ function dungeon(path)
 			}
 			if(this.rooms[this.roomZ][this.roomX][this.roomY-1].hasDoor(2))
 			{
-				var aDoor=this.rooms[this.roomZ][this.roomX][this.roomY-1].getDoor(2);
-				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
-				
+				var aDoorList=this.rooms[this.roomZ][this.roomX][this.roomY-1].getDoors(2);
+				for(var g=0;g<aDoorList.length;g++){
+					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
+				}
 			}
 		}
 	
@@ -391,8 +392,10 @@ function dungeon(path)
 			}
 			if(this.rooms[this.roomZ][this.roomX][this.roomY+1].hasDoor(0))
 			{
-				var aDoor=this.rooms[this.roomZ][this.roomX][this.roomY+1].getDoor(0);
-				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
+				var aDoorList=this.rooms[this.roomZ][this.roomX][this.roomY+1].getDoors(0);
+				for(var g=0;g<aDoorList.length;g++){
+					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
+				}
 			}
 		}
 	var txOffset=-491;//left
@@ -424,8 +427,10 @@ function dungeon(path)
 			}
 			if(this.rooms[this.roomZ][this.roomX-1][this.roomY].hasDoor(1))
 			{
-				var aDoor=this.rooms[this.roomZ][this.roomX-1][this.roomY].getDoor(1);
-				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+				var aDoorList=this.rooms[this.roomZ][this.roomX-1][this.roomY].getDoors(1);
+				for(var g=0;g<aDoorList.length;g++){
+					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+				}
 			}
 		}
 		var txOffset=791;//right
@@ -457,8 +462,10 @@ function dungeon(path)
 			}
 			if(this.rooms[this.roomZ][this.roomX+1][this.roomY].hasDoor(3))
 			{
-				var aDoor=this.rooms[this.roomZ][this.roomX+1][this.roomY].getDoor(3);
-				aDoor.getSprite().draw(can,(aDoor.x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoor.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+				var aDoorList=this.rooms[this.roomZ][this.roomX+1][this.roomY].getDoors(3);
+				for(var g=0;g<aDoorList.length;g++){
+					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+				}
 			}
 		}
 	}

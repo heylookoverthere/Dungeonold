@@ -113,6 +113,16 @@ function door(or)
 		if(lock){this.type=2;}
 	}
 	
+	door.prototype.open=function()
+	{
+		if(this.type==doorType.Bombable)
+		{
+			this.type=doorType.Bombed;
+			return
+		}
+		this.type=0;
+	}	
+	
 	door.prototype.getSprite=function()
 	{
 		return doorSprite[this.type][this.orientation];
@@ -309,7 +319,7 @@ function room(I) { //room object
 	
 	I.hasDoor=function(dir)
 	{
-		for(var i=0;i<4;i++)
+		for(var i=0;i<I.exits.length;i++)
 		{
 			if((I.exits[i]) && (I.exits[i].orientation==dir))
 			{
@@ -325,6 +335,32 @@ function room(I) { //room object
 		for(var i=0;i<4;i++)
 		{
 			if((I.exits[i]) && (I.exits[i].orientation==dir))
+			{
+				return I.exits[i];
+			}
+		}
+		return null;
+	};
+	
+	I.getDoors=function(dir)
+	{
+		var palst=new Array();
+		for(var i=0;i<I.exits.length;i++)
+		{
+			if((I.exits[i]) && (I.exits[i].orientation==dir))
+			{
+				palst.push(I.exits[i]);
+			}
+		}
+		return palst;
+	};
+	
+	I.getOpenDoor=function(dir)
+	{
+		if(!I.hasDoor(dir))		{return null;}
+		for(var i=0;i<I.exits.length;i++)
+		{
+			if((I.exits[i]) && (I.exits[i].orientation==dir) &&(I.exits[i].passable()))
 			{
 				return I.exits[i];
 			}
