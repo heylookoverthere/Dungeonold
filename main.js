@@ -527,6 +527,9 @@ function mainDraw() {
 			}else if(editor.doorType==3)
 			{
 				canvas.fillText("Bombable Door",18,96);
+			}else if(editor.doorType==4)
+			{
+				canvas.fillText("Bombed Door",18,96);
 			}
 			
 		}else
@@ -710,21 +713,10 @@ function mainUpdate()
 				return;
 			}
 			
+			curDungeon.curRoom().tiles[york.x][york.y].data=DungeonTileType.Door+york.type;
 			
-			if(editor.doorType==0)
-			{
-				//do nothing?
-			}else if(editor.doorType==1) //closed
-			{
-				york.closed=true;
-			}else if(editor.doorType==2) //locked
-			{
-				york.locked=true;
-				
-			}else if(editor.doorType==3) //bomb
-			{
-				york.type=1;
-			}
+			york.type=editor.doorType;
+		
 			curDungeon.curRoom().exits.push(york);
 			
 		}
