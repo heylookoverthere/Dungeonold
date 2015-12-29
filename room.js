@@ -939,9 +939,19 @@ function editCursor()
 	this.doorType=0;
 	this.penDown=false;
 	this.penDownMode=false;
+	this.confirming=false;
+	this.confirmed=false;
+	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=3;
 	this.numDoorTypes=4;
+}
+
+editCursor.prototype.clearConfirm=function()
+{
+	this.confirming=false;
+	this.confirmingWhat=null;
+	this.confirmed=false;
 }
 
 editCursor.prototype.draw=function(can)

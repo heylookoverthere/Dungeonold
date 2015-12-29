@@ -295,9 +295,10 @@ function textbox()
 	{
 		console.log("CONSEQUENCES HAVE HAPPENED");
 	};
-	this.log=function(text)
+	this.log=function(text,col)
 	{
 		//this.textLim=Math.floor(this.width/6);
+		if(!col){col="white";}
 		if(customConsole)
 		{
 			if(text.length>this.textLim)
@@ -305,17 +306,17 @@ function textbox()
 				var fext=text.substring(0,this.textLim);
 				var dext=text.substring(this.textLim,text.length);
 				this.msg.push(fext);
-				this.colors.push("white");
+				this.colors.push(col);
 				this.log(dext);
-				if(this.msg.length>42)
+				if(this.msg.length>41)
 				{
 					this.scroll++;
 				}
 			}else
 			{
 				this.msg.push(text);
-				this.colors.push("white");
-				if(this.msg.length>42)
+				this.colors.push(col);
+				if(this.msg.length>41)
 				{
 					this.scroll++;
 				}
@@ -391,10 +392,11 @@ function textbox()
 		}
 		
 		this.displayMsg=this.msg.slice(this.scroll, this.msg.length);
+		this.displayColor=this.colors.slice(this.scroll,this.colors.length);
 		for(var i=0;i<this.displayMsg.length;i++)
 		{
 			//if (i>bConsoleStr.length) {break;}
-			can.fillStyle=this.colors[i];
+			can.fillStyle=this.displayColor[i];
 			can.fillText(this.displayMsg[i], this.x+6,this.y+2+(18*(i+1)));
 			if((this.options>0) && (this.optionTrack==i))
 			{

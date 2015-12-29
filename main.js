@@ -99,6 +99,8 @@ var fillkey=letterkeys[5];
 var modekey=letterkeys[12];
 var undokey=new akey("z");
 var editkey=new akey("e");
+var yeskey=new akey("y");
+var nokey=new akey("n");
 
 var miles=new dude();
 miles.AI=false;
@@ -718,8 +720,7 @@ function mainUpdate()
 		{
 		
 			//HELP
-			bConsoleBox.colors.push("yellow")
-			bConsoleBox.log("CONTROLS:");
+			bConsoleBox.log("CONTROLS:","yellow");
 			bConsoleBox.log("Arrow Keys - Move room");
 			bConsoleBox.log("Page Up/Down - Move floors");
 			bConsoleBox.log("Shift + Arrow/Page keys - create exit in that direction, making a new room if nessicary");
@@ -743,11 +744,33 @@ function mainUpdate()
 		{
 			curDungeon.curRoom().hidden=!curDungeon.curRoom().hidden
 		}
+		if(yeskey.check())
+		{
+			if(editor.confirming)
+			{
+				editor.confirmed=true;
+				editor.confirming=false;
+				editor.confirmingWhat();
+				editor.confirmingWhat=null;
+			}
+		}
+		if(nokey.check())
+		{
+			editor.confirming=false;
+		}
 		if(deletekey.check())
 		{	
-			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name);
-			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
-			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;
+			if(!editor.confirmed)
+			{
+				bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)","yellow");
+				editor.confirming=true;
+				editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
+				curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;}
+				
+			}else{
+				
+				editor.confirmed=false;
+			}
 		}
 		if((!curDungeon.curRoom().active) &&(insertkey.check()))
 		{
@@ -783,6 +806,7 @@ function mainUpdate()
 					if((curDungeon.rooms[curDungeon.roomZ+1][curDungeon.roomX][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ+1,curDungeon.roomX,curDungeon.roomY)))
 					{
 						curDungeon.smartAddStair(editor.x,editor.y,true);
+						editor.clearConfirm();
 						curDungeon.changeFloor(true,!editMode);
 					}
 				}else
@@ -797,6 +821,7 @@ function mainUpdate()
 					if((curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ-1,curDungeon.roomX,curDungeon.roomY)))
 					{
 						curDungeon.smartAddStair(editor.x,editor.y,false);
+						editor.clearConfirm();
 						curDungeon.changeFloor(false,!editMode);
 					}
 				}else
@@ -813,6 +838,7 @@ function mainUpdate()
 						//curDungeon.curRoom().addDoor(3)
 						//curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].addDoor(1);
 						curDungeon.smartAddDoor(1,6,3);
+						editor.clearConfirm();
 						curDungeon.changeRoom(3,!editMode);
 					}
 				}else
@@ -827,6 +853,7 @@ function mainUpdate()
 					if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].active)|| (curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX+1,curDungeon.roomY)))
 					{
 						curDungeon.smartAddDoor(18,6,1);
+						editor.clearConfirm();
 						curDungeon.changeRoom(1,!editMode);
 					}
 				}else{
@@ -840,6 +867,7 @@ function mainUpdate()
 					if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY-1)))
 					{
 						curDungeon.smartAddDoor(8,1,0);
+						editor.clearConfirm();
 						curDungeon.changeRoom(0,!editMode);
 					}
 				}else{
@@ -853,6 +881,7 @@ function mainUpdate()
 					if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY+1)))
 					{
 						curDungeon.smartAddDoor(8,13,2);
+						editor.clearConfirm();
 						curDungeon.changeRoom(2,!editMode);
 					}
 				}else
@@ -909,31 +938,37 @@ function mainUpdate()
 	
 	if(pageupkey.check())
 	{
+		editor.clearConfirm();
 		curDungeon.changeFloor(true,!editMode);
 		editor.penDown=false;
 	}
 	if(pagedownkey.check())
 	{
+		editor.clearConfirm();
 		curDungeon.changeFloor(false,!editMode);
 		editor.penDown=false;
 	}
 	 if(leftkey.check())
 	 {
+		editor.clearConfirm();
 		curDungeon.changeRoom(3,!editMode);
 		editor.penDown=false;
 	 }
 	 if(rightkey.check())
 	 {
+		editor.clearConfirm();
 		curDungeon.changeRoom(1,!editMode);
 		editor.penDown=false;
 	 }
 	 if(upkey.check())
 	 {
+		editor.clearConfirm();
 		curDungeon.changeRoom(0,!editMode);
 		editor.penDown=false;
 	 }
 	 if(downkey.check())
 	 {
+		editor.clearConfirm();
 		curDungeon.changeRoom(2,!editMode);
 		editor.penDown=false;
 	 }
@@ -963,8 +998,10 @@ function mainUpdate()
 	if(editkey.check())
 	{
 		editMode=!editMode;
-		if(editMode)
-		bConsoleBox.log("Welcome to edit mode. Hit H for help.");
+		editor.clearConfirm();
+		if(editMode){
+			bConsoleBox.log("Welcome to edit mode. Hit H for help.");
+		}
 	}
 		
 	if ((milliseconds-lastani>WATER_RATE) &&(!isBattle))
@@ -1016,6 +1053,32 @@ function mainUpdate()
 
 };
 merp();
+var tt="Indiana Jones and the Mystery of the missing title";
+var yui=Math.floor(Math.random()*10);
+if (yui==0){
+	tt="Indiana Jones and the Legend of the Lost Socks";
+}else if (yui==1){
+	tt="Indiana Jones Meets Batman & Robin";
+}else if (yui==2){
+	tt="Indiana Jones: Raiders of Hitler's Fridge";
+}else if (yui==3){
+	tt="Indiana Jones: Short Round's Revenge";
+}else if (yui==4){
+	tt="Indiana Jones: Back 2 Da Hood";
+}else if (yui==5){
+	tt="Indiana Jones and the Pyramids of Mars";
+}else if (yui==6){
+	tt="Indiana Jones and the Day He Just Graded Papers at the Office";
+}else if (yui=7){
+	tt="Indiana Jones and the Crab People";
+}else if (yui==8){
+	tt="Indiana Jones and the Last Sandwich";
+}else if (yui==9){
+	tt="Indiana Jones and Kingdom of the Silver Fork";
+}
+
+document.title = tt;
+curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 startGame();
 
 //console.log(curMap.tiles[Skagos.x/16][Skagos.y/16].data);

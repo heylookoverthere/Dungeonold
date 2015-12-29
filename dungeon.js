@@ -33,8 +33,9 @@ function dungeon(path)
 			for(j=0;j<this.height[p];j++)
 			{
 				var edgar=new room();
-				var parth=path+"/floor"+String(p)+"/roomX"+String(i)+"Y"+String(j);
-				edgar.buildRoom(parth);
+				//var parth=path+"/floor"+String(p)+"/roomX"+String(i)+"Y"+String(j);
+				//edgar.buildRoom(parth);
+				edgar.active=false;
 				edgar.name="roomX"+String(i)+"Y"+String(j);
 				this.rooms[p][i].push(edgar);
 			}
