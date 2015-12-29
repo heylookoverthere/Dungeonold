@@ -631,10 +631,15 @@ function mainUpdate()
 		{
 			editor.clipBoard.copyTiles(curDungeon.curRoom());
 			editor.clipBoard.copyExits(curDungeon.curRoom());
+			editor.clipBoard.active=true;
 			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name+" copied to clipboard.");
 		}else if(pastekey.check())
 		{
-			if(!curDungeon.curRoom().active)
+			
+			if(!editor.clipBoard.active)
+			{
+				bConsoleBox.log("Clipboard is empty.");
+			}else if(!curDungeon.curRoom().active)
 			{
 				curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,editor.clipBoard);
 			}else
