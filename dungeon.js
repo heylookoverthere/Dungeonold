@@ -205,7 +205,48 @@ function dungeon(path)
 	{
 		smath="Dungeon/dungeons/"+this.name+"/"+"floor"+this.roomZ+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
+		for(var i=0;i<this.getWidth();i++)
+		{
+			for(var j=0;j<this.getHeight();j++)
+			{
+				if(this.rooms[this.roomZ][i][j].active)
+				{
+					this.rooms[this.roomZ][i][j].save("Dungeon/dungeons/"+this.name+"/"+"floor"+this.roomZ+"/");
+				}
+			}
+		}
+			
 	}
+	
+	this.loadFloor=function(fl)
+	{
+		if(!fl)
+		{
+			fl=this.roomZ;
+		}
+		smath="dungeons/"+curDungeon.name+"/"+"floor"+fl+"/"+"map.txt";
+		var dung=this;
+		$.get(smath, function(data) 
+		{
+			tempstring=data.split(",");
+			for(var i=0;i<dung.getWidth();i++)
+			{
+				for(var j=0;j<dung.getHeight();j++)
+				{
+					if(tempstring[j+(dung.getHeight())*i]==1)
+					{
+						dung.rooms[fl][i][j].load("dungeons/"+dung.name+"/"+"floor"+dung.roomZ+"/");
+					}else
+					{
+						//console.log("yar");
+					}
+				}
+			}
+			bConsoleBox.log("Loaded Dungeon/"+smath); 
+		});  
+		
+		
+	};
 	
 	dungeon.prototype.blank=function()
 	{
@@ -232,34 +273,12 @@ function dungeon(path)
 	
 	dungeon.prototype.load=function() // maybe done wipe rooms? just clear all rooms / set to inactive? 
 	{
+		//read main dungeon file, determine how many floors.
 		var dung=this;
-		dung.blank();
-		for(var i=dung.depth;i<dung.floors-1;i++)
+		//dung.blank();
+		for(var i=0;i<dung.floors;i++)
 		{
-			pmath="dungeons/"+dung.name+"/"+"floor"+i+"/map.txt";
-			$.get(pmath, function(data) 
-			{
-				for(var p=0;p<dung.getWidth();p++)
-				{
-					for(var q=0;q<dung.getHeight();q++)
-					{
-						if(data[p+q*dung.getWidth()]==1)//load room
-						{
-							smath="dungeons/"+dung.name+"/"+"floor"+i+"/"+"roomX"+p+"Y"+q+".txt";
-							$.get(smath, function(datap) 
-							{ 
-								console.log("Loading room at Floor "+i+" X: "+p+" Y: "+q); //NO WTF IT's NOT
-								dung.rooms[i][p][q].buildMapFromLoadedTiles("whatever",datap);  
-								dung.rooms[i][p][q].active=true;
-							});
-						}else //no room
-						{
-							//shouldn't really have to do anything since I blanked the map before
-						}
-					}
-				}
-				
-			});  
+			dung.loadFloor(i);
 		}
 	}
 	
@@ -412,6 +431,21 @@ function dungeon(path)
 			}
 		}
 		
+	};
+	
+	this.wipeFloor=function(fl)
+	{
+		for(var i=0;i<this.getWidth();i++)
+		{
+			for(var j=0;j<this.getHeight();j++)
+			{
+				this.rooms[fl][i][j].redoWalls();
+				this.rooms[fl][i][j].fillAll(DungeonTileType.GreenFloor);
+				this.rooms[fl][i][j].active=false; 
+				this.rooms[fl][i][j].stairs=new Array();
+				this.rooms[fl][i][j].exits=new Array();
+			}
+		}
 	};
 	
 	this.drawAdjacent=function(can,cam)

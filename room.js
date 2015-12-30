@@ -527,6 +527,31 @@ function room(I) { //room object
 			return false;
 	}
 	
+	I.load=function(path)
+	{
+		
+		smath=path+I.name+".txt";
+		$.get(smath, function(data) 
+		{ 
+			I.buildMapFromLoadedTiles("whatever",data); 
+			I.active=true;
+			bConsoleBox.log("Loaded "+smath); 
+		});  
+		
+	}
+	
+	I.save=function(path)
+	{
+		if(I.active)
+		{
+			smath=path+I.name+".txt";
+			$.post("/save/", {"data": I.stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
+		}else
+		{
+			//edit floor file to make clear there's no room.
+			bConsoleBox.log("No room to save");
+		}
+	}
 		
 	I.stringifyTiles = function(name) {
 		var tempstring= "";

@@ -104,6 +104,8 @@ var nokey=new akey("n");
 var controlkey=new akey("cntrl");
 var copykey=new akey("c");
 var pastekey=new akey("p");
+var savefloorkey = new akey("k");
+var loadfloorkey = new akey("l");
 
 var miles=new dude();
 miles.AI=false;
@@ -214,8 +216,8 @@ function playSound(name){
 
 controller= new virtualGamePad();
 
-var savekey=new akey("o"); //define the different keys
-var loadkey=new akey("i");
+var savekey=new akey("i"); //define the different keys
+var loadkey=new akey("o");
 var shiftkey=new akey("shift");
 
 
@@ -591,21 +593,41 @@ function mainUpdate()
 	thyme.update();
 	if((editMode) && (savekey.check()))
 	{
-		if(curDungeon.curRoom().active)
-		{
-			smath="Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
-			$.post("/save/", {"data": curDungeon.curRoom().stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
-		}else
-		{
-			//edit floor file to make clear there's no room.
-		}
+		bConsoleBox.log("Existing room save will be overwritten. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.curRoom().save("Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
+	    }
 	}
 	if((editMode) && (loadkey.check()))
 	{
 		//check floor file to make sure there's a room first. 
-		smath="dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
+		/*smath="dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
 		$.get(smath, function(data) { curDungeon.curRoom().buildMapFromLoadedTiles("whatever",data)});  
-		bConsoleBox.log("Loaded Dungeon/"+smath); 
+		bConsoleBox.log("Loaded Dungeon/"+smath); */
+		
+		bConsoleBox.log(curDungeon.curRoom().name +" will be overwritten. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.curRoom().load("dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
+		}
+	}
+		
+	if((editMode) && (savefloorkey.check()))
+	{
+		bConsoleBox.log("Existing floor save will be overwritten. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.saveFloor();
+		}
+	}
+	if((editMode) && (loadfloorkey.check()))
+	{
+		bConsoleBox.log("Unsaved data will be lost. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.loadFloor();
+		}
 	}
 		
 	if((editMode) && (modekey.check()))
@@ -771,13 +793,16 @@ function mainUpdate()
 			bConsoleBox.log("W A S D - Move cursor");
 			bConsoleBox.log("Shift + W A S D - Remove door");
 			bConsoleBox.log("Delete - Delete room");
+			bConsoleBox.log("Shift + Delete - Delete floor");
 			bConsoleBox.log("Insert - Create Room");
 			bConsoleBox.log("0 - Toggle hidden room");
 			bConsoleBox.log("Tab - Change selected tile/door");
 			bConsoleBox.log("F - Fill entire floor");
 			bConsoleBox.log("M  - Cycle edit modes");
-			bConsoleBox.log("O  - Save room");
-			bConsoleBox.log("I  - Load room");
+			bConsoleBox.log("K  - Save floor");
+			bConsoleBox.log("L  - Load floor");
+			bConsoleBox.log("I  - Save room");
+			bConsoleBox.log("O  - Load room");
 			bConsoleBox.log("C  - Copy room");
 			bConsoleBox.log("Shift + C  - Copy room sans doors");
 			bConsoleBox.log("P  - Paste room");
@@ -807,11 +832,19 @@ function mainUpdate()
 		}
 		if(deletekey.check())
 		{	
-			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)","yellow");
-			editor.confirming=true;
-			editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
+			if(shiftkey.checkDown())
+			{
+				bConsoleBox.log("Entire floor will be deleted. Confirm? (Y/N)","yellow");
+				editor.confirming=true;
+				editor.confirmingWhat=function(){curDungeon.wipeFloor(curDungeon.roomZ);}
+			}
+			else
+			{
+				bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)","yellow");
+				editor.confirming=true;
+				editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
 				curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;}
-				
+			}	
 		}
 		if(insertkey.check())
 		{
@@ -1133,6 +1166,8 @@ if (yui==0){
 
 document.title = tt;
 curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+curDungeon.load();
+//curDungeon.loadFloor();
 curDungeon.curRoom().explored=true;
 startGame();
 

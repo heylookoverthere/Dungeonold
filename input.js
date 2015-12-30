@@ -346,7 +346,7 @@ var edskeys=[];
 var pausekey=new akey("space");
 pausekey.desc="Pause";
 edskeys.push(pausekey);
-var debugkey=new akey("l");
+var debugkey=new akey("b");
 debugkey.desc="Debug key";
 
 var logstoreskey=new akey("i");
