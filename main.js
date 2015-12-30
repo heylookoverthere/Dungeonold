@@ -1175,6 +1175,7 @@ document.title = tt;
 curDungeon.load();
 //curDungeon.loadFloor();
 curDungeon.curRoom().explored=true;
+//curDungeon.linkDoors();
 startGame();
 
 //console.log(curMap.tiles[Skagos.x/16][Skagos.y/16].data);

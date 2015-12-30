@@ -15,8 +15,8 @@ function dungeon(path)
 	this.width=new Array();
 	this.height=new Array();
 	this.depth=0; //254;
-	
-	this.floors=4;
+	this.maxFloors=99;
+	this.floors=this.maxFloors;
 	for(var i=0;i<this.floors;i++)
 	{
 		this.width.push(15);
@@ -318,20 +318,23 @@ function dungeon(path)
 	
 	dungeon.prototype.load=function() 
 	{
+		var dung=this;
 		//read main dungeon file, determine how many floors.
 		smath="dungeons/"+this.name+"/"+"main.txt";
 		$.get(smath, function(data) 
 		{ 
 			console.log("Detected "+data+" floors"); 
-			this.floors=Math.floor(data);
+			dung.floors=Math.floor(data);
 			console.log(this.floors); 
+			for(var i=0;i<dung.floors;i++)
+			{
+				dung.loadFloor(i);
+			}
+			
 		}); 
-		var dung=this;
+		
 		//dung.blank();
-		for(var i=0;i<dung.floors;i++)
-		{
-			dung.loadFloor(i);
-		}
+
 	}
 	
 	this.smartAddStair=function(x,y,up,croom)
@@ -347,6 +350,109 @@ function dungeon(path)
 		}else
 		{
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.DownStair;
+		}
+	};
+	
+	this.linkDoors=function(fl)
+	{
+		
+		for(var i=0;i<this.getWidth();i++)
+		{
+			for(var j=0;j<this.getHeight();j++)
+			{
+				for(var v=0;v<this.rooms[fl][i][j].exits.length;v++)
+				{
+					if(this.rooms[fl][i][j].exits[v].orientation==0) //top
+					{
+						if((j>0) && (this.rooms[fl][i][j-1].active))
+						{
+							var somedoors=this.rooms[fl][i][j-1].getDoors(2);
+							var thedoor=null;
+							//console.log(somedoors);
+							for(var k=0;k<somedoors.length;k++)
+							{
+								
+								//console.log(somedoors[k],this.rooms[fl][i][j].exits[v]);
+								if(somedoors[k].x==this.rooms[fl][i][j].exits[v].x)
+								{
+									thedoor=somedoors[k];									
+								}
+							}
+							if(thedoor)
+							{
+								this.rooms[fl][i][j].exits[v].dest=thedoor;
+							}
+						}
+					}
+					if(this.rooms[fl][i][j].exits[v].orientation==1) //right
+					{
+						if((i<this.getWidth()-1) && (this.rooms[fl][i+1][j].active))
+						{
+							var somedoors=this.rooms[fl][i+1][j].getDoors(3);
+							var thedoor=null;
+							//console.log(somedoors);
+							for(var k=0;k<somedoors.length;k++)
+							{
+								
+								//console.log(somedoors[k],this.rooms[fl][i][j].exits[v]);
+								if(somedoors[k].y==this.rooms[fl][i][j].exits[v].y)
+								{
+									thedoor=somedoors[k];									
+								}
+							}
+							if(thedoor)
+							{
+								this.rooms[fl][i][j].exits[v].dest=thedoor;
+							}
+						}
+					}
+					if(this.rooms[fl][i][j].exits[v].orientation==2) //bottom
+					{
+						if((j<this.getHeight()-1) && (this.rooms[fl][i][j+1].active))
+						{
+							var somedoors=this.rooms[fl][i][j+1].getDoors(0);
+							var thedoor=null;
+							//console.log(somedoors);
+							for(var k=0;k<somedoors.length;k++)
+							{
+								
+								//console.log(somedoors[k],this.rooms[fl][i][j].exits[v]);
+								if(somedoors[k].x==this.rooms[fl][i][j].exits[v].x)
+								{
+									thedoor=somedoors[k];									
+								}
+							}
+							if(thedoor)
+							{
+								this.rooms[fl][i][j].exits[v].dest=thedoor;
+							}
+						}
+					}
+					if(this.rooms[fl][i][j].exits[v].orientation==3) //left
+					{
+						if((i>0) && (this.rooms[fl][i-1][j].active))
+						{
+							var somedoors=this.rooms[fl][i-1][j].getDoors(1);
+							var thedoor=null;
+							//console.log(somedoors);
+							for(var k=0;k<somedoors.length;k++)
+							{
+								
+								//console.log(somedoors[k],this.rooms[fl][i][j].exits[v]);
+								if(somedoors[k].y==this.rooms[fl][i][j].exits[v].y)
+								{
+									thedoor=somedoors[k];									
+								}
+							}
+							if(thedoor)
+							{
+								this.rooms[fl][i][j].exits[v].dest=thedoor;
+							}
+						}
+					}
+				}
+			}
+			
 		}
 	};
 	
@@ -366,7 +472,7 @@ function dungeon(path)
 				return;
 			}
 			
-			if(!this.rooms[this.roomZ+1][this.roomX][this.roomY].active){
+			if((limited) && (!this.rooms[this.roomZ+1][this.roomX][this.roomY].active)){
 				bConsoleBox.log("No active room above");
 				return;
 			}
