@@ -235,7 +235,7 @@ function dungeon(path)
 				{
 					if(tempstring[j+(dung.getHeight())*i]==1)
 					{
-						dung.rooms[fl][i][j].load("dungeons/"+dung.name+"/"+"floor"+dung.roomZ+"/");
+						dung.rooms[fl][i][j].load("dungeons/"+dung.name+"/"+"floor"+fl+"/");
 					}else
 					{
 						//console.log("yar");
