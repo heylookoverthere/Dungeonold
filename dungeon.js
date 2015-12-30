@@ -360,7 +360,10 @@ function dungeon(path)
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomY>0) && (this.rooms[this.roomZ][this.roomX][this.roomY-1].active))
 			{
-				this.rooms[this.roomZ][this.roomX][this.roomY-1].addDoor(2,x,13,type);
+				mindy.dest=this.rooms[this.roomZ][this.roomX][this.roomY-1].addDoor(2,x,13,type,mindy);
+			}else
+			{
+				bConsoleBox.log("Warning: Door not linked. No room","Yellow");
 			}
 		}else if (dir==1)
 		{
@@ -372,7 +375,10 @@ function dungeon(path)
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomX<this.getWidth()-1) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active))
 			{
-				this.rooms[this.roomZ][this.roomX+1][this.roomY].addDoor(3,1,y,type);
+				mindy.dest=this.rooms[this.roomZ][this.roomX+1][this.roomY].addDoor(3,1,y,type,mindy);
+			}else
+			{
+				bConsoleBox.log("Warning: Door not linked. No room","Yellow");
 			}
 		}else if(dir==3)
 		{
@@ -384,7 +390,10 @@ function dungeon(path)
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomX>0) && (this.rooms[this.roomZ][this.roomX-1][this.roomY].active))
 			{
-				this.rooms[this.roomZ][this.roomX-1][this.roomY].addDoor(1,18,y,type);
+				mindy.dest=this.rooms[this.roomZ][this.roomX-1][this.roomY].addDoor(1,18,y,type,mindy);
+			}else
+			{
+				bConsoleBox.log("Warning: Door not linked. No room","Yellow");
 			}
 		}else if(dir==2)
 		{
@@ -396,7 +405,10 @@ function dungeon(path)
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomY<this.getHeight()-1) && (this.rooms[this.roomZ][this.roomX][this.roomY+1].active))
 			{
-				this.rooms[this.roomZ][this.roomX][this.roomY+1].addDoor(0,x,1,type);
+				mindy.dest=this.rooms[this.roomZ][this.roomX][this.roomY+1].addDoor(0,x,1,type,mindy);
+			}else
+			{
+				bConsoleBox.log("Warning: Door not linked. No room","Yellow");
 			}
 		}
 		

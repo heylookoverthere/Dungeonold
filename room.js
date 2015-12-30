@@ -121,10 +121,25 @@ function door(or,clone)
 		if(this.type==4)
 		{
 			this.type=3;
+			if(this.dest)
+			{
+				this.dest.type=3;
+			}
 			return;
 		}
 		this.type=1;
-		if(lock){this.type=2;}
+		if(this.dest)
+		{
+			this.dest.type=1;
+		}
+		if(lock)
+		{
+			this.type=2;
+			if(this.dest)
+			{
+				this.dest.type=2;
+			}
+		}
 	}
 	
 	door.prototype.open=function()
@@ -132,9 +147,17 @@ function door(or,clone)
 		if(this.type==doorType.Bombable)
 		{
 			this.type=doorType.Bombed;
-			return
+			if(this.dest)
+			{
+				this.dest.type=doorType.Bombed;
+			}
+			return;
 		}
 		this.type=0;
+		if(this.dest)
+		{
+			this.dest.type=0;
+		}
 	}	
 	
 	door.prototype.getSprite=function()
@@ -875,9 +898,10 @@ function room(I) { //room object
 			}
 		}
 	};
-	I.addDoor=function(dir,x,y,type)
+	I.addDoor=function(dir,x,y,type,link)
 	{
 		if(dir>3) {return;}
+		
 		//if(I.hasDoor(dir)) {return;}
 		if(!x) {x=8;}
 		if(!y) {y=6;}
@@ -888,6 +912,10 @@ function room(I) { //room object
 			mindy.x=x;
 			mindy.y=1;
 			mindy.type=type;
+			if(link)
+			{
+				mindy.dest=link;
+			}
 			I.exits.push(mindy);
 			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}else if (dir==1)
@@ -896,6 +924,10 @@ function room(I) { //room object
 			mindy.x=18;
 			mindy.y=y;
 			mindy.type=type;
+			if(link)
+			{
+				mindy.dest=link;
+			}
 			I.exits.push(mindy);
 			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}else if(dir==3)
@@ -904,6 +936,10 @@ function room(I) { //room object
 			mindy.x=1;
 			mindy.y=y;
 			mindy.type=type;
+			if(link)
+			{
+				mindy.dest=link;
+			}
 			I.exits.push(mindy);
 			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}else if(dir==2)
@@ -912,10 +948,14 @@ function room(I) { //room object
 			mindy.x=x;
 			mindy.y=13;
 			mindy.type=type;
+			if(link)
+			{
+				mindy.dest=link;
+			}
 			I.exits.push(mindy);
 			I.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 		}
-		
+		return mindy;
 	};
 	
 	I.getSubMap=function(tilex1,tiley1,tilex2,tiley2)
