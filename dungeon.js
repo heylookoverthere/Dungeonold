@@ -596,32 +596,7 @@ function dungeon(path)
 		}else
 		{
 			kitchen.fillAll(DungeonTileType.GreenFloor);
-			for(var i=0;i<kitchen.width;i++)
-			{
-				kitchen.tiles[i][0].data=14;
-				kitchen.tiles[i][1].data=14;
-				
-				kitchen.tiles[i][14].data=17;
-				kitchen.tiles[i][13].data=17;
-			}
-			for(var i=1;i<kitchen.height-1;i++)
-			{
-				kitchen.tiles[0][i].data=15;
-				kitchen.tiles[1][i].data=15;
-				
-				kitchen.tiles[18][i].data=16;
-				kitchen.tiles[19][i].data=16;
-			}
-			
-			
-			kitchen.tiles[0][0].data=10;
-			kitchen.tiles[1][1].data=10;
-			kitchen.tiles[0][14].data=12;
-			kitchen.tiles[1][13].data=12;
-			kitchen.tiles[19][0].data=11;
-			kitchen.tiles[18][1].data=11;
-			kitchen.tiles[19][14].data=13;
-			kitchen.tiles[18][13].data=13;
+			kitchen.redoWalls();
 		}
 		bConsoleBox.log("Room created at " +z+","+x+","+y);
 		kitchen.name="roomX"+String(x)+"Y"+String(y);

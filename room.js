@@ -323,7 +323,43 @@ function room(I) { //room object
 				}
 			}
 	}
-	
+	I.redoWalls=function()
+	{
+		for(var i=0;i<I.width;i++)
+		{
+			I.tiles[i][0].data=14;
+			I.tiles[i][1].data=14;
+			
+			I.tiles[i][14].data=17;
+			I.tiles[i][13].data=17;
+		}
+		for(var i=1;i<I.height-1;i++)
+		{
+			I.tiles[0][i].data=15;
+			I.tiles[1][i].data=15;
+			
+			I.tiles[18][i].data=16;
+			I.tiles[19][i].data=16;
+		}
+		
+		
+		I.tiles[0][0].data=10;
+		I.tiles[1][1].data=10;
+		I.tiles[0][14].data=12;
+		I.tiles[1][13].data=12;
+		I.tiles[19][0].data=11;
+		I.tiles[18][1].data=11;
+		I.tiles[19][14].data=13;
+		I.tiles[18][13].data=13;
+	}
+	I.copyStairs=function(clone)
+	{
+		I.stairs=new Array();
+		for(var i=0;i<clone.stairs.length;i++)
+		{
+			I.stairs.push(new staircase(0,clone.stairs[i]));
+		}
+	}
 	I.copyExits=function(clone)
 	{
 		I.exits=new Array();
@@ -331,11 +367,7 @@ function room(I) { //room object
 		{
 			I.exits.push(new door(0,clone.exits[i]));
 		}
-		I.stairs=new Array();
-		for(var i=0;i<clone.stairs.length;i++)
-		{
-			I.stairs.push(new staircase(0,clone.stairs[i]));
-		}
+		I.copyStairs(clone);
 	}
 	
     I.getPath = function(startX, startY, endX, endY,booat) {
@@ -425,68 +457,23 @@ function room(I) { //room object
 		return false;
 	};
 	
+	I.recursiveFill=function(x,y,targID,newID)
+	{
+		if((x<0) || (x>I.width)||(y<0)||(y>I.height)) {return;}
+		if(targID==newID) {return;}
+		if(I.tiles[x][y].data!=targID) {return;}
+		I.tiles[x][y].data=newID;
+		I.recursiveFill(x-1,y,targID,newID);
+		I.recursiveFill(x+1,y,targID,newID);
+		I.recursiveFill(x,y-1,targID,newID);
+		I.recursiveFill(x,y+1,targID,newID);
+		return;
+	};
 		
 	I.fill=function(x,y,id)
 	{
-		pixelStack = [[x, y]];
-		var startID=I.tiles[x][y].id;
-		while(pixelStack.length)
-		{
-		  var newPos, x, y, pixelPos, reachLeft, reachRight;
-		  newPos = pixelStack.pop();
-		  x = newPos[0];
-		  y = newPos[1];
-		  
-		  pixelPos = (y*I.width + x) * 4;
-		  while(y-- >= 0 && I.tiles[x][y].id==startID)
-		  {
-			pixelPos -= I.width * 4;
-		  }
-		  pixelPos += I.width * 4;
-		  ++y;
-		  reachLeft = false;
-		  reachRight = false;
-		  while(y++ < I.height-1 && I.tiles[x][y].id==startID)
-		  {
-			I.setTile(x,y,id);
-
-			if(x > 0)
-			{
-			  if(I.tiles[x][y-1].id==startID)//(matchStartColor(pixelPos - 4))
-			  {
-				if(!reachLeft){
-				  pixelStack.push([x - 1, y]);
-				  reachLeft = true;
-				}
-			  }
-			  else if(reachLeft)
-			  {
-				reachLeft = false;
-			  }
-			}
-			
-			if(x < I.width-1)
-			{
-			  if(I.tiles[x][y+1].id==startID)
-			  {
-				if(!reachRight)
-				{
-				  pixelStack.push([x + 1, y]);
-				  reachRight = true;
-				}
-			  }
-			  else if(reachRight)
-			  {
-				reachRight = false;
-			  }
-			}
-					
-			pixelPos += I.width * 4;
-		  }
-	}
-
-  
-
+		I.recursiveFill(x,y,I.tiles[x][y].data,id);
+		return;
 	};
 	
 	I.fillAll=function(id)

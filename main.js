@@ -224,23 +224,20 @@ var radar=true;
 
 function drawGUI(can)
 {
-	can.globalAlpha=0.75;
-	can.fillStyle="blue";
-	canvas.fillRect(6,6,221,54);
-	can.fillStyle="yellow";
-	can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,22);
-	can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,46);
-	var cont=0;
-	/*can.fillText("Men at Wall: "+theWatch.men.length,8,41);
-	
-	can.fillText("Men in training: "+theWatch.recruits.length,8,57);//+camera.x+","+camera.y,25,57);
-	can.fillText("Food: "+theWatch.getFood()+ " (~"+theWatch.timeToStarve()+" days)",8,73);
-	can.fillText(thyme.years+" AC "+thyme.days+ " days, "+thyme.hours+":"+thyme.minutes ,8,91);
-	can.fillText("Meals Per Day: "+theWatch.mealsPerDay,8,107);
-	can.fillText("Health: "+theWatch.health,8,125);
-	can.fillText("Gold: "+theWatch.gold,8,143);//+camera.x+","+camera.y,25,57);
-	//can.fillText(": "+Math.floor(miles.numJumps-miles.jumpTrack),755,55);*/
-	can.globalAlpha=1;
+	if(editMode)
+	{
+		can.globalAlpha=0.75;
+		can.fillStyle="blue";
+		canvas.fillRect(6,6,221,54);
+		can.fillStyle="yellow";
+		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,22);
+		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,46);
+		var cont=0;
+		can.globalAlpha=1;
+	}else
+	{
+		//hearts and shit
+	}
 }
 
 function drawDebug(can)
@@ -625,33 +622,43 @@ function mainUpdate()
 	{
 	    undoEdit(curDungeon.curRoom());
 	}
-	if((editMode))// &&(controlkey.checkDown()))
+	if((editMode) &&(shiftkey.checkDown()))
 	{
-	    if(copykey.check())
+		if(copykey.check())
 		{
 			editor.clipBoard.copyTiles(curDungeon.curRoom());
-			editor.clipBoard.copyExits(curDungeon.curRoom());
+			editor.clipBoard.copyStairs(curDungeon.curRoom());
 			editor.clipBoard.active=true;
-			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name+" copied to clipboard.");
-		}else if(pastekey.check())
+			editor.clipBoard.exits=new Array();
+			editor.clipBoard.redoWalls();
+			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name+" copied to clipboard without doors.");
+		}
+	}
+	if((editMode) && (copykey.check()))
+	{
+		editor.clipBoard.copyTiles(curDungeon.curRoom());
+		editor.clipBoard.copyExits(curDungeon.curRoom());
+		editor.clipBoard.active=true;
+		bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name+" copied to clipboard.");
+	}else if((editMode)&&pastekey.check())
+	{
+		
+		if(!editor.clipBoard.active)
 		{
-			
-			if(!editor.clipBoard.active)
-			{
-				bConsoleBox.log("Clipboard is empty.");
-			}else if(!curDungeon.curRoom().active)
-			{
+			bConsoleBox.log("Clipboard is empty.");
+		}else if(!curDungeon.curRoom().active)
+		{
+			curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,editor.clipBoard);
+		}else
+		{
+			bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be overwritten. Confirm? (Y/N)","yellow");
+			editor.confirming=true;
+			editor.confirmingWhat=function(){
 				curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,editor.clipBoard);
-			}else
-			{
-				bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be overwritten. Confirm? (Y/N)","yellow");
-				editor.confirming=true;
-				editor.confirmingWhat=function(){
-					curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,editor.clipBoard);
-				}
 			}
 		}
 	}
+
 	
 	if((editMode) && (fillkey.check()))
 	{
@@ -760,20 +767,21 @@ function mainUpdate()
 			bConsoleBox.log("CONTROLS:","yellow");
 			bConsoleBox.log("Arrow Keys - Move room");
 			bConsoleBox.log("Page Up/Down - Move floors");
-			bConsoleBox.log("Shift + Arrow/Page keys - create exit in that direction, making a new room if nessicary");
+			bConsoleBox.log("Shift + Arrow/Page keys - Make or connect room in that direction");
 			bConsoleBox.log("W A S D - Move cursor");
 			bConsoleBox.log("Shift + W A S D - Remove door");
 			bConsoleBox.log("Delete - Delete room");
 			bConsoleBox.log("Insert - Create Room");
 			bConsoleBox.log("0 - Toggle hidden room");
-			bConsoleBox.log("Tab - Change selected tile");
-			bConsoleBox.log("F - Fill floor");
+			bConsoleBox.log("Tab - Change selected tile/door");
+			bConsoleBox.log("F - Fill entire floor");
 			bConsoleBox.log("M  - Cycle edit modes");
 			bConsoleBox.log("O  - Save room");
 			bConsoleBox.log("I  - Load room");
 			bConsoleBox.log("C  - Copy room");
+			bConsoleBox.log("Shift + C  - Copy room sans doors");
 			bConsoleBox.log("P  - Paste room");
-		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill");
+		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill / Place Door");
 			//bConsoleBox.log("Z - Undo");
 			bConsoleBox.log("Hit E to leave edit mode");
 				//bConsoleBox.log("Someting - Fill!");
@@ -847,6 +855,7 @@ function mainUpdate()
 					{
 						curDungeon.smartAddStair(editor.x,editor.y,true);
 						editor.clearConfirm();
+						editor.penDown=false;
 						curDungeon.changeFloor(true,!editMode);
 					}
 				}else
@@ -862,6 +871,7 @@ function mainUpdate()
 					{
 						curDungeon.smartAddStair(editor.x,editor.y,false);
 						editor.clearConfirm();
+						editor.penDown=false;
 						curDungeon.changeFloor(false,!editMode);
 					}
 				}else
@@ -879,6 +889,7 @@ function mainUpdate()
 						//curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].addDoor(1);
 						curDungeon.smartAddDoor(1,6,3);
 						editor.clearConfirm();
+						editor.penDown=false;
 						curDungeon.changeRoom(3,!editMode);
 					}
 				}else
@@ -894,6 +905,7 @@ function mainUpdate()
 					{
 						curDungeon.smartAddDoor(18,6,1);
 						editor.clearConfirm();
+						editor.penDown=false;
 						curDungeon.changeRoom(1,!editMode);
 					}
 				}else{
@@ -908,6 +920,7 @@ function mainUpdate()
 					{
 						curDungeon.smartAddDoor(8,1,0);
 						editor.clearConfirm();
+						editor.penDown=false;
 						curDungeon.changeRoom(0,!editMode);
 					}
 				}else{
@@ -922,6 +935,7 @@ function mainUpdate()
 					{
 						curDungeon.smartAddDoor(8,13,2);
 						editor.clearConfirm();
+						editor.penDown=false;
 						curDungeon.changeRoom(2,!editMode);
 					}
 				}else
