@@ -429,6 +429,8 @@ TileType.Road=8;
 TileType.Bridge=18;
 TileType.Sand=9;
 
+var numDoorTypes=5;
+
 var DungeonTileType={};
 DungeonTileType.GreenFloor=1;
 DungeonTileType.Ice=2;
@@ -631,7 +633,11 @@ dungeonTileSprite[DungeonTileType.Unstable] = Sprite("dungeontiles/unstable");
 dungeonTileSprite[DungeonTileType.Hole] = Sprite("dungeontiles/hole");
 dungeonTileSprite[DungeonTileType.Wall] = Sprite("dungeontiles/wall");
 dungeonTileSprite[DungeonTileType.GreenWall] = Sprite("dungeontiles/wall");   
-dungeonTileSprite[DungeonTileType.Door] = Sprite("dungeontiles/wood");
+dungeonTileSprite[DungeonTileType.LockedDoor] = Sprite("dungeontiles/doortile");
+dungeonTileSprite[DungeonTileType.ClosedDoor] = Sprite("dungeontiles/doortile");
+dungeonTileSprite[DungeonTileType.BombableDoor] = Sprite("dungeontiles/doortile");
+dungeonTileSprite[DungeonTileType.BombedDoor] = Sprite("dungeontiles/doortile");
+dungeonTileSprite[DungeonTileType.Door] = Sprite("dungeontiles/doortile");
 dungeonTileSprite[DungeonTileType.UpStair]= Sprite("dungeontiles/stairsup");
 dungeonTileSprite[DungeonTileType.DownStair]= Sprite("dungeontiles/stairsdown");
 dungeonTileSprite[DungeonTileType.WallCornerA] = Sprite("dungeontiles/wall1");

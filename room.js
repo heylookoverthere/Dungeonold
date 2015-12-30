@@ -577,31 +577,35 @@ function room(I) { //room object
 			for (j=0;j<ROOM_HEIGHT; j++)
 			{
 				I.tiles[i][j].data = tempstring[j+ROOM_HEIGHT*i];
-				if(I.tiles[i][j].data==DungeonTileType.Door)
+				if((I.tiles[i][j].data>DungeonTileType.Door-1) && (I.tiles[i][j].data<DungeonTileType.Door+numDoorTypes)) //door
 				{
 					if((i==18))
 					{
 						var mindy= new door(1);
 						mindy.x=i;
 						mindy.y=j;
+						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
 					}else if((i==1))
 					{
 						var mindy= new door(3);
 						mindy.x=i;
 						mindy.y=j;
+						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
 					}else if((j==1))
 					{
 						var mindy= new door(0);
 						mindy.x=i;
 						mindy.y=j;
+						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
 					}else if(j==13)
 					{
 						var mindy= new door(2);
 						mindy.x=i;
 						mindy.y=j;
+						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
 					}
 				}else if(I.tiles[i][j].data==DungeonTileType.UpStair)
@@ -677,17 +681,17 @@ function room(I) { //room object
                 }
 				if((!this.fogOfWar) || (this.seenMap[i][j])|| (true))
 				{
-					if(dominantType.type && dominantType.type <22) {
+					/*if(dominantType.type && dominantType.type <22) {
 					//HACK to get rid of error
 						if(dungeonTileSprite[dominantType.type])
 						{
 							dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
-						}
-					}if(dominantType.type&& (dominantType.type<24)&&(dominantType.type>19)){ //water
+						}*/
+					if(dominantType.type&& (dominantType.type<24)&&(dominantType.type>19)){ //water
 						dungeonTileSprite[20+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
-					}else if (dominantType.type&& (dominantType.type<28)&&(dominantType.type>23)) {
+					}else if (dominantType.type&& (dominantType.type<28)&&(dominantType.type>23)) { //lava
 						dungeonTileSprite[24+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
-					}else if(dungeonTileSprite[dominantType.type])
+					}else if(dungeonTileSprite[dominantType.type])//everything else
 					{
 						dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
 					}else //for now draw still lava if problem

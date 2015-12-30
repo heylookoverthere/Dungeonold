@@ -616,19 +616,15 @@ function dungeon(path)
 				for (j=ROOM_HEIGHT-4;j<ROOM_HEIGHT; j++)
 				{
 					var aTile=this.rooms[this.roomZ][this.roomX][this.roomY-1].tiles[i][j];
-					if(aTile && aTile.data <20)
-					{
-						//HACK to get rid of error
-						if(dungeonTileSprite[aTile.data])
-						{
-							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
-						}
-					}else if(aTile&& aTile<24)
+					if ((aTile&& aTile<24) && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
-					}else if (aTile&& aTile<28) 
+					}else if ((aTile&& aTile<28) &&(aTile.data>23))
 					{
 						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}else if(dungeonTileSprite[aTile.data])
+					{
+						dungeonTileSprite[aTile.data].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
 					}else 
 					{
 						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+xOffset, (j-0)*32+tyOffset);
@@ -653,19 +649,17 @@ function dungeon(path)
 				for (j=0;j<4; j++)
 				{
 					var aTile=this.rooms[this.roomZ][this.roomX][this.roomY+1].tiles[i][j];
-					if(aTile && aTile.data <20)
-					{
-						//HACK to get rid of error
-						if(dungeonTileSprite[aTile.data])
-						{
-							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
-						}
-					}else if(aTile&& aTile<24)
+					
+						
+					if((aTile&& aTile<24) && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
-					}else if (aTile&& aTile<28) 
+					}else if ((aTile&& aTile<28)  && (aTile.data>23))
 					{
 						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
+					}else if(dungeonTileSprite[aTile.data])
+					{
+							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
 					}else 
 					{
 						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+xOffset, (j-0)*32+tyOffset);
@@ -688,19 +682,15 @@ function dungeon(path)
 				for (j=0;j<ROOM_HEIGHT; j++)
 				{
 					var aTile=this.rooms[this.roomZ][this.roomX-1][this.roomY].tiles[i][j];
-					if(aTile && aTile.data <20)
-					{
-						//HACK to get rid of error
-						if(dungeonTileSprite[aTile.data])
-						{
-							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
-						}
-					}else if(aTile&& aTile<24)
+					if((aTile&& aTile<24)  && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
-					}else if (aTile&& aTile<28) 
+					}else if ((aTile&& aTile<28)  && (aTile.data>23))
 					{
 						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+					}else if(dungeonTileSprite[aTile.data])
+					{
+						dungeonTileSprite[aTile.data].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
 					}else 
 					{
 						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+txOffset, (j-0)*32+yOffset);
@@ -723,20 +713,16 @@ function dungeon(path)
 				for (j=0;j<ROOM_HEIGHT; j++)
 				{
 					var aTile=this.rooms[this.roomZ][this.roomX+1][this.roomY].tiles[i][j];
-					if(aTile && aTile.data <20)
-					{
-						//HACK to get rid of error
-						if(dungeonTileSprite[aTile.data])
-						{
-							dungeonTileSprite[aTile.data].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
-						}
-					}else if(aTile&& aTile<24)
+					if((aTile&& aTile<24) && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
-					}else if (aTile&& aTile<28) 
+					}else if ((aTile&& aTile<28) && (aTile.data>23))
 					{
 						dungeonTileSprite[24+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
-					}else 
+					}else if(dungeonTileSprite[aTile.data])
+					{
+						dungeonTileSprite[aTile.data].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
+					}else
 					{
 						dungeonTileSprite[DungeonTileType.Lava+tileani].draw(can,(i-0)*32+txOffset, (j-0)*32+yOffset);
 					}
