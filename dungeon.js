@@ -248,6 +248,35 @@ function dungeon(path)
 		
 	};
 	
+	dungeon.prototype.addFloor=function()
+	{
+		this.floors++;
+		/*this.rooms.push(new Array());
+		
+		for(var i=0;i<this.getWidth();i++)
+		{
+			this.rooms[this.floors].push(new Array());
+			for(var j=0;j<this.getHeight();j++)
+			{
+				this.rooms[this.floors][i].push(new room());
+			}
+		}*/
+	
+		this.rooms.push(new Array());
+		for(var i=0;i<this.getWidth();i++)
+		{
+			this.rooms[this.floors-1].push(new Array());
+			for(j=0;j<this.getHeight();j++)
+			{
+				var edgar=new room();
+				edgar.active=false;
+				edgar.name="roomX"+String(i)+"Y"+String(j);
+				this.rooms[this.floors-1][i].push(edgar);
+			}
+		 }
+	
+	}
+	
 	dungeon.prototype.blank=function()
 	{
 		this.rooms=new Array();
@@ -271,9 +300,32 @@ function dungeon(path)
 		}
 	}
 	
-	dungeon.prototype.load=function() // maybe done wipe rooms? just clear all rooms / set to inactive? 
+	dungeon.prototype.save=function() 
 	{
 		//read main dungeon file, determine how many floors.
+		smath="Dungeon/dungeons/"+this.name+"/main.txt";
+			$.post("/save/", {"data": this.floors, "path": smath}).done(function(response) 
+			{ 
+				//bConsoleBox.log("Saved " +smath); 
+			});
+		
+		//dung.blank();
+		for(var i=0;i<this.floors;i++)
+		{
+			this.saveFloor(i);
+		}
+	}
+	
+	dungeon.prototype.load=function() 
+	{
+		//read main dungeon file, determine how many floors.
+		smath="dungeons/"+this.name+"/"+"main.txt";
+		$.get(smath, function(data) 
+		{ 
+			console.log("Detected "+data+" floors"); 
+			this.floors=Math.floor(data);
+			console.log(this.floors); 
+		}); 
 		var dung=this;
 		//dung.blank();
 		for(var i=0;i<dung.floors;i++)
@@ -302,7 +354,7 @@ function dungeon(path)
 	{
 		if(up)
 		{
-			if(this.roomZ>this.floors-1)
+			if(this.roomZ>this.floors-2)
 			{
 				bConsoleBox.log("Already on top floor");
 				return;

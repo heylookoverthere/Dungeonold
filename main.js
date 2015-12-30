@@ -882,7 +882,7 @@ function mainUpdate()
 			}
 			if(pageupkey.check())
 			{
-				if(curDungeon.roomZ<curDungeon.floors)
+				if(curDungeon.roomZ<curDungeon.floors-1)
 				{
 					if((curDungeon.rooms[curDungeon.roomZ+1][curDungeon.roomX][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ+1,curDungeon.roomX,curDungeon.roomY)))
 					{
@@ -893,7 +893,13 @@ function mainUpdate()
 					}
 				}else
 				{
-					bConsoleBox.log("Can't go off the map");
+					//bConsoleBox.log("Can't go off the map");
+					bConsoleBox.log("Will create new floor. Confirm? (Y/N)","yellow");
+					editor.confirming=true;
+					editor.confirmingWhat=function() {
+						curDungeon.addFloor();
+						bConsoleBox.log("New floor created");
+					}
 				}
 			}
 			if(pagedownkey.check())
@@ -1165,7 +1171,7 @@ if (yui==0){
 }
 
 document.title = tt;
-curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+//curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 curDungeon.load();
 //curDungeon.loadFloor();
 curDungeon.curRoom().explored=true;
