@@ -78,7 +78,7 @@ function mouseClick(e) {  //represents the mouse
 	
 	if(editMode)
 	{
-		if((tx>-1) && (tx<20) && (ty>-1) &&(ty<15))
+		if((tx>1) && (tx<19) && (ty>1) &&(ty<13))
 		{
 			editor.x=tx;
 			editor.y=ty;
@@ -95,8 +95,13 @@ function mouseClick(e) {  //represents the mouse
 			
 			miniMapx=Math.floor((mX+bobxFset)/bobsize)-69;
 			miniMapy=Math.floor((mY+bobyFset)/bobsize)-68;
-			console.log("some shit I dunno fuck you who put you in charge."+miniMapx+","+miniMapy);
-			curDungeon.setRoom(curDungeon.roomZ,miniMapx,miniMapy);
+			if((miniMapx>-1) && (miniMapy>-1) && (miniMapx<15) &&( miniMapy<8))
+			{
+				curDungeon.setRoom(curDungeon.roomZ,miniMapx,miniMapy);
+			}else
+			{
+				bConsoleBox.log("Learn to fucking click, cuntface.","Yellow");
+			} 
 		}
 	}
 	for(var i=0;i<buttons.length;i++)
