@@ -1168,7 +1168,8 @@ if (yui==0){
 	tt="Indiana Jones and the Last Sandwich";
 }else if (yui==9){
 	tt="Indiana Jones and Kingdom of the Silver Fork";
-}
+}else if (yui==9){
+	tt="Indiana Jones and Case of the Hepatitis C";
 
 document.title = tt;
 //curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
