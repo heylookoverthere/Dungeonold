@@ -80,8 +80,42 @@ function mouseClick(e) {  //represents the mouse
 	{
 		if((tx>1) && (tx<19) && (ty>1) &&(ty<13))
 		{
+			//editor.penDown=false;
 			editor.x=tx;
 			editor.y=ty;
+			console.log("wang");
+			if(editor.mode==editModes.Stamp)
+			{
+				curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType; 
+				editor.penDown=false;
+			}else if(editor.mode==editModes.Fill)
+			{
+				curDungeon.curRoom().fill(editor.x,editor.y,editor.brushType);
+				editor.penDown=false;
+			}else if(editor.mode==editModes.Pen)
+			{
+				editor.penDown=!editor.penDown;
+			}if(editor.mode==editModes.Door)
+			{
+				editor.penDown=false;
+				if(editor.x==2) //left
+				{
+					curDungeon.smartAddDoor(1,editor.y,3,editor.doorType);
+				}else if(editor.x==17) //right
+				{
+					curDungeon.smartAddDoor(18,editor.y,1,editor.doorType);
+				}else if(editor.y==2) //top
+				{
+					curDungeon.smartAddDoor(editor.x,1,0,editor.doorType);
+				}else if(editor.y==12) //bottom
+				{
+					curDungeon.smartAddDoor(editor.x,13,2,editor.doorType);
+				}else
+				{
+					bConsoleBox.log("Not the best spot for a door.");
+					return;
+				}
+			}
 		}
 	
 		
@@ -149,7 +183,21 @@ mouseXY= function(e) {
     if (!e) var e = event;
     mX = e.pageX - canvasElement.get(0).offsetLeft;
     mY = e.pageY - canvasElement.get(0).offsetTop;
-    
+	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	if((tx>1) &&(tx<18) &&(ty>1)&&(ty<13))
+	{
+		editor.x=tx;
+		editor.y=ty;
+	}
+    if(editor.mode==editModes.Pen)
+	{
+		if((editor.penDown) &&(tx>1) &&(tx<18) &&(ty>1)&&(ty<13))
+		{
+			//set tile to brushtype.
+			curDungeon.curRoom().tiles[tx][ty].data=editor.brushType;
+		}
+	}
 };
 
 function drawMouseText(can,targ,cam) { //draws unit status info
