@@ -362,6 +362,71 @@ function dungeon(path)
 		}
 	};
 	
+	this.smartRemoveDoor=function(fl,x,y,dir)
+	{
+		if(!this.rooms[fl][x][y].hasDoor(dir))
+		{
+			return;
+		}
+		var coor=this.rooms[fl][x][y].getDoor(dir);
+		if(!coor) {return;}
+		if(coor.orientation==0)
+		{
+			this.rooms[fl][x][y].tiles[coor.x][coor.y].data=14;
+			if((y>0) && (this.rooms[fl][x][y-1].active))
+			{
+				var thedoor=this.rooms[fl][x][y-1].getSpecificDoor(coor.x,13,2);
+				if(thedoor)
+				{
+					this.rooms[fl][x][y-1].removeSpecificDoor(thedoor);
+				}
+			}
+
+		}else if(coor.orientation==1)
+		{
+			this.rooms[fl][x][y].tiles[coor.x][coor.y].data=16;
+			if((x<this.getWidth()) && (this.rooms[fl][x+1][y].active))
+			{
+				var thedoor=this.rooms[fl][x+1][y].getSpecificDoor(1,coor.y,3);
+				if(thedoor)
+				{
+					this.rooms[fl][x+1][y].removeSpecificDoor(thedoor);
+				}
+			}
+
+		}else if(coor.orientation==2)
+		{
+			this.rooms[fl][x][y].tiles[coor.x][coor.y].data=17;
+			if((y<this.getHeight()) && (this.rooms[fl][x][y+1].active))
+			{
+				var thedoor=this.rooms[fl][x][y+1].getSpecificDoor(coor.x,1,0);
+				if(thedoor)
+				{
+					this.rooms[fl][x][y+1].removeSpecificDoor(thedoor);
+				}
+			}
+		}else if(coor.orientation==3)
+		{
+			this.rooms[fl][x][y].tiles[coor.x][coor.y].data=15;
+			if((x>0) && (this.rooms[fl][x-1][y].active))
+			{
+				var thedoor=this.rooms[fl][x-1][y].getSpecificDoor(18,coor.y,1);
+				if(thedoor)
+				{
+					this.rooms[fl][x-1][y].removeSpecificDoor(thedoor);
+				}
+			}
+		}
+		for(var i=0;i<this.rooms[fl][x][y].exits.length;i++)
+		{
+			if(coor==this.rooms[fl][x][y].exits[i])
+			{
+				this.rooms[fl][x][y].exits.splice(i,1)
+				i--;
+			}
+		}
+	};
+	
 	this.linkDoors=function(fl)
 	{
 		

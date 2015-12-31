@@ -424,6 +424,22 @@ function room(I) { //room object
 		return false;
 	};
 	
+	I.getSpecificDoor=function(x,y,dir)
+	{
+		if(!I.hasDoor(dir))		{return null;}
+		for(var i=0;i<I.exits.length;i++)
+		{
+			if((I.exits[i]) && (I.exits[i].orientation==dir))
+			{
+				if((I.exits[i].x==x) && (I.exits[i].y==y))
+				{
+					return I.exits[i];
+				}
+			}
+		}
+		return null;
+	};
+	
 	I.getDoor=function(dir)
 	{
 		if(!I.hasDoor(dir))		{return null;}
@@ -916,6 +932,31 @@ function room(I) { //room object
 			I.tiles[mindy.x][mindy.y].data=DungeonTileType.DownStair;
 		}
 	};
+	
+	I.removeSpecificDoor=function(coor)
+	{
+		for(var i=0;i<I.exits.length;i++)
+		{
+			if(coor==I.exits[i])
+			{
+				if(coor.orientation==0)
+				{
+					I.tiles[coor.x][coor.y].data=14;
+				}else if(coor.orientation==1)
+				{
+					I.tiles[coor.x][coor.y].data=16;
+				}else if(coor.orientation==2)
+				{
+					I.tiles[coor.x][coor.y].data=17;
+				}else if(coor.orientation==3)
+				{
+					I.tiles[coor.x][coor.y].data=15;
+				}
+				I.exits.splice(i,1)
+				i--;
+			}
+		}
+	}
 	
 	I.removeDoor=function(dir)
 	{

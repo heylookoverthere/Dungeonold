@@ -853,22 +853,26 @@ function mainUpdate()
 			if(letterkeys[22].check())
 			{
 				//curDungeon.curRoom().addDoor(0);
-				curDungeon.curRoom().removeDoor(0);
+				//curDungeon.curRoom().removeDoor(0);
+				curDungeon.smartRemoveDoor(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,0);
 			}
 			if(letterkeys[0].check())
 			{
 				//curDungeon.curRoom().addDoor(3);
-				curDungeon.curRoom().removeDoor(3);
+				//curDungeon.curRoom().removeDoor(3);
+				curDungeon.smartRemoveDoor(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,3);
 			}
 			if(letterkeys[18].check())
 			{
 				//curDungeon.curRoom().addDoor(2);
-				curDungeon.curRoom().removeDoor(2);
+				//curDungeon.curRoom().removeDoor(2);
+				curDungeon.smartRemoveDoor(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,2);
 			}
 			if(letterkeys[3].check())
 			{
 				//curDungeon.curRoom().addDoor(1);
-				curDungeon.curRoom().removeDoor(1);
+				//curDungeon.curRoom().removeDoor(1);
+				curDungeon.smartRemoveDoor(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,1);
 			}
 			if(pageupkey.check())
 			{
