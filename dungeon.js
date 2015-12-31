@@ -186,14 +186,15 @@ function dungeon(path)
 		//return(this.height[this.roomZ]);
 		return 8;
 	}
-	this.stringifyFloor=function()
+	this.stringifyFloor=function(fl)
 	{
+		if(!fl) {fl=this.roomZ;}
 		var tempstring= "";
-		for (i=0;i<this.getWidth(this.roomZ); i++)
+		for (i=0;i<this.getWidth(); i++)
 		{
-			for (j=0;j<this.getHeight(this.roomZ); j++)
+			for (j=0;j<this.getHeight(); j++)
 			{
-				if(this.rooms[this.roomZ][i][j].active)
+				if(this.rooms[fl][i][j].active)
 				{
 					tempstring = tempstring +"1"
 					tempstring += ","
@@ -207,17 +208,18 @@ function dungeon(path)
 		return tempstring;
 	}
 	
-	this.saveFloor=function()
+	this.saveFloor=function(fl)
 	{
-		smath="Dungeon/dungeons/"+this.name+"/"+"floor"+this.roomZ+"/"+"map.txt";
+		if(!fl) {fl=this.roomZ;console.log("fl=z");}
+		smath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
 		for(var i=0;i<this.getWidth();i++)
 		{
 			for(var j=0;j<this.getHeight();j++)
 			{
-				if(this.rooms[this.roomZ][i][j].active)
+				if(this.rooms[fl][i][j].active)
 				{
-					this.rooms[this.roomZ][i][j].save("Dungeon/dungeons/"+this.name+"/"+"floor"+this.roomZ+"/");
+					this.rooms[fl][i][j].save("Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/");
 				}
 			}
 		}
@@ -309,17 +311,18 @@ function dungeon(path)
 	dungeon.prototype.save=function() 
 	{
 		//read main dungeon file, determine how many floors.
+		var dung=this;
 		smath="Dungeon/dungeons/"+this.name+"/main.txt";
-			$.post("/save/", {"data": this.floors, "path": smath}).done(function(response) 
+			$.post("/save/", {"data": dung.floors, "path": smath}).done(function(response) 
 			{ 
 				//bConsoleBox.log("Saved " +smath); 
+
 			});
-		
+			for(var i=0;i<dung.floors;i++)
+			{
+				dung.saveFloor(i);
+			}
 		//dung.blank();
-		for(var i=0;i<this.floors;i++)
-		{
-			this.saveFloor(i);
-		}
 	}
 	
 	dungeon.prototype.load=function() 

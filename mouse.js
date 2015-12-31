@@ -124,7 +124,6 @@ function mouseClick(e) {  //represents the mouse
 			//editor.penDown=false;
 			editor.x=tx;
 			editor.y=ty;
-			console.log("wang");
 			if(editor.mode==editModes.Stamp)
 			{
 				curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType; 

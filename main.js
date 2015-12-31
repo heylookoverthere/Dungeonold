@@ -16,7 +16,7 @@ bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
 
-var curDungeon= new dungeon("dungeon1");
+var curDungeon= new dungeon("dungeon2");
 
 var showMap=false;
 
@@ -343,22 +343,6 @@ function inventoryScreenDraw(){
 function startGame()
 {
 	mode=1;	
-	//setTimeout(computePortPaths(curMap,true),1000);
-	//build whole dungeon. 
-
-	/*var edgar=null;
-	for(var i=0;i<8;i++){
-		edgar=new room();
-		var parth="dungeon1/room"+String(i);
-		edgar.buildRoom(parth)
-		edgar.name="room"+String(i);
-		curDungeon.rooms.push(edgar);
-     }*/
-	/*var enDoor=new door();
-	var benDoor=new door();
-	benDoor.orient(1);
-	curRoom.entities.push(enDoor);
-	curRoom.entities.push(benDoor);*/
 	camera.tileX=0;
 	camera.tileY=0;
 	
