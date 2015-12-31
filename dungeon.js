@@ -505,7 +505,7 @@ function dungeon(path)
 				return;
 			}
 			
-			if(!this.rooms[this.roomZ-1][this.roomX][this.roomY].active)
+			if((!this.rooms[this.roomZ-1][this.roomX][this.roomY].active) && (limited))
 			{
 				bConsoleBox.log("No active room below");
 				return;
