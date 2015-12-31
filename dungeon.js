@@ -188,7 +188,7 @@ function dungeon(path)
 	}
 	this.stringifyFloor=function(fl)
 	{
-		if(!fl) {fl=this.roomZ;}
+		if(fl==null) {fl=this.roomZ;}
 		var tempstring= "";
 		for (i=0;i<this.getWidth(); i++)
 		{
@@ -210,7 +210,7 @@ function dungeon(path)
 	
 	this.saveFloor=function(fl)
 	{
-		if(!fl) {fl=this.roomZ;console.log("fl=z");}
+		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
 		smath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
 		for(var i=0;i<this.getWidth();i++)
@@ -228,7 +228,7 @@ function dungeon(path)
 	
 	this.loadFloor=function(fl)
 	{
-		if(!fl)
+		if(fl==null)
 		{
 			fl=this.roomZ;
 		}
