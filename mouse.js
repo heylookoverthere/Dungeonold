@@ -27,7 +27,7 @@ function mouseWheel(e){
 	mX = e.pageX - canvasElement.get(0).offsetLeft;
 	mY = e.pageY - canvasElement.get(0).offsetTop;
 	//if (delta)
-	if((mode==null))//this is all world map stuff. 
+	if(true)//this is all world map stuff. 
 	{ //&& (!isMenu)){
 	
 		var targ=bConsoleBox;
@@ -43,21 +43,62 @@ function mouseWheel(e){
 				if(bConsoleBox.scroll>bConsoleBox.msg.length) {bConsoleBox.scroll=bConsoleBox.msg.length-1;}
 		}else
 		{
-			if(curMap.zoom>2) {curMap.zoom=2;}
-			if(curMap.zoom<1) {curMap.zoom=1;}
-			if((delta<0) && (curMap.zoom<2))
+			if(editMode)
 			{
-				bConsoleBox.log("Best not to try and zoom yet.");
-				curMap.setZoom(camera);
-				camera.check();
-			}else if((delta>0) && (curMap.zoom>1)){
-				bConsoleBox.log("Best not to try and zoom yet.");
-				curMap.minusZoom(camera);
-				var blob=[];
-				blob.x=Math.floor(mX/16) * Math.pow(2, curMap.zoom-1)+camera.tileX;
-				blob.y=Math.floor(mY/16) * Math.pow(2, curMap.zoom-1)+camera.tileY;
-				//camera.center(blob);
-				camera.check();
+				if(delta>0)
+				{
+					if(editor.mode==editModes.Door)
+					{
+						editor.doorType++;
+						if(editor.doorType>numDoorTypes)
+						{
+							editor.doorType=0;
+						}
+					}else
+					{
+						editor.brushType++;
+						if(editor.brushType>33)
+						{
+							editor.brushType=0;
+						}else if(editor.brushType==21)//skip water animation tiles
+						{
+							editor.brushType=24;
+						}else if(editor.brushType==25)//skip lava animation tiles.
+						{
+							editor.brushType=33;
+						}else if((editor.brushType==10) && (OPTIONS.skipWallTiles))//skip lava animation tiles.
+						{
+							editor.brushType=18;
+						}
+					}
+				}else if(delta<0)
+				{
+					if(editor.mode==editModes.Door)
+					{
+						editor.doorType--;
+						if(editor.doorType<0)
+						{
+							editor.doorType=numDoorTypes;
+						}
+					}else
+					{
+						editor.brushType--;
+						if(editor.brushType<0)
+						{
+							editor.brushType=33;
+						}else if(editor.brushType==24)//skip water animation tiles
+						{
+							editor.brushType=20;
+						}else if(editor.brushType==32)//skip lava animation tiles.
+						{
+							editor.brushType=25;
+						}else if((editor.brushType==17) && (OPTIONS.skipWallTiles))//skip lava animation tiles.
+						{
+							editor.brushType=9;
+						}
+					}
+				}
+				
 			}
 		}
 		
