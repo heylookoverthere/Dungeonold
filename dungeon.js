@@ -47,6 +47,12 @@ function dungeon(path)
 	{
 		return this.rooms[this.roomZ][this.roomX][this.roomY];
 	}
+	this.setRoom=function(z,x,y)
+	{
+		this.roomZ=z;
+		this.roomX=x;
+		this.roomY=y; 
+	}
 	
 	this.changeRoom=function(dir,limited) //used for arrowing through rooms rather than player movement limited determines if you can go through walls/closed doors/ into inactive rooms
 	{

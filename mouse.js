@@ -83,8 +83,22 @@ function mouseClick(e) {  //represents the mouse
 			editor.x=tx;
 			editor.y=ty;
 		}
-	}
 	
+		
+		var bobxFset=620;
+		var bobyFset=609;
+		var bobsize=18;
+		var miniMapX=0;
+		var miniMapY=0;
+		if((mX>bobxFset) && (mY>bobyFset))
+		{ //they're clicking the fucking minimap. Those cunts. 
+			
+			miniMapx=Math.floor((mX+bobxFset)/bobsize)-69;
+			miniMapy=Math.floor((mY+bobyFset)/bobsize)-68;
+			console.log("some shit I dunno fuck you who put you in charge."+miniMapx+","+miniMapy);
+			curDungeon.setRoom(curDungeon.roomZ,miniMapx,miniMapy);
+		}
+	}
 	for(var i=0;i<buttons.length;i++)
 	{
 		if((isOver(buttons[i]))  && (buttons[i].visible))
