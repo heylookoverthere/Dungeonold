@@ -527,6 +527,25 @@ function room(I) { //room object
 			return false;
 	}
 	
+	I.setStairs=function()
+	{
+		curDungeon.curRoom().stairs = new Array();
+		for(var i=0;i<curDungeon.curRoom().width;i++)
+		{
+			for(var j=0;j<curDungeon.curRoom().height;j++)
+			{
+				if(curDungeon.curRoom().tiles[i][j].data==DungeonTileType.UpStair)
+				{
+					I.addStair(i,j,true);
+				}
+				else if(curDungeon.curRoom().tiles[i][j].data==DungeonTileType.DownStair)
+				{
+					I.addStair(i,j,false);
+				}
+			}
+		}
+	}
+	
 	I.load=function(path)
 	{
 		

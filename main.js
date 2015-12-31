@@ -523,7 +523,13 @@ function mainDraw() {
 		}else
 		{
 			canvas.fillText("Selected: ",18,96);
-			dungeonTileSprite[editor.brushType].draw(canvas,110,73);
+			if(dungeonTileSprite[editor.brushType])
+			{
+				dungeonTileSprite[editor.brushType].draw(canvas,110,73);
+			}else
+			{
+				console.log("no sprite for "+editor.brushType);
+			}
 		}
 		
 	}	
@@ -731,7 +737,7 @@ function mainUpdate()
 			if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
 			{
 				curDungeon.curRoom().fill(editor.x,editor.y,editor.brushType);
-				curDungeon.curRoom().stairs = new Array();
+				curDungeon.curRoom().setStairs();
 			}else
 			{
 				bConsoleBox.log("Can't fill with stairs");
@@ -1071,6 +1077,9 @@ function mainUpdate()
 		//camera.unFollow();
 		//camera.tileX=92+326;
 		//camera.tileY=212;
+		curDungeon.roomZ=0;
+		curDungeon.roomX=7;
+		curDungeon.roomY=7;
 	}
 	if(editkey.check())
 	{

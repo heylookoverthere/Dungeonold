@@ -128,10 +128,24 @@ function mouseClick(e) {  //represents the mouse
 			{
 				curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType; 
 				editor.penDown=false;
+				if(editor.brushType==DungeonTileType.UpStair)
+				{
+					curDungeon.curRoom().addStair(editor.x,editor.y,true);
+				}else if(editor.brushType==DungeonTileType.DownStair)
+				{
+					curDungeon.curRoom().addStair(editor.x,editor.y,false);
+				}
 			}else if(editor.mode==editModes.Fill)
 			{
-				curDungeon.curRoom().fill(editor.x,editor.y,editor.brushType);
-				editor.penDown=false;
+				if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
+				{
+					curDungeon.curRoom().fill(editor.x,editor.y,editor.brushType);
+					editor.penDown=false;
+					curDungeon.curRoom().setStairs();
+				}else
+				{
+					bConsoleBox.log("Can't fill with stairs");
+				}
 			}else if(editor.mode==editModes.Pen)
 			{
 				editor.penDown=!editor.penDown;
@@ -234,8 +248,14 @@ mouseXY= function(e) {
 	{
 		if((editor.penDown) &&(tx>1) &&(tx<18) &&(ty>1)&&(ty<13))
 		{
-			//set tile to brushtype.
-			curDungeon.curRoom().tiles[tx][ty].data=editor.brushType;
+			if((editor.brushType!=DungeonTileType.UpStair) && (editor.brushType!=DungeonTileType.DownStair))
+			{
+				//set tile to brushtype.
+				curDungeon.curRoom().tiles[tx][ty].data=editor.brushType;
+			}else{
+				bConsoleBox.log("Can't paint with stairs");
+				editor.penDown=false;
+			}
 		}
 	}
 };
