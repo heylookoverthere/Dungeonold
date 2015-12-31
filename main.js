@@ -230,10 +230,11 @@ function drawGUI(can)
 	{
 		can.globalAlpha=0.75;
 		can.fillStyle="blue";
-		canvas.fillRect(6,6,221,54);
+		canvas.fillRect(6,6,221,75);
 		can.fillStyle="yellow";
-		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,22);
-		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,46);
+		can.fillText(curDungeon.name,8,22);
+		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,44);
+		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,62);
 		var cont=0;
 		can.globalAlpha=1;
 	}else
@@ -591,11 +592,6 @@ function mainUpdate()
 	}
 	if((editMode) && (loadkey.check()))
 	{
-		//check floor file to make sure there's a room first. 
-		/*smath="dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/"+curDungeon.curRoom().name+".txt";
-		$.get(smath, function(data) { curDungeon.curRoom().buildMapFromLoadedTiles("whatever",data)});  
-		bConsoleBox.log("Loaded Dungeon/"+smath); */
-		
 		bConsoleBox.log(curDungeon.curRoom().name +" will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
@@ -814,11 +810,16 @@ function mainUpdate()
 				editor.confirming=false;
 				editor.confirmingWhat();
 				editor.confirmingWhat=null;
+				bConsoleBox.log("Y","Yellow");
 			}
 		}
 		if(nokey.check())
 		{
-			editor.confirming=false;
+			if(editor.confirming)
+			{
+				editor.confirming=false;
+				bConsoleBox.log("N","Yellow");
+			}
 		}
 		if(deletekey.check())
 		{	

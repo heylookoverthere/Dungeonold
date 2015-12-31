@@ -211,8 +211,8 @@ function dungeon(path)
 	this.saveFloor=function(fl)
 	{
 		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
-		smath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
-			$.post("/save/", {"data": this.stringifyFloor(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
+		var jmath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
+			$.post("/save/", {"data": this.stringifyFloor(), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
 		for(var i=0;i<this.getWidth();i++)
 		{
 			for(var j=0;j<this.getHeight();j++)
@@ -232,9 +232,9 @@ function dungeon(path)
 		{
 			fl=this.roomZ;
 		}
-		smath="dungeons/"+curDungeon.name+"/"+"floor"+fl+"/"+"map.txt";
+		var sbath="dungeons/"+curDungeon.name+"/"+"floor"+fl+"/"+"map.txt";
 		var dung=this;
-		$.get(smath, function(data) 
+		$.get(sbath, function(data) 
 		{
 			tempstring=data.split(",");
 			for(var i=0;i<dung.getWidth();i++)
@@ -250,7 +250,7 @@ function dungeon(path)
 					}
 				}
 			}
-			bConsoleBox.log("Loaded Dungeon/"+smath); 
+			bConsoleBox.log("Loaded Dungeon/"+sbath); 
 		});  
 		
 		
@@ -312,10 +312,10 @@ function dungeon(path)
 	{
 		//read main dungeon file, determine how many floors.
 		var dung=this;
-		smath="Dungeon/dungeons/"+this.name+"/main.txt";
-			$.post("/save/", {"data": dung.floors, "path": smath}).done(function(response) 
+		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
+			$.post("/save/", {"data": dung.floors, "path": grmath}).done(function(response) 
 			{ 
-				//bConsoleBox.log("Saved " +smath); 
+				bConsoleBox.log("Saved " +grmath); 
 
 			});
 			for(var i=0;i<dung.floors;i++)
@@ -329,8 +329,8 @@ function dungeon(path)
 	{
 		var dung=this;
 		//read main dungeon file, determine how many floors.
-		smath="dungeons/"+this.name+"/"+"main.txt";
-		$.get(smath, function(data) 
+		var crmath="dungeons/"+this.name+"/"+"main.txt";
+		$.get(crmath, function(data) 
 		{ 
 			console.log("Detected "+data+" floors"); 
 			dung.floors=Math.floor(data);
@@ -596,6 +596,8 @@ function dungeon(path)
 	{
 		if(type==null) {type=0;}
 		if(dir>3) {return;}
+		if(this.curRoom().getSpecificDoor(x,y,dir)) {bConsoleBox.log("Already has door in that spot.","yellow"); return;}
+		//todo should probably still allow creation of door on other side, if it doesn't exist. not too worried about it cause that should happen
 		if(!croom)
 		{
 			croom=this.curRoom();

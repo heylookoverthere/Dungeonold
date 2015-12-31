@@ -181,8 +181,8 @@ function mouseClick(e) {  //represents the mouse
 		if((mX>bobxFset) && (mY>bobyFset))
 		{ //they're clicking the fucking minimap. Those cunts. 
 			
-			miniMapx=Math.round((mX+bobxFset)/bobsize)-69;
-			miniMapy=Math.round((mY+bobyFset)/bobsize)-68;
+			miniMapx=Math.floor((mX+bobxFset)/bobsize)-69;
+			miniMapy=Math.floor((mY+bobyFset)/bobsize)-68;
 			if((miniMapx>-1) && (miniMapy>-1) && (miniMapx<15) &&( miniMapy<8))
 			{
 				curDungeon.setRoom(curDungeon.roomZ,miniMapx,miniMapy);

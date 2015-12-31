@@ -565,12 +565,12 @@ function room(I) { //room object
 	I.load=function(path)
 	{
 		
-		smath=path+I.name+".txt";
-		$.get(smath, function(data) 
+		var smuth=path+I.name+".txt";
+		$.get(smuth, function(data) 
 		{ 
 			I.buildMapFromLoadedTiles("whatever",data); 
 			I.active=true;
-			bConsoleBox.log("Loaded "+smath); 
+			bConsoleBox.log("Loaded "+smuth); 
 		});  
 		
 	}
@@ -579,8 +579,8 @@ function room(I) { //room object
 	{
 		if(I.active)
 		{
-			smath=path+I.name+".txt";
-			$.post("/save/", {"data": I.stringifyTiles(), "path": smath}).done(function(response) { bConsoleBox.log("Saved " +smath); });
+			var smoth=path+I.name+".txt";
+			$.post("/save/", {"data": I.stringifyTiles(), "path": smoth}).done(function(response) { bConsoleBox.log("Saved " +smoth); });
 		}else
 		{
 			//edit floor file to make clear there's no room.
@@ -1108,9 +1108,15 @@ function editCursor()
 
 editCursor.prototype.clearConfirm=function()
 {
+	if(this.confirming)
+	{
+		bConsoleBox.log("Nevermind","Yellow");
+	}
+		
 	this.confirming=false;
 	this.confirmingWhat=null;
 	this.confirmed=false;
+	
 }
 
 editCursor.prototype.draw=function(can)
