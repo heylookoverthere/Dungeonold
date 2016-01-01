@@ -3,10 +3,7 @@ var editMode=false;
 
 var gameOver=null;
 
-
 var editor=new editCursor();
-
-
 
 bConsoleBox=new textbox();
 bConsoleBox.width=300;
