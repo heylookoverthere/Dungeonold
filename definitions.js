@@ -9,6 +9,8 @@ var stayDay=true;
 var graphboat=null;
 var graph=null;
 
+var fires=[];
+
 var editModes={};
 editModes.Pen=0;
 editModes.Stamp=1;

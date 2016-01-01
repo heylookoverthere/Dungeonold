@@ -1,6 +1,6 @@
 var debugInfo=false;
 var editMode=false;
-var fires=[];
+
 var gameOver=null;
 
 
@@ -549,7 +549,10 @@ function mainDraw() {
 	{
 		editor.draw(canvas);
 	}
-	
+	for(var i=0;i<fires.length;i++)
+	{
+		fires[i].draw(canvas,camera);
+	}
 	if(gameOver)
 	{
 	 /*	canvas.fillStyle="white";
@@ -1109,6 +1112,10 @@ function mainUpdate()
 	for(var i=0;i<fires.length;i++)
 	{
 		fires[i].update();
+	}
+	for(var i=0;i<curDungeon.curRoom().objects.length;i++) //should do adjacent rooms too, no?
+	{
+		curDungeon.curRoom().objects[i].update();
 	}
 	
 	if(thyme.tock)

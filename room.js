@@ -311,6 +311,7 @@ function room(I) { //room object
 	I.windows=new Array();
 	I.lights=new Array();
 	I.enemies=new Array();
+	I.objects=new Array();
 	I.entities=new Array(); //comprising all the others
 	//list of towns
 	//story file?
@@ -743,6 +744,10 @@ function room(I) { //room object
 		for(var p=0;p<this.exits.length;p++)
 		{
 			this.exits[p].draw(can,cam);
+		}
+		for(var p=0;p<this.objects.length;p++)
+		{
+			this.objects[p].draw(can,cam);
 		}
 	  };
     I.clear =function(){
