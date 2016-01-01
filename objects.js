@@ -11,7 +11,7 @@ ObjectID.Pickup=4; //maybe instead of having one for each item there's one for p
 function object(oroom) //not a tile, not an enemy
 {
 	this.sprite=null;
-	this.on=true;
+	this.on=false;
 	this.room=oroom;
 	this.pickupable=false;
 	this.type=0;
@@ -31,10 +31,10 @@ object.prototype.move=function(x,y) //brings along what is needed (like the flam
 	this.y=y;
 	if(this.flame)
 	{
-		this.flame.x=this.x*32+xOffset+2;
-		this.flame.y=this.y*32+yOffset-15;
-		this.flame.flare.x=this.x*32+xOffset+2;
-		this.flame.flare.y=this.y*32+yOffset-15;
+		this.flame.x=this.x*32+xOffset;
+		this.flame.y=this.y*32+yOffset-16;
+		this.flame.flare.x=this.x*32+xOffset;
+		this.flame.flare.y=this.y*32+yOffset-16;
 	}
 }
 
@@ -44,12 +44,12 @@ object.prototype.setup=function(id)
 	if (this.type==0) {
 	    this.sprite= Sprite("lamp");
 	    this.name="lamp";
-		this.flame=new flame(this.room.lights);
+		/*this.flame=new flame(this.room.lights);
 		this.flame.x=this.x*32+xOffset+2;
 		this.flame.y=this.y*32+yOffset-15;
 		this.flame.type=0;
-		this.flame.alive=true;
-		this.room.fires.push(this.flame);
+		this.flame.alive=false;
+		this.room.fires.push(this.flame);*/
 	}else if (this.type==1) {
 	    this.sprite= Sprite("heart");
 	    this.name="Heart Cointainer";
@@ -148,23 +148,17 @@ object.prototype.setup=function(id)
 object.prototype.activate=function()
 {
 	this.on=!this.on;
-	console.log("hit lamp");
 	if(!this.on)
 	{
-		console.log("off");
 		this.flame.flare.alive=false;
 		this.flame.alive=false;
 	}else{
-		console.log("on");
 		this.flame=new flame(this.room.lights);
-		this.flame.x=this.x*32+xOffset+2;//miles.x;
-		this.flame.y=this.y*32+yOffset-15;//miles.y;
+		this.flame.x=this.x*32+xOffset;//miles.x;
+		this.flame.y=this.y*32+yOffset-16;//miles.y;
 		this.flame.type=0;
-		//this.flame.flare.alive=true;
-		//this.flame.alive=true;
 	}
-	//this.flame.alive=!this.flame.alive;
-	//this.flame.flare.on=!this.flame.flare.on;
+
 }
 /*object.prototype.tileX=function()
 {
@@ -181,10 +175,12 @@ object.prototype.update=function()
 		this.flame.update();
 	}
 }
-object.prototype.draw=function(can,cam)
+object.prototype.draw=function(can,cam) //,xOffh,yOffh)
 {
-	//this.sprite.draw(can, this.x*32+xOffset, this.y*32+xOffset);
-	this.sprite.draw(can, this.x*32+xOffset, this.y*32+xOffset);
+	//if(!xOffh) {xOffh=0;}
+	//if(!yOffh) {yOffh=0;}
+	//this.sprite.draw(can, this.x*32+xOffh, this.y*32+yOffh);
+	this.sprite.draw(can, this.x*32+xOffset, this.y*32+yOffset);
 	if((this.type==0) && (this.on))
 	{
 		//draw fire?

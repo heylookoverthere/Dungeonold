@@ -229,8 +229,10 @@ function drawGUI(can)
 	if(editMode)
 	{
 		can.globalAlpha=0.75;
+		can.fillStyle="white";
+		canvas.fillRect(2,2,228,68);
 		can.fillStyle="blue";
-		canvas.fillRect(6,6,221,75);
+		canvas.fillRect(6,6,221,60);
 		can.fillStyle="yellow";
 		can.fillText(curDungeon.name,8,22);
 		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,44);
@@ -471,6 +473,7 @@ function mainDraw() {
 	if(editMode)
 	{
 		canvas.fillStyle="yellow";
+		canvas.globalAlpha=1;
 		canvas.font = "32pt Calibri";
 		canvas.fillText("Edit Mode",380,125);
 		canvas.font = "16pt Calibri";

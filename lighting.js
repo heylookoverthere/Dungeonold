@@ -158,7 +158,7 @@ flame.prototype.draw=function(can,cam)
 	if(!this.alive) {return;}
 	can.save();
 	can.globalAlpha=0.6;
-	can.scale(cam.zoom,cam.zoom);
+	//can.scale(cam.zoom,cam.zoom);
 	if(this.type>0)
 	{
 		this.supportSprite.draw(can, this.x-cam.tileX*tileSize+1,this.y-cam.tileY*tileSize+4);
