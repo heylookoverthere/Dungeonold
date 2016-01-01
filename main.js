@@ -444,17 +444,17 @@ function mainDraw() {
 		
 	monsta.draw(canvas,camera);
 
-	if(false)//(!stayDay)
+	if(true)//(!stayDay)
 	{
-		canvas.globalAlpha=LightLevels[thyme.hours];
+		canvas.globalAlpha=LightLevels[Darkness];
 		canvas.fillStyle="black";
 		canvas.fillRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
 	}
 
-	for(var i=0;i<lights.length;i++)
+	for(var i=0;i<curDungeon.curRoom().lights.length;i++)
 	{
 		//lights[i].draw(canvas,camera);
-		lightenGradient(canvas,camera,lights[i], lights[i].radius)
+		lightenGradient(canvas,camera,curDungeon.curRoom().lights[i], curDungeon.curRoom().lights[i].radius)
 	}
 	mapDirty=true;
 	
@@ -549,9 +549,9 @@ function mainDraw() {
 	{
 		editor.draw(canvas);
 	}
-	for(var i=0;i<fires.length;i++)
+	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
-		fires[i].draw(canvas,camera);
+		curDungeon.curRoom().fires[i].draw(canvas,camera);
 	}
 	if(gameOver)
 	{
@@ -1066,11 +1066,11 @@ function mainUpdate()
 
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 	
-	for(var i=0;i<fires.length;i++)
+	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
-		if(!fires[i].alive)
+		if(!curDungeon.curRoom().fires[i].alive)
 		{
-			fires.splice(i,1);
+			curDungeon.curRoom().fires.splice(i,1);
 			i--;
 		}
 	}
@@ -1109,9 +1109,9 @@ function mainUpdate()
 	camera.update();
 	monsta.update();
 	
-	for(var i=0;i<fires.length;i++)
+	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
-		fires[i].update();
+		curDungeon.curRoom().fires[i].update();
 	}
 	for(var i=0;i<curDungeon.curRoom().objects.length;i++) //should do adjacent rooms too, no?
 	{
@@ -1137,12 +1137,12 @@ function mainUpdate()
 	
 	
 	
-	for(var i=0;i<lights.length;i++)
+	for(var i=0;i<curDungeon.curRoom().lights.length;i++)
 	{
-		lights[i].update();
-		if(!lights[i].alive)
+		curDungeon.curRoom().lights[i].update();
+		if(!curDungeon.curRoom().lights[i].alive)
 		{
-			lights.splice(i,1);
+			curDungeon.curRoom().lights.splice(i,1);
 			i--;
 		}
 	}

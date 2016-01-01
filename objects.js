@@ -8,16 +8,34 @@ ObjectID.HoldSwitch=3;
 ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
 
-function object() //not a tile, not an enemy
+function object(oroom) //not a tile, not an enemy
 {
 	this.sprite=null;
 	this.on=true;
+	this.room=oroom;
 	this.pickupable=false;
 	this.type=0;
 	this.x=2;
 	this.y=2;
+	this.width=32;
+	this.height=32;
+	this.walkable=false;
+	this.dest=null; //i.e. door to be opened on activate
 	this.flame=null;
 	//this.setup();
+}
+
+object.prototype.move=function(x,y) //brings along what is needed (like the flame of the lamp)
+{
+	this.x=x;
+	this.y=y;
+	if(this.flame)
+	{
+		this.flame.x=this.x*32+xOffset+2;
+		this.flame.y=this.y*32+yOffset-15;
+		this.flame.flare.x=this.x*32+xOffset+2;
+		this.flame.flare.y=this.y*32+yOffset-15;
+	}
 }
 
 object.prototype.setup=function(id)
@@ -26,12 +44,12 @@ object.prototype.setup=function(id)
 	if (this.type==0) {
 	    this.sprite= Sprite("lamp");
 	    this.name="lamp";
-		this.flame=new flame(lights);
-		this.flame.x=this.x*32+xOffset+2;//miles.x;
-		this.flame.y=this.y*32+yOffset-15;//miles.y;
+		this.flame=new flame(this.room.lights);
+		this.flame.x=this.x*32+xOffset+2;
+		this.flame.y=this.y*32+yOffset-15;
 		this.flame.type=0;
 		this.flame.alive=true;
-		//fires.push(this.flame);
+		this.room.fires.push(this.flame);
 	}else if (this.type==1) {
 	    this.sprite= Sprite("heart");
 	    this.name="Heart Cointainer";
@@ -130,16 +148,20 @@ object.prototype.setup=function(id)
 object.prototype.activate=function()
 {
 	this.on=!this.on;
+	console.log("hit lamp");
 	if(!this.on)
 	{
+		console.log("off");
 		this.flame.flare.alive=false;
-		this.flame=null;
+		this.flame.alive=false;
 	}else{
-		this.flame=new flame(lights);
+		console.log("on");
+		this.flame=new flame(this.room.lights);
 		this.flame.x=this.x*32+xOffset+2;//miles.x;
 		this.flame.y=this.y*32+yOffset-15;//miles.y;
 		this.flame.type=0;
-		this.flame.alive=true;
+		//this.flame.flare.alive=true;
+		//this.flame.alive=true;
 	}
 	//this.flame.alive=!this.flame.alive;
 	//this.flame.flare.on=!this.flame.flare.on;
@@ -170,11 +192,25 @@ object.prototype.draw=function(can,cam)
 	}
 }
 
-function shortcut()
+object.prototype.stringify=function()
 {
-	var pleb=new object();
+	var tempstring= "";
+	tempstring+=this.x;
+	tempstring+=",";
+	tempstring+=this.y;
+	tempstring+=",";
+	tempstring+=this.type;
+	return tempstring;
+}
+
+
+function makeLamp(x,y,broom)
+{
+	var pleb=new object(broom);
 	pleb.type=0;
+	pleb.x=x;
+	pleb.y=y;
 	pleb.setup();
-	curDungeon.curRoom().objects.push(pleb);
+	broom.objects.push(pleb);
 	return pleb;
 }

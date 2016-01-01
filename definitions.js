@@ -9,7 +9,33 @@ var stayDay=true;
 var graphboat=null;
 var graph=null;
 
-var fires=[];
+var Darkness=14;
+
+ var LightLevels=new Array();
+LightLevels.push(0.90); //midnight
+LightLevels.push(0.85); //1am
+LightLevels.push(0.80); //2am
+LightLevels.push(0.75); //3am
+LightLevels.push(0.60); //4am
+LightLevels.push(0.45); //5am
+LightLevels.push(0.30); //6am
+LightLevels.push(0.10); //7am
+LightLevels.push(0.00); //8am
+LightLevels.push(0.00); //9am
+LightLevels.push(0.00); //10am
+LightLevels.push(0.00); //11am
+LightLevels.push(0.00); //12pm
+LightLevels.push(0.00); //1pm
+LightLevels.push(0.00); //2pm
+LightLevels.push(0.00); //3pm
+LightLevels.push(0.10); //4pm
+LightLevels.push(0.20); //5pm
+LightLevels.push(0.30); //6pm
+LightLevels.push(0.34); //7pm
+LightLevels.push(0.50); //8pm
+LightLevels.push(0.60); //9pm
+LightLevels.push(0.80); //10pm
+LightLevels.push(0.85); //11pm
 
 var editModes={};
 editModes.Pen=0;

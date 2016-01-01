@@ -6,11 +6,22 @@ $(document).bind("contextmenu",function(e){
 		mX = e.pageX - canvasElement.get(0).offsetLeft;
 		mY = e.pageY - canvasElement.get(0).offsetTop;
 		//lights.push(new light(mX+camera.x,mY+camera.y,80));
+		tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+		ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 		
-		for (var p=0;p<1;p++) //why isn't this mapdirtying.
+		if((tx>1) && (tx<18) &&(ty>1)&&(ty<13) )
 		{
-					monsta.startOrbit(40000,mX+camera.x,mY+camera.y,60,8,false,12);
+			//monsta.startOrbit(40000,mX+camera.x,mY+camera.y,60,8,false,12);
+			var meg=isOverTiledList(curDungeon.curRoom().objects,32);
+			if(meg)
+			{
+				meg.activate();
+			}else
+			{
+				makeLamp(tx,ty,curDungeon.curRoom());
+			}
 		}
+		
 	}
     return false;
 });
@@ -294,7 +305,23 @@ isOver= function(targ){ //is the mouse over the player/object
     return false;
 };
 
-isOverTiled= function(targ,cam){ //is the mouse over the player/object 
-    if((mX>(targ.tileX-cam.tileX)*16/curMap.zoom) && (mX<((targ.tileX-cam.tileX)*16+targ.width*curMap.zoom)/curMap.zoom) &&(mY>((targ.tileY-cam.tileY)*16)/curMap.zoom) &&(mY<((targ.tileY-cam.tileY)*16+targ.height)/curMap.zoom)) {return true;}
+
+
+isOverTiled= function(targ,cam,tileSize){ //is the mouse over the player/object 
+    if((mX>(targ.tileX-cam.tileX)*tileSize) && (mX<((targ.tileX-cam.tileX)*tileSize+targ.width)) &&(mY>((targ.tileY-cam.tileY)*tileSize)) &&(mY<((targ.tileY-cam.tileY)*tileSize+targ.height))) {return true;}
     return false;
+};
+
+isOverTiledList= function(targs,tileSize){ //is the mouse over the player/object 
+	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	for(var i=0;i<targs.length;i++)
+	{
+		/*if((mX>targs[i].tileX*tileSize) && (mX<targs[i].tileX*tileSize+targs[i].width) &&(mY>targs[i].tileY*tileSize) &&(mY<targs[i].tileY*tileSize+targs[i].height))*/
+		if((tx==targs[i].x) && (ty==targs[i].y))
+		{
+			return targs[i];
+		}
+	}
+    return null;
 };

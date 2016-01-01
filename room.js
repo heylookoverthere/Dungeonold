@@ -308,8 +308,9 @@ function room(I) { //room object
 	I.exits=new Array(); //of doors, ladders and stairs
 	I.stairs=new Array();
 	//I.exits.push(new door(null,0));
-	I.windows=new Array();
+	//I.windows=new Array(); //for zombie mode!
 	I.lights=new Array();
+	I.fires=new Array();
 	I.enemies=new Array();
 	I.objects=new Array();
 	I.entities=new Array(); //comprising all the others
@@ -575,6 +576,17 @@ function room(I) { //room object
 		});  
 		
 	}
+	I.loadObjects=function(path)
+	{
+		
+		var smuth=path+I.name+".obj";
+		$.get(smuth, function(data) 
+		{ 
+			I.buildLoadedObjects("whatever",data); 
+			bConsoleBox.log("Loaded "+smuth); 
+		});  
+		
+	}
 	
 	I.save=function(path)
 	{
@@ -589,6 +601,19 @@ function room(I) { //room object
 		}
 	}
 		
+	I.saveObjects=function(path)
+	{
+		if(I.active)
+		{
+			var smoth=path+I.name+".obj";
+			$.post("/save/", {"data": I.stringifyObjects(), "path": smoth}).done(function(response) { bConsoleBox.log("Saved " +smoth); });
+		}else
+		{
+			//edit floor file to make clear there's no room.
+			bConsoleBox.log("No room to save");
+		}
+	}
+	
 	I.stringifyTiles = function(name) {
 		var tempstring= "";
 		for (i=0;i<ROOM_WIDTH; i++){
@@ -600,10 +625,27 @@ function room(I) { //room object
 		return tempstring;
 	};
 	
+	I.stringifyObjects = function(name) {
+		var tempstring= "";
+		tempstring+=I.objects.length;
+		tempstring+=","
+		for (i=0;i<I.objects.length; i++){
+			tempstring+=object.stringify();
+			tempstring+=",";
+		}
+		return tempstring;
+	};
+	
 	I.loadTiles = function (name) {
 	var hempstring=localStorage.getItem(name);
 		I.buildMapFromLoadedTiles(name, hempstring);
     };
+	
+	I.buildLoadedObjects = function(name, hempstring) {
+		tempstring=hempstring.split(",");
+		I.objects=new Array();
+		//get first bit of data, that's the number of objects. then loop that many times loading each objects x,y,type
+	}
 	
 	I.buildMapFromLoadedTiles = function(name, hempstring) {
 		tempstring=hempstring.split(",");
