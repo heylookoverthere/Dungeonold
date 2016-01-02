@@ -20,6 +20,9 @@ function button(pt)
 {
 	this.x=0;
 	this.y=0;
+	this.shiftable=false;
+	this.shiftkey=new akey("shift");
+	this.shiftColor="red";
 	this.font= "8pt Calibri";
 	if(pt){
 	this.parent=pt;
@@ -36,6 +39,7 @@ function button(pt)
 	this.object=null;
 	this.width=30;
 	this.onoff=false;
+	this.normalColor="green";
 	this.height=24;
 	this.blinkRate=30;
 	this.blink=false;
@@ -91,6 +95,15 @@ function button(pt)
 				this.backColor="red";
 			}
 		
+		}if(this.shiftable)
+		{
+			if(this.shiftkey.checkDown())
+			{
+				this.backColor=this.shiftColor;
+			}else
+			{
+				this.backColor=this.normalColor;
+			}
 		}
 		can.fillRect(this.x,this.y,this.width+this.borderSize,this.height+this.borderSize);
 		if(this.greyed)

@@ -24,10 +24,28 @@ var timy=new button();
 timy.text="North";
 timy.x=200-buttonX;
 timy.y=640;
+timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeRoom(0,true);
+	if((this.shiftable) && (this.shiftkey.checkDown()))
+	{
+		if(curDungeon.roomY>0)
+		{
+			if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY-1)))
+			{
+				curDungeon.smartAddDoor(8,1,0);
+				editor.clearConfirm();
+				editor.penDown=false;
+				curDungeon.changeRoom(0,!editMode);
+			}
+		}else{
+			bConsoleBox.log("Can't go off the map");
+		}
+	}else
+	{
+		curDungeon.changeRoom(0,true);
+	}
 }
 
 
@@ -37,50 +55,151 @@ timy=new button();
 timy.text="South";
 timy.x=200-buttonX;
 timy.y=680;
+timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeRoom(2,!editMode);
+	if((this.shiftable) && (this.shiftkey.checkDown()))
+	{
+		if(curDungeon.roomY<curDungeon.getHeight()-1)
+		{
+			if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY+1)))
+			{
+				curDungeon.smartAddDoor(8,13,2);
+				editor.clearConfirm();
+				editor.penDown=false;
+				curDungeon.changeRoom(2,!editMode);
+			}
+		}else
+		{
+			bConsoleBox.log("Can't go off the map");
+		}
+	}else
+	{
+		curDungeon.changeRoom(2,!editMode);
+	}
 }
 buttons.push(timy);
 timy=new button();
 timy.text="East";
 timy.x=235-buttonX;
 timy.y=660;
+timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeRoom(1,!editMode);
+	if((this.shiftable) && (this.shiftkey.checkDown()))
+	{
+		if(curDungeon.roomX<curDungeon.getWidth()-1)
+		{
+			if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].active)|| (curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX+1,curDungeon.roomY)))
+			{
+				curDungeon.smartAddDoor(18,6,1);
+				editor.clearConfirm();
+				editor.penDown=false;
+				curDungeon.changeRoom(1,!editMode);
+			}
+		}else{
+			bConsoleBox.log("Can't go off the map");
+		}
+	}else
+	{
+		curDungeon.changeRoom(1,!editMode);
+	}
 }
 buttons.push(timy);
 timy=new button();
 timy.text="West";
 timy.x=165-buttonX;
 timy.y=660;
+timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeRoom(3,!editMode);
+	if((this.shiftable) && (this.shiftkey.checkDown()))
+	{
+		if(curDungeon.roomX>0)
+		{
+			if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX-1,curDungeon.roomY)))
+			{
+				//curDungeon.curRoom().addDoor(3)
+				//curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].addDoor(1);
+				curDungeon.smartAddDoor(1,6,3);
+				editor.clearConfirm();
+				editor.penDown=false;
+				curDungeon.changeRoom(3,!editMode);
+			}
+		}else
+		{
+			bConsoleBox.log("Can't go off the map");
+		}
+	}else{
+		curDungeon.changeRoom(3,!editMode);
+	}
 }
 buttons.push(timy);
 timy=new button();
 timy.text="Up";
 timy.x=270-buttonX;
 timy.y=640;
+timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeFloor(true,!editMode);
+	if((this.shiftable) && (this.shiftkey.checkDown()))
+	{
+		if(curDungeon.roomZ<curDungeon.floors-1)
+			{
+				if((curDungeon.rooms[curDungeon.roomZ+1][curDungeon.roomX][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ+1,curDungeon.roomX,curDungeon.roomY)))
+				{
+					curDungeon.smartAddStair(editor.x,editor.y,true);
+					editor.clearConfirm();
+					editor.penDown=false;
+					curDungeon.changeFloor(true,!editMode);
+				}
+			}else
+			{
+				//bConsoleBox.log("Can't go off the map");
+				bConsoleBox.log("Will create new floor. Confirm? (Y/N)","yellow");
+				editor.confirming=true;
+				editor.confirmingWhat=function() {
+					curDungeon.addFloor();
+					bConsoleBox.log("New floor created");
+				}
+				}
+	}else
+	{
+		curDungeon.changeFloor(true,!editMode);
+	}
 }
 buttons.push(timy);
 timy=new button();
 timy.text="Down";
 timy.x=270-buttonX;
 timy.y=680;
+timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	curDungeon.changeFloor(false,!editMode);
+	if((this.shiftable) && (this.shiftkey.checkDown()))
+	{
+		if(curDungeon.roomZ>0)
+		{
+			if((curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ-1,curDungeon.roomX,curDungeon.roomY)))
+			{
+				curDungeon.smartAddStair(editor.x,editor.y,false);
+				editor.clearConfirm();
+				editor.penDown=false;
+				curDungeon.changeFloor(false,!editMode);
+			}
+		}else
+		{
+			bConsoleBox.log("Can't go off the map");
+		}
+	}else
+	{
+		curDungeon.changeFloor(false,!editMode);
+	}
 }
 buttons.push(timy);
 //lights.push(new light(7092,3748,14));
@@ -819,6 +938,9 @@ function mainUpdate()
 			bConsoleBox.log("Shift + C  - Copy room sans doors");
 			bConsoleBox.log("P  - Paste room");
 		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill / Place Door");
+			bConsoleBox.log("Left Click  - Place");
+			bConsoleBox.log("Right Click  - Change mode");
+			bConsoleBox.log("Mouse Wheel  - Change selected");
 			//bConsoleBox.log("Z - Undo");
 			bConsoleBox.log("Hit E to leave edit mode");
 				//bConsoleBox.log("Someting - Fill!");

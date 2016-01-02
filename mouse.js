@@ -145,10 +145,14 @@ function mouseClick(e) {  //represents the mouse
 	var mili=tm.getTime();
 	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
-	
-	if(editMode)
+	if(e.which==2)
 	{
-		if((tx>1) && (tx<19) && (ty>1) &&(ty<13))
+		editMode=!editMode;
+	}
+	
+	if((editMode))
+	{
+		if((tx>1) && (tx<18) && (ty>1) &&(ty<13))
 		{
 			//editor.penDown=false;
 			editor.x=tx;
