@@ -570,9 +570,12 @@ function mainDraw() {
 
 	if(true)//(!stayDay)
 	{
-		canvas.globalAlpha=LightLevels[Darkness];
+		/*canvas.globalAlpha=LightLevels[Darkness];
 		canvas.fillStyle="black";
-		canvas.fillRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);
+		canvas.fillRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);*/
+		//canvas.fillRect(0,0,CANVAS_WIDTH/3, CANVAS_HEIGHT);
+		//canvas.fillRect((CANVAS_WIDTH/3)*2,0,CANVAS_WIDTH/3, CANVAS_HEIGHT);
+		curDungeon.curRoom().darken(canvas,9,9);
 	}
 
 	for(var i=0;i<curDungeon.curRoom().lights.length;i++)

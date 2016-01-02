@@ -312,6 +312,7 @@ function room(I) { //room object
 	I.fogOfWar=false;
 	I.x=0;
 	I.y=0;
+	I.lightLevel=0.00;
 	I.miniMapX=0;
 	I.miniMapY=0;
 	I.explored=false;//TODO
@@ -856,6 +857,27 @@ function room(I) { //room object
 			this.objects[p].draw(can,cam,xOffset,yOffset);
 		}
 	  };
+	  
+	I.darken=function(can,x,y) //TODO: don't darken 6x6 grid from x-3 to x+3, 
+	{
+		can.globalAlpha=I.lightLevel;
+		can.fillStyle="black";
+		for(var i=0;i<I.width;i++)
+		{
+			for(var j=0;j<I.height;j++)
+			{
+				if((i>x-4) && (i<x+4) && (j>y-4) &&(j<y+4))
+				{
+					//don't draw!
+				}else
+				{			
+					can.fillRect(i*32+xOffset,j*32+yOffset,32,32);
+				}
+			}
+		}
+		lightcirclesprite.draw(can,(x-3)*32+xOffset,(y-3)*32+yOffset);
+	}
+	  
     I.clear =function(){
         for (i=0;i<ROOM_WIDTH; i++){
             for (j=0;j<ROOM_HEIGHT; j++){

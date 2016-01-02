@@ -48,6 +48,7 @@ LightLevels.push(0.85); //11pm
 var heartsprite=Sprite("heart"); 
 var emptyheartsprite=Sprite("emptyheart"); 
 var halfheartsprite=Sprite("halfheart"); 
+var lightcirclesprite=Sprite("lightcircle");
 
 function drawHearts(p,can) {
 	
