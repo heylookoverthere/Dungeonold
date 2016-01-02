@@ -168,7 +168,35 @@ function mouseClick(e) {  //represents the mouse
 	{
 		editMode=!editMode;
 	}
-	
+	for(var i=0;i<buttons.length;i++)
+	{
+		if(buttons[i].hasFocus)
+		{
+			buttons[i].hasFocus=false;
+			buttons[i].exists=false;
+			return;
+		}
+	}
+	for(var i=0;i<buttons.length;i++)
+	{
+		if((isOver(buttons[i]))  && (buttons[i].visible))
+		{
+			if((!buttons[i].greyed) && (!buttons[i].decorative)){
+				//clearFocus();
+				
+				
+				//buttons[i].on=!buttons[i].on;
+				for(var k=0;k<buttons[i].linked.length;k++)
+				{
+					buttons[i].linked[k].on=false;
+				}
+				buttons[i].doThings();
+				//console.log(buttons[i].object.name);
+			}
+
+			return;
+		}
+	}
 	if((editMode))
 	{
 		if((tx>1) && (tx<18) && (ty>1) &&(ty<13))
@@ -301,41 +329,14 @@ function mouseClick(e) {  //represents the mouse
 		}
 	}else // non-edit mode mouse stuff.
 	{
-		for(var i=0;i<buttons.length;i++)
-		{
-			if(buttons[i].hasFocus)
-			{
-				buttons[i].hasFocus=false;
-				buttons[i].exists=false;
-			}
-		}
-		
+
 		var meg=isOverTiledList(curDungeon.curRoom().objects,32);
 		if(meg)
 		{
 			meg.activate();
 		}
 	}
-	for(var i=0;i<buttons.length;i++)
-	{
-		if((isOver(buttons[i]))  && (buttons[i].visible))
-		{
-			if((!buttons[i].greyed) && (!buttons[i].decorative)){
-				//clearFocus();
-				
-				
-				//buttons[i].on=!buttons[i].on;
-				for(var k=0;k<buttons[i].linked.length;k++)
-				{
-					buttons[i].linked[k].on=false;
-				}
-				buttons[i].doThings();
-				//console.log(buttons[i].object.name);
-			}
-
-			return;
-		}
-	}
+	
 		//clearFocus();
 	
 		/*switch (e.which)

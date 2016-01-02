@@ -21,6 +21,54 @@ var buttonX=156;
 
 var buttons=new Array();
 var timy=new button();
+timy.text="Help";
+timy.x=18;
+timy.y=127;
+timy.height=17;
+timy.exists=true;
+timy.shiftable=true;
+timy.visible=true;
+timy.doThings=function()
+{
+	var blex="well, there not much actual gameplay yet. But you can use the arrow keys and page up/page down to navigate the dungeon. You'll be limited as a player would be, so you'll need an open door to change room and unhidden stairs to change floors";
+	if(editMode)
+	{
+		if(editor.mode==editModes.Pen)
+		{
+			blex="Pen mode is pretty self explanatory. Click or press space to put the pen down or pick it up again. Then move the cursor and it will paint the tiles. It's quick, but imprecise. Some special tiles cannot be painted, like stairs.";
+		}else if(editor.mode==editModes.Stamp)
+		{
+			blex="Stamp mode lets you place individual tiles by clicking or pressing space." ;
+		}else if(editor.mode==editModes.Fill)
+		{
+			blex="Fill mode works like the paintbucket tool in MSPaint. Not to be confused with the fill all function, that sets all floor tiles to the selected tile (activated by hitting f)"
+		}else if(editor.mode==editModes.Door)
+		{
+			blex="Door mode. Place a door of the selected type. A matching door in the adjacent room will be created if possible. Watch out for overlapping doors! Doors can be removed in any mode with Shift + W,A,S,D. Be warned it removes the oldest door on the indicated wall, you don't get to choose. " 
+		}else if(editor.mode==editModes.Objects)
+		{
+			blex="Object mode. Click or hit space to place the selected object. Click an existing object to edit it's special properties (if applicable). Right click an object to pick it up and again to put it down in a new location. (Because right click has been re-purposed in this mode, you'll have to use M to change edit modes.)"
+		}else if(editor.mode==editModes.CopyArea)
+		{
+			blex="Copy Area mode. I have enabled this yet, so I don't know how you're seeing this message! I'm not sure if this is even a thing that is needed. Maybe make it selection/delete mode instead, and then you can delete what's selected? ";
+		}else if(editor.mode==editModes.SwitchLink)
+		{
+			blex="Switch linking mode. May eventually become anything linking mode. But for now click a switch in object mode and then click any door or staircase to link them. (the staircase will become hidden, and only appear when the switch is activated.) There's no way to unlink at the moment, and the links aren't saved and loaded yet.";
+		}
+	}
+	var mancy=new textbox();
+	mancy.setup();
+	mancy.x=200;
+	mancy.y=200;
+	mancy.textLim=104;
+	mancy.log(blex);
+	mancy.hasFocus=true;
+	buttons.push(mancy);
+	
+}
+buttons.push(timy);
+
+var timy=new button();
 timy.text="North";
 timy.x=200-buttonX;
 timy.y=640;
@@ -45,7 +93,7 @@ timy.doThings=function()
 		}
 	}else
 	{
-		curDungeon.changeRoom(0,true);
+		curDungeon.changeRoom(0,!editMode);
 	}
 }
 
@@ -551,7 +599,7 @@ function mainMenuUpdate(){
 //------------MAIN DRAW-----------------------------------------
 function mainDraw() {
 	//SHOULDN'T
-		canvas.fillStyle = "black";
+	canvas.fillStyle = "black";
 	canvas.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
 	curDungeon.draw(canvas,camera);
@@ -612,27 +660,27 @@ function mainDraw() {
 		{
 			if(editor.penDown)
 			{	
-				canvas.fillText("Pen Down",18,126);
+				canvas.fillText("Pen Down",18,120);
 			}else
 			{
-				canvas.fillText("Pen Up",18,126);
+				canvas.fillText("Pen Up",18,120);
 			}
 			
 		}
 		else if(editor.mode==editModes.Stamp){
-			canvas.fillText("Stamp mode",18,126);
+			canvas.fillText("Stamp mode",18,120);
 		}else if(editor.mode==editModes.SwitchLink){
-			canvas.fillText("Linking mode",18,126);
+			canvas.fillText("Linking mode",18,120);
 		}else if(editor.mode==editModes.Fill){
-			canvas.fillText("Fill mode",18,126);
+			canvas.fillText("Fill mode",18,120);
 		}else if(editor.mode==editModes.Objects){
-			canvas.fillText("Object mode",18,126);
+			canvas.fillText("Object mode",18,120);
 		}else if (editor.mode==editModes.Door)
 		{
-			canvas.fillText("Door Mode",18,126);
+			canvas.fillText("Door Mode",18,120);
 		}else
 		{
-			canvas.fillText("Pen Mode",18,126);
+			canvas.fillText("Pen Mode",18,120);
 		}
 		if(editor.mode==editModes.Door)
 		{
