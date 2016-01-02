@@ -51,16 +51,17 @@ object.prototype.setup=function(id,par)
 		this.flame.type=0;
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);
+		this.activate();
 	}else if (this.type==31) {
 	    this.sprite= Sprite("heart");
 	    this.name="Heart Cointainer";
 	}else if (this.type==32) {
 	    this.sprite= Sprite("gold");
 	    this.name="Gold Coin";
-	}else if (this.type==3) {
+	}else if (this.type==33) {
 	    this.sprite= Sprite("silver");
 	    this.name="Silver Coin";
-	}else if (this.type==4) {
+	}else if (this.type==34) {
 	    this.sprite= Sprite("copper");
 	    this.name="Copper Coin";
 	}else if (this.type==5) {
@@ -143,6 +144,30 @@ object.prototype.setup=function(id,par)
     }else if (this.type==30) {
 		this.sprite= Sprite("redtunic");
 		this.name="Fire Shirt";
+	}else if (this.type==3) {
+		this.sprite= Sprite("key");
+		this.name="key";
+		this.pickupable=true;
+	}else if (this.type==4) {
+		this.sprite= Sprite("switch");
+		this.name="switch";
+		this.activateEdit=function(){
+			editor.mode=editModes.SwitchLink
+			editor.linkingFrom=this;
+		}
+		this.activate=function(){
+			this.on=!this.on
+			if(this.on)
+			{
+				this.sprite= Sprite("switchpressed");
+			}else
+			{
+				this.sprite= Sprite("switch");
+			}
+			if(this.dest){
+				this.dest.activate();
+			}
+		}
 	}else if (this.type==2) {
 		this.sprite= Sprite("chest");
 		this.name="Chest";
@@ -213,7 +238,7 @@ object.prototype.tileY=function()
 }*/
 object.prototype.update=function()
 {
-	if(this.on)
+	if((this.type==0)&&(this.on))
 	{
 		this.flame.update();
 	}

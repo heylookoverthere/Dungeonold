@@ -618,6 +618,8 @@ function mainDraw() {
 		}
 		else if(editor.mode==editModes.Stamp){
 			canvas.fillText("Stamp mode",18,126);
+		}else if(editor.mode==editModes.SwitchLink){
+			canvas.fillText("Linking mode",18,126);
 		}else if(editor.mode==editModes.Fill){
 			canvas.fillText("Fill mode",18,126);
 		}else if(editor.mode==editModes.Objects){
@@ -959,7 +961,7 @@ function mainUpdate()
 			bConsoleBox.log("P  - Paste room");
 		    bConsoleBox.log("Space - Set Tile/Pen Down/Fill/Place Door");
 			bConsoleBox.log("Left Click  - Place");
-			bConsoleBox.log("Right Click  - Change mode");
+			bConsoleBox.log("Right Click  - Change mode/grab object");
 			bConsoleBox.log("Mouse Wheel  - Change selected");
 			//bConsoleBox.log("Z - Undo");
 			bConsoleBox.log("Hit E to leave edit mode");

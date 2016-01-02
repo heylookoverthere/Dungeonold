@@ -80,6 +80,8 @@ var objectSprites=new Array();
 objectSprites.push(Sprite("lamp"));
 objectSprites.push(Sprite("sign"));
 objectSprites.push(Sprite("chest"));
+objectSprites.push(Sprite("key"));
+objectSprites.push(Sprite("switch"));
 
 var editModes={};
 editModes.Pen=0;
@@ -88,6 +90,7 @@ editModes.Fill=2;
 editModes.Door=3;
 editModes.Objects=4;
 editModes.CopyArea=5;
+editModes.SwitchLink=9;
 
 var OPTIONS={};
 OPTIONS.showUnexploredRooms=false;

@@ -14,11 +14,27 @@ $(document).bind("contextmenu",function(e){
 			
 			if(editMode)
 			{
-				editor.mode++;
-				editor.penDown=false;
-				if(editor.mode>editor.numModes)
+				if(editor.mode==editModes.Objects)
 				{
-					editor.mode=0;
+					if(editor.grabbed)
+					{
+						editor.grabbed=null;
+					}else
+					{
+						var meg=isOverTiledList(curDungeon.curRoom().objects,32);
+						if(meg)
+						{
+							editor.grabbed=meg;
+						}
+					}
+				}else
+				{
+					editor.mode++;
+					editor.penDown=false;
+					if(editor.mode>editor.numModes)
+					{
+						editor.mode=0;
+					}
 				}
 			}else
 			{
@@ -160,7 +176,39 @@ function mouseClick(e) {  //represents the mouse
 			//editor.penDown=false;
 			editor.x=tx;
 			editor.y=ty;
-			if(editor.mode==editModes.Stamp)
+			if(editor.mode==editModes.SwitchLink)
+			{
+				//if over door
+				var dork=null;
+				var pork=curDungeon.curRoom().getSpecificDoor(editor.x,editor.y-1,0)
+				if(pork)
+				{
+					dork=pork;
+				}
+				pork=curDungeon.curRoom().getSpecificDoor(editor.x+1,editor.y,1)
+				if(pork)
+				{
+					dork=pork;
+				}
+				pork=curDungeon.curRoom().getSpecificDoor(editor.x,editor.y+1,2)
+				if(pork)
+				{
+					dork=pork;
+				}
+				pork=curDungeon.curRoom().getSpecificDoor(editor.x-1,editor.y,2)
+				if(pork)
+				{
+					dork=pork;
+				}
+				//curDungeon.curRoom().exits[0];
+				if(dork)
+				{
+					editor.linkingTo=dork;
+					editor.mode=0;
+					editor.linkingFrom.dest=editor.linkingTo;
+					bConsoleBox.log("Linked switch to door");
+				}
+			}else if(editor.mode==editModes.Stamp)
 			{
 				curDungeon.curRoom().tiles[editor.x][editor.y].data=editor.brushType; 
 				editor.penDown=false;
@@ -320,6 +368,9 @@ mouseXY= function(e) {
 				editor.penDown=false;
 			}
 		}
+	}else if((editor.grabbed) &&(tx>1) &&(tx<18) &&(ty>1)&&(ty<13))
+	{
+		editor.grabbed.move(tx,ty);
 	}
 };
 

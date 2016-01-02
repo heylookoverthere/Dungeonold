@@ -90,6 +90,17 @@ function door(or,clone)
 		this.type=clone.type;
 	}
 	
+	door.prototype.activate=function()
+	{
+		if(this.type==0)
+		{
+			this.close();
+		}else if(this.type==1)
+		{
+			this.open();
+		}
+	}
+	
 	door.prototype.orient=function(dir)
 	{
 		this.orientation=dir;
@@ -1178,11 +1189,14 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=2;
+	this.numObjectTypes=4;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();
 	this.clipBoard.active=false;
+	this.linkingTo=null;
+	this.linkingFrom=null;
+	this.grabbed=null; 
 }
 
 editCursor.prototype.clearConfirm=function()
