@@ -11,6 +11,13 @@ var graph=null;
 
 var Darkness=14;
 
+var randomPhrases=new Array();
+randomPhrases.push("I dunno much about computers other than the one I got at my house.");
+randomPhrases.push("You know those guitars that are like....double guitars?");
+randomPhrases.push("Sometimes, cats can be afraid of cucumbers. But sometimes not.");
+randomPhrases.push("Here lies some cunt.");
+
+
  var LightLevels=new Array();
 LightLevels.push(0.90); //midnight
 LightLevels.push(0.85); //1am
@@ -37,12 +44,48 @@ LightLevels.push(0.60); //9pm
 LightLevels.push(0.80); //10pm
 LightLevels.push(0.85); //11pm
 
+var heartsprite=Sprite("heart"); 
+var emptyheartsprite=Sprite("emptyheart"); 
+var halfheartsprite=Sprite("halfheart"); 
+
+function drawHearts(p,can) {
+	
+	can.font = "14pt Calibri";
+	//canvas.textAlign = "center";
+	//can.textBaseline = "middle";
+	can.fillStyle = "white";
+	can.fillText("--Health--", 28, 22);
+	var conts=p.hp/20;
+	for(var h=0;h<p.maxHp/20;h++)
+	{
+		emptyheartsprite.draw(can,20+h*16+h*2, 24);
+	}
+	for(var h=0;h<conts-1;h++)
+	{
+		heartsprite.draw(can,20+h*16+h*2, 24);
+	}
+	
+	if(p.hp%20==0)
+	{
+		heartsprite.draw(canvas,20+h*16+h*2, 24);
+	}else
+    {
+	    halfheartsprite.draw(canvas,20+h*16+h*2, 24);
+	}
+	
+}
+
+var objectSprites=new Array();
+objectSprites.push(Sprite("lamp"));
+objectSprites.push(Sprite("sign"));
+
 var editModes={};
 editModes.Pen=0;
 editModes.Stamp=1;
 editModes.Fill=2;
 editModes.Door=3;
-editModes.CopyArea=4;
+editModes.Objects=4;
+editModes.CopyArea=5;
 
 var OPTIONS={};
 OPTIONS.showUnexploredRooms=false;

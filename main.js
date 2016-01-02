@@ -237,8 +237,9 @@ function drawGUI(can)
 		var cont=0;
 		can.globalAlpha=1;
 	}else
-	{
-		//hearts and shit
+	{	
+		drawHearts(miles,can);
+		
 	}
 }
 
@@ -495,6 +496,8 @@ function mainDraw() {
 			canvas.fillText("Stamp mode",18,126);
 		}else if(editor.mode==editModes.Fill){
 			canvas.fillText("Fill mode",18,126);
+		}else if(editor.mode==editModes.Objects){
+			canvas.fillText("Object mode",18,126);
 		}else if (editor.mode==editModes.Door)
 		{
 			canvas.fillText("Door Mode",18,126);
@@ -521,6 +524,16 @@ function mainDraw() {
 				canvas.fillText("Bombed Door",18,96);
 			}
 			
+		}else if(editor.mode==editModes.Objects)
+		{
+			canvas.fillText("Selected: ",18,96);
+			if(dungeonTileSprite[editor.objectType])
+			{
+				objectSprites[editor.objectType].draw(canvas,110,73);
+			}else
+			{
+				console.log("no sprite for "+editor.objectType);
+			}
 		}else
 		{
 			canvas.fillText("Selected: ",18,96);
@@ -535,7 +548,7 @@ function mainDraw() {
 		
 	}	
 	
-	drawGUI(canvas);
+
 	drawDebug(canvas);
 	curDungeon.drawMiniMap(canvas);//,player
 	
@@ -544,10 +557,13 @@ function mainDraw() {
 	{
 		buttons[h].draw(canvas);
 	}
-	
+	drawGUI(canvas);
 	if(editMode)
 	{
 		editor.draw(canvas);
+	}else
+	{
+		miles.draw(canvas,camera);
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
@@ -690,6 +706,13 @@ function mainUpdate()
 			if(editor.doorType>editor.numDoorTypes)
 			{
 				editor.doorType=0;
+			}
+		}else if(editor.mode==editModes.Objects)
+		{
+			editor.objectType++;
+			if(editor.objectType<editor.numObjectTypes)
+			{
+				editor.objectType=0;
 			}
 		}else
 		{

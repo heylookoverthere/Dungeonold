@@ -719,11 +719,11 @@ function dungeon(path)
 				var simplicity=this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g];
 				if(simplicity.y>10)
 				{
-					//this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g].draw(can,cam,0,tyOffset);
-					simplicity.sprite.draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+xOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset);
+					this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g].draw(can,cam,xOffset,tyOffset);
+					//simplicity.sprite.draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+xOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset);
 				}
 			}
-			/*for(var g=0;g<this.rooms[this.roomZ][this.roomX][this.roomY-1].fires.length;g++)
+			/*for(var g=0;g<this.rooms[this.roomZ][this.roomX][this.roomY-1].lights.length;g++)
 			{
 				var simplicity=this.rooms[this.roomZ][this.roomX][this.roomY-1].lights[g];
 				console.log(simplicity.y);

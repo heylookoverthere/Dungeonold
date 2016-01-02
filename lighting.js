@@ -72,7 +72,7 @@ light.prototype.update=function()
 
 light.prototype.draw=function(ctx,cam) {
 	var x=this.x-cam.tileX*tileSize+17; //campfire
-	var y=this.y.y-cam.tileY*tileSize+23; 
+	var y=this.y-cam.tileY*tileSize+23; 
     ctx.save();
 	//ctx.scale(-cam.zoom,-cam.zoom);
     ctx.globalCompositeOperation = 'lighter';
@@ -153,16 +153,20 @@ flame.prototype.update=function()
 	}
 };
 
-flame.prototype.draw=function(can,cam)
+flame.prototype.draw=function(can,cam,xfrog,yfrog)
 {
 	if(!this.alive) {return;}
+	if(!xfrog) {xfrog=0;}
+	if(!yfrog) {yfrog=0;}
+	xfrog=0;
+	yfrog=0;
 	can.save();
 	can.globalAlpha=0.6;
 	//can.scale(cam.zoom,cam.zoom);
 	if(this.type>0)
 	{
-		this.supportSprite.draw(can, this.x-cam.tileX*tileSize+1,this.y-cam.tileY*tileSize+4);
+		this.supportSprite.draw(can, this.x-cam.tileX*tileSize+1+xfrog,this.y-cam.tileY*tileSize+4+yfrog);
 	}
-	this.sprites[this.aniTrack].draw(can, this.x-cam.tileX*tileSize,this.y-cam.tileY*tileSize);
+	this.sprites[this.aniTrack].draw(can, this.x-cam.tileX*tileSize+xfrog,this.y-cam.tileY*tileSize+yfrog);
 	can.restore();
 };

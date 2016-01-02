@@ -11,14 +11,18 @@ $(document).bind("contextmenu",function(e){
 		
 		if((tx>1) && (tx<18) &&(ty>1)&&(ty<13) )
 		{
-			//monsta.startOrbit(40000,mX+camera.x,mY+camera.y,60,8,false,12);
-			var meg=isOverTiledList(curDungeon.curRoom().objects,32);
-			if(meg)
+			
+			if(editMode)
 			{
-				meg.activate();
+				editor.mode++;
+				editor.penDown=false;
+				if(editor.mode>editor.numModes)
+				{
+					editor.mode=0;
+				}
 			}else
 			{
-				makeLamp(tx,ty,curDungeon.curRoom());
+				monsta.startOrbit(40000,mX+camera.x,mY+camera.y,60,8,false,12);
 			}
 		}
 		
@@ -65,6 +69,13 @@ function mouseWheel(e){
 						{
 							editor.doorType=0;
 						}
+					}else if(editor.mode==editModes.Objects)
+					{
+						editor.objectType++;
+						if(editor.objectType>editor.numObjectTypes)
+						{
+							editor.objectType=0;
+						}
 					}else
 					{
 						editor.brushType++;
@@ -90,6 +101,13 @@ function mouseWheel(e){
 						if(editor.doorType<0)
 						{
 							editor.doorType=numDoorTypes;
+						}
+					}else if(editor.mode==editModes.Objects)
+					{
+						editor.objectType--;
+						if(editor.objectType<0)
+						{
+							editor.objectType=editor.numObjectTypes;
 						}
 					}else
 					{
@@ -156,6 +174,18 @@ function mouseClick(e) {  //represents the mouse
 				}else
 				{
 					bConsoleBox.log("Can't fill with stairs");
+				}
+			}else if(editor.mode==editModes.Objects)
+			{
+			
+				var meg=isOverTiledList(curDungeon.curRoom().objects,32);
+				if(meg)
+				{
+					meg.activate();
+				}else
+				{
+					var text=randomPhrases[Math.floor(Math.random()*randomPhrases.length)]
+					makeObject(tx,ty,curDungeon.curRoom(),editor.objectType,text);
 				}
 			}else if(editor.mode==editModes.Pen)
 			{

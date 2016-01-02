@@ -20,6 +20,7 @@ function object(oroom) //not a tile, not an enemy
 	this.width=32;
 	this.height=32;
 	this.walkable=false;
+	this.text="";
 	this.dest=null; //i.e. door to be opened on activate
 	this.flame=null;
 	//this.setup();
@@ -38,7 +39,7 @@ object.prototype.move=function(x,y) //brings along what is needed (like the flam
 	}
 }
 
-object.prototype.setup=function(id)
+object.prototype.setup=function(id,par)
 {
 	if(id) {this.type=id;}
 	if (this.type==0) {
@@ -50,7 +51,7 @@ object.prototype.setup=function(id)
 		this.flame.type=0;
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);*/
-	}else if (this.type==1) {
+	}else if (this.type==31) {
 	    this.sprite= Sprite("heart");
 	    this.name="Heart Cointainer";
 	}else if (this.type==2) {
@@ -142,6 +143,17 @@ object.prototype.setup=function(id)
     }else if (this.type==30) {
 		this.sprite= Sprite("redtunic");
 		this.name="Fire Shirt";
+	}else if (this.type==1) {
+		this.sprite= Sprite("sign");
+		this.name="sign";
+		this.text="Snoke";
+		if(par){
+			this.text=par;
+		}
+		this.activate=function(){
+			//display textbox with text. 
+			console.log(this.text);
+		}
 	}
 }
 
@@ -175,16 +187,16 @@ object.prototype.update=function()
 		this.flame.update();
 	}
 }
-object.prototype.draw=function(can,cam) //,xOffh,yOffh)
+object.prototype.draw=function(can,cam,xOffh,yOffh)
 {
-	//if(!xOffh) {xOffh=0;}
-	//if(!yOffh) {yOffh=0;}
-	//this.sprite.draw(can, this.x*32+xOffh, this.y*32+yOffh);
-	this.sprite.draw(can, this.x*32+xOffset, this.y*32+yOffset);
+	if(!xOffh) {xOffh=0;}
+	if(!yOffh) {yOffh=0;}
+	this.sprite.draw(can, this.x*32+xOffh, this.y*32+yOffh);
+	//this.sprite.draw(can, this.x*32+xOffset, this.y*32+yOffset);
 	if((this.type==0) && (this.on))
 	{
 		//draw fire?
-		this.flame.draw(can,cam);
+		this.flame.draw(can,cam,xOffh,yOffh);
 	}
 }
 
@@ -200,13 +212,15 @@ object.prototype.stringify=function()
 }
 
 
-function makeLamp(x,y,broom)
+function makeObject(x,y,broom,t,par)
 {
 	var pleb=new object(broom);
-	pleb.type=0;
+	if(!t){t=0;}
+	if(!par){par=0;}
+	pleb.type=t;
 	pleb.x=x;
 	pleb.y=y;
-	pleb.setup();
+	pleb.setup(t,par);
 	broom.objects.push(pleb);
 	return pleb;
 }

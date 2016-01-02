@@ -539,7 +539,7 @@ function room(I) { //room object
 	}
 	
 	I.walkable=function(x,y){
-		
+		    //also check objects see if they're walkable
 			//console.log(I.tiles[x][y].data);
 			if((I.tiles[x][y].data!=TileType.Mountains) &&(I.tiles[x][y].data!=TileType.RedMountains)&&(I.tiles[x][y].data!=TileType.IceMountains)&& (I.tiles[x][y].data!=TileType.Ice)&& (I.tiles[x][y].data!=TileType.Ocean)&&(I.tiles[x][y].data!=TileType.Water)) {return true;}
 			return false;
@@ -1147,7 +1147,9 @@ function editCursor()
 	this.confirmed=false;
 	this.confirmingWhat=null;
 	this.mode=0;
-	this.numModes=3;
+	this.numModes=4;
+	this.numObjectTypes=1;
+	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();
 	this.clipBoard.active=false;
