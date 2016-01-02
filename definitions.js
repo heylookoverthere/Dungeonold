@@ -82,6 +82,8 @@ objectSprites.push(Sprite("sign"));
 objectSprites.push(Sprite("chest"));
 objectSprites.push(Sprite("key"));
 objectSprites.push(Sprite("switch"));
+objectSprites.push(Sprite("potstand"));
+objectSprites.push(Sprite("pot"));
 
 var editModes={};
 editModes.Pen=0;

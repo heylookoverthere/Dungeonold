@@ -57,10 +57,16 @@ function staircase(up,clone)
 	this.x=0;
 	this.y=0;
 	this.up=up;
+	this.hidden=false;
 	if(clone){
 		this.x=clone.x;
 		this.y=clone.y;
 		this.up=clone.up;
+		this.hidden=clone.hidden;
+	}
+	this.activate=function()
+	{
+		this.hidden=false;
 	}
 }
 	
@@ -501,7 +507,7 @@ function room(I) { //room object
 	{
 		for(var i=0;i<I.stairs.length;i++)
 		{
-			if((I.stairs[i]) && (I.stairs[i].up==up))
+			if((I.stairs[i]) && (I.stairs[i].up==up)&& (!I.stairs[i].hidden))
 			{
 				return true;
 			}
@@ -824,10 +830,27 @@ function room(I) { //room object
             }
         }
 		mapDirty=false;
+		for(var p=0;p<this.stairs.length;p++)
+		{
+			if(this.stairs[p].hidden)
+			{
+				if(editMode)
+				{
+					can.globalAlpha=0.75;
+				}
+				dungeonTileSprite[DungeonTileType.GreenFloor].draw(can,this.stairs[p].x*32+xOffset,this.stairs[p].y*32+yOffset);
+				if(editMode)
+				{
+					can.globalAlpha=1;
+				}
+			}
+		}
+		
 		for(var p=0;p<this.exits.length;p++)
 		{
 			this.exits[p].draw(can,cam);
 		}
+		
 		for(var p=0;p<this.objects.length;p++)
 		{
 			this.objects[p].draw(can,cam,xOffset,yOffset);
@@ -1189,7 +1212,7 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=4;
+	this.numObjectTypes=6;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();

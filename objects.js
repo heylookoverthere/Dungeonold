@@ -21,7 +21,7 @@ function object(oroom) //not a tile, not an enemy
 	this.height=32;
 	this.walkable=false;
 	this.text="";
-	this.dest=null; //i.e. door to be opened on activate
+	this.dest=new Array(); //i.e. door to be opened on activate
 	this.flame=null;
 	//this.setup();
 }
@@ -64,10 +64,10 @@ object.prototype.setup=function(id,par)
 	}else if (this.type==34) {
 	    this.sprite= Sprite("copper");
 	    this.name="Copper Coin";
-	}else if (this.type==5) {
+	}else if (this.type==35) {
 	    this.sprite= Sprite("manapotion");
 	    this.name="Mana Potion";
-	}else if (this.type==6) {
+	}else if (this.type==36) {
 	    this.sprite= Sprite("manaup");
 	    this.name="Max Mana Up";
 	}else if (this.type==7) {
@@ -148,6 +148,12 @@ object.prototype.setup=function(id,par)
 		this.sprite= Sprite("key");
 		this.name="key";
 		this.pickupable=true;
+	}else if (this.type==5) {
+		this.sprite= Sprite("potstand");
+		this.name="pot stand";
+	}else if (this.type==6) {
+		this.sprite= Sprite("pot");
+		this.name="pot";
 	}else if (this.type==4) {
 		this.sprite= Sprite("switch");
 		this.name="switch";
@@ -164,8 +170,8 @@ object.prototype.setup=function(id,par)
 			{
 				this.sprite= Sprite("switch");
 			}
-			if(this.dest){
-				this.dest.activate();
+			for(var i=0;i<this.dest.length;i++){
+				this.dest[i].activate();
 			}
 		}
 	}else if (this.type==2) {

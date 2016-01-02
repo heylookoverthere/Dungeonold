@@ -204,9 +204,22 @@ function mouseClick(e) {  //represents the mouse
 				if(dork)
 				{
 					editor.linkingTo=dork;
-					editor.mode=0;
-					editor.linkingFrom.dest=editor.linkingTo;
+					//editor.mode=0;
+					editor.linkingFrom.dest.push(editor.linkingTo);
 					bConsoleBox.log("Linked switch to door");
+				}else
+				{
+					for(var i=0;i<curDungeon.curRoom().stairs.length;i++)
+					{
+						if((curDungeon.curRoom().stairs[i].x==editor.x) && (curDungeon.curRoom().stairs[i].y==editor.y))
+						{
+							editor.linkingTo=curDungeon.curRoom().stairs[i];
+							//editor.mode=0;
+							editor.linkingFrom.dest.push(editor.linkingTo);
+							bConsoleBox.log("Linked switch to stairs at "+curDungeon.curRoom().stairs[i].x+","+curDungeon.curRoom().stairs[i].y);
+							curDungeon.curRoom().stairs[i].hidden=true;
+						}
+					}
 				}
 			}else if(editor.mode==editModes.Stamp)
 			{
