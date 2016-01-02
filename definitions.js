@@ -471,7 +471,7 @@ function textbox()
 		{
 			//if (i>bConsoleStr.length) {break;}
 			can.fillStyle=this.displayColor[i];
-			can.fillText(this.displayMsg[i], this.x+6,this.y+2+(18*(i+1)));
+			can.fillText(this.displayMsg[i], this.x+6,this.y-5+(18*(i+1)));
 			if((this.options>0) && (this.optionTrack==i))
 			{
 				//can.fillText("-", this.x+17,this.y+12+(18*(i+1)));
