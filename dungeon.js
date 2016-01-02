@@ -220,6 +220,7 @@ function dungeon(path)
 				if(this.rooms[fl][i][j].active)
 				{
 					this.rooms[fl][i][j].save("Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/");
+					this.rooms[fl][i][j].saveObjects("Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/");
 				}
 			}
 		}
@@ -244,6 +245,7 @@ function dungeon(path)
 					if(tempstring[j+(dung.getHeight())*i]==1)
 					{
 						dung.rooms[fl][i][j].load("dungeons/"+dung.name+"/"+"floor"+fl+"/");
+						dung.rooms[fl][i][j].loadObjects("dungeons/"+dung.name+"/"+"floor"+fl+"/");
 					}else
 					{
 						//console.log("yar");

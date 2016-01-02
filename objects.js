@@ -45,16 +45,16 @@ object.prototype.setup=function(id,par)
 	if (this.type==0) {
 	    this.sprite= Sprite("lamp");
 	    this.name="lamp";
-		/*this.flame=new flame(this.room.lights);
+		this.flame=new flame(this.room.lights);
 		this.flame.x=this.x*32+xOffset+2;
 		this.flame.y=this.y*32+yOffset-15;
 		this.flame.type=0;
 		this.flame.alive=false;
-		this.room.fires.push(this.flame);*/
+		this.room.fires.push(this.flame);
 	}else if (this.type==31) {
 	    this.sprite= Sprite("heart");
 	    this.name="Heart Cointainer";
-	}else if (this.type==2) {
+	}else if (this.type==32) {
 	    this.sprite= Sprite("gold");
 	    this.name="Gold Coin";
 	}else if (this.type==3) {
@@ -143,13 +143,23 @@ object.prototype.setup=function(id,par)
     }else if (this.type==30) {
 		this.sprite= Sprite("redtunic");
 		this.name="Fire Shirt";
+	}else if (this.type==2) {
+		this.sprite= Sprite("chest");
+		this.name="Chest";
+		this.loot="uuh...GEMS!";
+		this.activate=function(){
+			this.sprite= Sprite("chestopen");
+			//give item!
+		}
+		this.activateEdit=function(){
+		}
 	}else if (this.type==1) {
 		this.sprite= Sprite("sign");
 		this.name="sign";
 		this.text="Snoke";
-		if(par){
+		if(par!=null){
 			this.text=par;
-		}
+			}
 		this.messagebox=null;
 		this.activate=function(){
 			//display textbox with text. 
@@ -225,10 +235,19 @@ object.prototype.stringify=function()
 {
 	var tempstring= "";
 	tempstring+=this.x;
-	tempstring+=",";
+	tempstring+=";";
 	tempstring+=this.y;
-	tempstring+=",";
+	tempstring+=";";
 	tempstring+=this.type;
+	if(this.type==1)
+	{
+		tempstring+=";";
+		tempstring+=this.text;
+	}else if(this.type==2)
+	{
+		tempstring+=";";
+		tempstring+=this.loot;
+	}
 	return tempstring;
 }
 

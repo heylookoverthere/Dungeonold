@@ -651,7 +651,7 @@ function mainDraw() {
 		}else if(editor.mode==editModes.Objects)
 		{
 			canvas.fillText("Selected: ",18,96);
-			if(dungeonTileSprite[editor.objectType])
+			if(objectSprites[editor.objectType])
 			{
 				objectSprites[editor.objectType].draw(canvas,110,73);
 			}else
@@ -735,6 +735,7 @@ function mainUpdate()
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
 			curDungeon.curRoom().save("Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
+			curDungeon.curRoom().saveObjects("Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
 	    }
 	}
 	if((editMode) && (loadkey.check()))
@@ -743,6 +744,7 @@ function mainUpdate()
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
 			curDungeon.curRoom().load("dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
+			curDungeon.curRoom().loadObjects("dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
 		}
 	}
 		

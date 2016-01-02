@@ -59,19 +59,19 @@ function drawHearts(p,can) {
 	var conts=p.hp/20;
 	for(var h=0;h<p.maxHp/20;h++)
 	{
-		emptyheartsprite.draw(can,20+h*16+h*2, 24);
+		emptyheartsprite.draw(can,20+h*16+h*3, 24);
 	}
 	for(var h=0;h<conts-1;h++)
 	{
-		heartsprite.draw(can,20+h*16+h*2, 24);
+		heartsprite.draw(can,20+h*16+h*3, 24);
 	}
 	
 	if(p.hp%20==0)
 	{
-		heartsprite.draw(canvas,20+h*16+h*2, 24);
+		heartsprite.draw(canvas,20+h*16+h*3, 24);
 	}else
     {
-	    halfheartsprite.draw(canvas,20+h*16+h*2, 24);
+	    halfheartsprite.draw(canvas,20+h*16+h*3, 24);
 	}
 	
 }
@@ -79,6 +79,7 @@ function drawHearts(p,can) {
 var objectSprites=new Array();
 objectSprites.push(Sprite("lamp"));
 objectSprites.push(Sprite("sign"));
+objectSprites.push(Sprite("chest"));
 
 var editModes={};
 editModes.Pen=0;
