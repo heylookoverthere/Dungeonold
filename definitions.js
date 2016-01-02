@@ -8,6 +8,7 @@ var trainTick=false;
 var stayDay=true;
 var graphboat=null;
 var graph=null;
+var shiftdown=false;
 
 var Darkness=14;
 

@@ -24,6 +24,10 @@ $(document).bind("contextmenu",function(e){
 			{
 				monsta.startOrbit(40000,mX+camera.x,mY+camera.y,60,8,false,12);
 			}
+		}else
+		{
+			shiftdown=!shiftdown;
+		
 		}
 		
 	}

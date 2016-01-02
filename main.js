@@ -28,7 +28,7 @@ timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	if((this.shiftable) && (this.shiftkey.checkDown()))
+	if((this.shiftable) && (shiftdown))
 	{
 		if(curDungeon.roomY>0)
 		{
@@ -48,7 +48,7 @@ timy.doThings=function()
 	}
 }
 
-
+var touchshiftkey=new akey("shift");
 
 buttons.push(timy);
 timy=new button();
@@ -59,7 +59,7 @@ timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	if((this.shiftable) && (this.shiftkey.checkDown()))
+	if((this.shiftable) && (shiftdown))
 	{
 		if(curDungeon.roomY<curDungeon.getHeight()-1)
 		{
@@ -88,7 +88,7 @@ timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	if((this.shiftable) && (this.shiftkey.checkDown()))
+	if((this.shiftable) && (shiftdown))
 	{
 		if(curDungeon.roomX<curDungeon.getWidth()-1)
 		{
@@ -116,7 +116,7 @@ timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	if((this.shiftable) && (this.shiftkey.checkDown()))
+	if((this.shiftable) && (shiftdown))
 	{
 		if(curDungeon.roomX>0)
 		{
@@ -146,7 +146,7 @@ timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	if((this.shiftable) && (this.shiftkey.checkDown()))
+	if((this.shiftable) && (shiftdown))
 	{
 		if(curDungeon.roomZ<curDungeon.floors-1)
 			{
@@ -166,7 +166,7 @@ timy.doThings=function()
 					curDungeon.addFloor();
 					bConsoleBox.log("New floor created");
 				}
-				}
+			}
 	}else
 	{
 		curDungeon.changeFloor(true,!editMode);
@@ -181,7 +181,7 @@ timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
 {
-	if((this.shiftable) && (this.shiftkey.checkDown()))
+	if((this.shiftable) && (shiftdown))
 	{
 		if(curDungeon.roomZ>0)
 		{
@@ -677,9 +677,13 @@ function mainDraw() {
 		buttons[h].draw(canvas);
 	}
 	drawGUI(canvas);
-	if(editMode)
+	
+	if(editMode) 
 	{
-		editor.draw(canvas);
+		if(curDungeon.curRoom().active)
+		{
+			editor.draw(canvas);
+		}
 	}else
 	{
 		miles.draw(canvas,camera);
@@ -907,6 +911,7 @@ function mainUpdate()
 		//special case for stairs!!
 			
 	}
+
 	if(editMode)
 	{
 		/*if(letterkeys[15].check())
@@ -937,7 +942,7 @@ function mainUpdate()
 			bConsoleBox.log("C  - Copy room");
 			bConsoleBox.log("Shift + C  - Copy room sans doors");
 			bConsoleBox.log("P  - Paste room");
-		    bConsoleBox.log("Space - Set Tile / Pen Down / Fill / Place Door");
+		    bConsoleBox.log("Space - Set Tile/Pen Down/Fill/Place Door");
 			bConsoleBox.log("Left Click  - Place");
 			bConsoleBox.log("Right Click  - Change mode");
 			bConsoleBox.log("Mouse Wheel  - Change selected");
@@ -1294,6 +1299,7 @@ function mainUpdate()
 	
 	var speeMulti=1;
 
+	
 };
 merp();
 var tt="Indiana Jones and the Mystery of the missing title";

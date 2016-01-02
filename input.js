@@ -23,6 +23,13 @@ function akey(k) {  //represents a keyboard button
         }
         return false;
     };
+	 this.checkUp= function(){
+		if((!keydown[this.key]) && (this.aflag===true)){
+            this.aflag=false;
+            return true;
+        }
+		return false;
+    };
     return this;
 }
 

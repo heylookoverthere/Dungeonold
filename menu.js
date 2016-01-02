@@ -97,7 +97,7 @@ function button(pt)
 		
 		}if(this.shiftable)
 		{
-			if(this.shiftkey.checkDown())
+			if(shiftdown)
 			{
 				this.backColor=this.shiftColor;
 			}else
