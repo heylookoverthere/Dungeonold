@@ -332,7 +332,7 @@ function dungeon(path)
 		var crmath="dungeons/"+this.name+"/"+"main.txt";
 		$.get(crmath, function(data) 
 		{ 
-			console.log("Detected "+data+" floors"); 
+			//console.log("Detected "+data+" floors"); 
 			dung.floors=Math.floor(data);
 			console.log(this.floors); 
 			for(var i=0;i<dung.floors;i++)

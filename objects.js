@@ -150,9 +150,25 @@ object.prototype.setup=function(id,par)
 		if(par){
 			this.text=par;
 		}
+		this.messagebox=null;
 		this.activate=function(){
 			//display textbox with text. 
-			console.log(this.text);
+			if((!this.messagebox) || (!this.messagebox.exists))
+			{
+				var mancy=new textbox();
+				mancy.setup();
+				mancy.x=200;
+				mancy.y=200;
+				mancy.textLim=104;
+				mancy.log(this.text);
+				mancy.hasFocus=true;
+				buttons.push(mancy);
+				this.messagebox=mancy;
+			}
+		}
+		this.activateEdit=function()
+		{
+			this.text = prompt("Enter Sign Text");
 		}
 	}
 }
@@ -171,6 +187,11 @@ object.prototype.activate=function()
 		this.flame.type=0;
 	}
 
+}
+
+object.prototype.activateEdit=function()
+{
+	this.activate();
 }
 /*object.prototype.tileX=function()
 {

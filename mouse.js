@@ -26,8 +26,7 @@ $(document).bind("contextmenu",function(e){
 			}
 		}else
 		{
-			shiftdown=!shiftdown;
-		
+			shiftdown=!shiftdown;		
 		}
 		
 	}
@@ -189,7 +188,7 @@ function mouseClick(e) {  //represents the mouse
 				var meg=isOverTiledList(curDungeon.curRoom().objects,32);
 				if(meg)
 				{
-					meg.activate();
+					meg.activateEdit();
 				}else
 				{
 					var text=randomPhrases[Math.floor(Math.random()*randomPhrases.length)]
@@ -219,8 +218,7 @@ function mouseClick(e) {  //represents the mouse
 					return;
 				}
 			}
-		}
-	
+		}	
 		
 		var bobxFset=620;
 		var bobyFset=609;
@@ -239,6 +237,22 @@ function mouseClick(e) {  //represents the mouse
 			{
 				bConsoleBox.log("Learn to fucking click, cuntface.","Yellow");
 			} 
+		}
+	}else // non-edit mode mouse stuff.
+	{
+		for(var i=0;i<buttons.length;i++)
+		{
+			if(buttons[i].hasFocus)
+			{
+				buttons[i].hasFocus=false;
+				buttons[i].exists=false;
+			}
+		}
+		
+		var meg=isOverTiledList(curDungeon.curRoom().objects,32);
+		if(meg)
+		{
+			meg.activate();
 		}
 	}
 	for(var i=0;i<buttons.length;i++)

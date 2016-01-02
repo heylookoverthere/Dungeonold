@@ -24,6 +24,7 @@ var timy=new button();
 timy.text="North";
 timy.x=200-buttonX;
 timy.y=640;
+timy.exists=true;
 timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
@@ -55,6 +56,7 @@ timy=new button();
 timy.text="South";
 timy.x=200-buttonX;
 timy.y=680;
+timy.exists=true;
 timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
@@ -84,6 +86,7 @@ timy=new button();
 timy.text="East";
 timy.x=235-buttonX;
 timy.y=660;
+timy.exists=true;
 timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
@@ -112,6 +115,7 @@ timy=new button();
 timy.text="West";
 timy.x=165-buttonX;
 timy.y=660;
+timy.exists=true;
 timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
@@ -142,6 +146,7 @@ timy=new button();
 timy.text="Up";
 timy.x=270-buttonX;
 timy.y=640;
+timy.exists=true;
 timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
@@ -177,6 +182,7 @@ timy=new button();
 timy.text="Down";
 timy.x=270-buttonX;
 timy.y=680;
+timy.exists=true;
 timy.shiftable=true;
 timy.visible=true;
 timy.doThings=function()
@@ -469,7 +475,6 @@ function startGame()
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
 	graph = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],false);
 	starter();
-	console.log(curDungeon.rooms[0][1][2].exits.length); //todo why don't rooms have their exits yet?
 }
 
 function starter()
@@ -911,7 +916,15 @@ function mainUpdate()
 		//special case for stairs!!
 			
 	}
-
+	for (var h=0;h<buttons.length;h++)
+	{
+		buttons[h].update();
+		if(!buttons[h].exists)
+		{
+			buttons.splice(h,1);
+			h--;
+		}
+	}
 	if(editMode)
 	{
 		/*if(letterkeys[15].check())

@@ -411,7 +411,7 @@ function textbox()
 	};
 	this.update=function()
 	{
-		return;
+		//return;
 		if(upkey.check())
 		{
 			if(this.optionTrack>this.choicesStart)
