@@ -212,7 +212,7 @@ function dungeon(path)
 	
 	this.saveFloor=function(fl)
 	{
-		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
+//		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
 		var jmath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
 		for(var i=0;i<this.getWidth();i++)
@@ -724,7 +724,7 @@ function dungeon(path)
 				if(simplicity.y>10)
 				{
 					this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g].draw(can,cam,xOffset,tyOffset);
-					//simplicity.sprite.draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+xOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset);
+					//simplicity.sprites[simplicity.curSprite].draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+xOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset);
 				}
 			}
 			/*for(var g=0;g<this.rooms[this.roomZ][this.roomX][this.roomY-1].lights.length;g++)
@@ -779,7 +779,7 @@ function dungeon(path)
 				if(simplicity.y<4)
 				{
 					//this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g].draw(can,cam,0,tyOffset);
-					simplicity.sprite.draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+xOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset);
+					simplicity.sprites[simplicity.curSprite].draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+xOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+tyOffset);
 				}
 			}
 		}
@@ -819,7 +819,7 @@ function dungeon(path)
 				if(simplicity.x>14)
 				{
 					//this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g].draw(can,cam,0,tyOffset);
-					simplicity.sprite.draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+txOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+yOffset);
+					simplicity.sprites[simplicity.curSprite].draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+txOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+yOffset);
 				}
 			}
 		}
@@ -859,7 +859,7 @@ function dungeon(path)
 				if(simplicity.x<4)
 				{
 					//this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g].draw(can,cam,0,tyOffset);
-					simplicity.sprite.draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+txOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+yOffset);
+					simplicity.sprites[simplicity.curSprite].draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+txOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+yOffset);
 				}
 			}
 		}

@@ -156,7 +156,7 @@ object.prototype.setup=function(id,par)
 	}else if (this.type==7) {
 		this.sprites=new Array();
 		this.curSprite=1;
-		console.log(this.x,this.y);
+//		console.log(this.x,this.y);
 		if(this.y==1)
 		{
 			this.sprites.push(Sprite("curtainsopen0"));

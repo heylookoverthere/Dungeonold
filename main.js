@@ -45,7 +45,17 @@ bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
 
-var dungname="dungeon2"//prompt();
+var existingDungeons = new Array();
+existingDungeons.push("dungeon1");
+existingDungeons.push("dungeon2");
+var dungname=prompt();
+
+if(existingDungeons.indexOf(dungname)==-1)
+{
+	bConsoleBox.log("No dungeon called "+dungname,"Red");
+	dungname="dungeon1";
+}
+
 
 var curDungeon= new dungeon(dungname);
 
@@ -844,7 +854,7 @@ function mainUpdate()
 		bConsoleBox.log("Existing floor save will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
-			curDungeon.saveFloor();
+			curDungeon.saveFloor(curDungeon.roomZ);
 		}
 	}
 	if((editMode) && (loadfloorkey.check()))
