@@ -328,6 +328,7 @@ var savefloorkey = new akey("k");
 var loadfloorkey = new akey("l");
 
 var miles=new dude();
+miles.keys=0;
 miles.AI=false;
 miles.tileX;//todo
 miles.equip(legArmorList[Math.floor(Math.random()*legArmorList.length)]);
@@ -976,6 +977,7 @@ function mainUpdate()
 				if((curDungeon.curRoom().stairs[i].x==editor.x) &&(curDungeon.curRoom().stairs[i].y==editor.y) )
 				{
 					curDungeon.curRoom().stairs.splice(i,1);
+					i--;
 				}
 			}
 			if(editor.brushType==DungeonTileType.UpStair)
@@ -1250,6 +1252,7 @@ function mainUpdate()
 							if((curDungeon.curRoom().stairs[i].x==editor.x) &&(curDungeon.curRoom().stairs[i].y==editor.y) )
 							{
 								curDungeon.curRoom().stairs.splice(i,1);
+								i--;
 							}
 						}
 					}else{
@@ -1356,6 +1359,11 @@ function mainUpdate()
 	for(var i=0;i<curDungeon.curRoom().objects.length;i++) //should do adjacent rooms too, no?
 	{
 		curDungeon.curRoom().objects[i].update();
+		if(!curDungeon.curRoom().objects[i].exists)
+		{
+			curDungeon.curRoom().objects.splice(i,1);
+			i--;
+		}
 	}
 	
 	if(thyme.tock)

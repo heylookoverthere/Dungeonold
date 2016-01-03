@@ -25,6 +25,7 @@ function object(oroom) //not a tile, not an enemy
 	this.room=oroom;
 	this.pickupable=false;
 	this.type=0;
+	this.exists=true;
 	this.x=2;
 	this.y=2;
 	this.width=32;
@@ -123,6 +124,11 @@ object.prototype.setup=function(id,par)
 		this.sprites.push(Sprite("key"));
 		this.name="key";
 		this.pickupable=true;
+		this.activate=function()
+		{
+			this.exists=false;
+			miles.keys++;
+		}
 	}else if (this.type==4) {
 		this.sprites=new Array();
 		this.sprites.push( Sprite("switch"));
