@@ -197,12 +197,36 @@ object.prototype.setup=function(id,par)
 		this.sprites.push(Sprite("blueblocker"));
 		this.sprites.push(Sprite("blueblockerdown"));
 	    this.name="Blue blocker thingy";
+		this.activate=function()
+		{
+			this.on=!this.on;
+			if(this.on)
+			{
+				this.curSprite=0;
+			}else
+			{
+				this.curSprite=1;
+			}
+		}
+		curDungeon.blueBlockers.push(this);
 	}else if (this.type==9) { //red blocker
 	    this.sprites=new Array();
 		this.on=true;
 		this.sprites.push(Sprite("redblocker"));
 		this.sprites.push(Sprite("redblockerdown"));
 	    this.name="Red blocker thingy";
+		this.activate=function()
+		{
+			this.on=!this.on;
+			if(this.on)
+			{
+				this.curSprite=0;
+			}else
+			{
+				this.curSprite=1;
+			}
+		}
+		curDungeon.redBlockers.push(this);
 	}else if (this.type==10) { //blue orb
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("blueorb"));
@@ -210,15 +234,23 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 		  //change all blue blockers ons
+		  for(var i=0;i<curDungeon.blueBlockers.length;i++)
+			{
+				curDungeon.blueBlockers[i].activate();
+			}
 		}
 	}else if (this.type==11) { //red orb
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("redorb"));
 	    this.name="Red orb";
-		this.activate=funtion()
+		this.activate=function()
 		{
 			this.on=!this.on; //is this even needed
 			//change all red blockers ons.
+			for(var i=0;i<curDungeon.redBlockers.length;i++)
+			{
+				curDungeon.redBlockers[i].activate();
+			}
 		}
 	}else if (this.type==12) { //warp
 	    this.sprites=new Array();

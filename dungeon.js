@@ -17,6 +17,8 @@ function dungeon(path)
 	this.depth=0; //254;
 	this.maxFloors=99;
 	this.floors=this.maxFloors;
+	this.blueBlockers=new Array();
+	this.redBlockers=new Array(); 
 	for(var i=0;i<this.floors;i++)
 	{
 		this.width.push(15);
