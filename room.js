@@ -245,6 +245,15 @@ Tile.prototype.draw = function(can,cam) {
     
 };
 
+function stringTrue(strng)
+{
+	if(strng=="true")
+	{
+		return true;
+	}
+	return false;
+}
+
 function tileToCost(data, canSwim) {
 	if(canSwim)
 	{
@@ -693,6 +702,13 @@ function room(I) { //room object
 			}else if(higgins.type==2)//chest
 			{
 				higgins.loot=tempstring[i+3];
+				ffset=4;
+				mitly++;
+				higgins.setup();
+			}else if((higgins.type==ObjectID.BlueBlocker) ||(higgins.type==ObjectID.RedBlocker))
+			{
+				var nerp=tempstring[i+3]
+				higgins.on=stringTrue(nerp);
 				ffset=4;
 				mitly++;
 				higgins.setup();

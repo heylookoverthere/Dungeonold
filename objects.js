@@ -220,7 +220,13 @@ object.prototype.setup=function(id,par)
 		}
 	}else if (this.type==ObjectID.BlueBlocker) { //blue blocker
 	    this.sprites=new Array();
-		this.on=true;
+		if(this.on)
+		{
+			this.curSprite=0;
+		}else
+		{
+			this.curSprite=1;
+		}
 		this.sprites.push(Sprite("blueblocker"));
 		this.sprites.push(Sprite("blueblockerdown"));
 	    this.name="Blue blocker thingy";
@@ -238,7 +244,13 @@ object.prototype.setup=function(id,par)
 		curDungeon.blueBlockers.push(this);
 	}else if (this.type==ObjectID.RedBlocker) { //red blocker
 	    this.sprites=new Array();
-		this.on=true;
+		if(this.on)
+		{
+			this.curSprite=0;
+		}else
+		{
+			this.curSprite=1;
+		}
 		this.sprites.push(Sprite("redblocker"));
 		this.sprites.push(Sprite("redblockerdown"));
 	    this.name="Red blocker thingy";
@@ -439,6 +451,10 @@ object.prototype.stringify=function()
 	{
 		tempstring+=";";
 		tempstring+=this.loot;
+	}else if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker))
+	{
+		tempstring+=";";
+		tempstring+=this.on;
 	}
 	return tempstring;
 }
