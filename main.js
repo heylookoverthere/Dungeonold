@@ -10,31 +10,31 @@ function logControls()
 {
 
 	bConsoleBox.log("CONTROLS:","yellow");
-			bConsoleBox.log("Arrow Keys - Move room");
-			bConsoleBox.log("Page Up/Down - Move floors");
-			bConsoleBox.log("Shift + Arrow/Page keys - Make or connect room in that direction");
-			bConsoleBox.log("W A S D - Move cursor");
-			bConsoleBox.log("Shift + W A S D - Remove door");
-			bConsoleBox.log("Delete - Delete room");
-			bConsoleBox.log("Shift + Delete - Delete floor");
-			bConsoleBox.log("Insert - Create Room");
-			bConsoleBox.log("0 - Toggle hidden room");
-			bConsoleBox.log("Tab - Change selected tile/door");
-			bConsoleBox.log("F - Fill entire floor");
-			bConsoleBox.log("M  - Cycle edit modes");
-			bConsoleBox.log("K  - Save floor");
-			bConsoleBox.log("L  - Load floor");
-			bConsoleBox.log("I  - Save room");
-			bConsoleBox.log("O  - Load room");
-			bConsoleBox.log("C  - Copy room");
-			bConsoleBox.log("Shift + C  - Copy room sans doors");
-			bConsoleBox.log("P  - Paste room");
-		    bConsoleBox.log("Space - Set Tile/Pen Down/Fill/Place Door");
-			bConsoleBox.log("Left Click  - Place");
-			bConsoleBox.log("Right Click  - Change mode/grab object");
-			bConsoleBox.log("Mouse Wheel  - Change selected");
-			//bConsoleBox.log("Z - Undo");
-			bConsoleBox.log("Hit E to leave edit mode");
+	bConsoleBox.log("Arrow Keys - Move room");
+	bConsoleBox.log("Page Up/Down - Move floors");
+	bConsoleBox.log("Shift + Arrow/Page keys - Make or connect room in that direction");
+	bConsoleBox.log("W A S D - Move cursor");
+	bConsoleBox.log("Shift + W A S D - Remove door");
+	bConsoleBox.log("Delete - Delete room");
+	bConsoleBox.log("Shift + Delete - Delete floor");
+	bConsoleBox.log("Insert - Create Room");
+	bConsoleBox.log("0 - Toggle hidden room");
+	bConsoleBox.log("Tab - Change selected tile/door");
+	bConsoleBox.log("F - Fill entire floor");
+	bConsoleBox.log("M  - Cycle edit modes");
+	bConsoleBox.log("K  - Save floor");
+	bConsoleBox.log("L  - Load floor");
+	bConsoleBox.log("I  - Save room");
+	bConsoleBox.log("O  - Load room");
+	bConsoleBox.log("C  - Copy room");
+	bConsoleBox.log("Shift + C  - Copy room sans doors");
+	bConsoleBox.log("P  - Paste room");
+	bConsoleBox.log("Space - Set Tile/Pen Down/Fill/Place Door");
+	bConsoleBox.log("Left Click  - Place");
+	bConsoleBox.log("Right Click  - Change mode/grab object");
+	bConsoleBox.log("Mouse Wheel  - Change selected");
+	//bConsoleBox.log("Z - Undo");
+	bConsoleBox.log("Hit E to leave edit mode");
 				//bConsoleBox.log("Someting - Fill!");
 }
 
@@ -333,7 +333,7 @@ miles.keys=0;
 miles.AI=false;
 miles.tileX;//todo
 miles.x=9;
-miles.y=17;
+miles.y=12;
 miles.equip(legArmorList[Math.floor(Math.random()*legArmorList.length)]);
 miles.equip(chestArmorList[Math.floor(Math.random()*chestArmorList.length)]);
 miles.gun=miles.guns[0];
@@ -804,7 +804,7 @@ function mainDraw() {
 	
 	if(drawingPath)
 	{
-		curDungeon.curRoom().drawPath(canvas,9,11,editor.x,editor.y);
+		curDungeon.curRoom().drawPath(canvas,miles.x,miles.y,editor.x,editor.y);
 	}
 	//curDungeon.curRoom().drawPath(canvas,9,11,9,3);//curDungeon.curRoom().getOpenDoor(0).x,curDungeon.curRoom().getOpenDoor(0).y+2)
 	

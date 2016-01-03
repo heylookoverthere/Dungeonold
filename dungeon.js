@@ -78,14 +78,20 @@ function dungeon(path)
 				if((this.curRoom().getOpenDoor(0)) &&(this.curRoom().getOpenDoor(0).passable()) || (!limited))
 				{
 					var purd=this.curRoom().getOpenDoor(0);
-					//console.log(purd,miles);
-					//if((purd) &&(this.curRoom().getPath(miles.x,miles.y,purd.x,3,false)))
-					if(true)
+					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,3,false);
+					if((miles.x==purd.x) && (miles.y==3))
+					{
+						nard.push(0);
+					}
+					if((purd) &&(nard.length>0))
 					{
 						//console.log(purd);
+						if(limited)
+						{
+							miles.x=this.curRoom().getOpenDoor(0).x;
+							miles.y=12;
+						}
 						this.roomY--;
-						//miles.x=this.curRoom().getOpenDoor(0).x;
-						//miles.y=17;
 						if(limited){this.curRoom().explored=true;}
 					}else
 					{
@@ -117,8 +123,25 @@ function dungeon(path)
 			{
 				if((this.curRoom().getOpenDoor(2)) &&(this.curRoom().getOpenDoor(2).passable()) || (!limited))
 				{
-					this.roomY++;
-					if(limited){this.curRoom().explored=true;}
+					var purd=this.curRoom().getOpenDoor(2);
+					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,12,false);
+					if((miles.x==purd.x) && (miles.y==12))
+					{
+						nard.push(0);
+					}
+					if((purd) &&(nard.length>0))
+					{
+						if(limited)
+						{
+							miles.x=this.curRoom().getOpenDoor(2).x;
+							miles.y=3;
+						}
+						this.roomY++;
+						if(limited){this.curRoom().explored=true;}
+					}else
+					{
+						bConsoleBox.log("No path to door!");
+					}
 				}else
 				{
 					bConsoleBox.log("No open door!");
@@ -145,6 +168,11 @@ function dungeon(path)
 			{
 				if((this.curRoom().getOpenDoor(1)) && (this.curRoom().getOpenDoor(1).passable()) || (!limited))
 				{
+					if(limited)
+					{
+						miles.x=3;
+						miles.y=this.curRoom().getOpenDoor(1).y
+					}
 					this.roomX++;
 					if(limited){this.curRoom().explored=true;}
 				}else
@@ -173,6 +201,12 @@ function dungeon(path)
 			{
 				if((this.curRoom().getOpenDoor(3)) &&(this.curRoom().getOpenDoor(3).passable()) || (!limited))
 				{
+					
+					if(limited)
+					{
+						miles.x=17;
+						miles.y=this.curRoom().getOpenDoor(3).y;
+					}
 					this.roomX--;
 					if(limited){this.curRoom().explored=true;}
 				}else
