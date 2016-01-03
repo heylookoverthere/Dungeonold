@@ -77,13 +77,17 @@ function dungeon(path)
 			{
 				if((this.curRoom().getOpenDoor(0)) &&(this.curRoom().getOpenDoor(0).passable()) || (!limited))
 				{
-					var purd=this.curRoom().getOpenDoor(0);
-					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,3,false);
-					if((miles.x==purd.x) && (miles.y==3))
+					if(limited)
 					{
-						nard.push(0);
+						var purd=this.curRoom().getOpenDoor(0);
+						var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,3,false);
+						if((miles.x==purd.x) && (miles.y==3))
+						{
+							nard.push(0);
+						}
 					}
-					if((purd) &&(nard.length>0))
+					
+					if((purd) &&(nard.length>0) || (!limited))
 					{
 						//console.log(purd);
 						if(limited)
@@ -123,13 +127,17 @@ function dungeon(path)
 			{
 				if((this.curRoom().getOpenDoor(2)) &&(this.curRoom().getOpenDoor(2).passable()) || (!limited))
 				{
-					var purd=this.curRoom().getOpenDoor(2);
-					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,12,false);
-					if((miles.x==purd.x) && (miles.y==12))
+					if(limited)
 					{
-						nard.push(0);
+						var purd=this.curRoom().getOpenDoor(2);
+						var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,12,false);
+						if((miles.x==purd.x) && (miles.y==12))
+						{
+							nard.push(0);
+						}
 					}
-					if((purd) &&(nard.length>0))
+					
+					if((purd) &&(nard.length>0)|| (!limited))
 					{
 						if(limited)
 						{
@@ -170,11 +178,28 @@ function dungeon(path)
 				{
 					if(limited)
 					{
-						miles.x=3;
-						miles.y=this.curRoom().getOpenDoor(1).y
+						var purd=this.curRoom().getOpenDoor(1);
+						var nard=this.curRoom().getPath(miles.x,miles.y,17,purd.y,false);
+						if((miles.y==purd.y) && (miles.x==17))
+						{
+							nard.push(0);
+						}
 					}
-					this.roomX++;
-					if(limited){this.curRoom().explored=true;}
+					
+					if((purd) &&(nard.length>0) || (!limited))
+					{
+						//console.log(purd);
+						if(limited)
+						{
+							miles.x=3;
+							miles.y=this.curRoom().getOpenDoor(1).y
+						}
+						this.roomX++;
+						if(limited){this.curRoom().explored=true;}
+					}else
+					{
+						bConsoleBox.log("No path to door!");
+					}
 				}else
 				{
 					bConsoleBox.log("No open door!");
@@ -201,14 +226,31 @@ function dungeon(path)
 			{
 				if((this.curRoom().getOpenDoor(3)) &&(this.curRoom().getOpenDoor(3).passable()) || (!limited))
 				{
-					
 					if(limited)
 					{
-						miles.x=17;
-						miles.y=this.curRoom().getOpenDoor(3).y;
+						var purd=this.curRoom().getOpenDoor(3);
+						var nard=this.curRoom().getPath(miles.x,miles.y,3,purd.y,false);
+						if((miles.y==purd.y) && (miles.x==3))
+						{
+							nard.push(0);
+						}
 					}
-					this.roomX--;
-					if(limited){this.curRoom().explored=true;}
+					
+					if((purd) &&(nard.length>0) || (!limited))
+					{
+						//console.log(purd);
+							
+						if(limited)
+						{
+							miles.x=17;
+							miles.y=this.curRoom().getOpenDoor(3).y;
+						}
+						this.roomX--;
+						if(limited){this.curRoom().explored=true;}
+					}else
+					{
+						bConsoleBox.log("No path to door!");
+					}
 				}else
 				{
 					bConsoleBox.log("No open door!");

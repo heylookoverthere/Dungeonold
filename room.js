@@ -879,7 +879,7 @@ function room(I) { //room object
 	I.darken=function(can,x,y) //TODO: don't darken 6x6 grid from x-3 to x+3, 
 	{
 		can.globalAlpha=I.lightLevel;
-		can.fillStyle="black";
+		can.fillStyle="black"; //maybe an RGB slight lighter than black? 
 		for(var i=0;i<I.width;i++)
 		{
 			for(var j=0;j<I.height;j++)

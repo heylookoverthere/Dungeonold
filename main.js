@@ -2,6 +2,11 @@ var debugInfo=false;
 var editMode=false;
 var drawingPath=false;
 
+document.getElementById("mainSong").addEventListener('ended', function() { //loops music
+	this.currentTime = 0;
+	this.play();
+    }, false);
+
 var gameOver=null;
 
 var editor=new editCursor();
@@ -21,7 +26,8 @@ function logControls()
 	bConsoleBox.log("0 - Toggle hidden room");
 	bConsoleBox.log("Tab - Change selected tile/door");
 	bConsoleBox.log("F - Fill entire floor");
-	bConsoleBox.log("M  - Cycle edit modes");
+	bConsoleBox.log("Q  - Cycle edit modes");
+	bConsoleBox.log("M  - Toggle sound");
 	bConsoleBox.log("K  - Save floor");
 	bConsoleBox.log("L  - Load floor");
 	bConsoleBox.log("I  - Save room");
@@ -97,7 +103,7 @@ timy.doThings=function()
 				blex="Door mode. Place a door of the selected type. A matching door in the adjacent room will be created if possible. Watch out for overlapping doors! Doors can be removed in any mode with Shift + W,A,S,D. Be warned it removes the oldest door on the indicated wall, you don't get to choose. " 
 			}else if(editor.mode==editModes.Objects)
 			{
-				blex="Object mode. Click or hit space to place the selected object. Click an existing object to edit it's special properties (if applicable). Right click an object to pick it up and again to put it down in a new location. (Because right click has been re-purposed in this mode, you'll have to use M to change edit modes.)"
+				blex="Object mode. Click or hit space to place the selected object. Click an existing object to edit it's special properties (if applicable). Right click an object to pick it up and again to put it down in a new location. (Because right click has been re-purposed in this mode, you'll have to use Q to change edit modes.)"
 			}else if(editor.mode==editModes.CopyArea)
 			{
 				blex="Copy Area mode. I have enabled this yet, so I don't know how you're seeing this message! I'm not sure if this is even a thing that is needed. Maybe make it selection/delete mode instead, and then you can delete what's selected? ";
@@ -317,7 +323,7 @@ var helpkey=letterkeys[7].check()
 var insertkey=new akey("insert");
 var tabkey=new akey("tab");
 var fillkey=letterkeys[5];
-var modekey=letterkeys[12];
+var modekey=new akey("q");
 var undokey=new akey("z");
 var editkey=new akey("e");
 var yeskey=new akey("y");
@@ -327,6 +333,7 @@ var copykey=new akey("c");
 var pastekey=new akey("p");
 var savefloorkey = new akey("k");
 var loadfloorkey = new akey("l");
+var mutekey= new akey("m");
 
 var miles=new dude();
 miles.keys=0;
@@ -527,8 +534,8 @@ function menuDraw()
     
 }
 
-if(MUSIC_ON){
-	document.getElementById("titleAudio").volume=MUSIC_VOL;
+if(OPTIONS.musicOn){
+	document.getElementById("titleAudio").volume=OPTIONS.musicVolume;
 	document.getElementById("titleAudio").play(); //starts music
 }
 
@@ -576,6 +583,10 @@ function startGame()
 	
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
 	graph = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],false);
+	if(OPTIONS.musicOn){
+		document.getElementById("mainSong").volume=OPTIONS.musicVolume;
+		document.getElementById("mainSong").play(); //starts music
+	}
 	starter();
 }
 
@@ -596,8 +607,8 @@ function inventoryScreenUpdate(){
     milliseconds = timestamp.getTime();
     tick++;
 	monsta.update();
-	 if(debugkey.check()) {
-		MUSIC_ON=!MUSIC_ON;
+	 if(mutekey.check()) {
+		OPTIONS.musicOn=!OPTIONS.musicOn;
 		document.getElementById("titleAudio").pause();
 		//monsta.startOrbit(40000,Math.floor(Math.random()*CANVAS_WIDTH),Math.floor(Math.random()*CANVAS_HEIGHT),60);
 	 }
@@ -625,8 +636,8 @@ function mainMenuUpdate(){
     milliseconds = timestamp.getTime();
     tick++;
 	monsta.update();
-	 if(debugkey.check()) {
-		MUSIC_ON=!MUSIC_ON;
+	 if(mutekey.check()) {
+		OPTIONS.musicOn=!OPTIONS.musicOn;
 		document.getElementById("titleAudio").pause();
 		//monsta.startOrbit(40000,Math.floor(Math.random()*CANVAS_WIDTH),Math.floor(Math.random()*CANVAS_HEIGHT),60);
 	 }
@@ -790,7 +801,7 @@ function mainDraw() {
 		}
 	}else
 	{
-		miles.draw(canvas,camera);
+		//miles.draw(canvas,camera);
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
@@ -1038,6 +1049,19 @@ function mainUpdate()
 			buttons.splice(h,1);
 			h--;
 		}
+	}
+	if(mutekey.check())
+	{
+		OPTIONS.musicOn=!OPTIONS.musicOn;
+		if(OPTIONS.musicOn)
+		{
+			document.getElementById("mainSong").volume=OPTIONS.musicVolume;
+			document.getElementById("mainSong").play();
+		}else
+		{
+			document.getElementById("mainSong").pause();
+		}
+		
 	}
 	if(editMode)
 	{

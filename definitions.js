@@ -110,10 +110,12 @@ editModes.CopyArea=5;
 editModes.SwitchLink=9;
 
 var OPTIONS={};
+OPTIONS.musicOn=false;
 OPTIONS.showUnexploredRooms=false;
 OPTIONS.showCracks=false;
 OPTIONS.showUnexploredDoors=false;
 OPTIONS.skipWallTiles=true;
+OPTIONS.musicVolume=0.1;
 
 var editHistory=[];
 
@@ -619,8 +621,6 @@ var radarBitmap=[];
 var mapBitmap=[];
 var CANVAS_WIDTH = 900;
 var CANVAS_HEIGHT = 768;
-var MUSIC_ON=true;
-var MUSIC_VOL=0.1;
 var wind=Math.floor(Math.random()*2)+1;
 var MAP_WIDTH = 1600;
 var MAP_HEIGHT = 1600;
