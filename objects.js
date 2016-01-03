@@ -156,23 +156,32 @@ object.prototype.setup=function(id,par)
 	}else if (this.type==7) {
 		this.sprites=new Array();
 		this.curSprite=1;
+		this.on=true;
 //		console.log(this.x,this.y);
 		if(this.y==1)
 		{
 			this.sprites.push(Sprite("curtainsopen0"));
 			this.sprites.push(Sprite("curtains0"));
+			this.width=64;
+			this.height=44
 		}else if(this.x==18)
 		{
 			this.sprites.push(Sprite("curtainsopen1"));
 			this.sprites.push(Sprite("curtains1"));
+			this.width=44;
+			this.height=64
 		}else if(this.y==13)
 		{
 			this.sprites.push(Sprite("curtainsopen2"));
 			this.sprites.push(Sprite("curtains2"));
+			this.width=64;
+			this.height=44
 		}else if(this.x==1)
 		{
 			this.sprites.push(Sprite("curtainsopen3"));
 			this.sprites.push(Sprite("curtains3"));
+			this.width=54;
+			this.height=64
 		}else
 		{
 			this.sprites.push(Sprite("curtainsopen0"));

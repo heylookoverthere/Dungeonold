@@ -52,7 +52,7 @@ var dungname=prompt();
 
 if(existingDungeons.indexOf(dungname)==-1)
 {
-	bConsoleBox.log("No dungeon called "+dungname,"Red");
+	bConsoleBox.log("No dungeon called "+dungname+" loading dungeon1","Red");
 	dungname="dungeon1";
 }
 

@@ -456,11 +456,14 @@ isOverTiledList= function(targs,tileSize){ //is the mouse over the player/object
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	for(var i=0;i<targs.length;i++)
 	{
-		/*if((mX>targs[i].tileX*tileSize) && (mX<targs[i].tileX*tileSize+targs[i].width) &&(mY>targs[i].tileY*tileSize) &&(mY<targs[i].tileY*tileSize+targs[i].height))*/
-		if((tx==targs[i].x) && (ty==targs[i].y))
+		if((mX-xOffset>targs[i].x*tileSize) && (mX-xOffset<targs[i].x*tileSize+targs[i].width) &&(mY-yOffset>targs[i].y*tileSize) &&(mY-yOffset<targs[i].y*tileSize+targs[i].height))
 		{
 			return targs[i];
 		}
+		/*if((tx==targs[i].x) && (ty==targs[i].y))
+		{
+			return targs[i];
+		}*/
 	}
     return null;
 };
