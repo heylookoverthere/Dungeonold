@@ -904,7 +904,7 @@ function dungeon(path)
 			for(var g=0;g<this.rooms[this.roomZ][this.roomX-1][this.roomY].objects.length;g++)
 			{
 				var simplicity=this.rooms[this.roomZ][this.roomX-1][this.roomY].objects[g];
-				if(simplicity.x>14)
+				if(simplicity.x>15)
 				{
 					//this.rooms[this.roomZ][this.roomX][this.roomY-1].objects[g].draw(can,cam,0,tyOffset);
 					simplicity.sprites[simplicity.curSprite].draw(can,(simplicity.x-cam.tileX)*ROOM_TILE_SIZE+txOffset,(simplicity.y-cam.tileY)*ROOM_TILE_SIZE+yOffset);

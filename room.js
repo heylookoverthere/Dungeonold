@@ -188,6 +188,19 @@ function door(or,clone)
 		{
 			return true;
 		}
+		if((this.type==doorType.Locked)) 
+		{
+			if(miles.keys>0)
+			{
+				this.open();
+				miles.keys--;
+				bConsoleBox.log("Unlocked!");
+				return true;
+			}else
+			{
+				bConsoleBox.log("Need a key!");
+			}
+		}
 		return false;
 	}
 	
@@ -689,9 +702,9 @@ function room(I) { //room object
 		{
 			ffset=3;
 			var higgins=new object();
-			higgins.x=tempstring[i];
-			higgins.y=tempstring[i+1];
-			higgins.type=tempstring[i+2];
+			higgins.x=Math.floor(tempstring[i]);
+			higgins.y=Math.floor(tempstring[i+1]);
+			higgins.type=Math.floor(tempstring[i+2]);
 			higgins.room=I;
 			if(higgins.type==1)//sign
 			{

@@ -98,18 +98,23 @@ function mouseWheel(e){
 					}else
 					{
 						editor.brushType++;
+						//console.log(editor.brushType);
 						if(editor.brushType>33)
 						{
 							editor.brushType=0;
+							//console.log("changed to "+editor.brushType);
 						}else if(editor.brushType==21)//skip water animation tiles
 						{
 							editor.brushType=24;
+							//console.log("changed to "+editor.brushType);
 						}else if(editor.brushType==25)//skip lava animation tiles.
 						{
 							editor.brushType=33;
-						}else if((editor.brushType==10) && (OPTIONS.skipWallTiles))//skip lava animation tiles.
+							//console.log("changed to "+editor.brushType);
+						}else if((editor.brushType==10) && (OPTIONS.skipWallTiles))//skip wall animation tiles.
 						{
 							editor.brushType=18;
+							//console.log("changed to "+editor.brushType);
 						}
 					}
 				}else if(delta<0)
@@ -131,18 +136,23 @@ function mouseWheel(e){
 					}else
 					{
 						editor.brushType--;
+						//console.log(editor.brushType);
 						if(editor.brushType<0)
 						{
 							editor.brushType=33;
+							//console.log("changed to "+editor.brushType);
 						}else if(editor.brushType==24)//skip water animation tiles
 						{
 							editor.brushType=20;
+							//console.log("changed to "+editor.brushType);
 						}else if(editor.brushType==32)//skip lava animation tiles.
 						{
 							editor.brushType=25;
-						}else if((editor.brushType==17) && (OPTIONS.skipWallTiles))//skip lava animation tiles.
+							//console.log("changed to "+editor.brushType);
+						}else if((editor.brushType==17) && (OPTIONS.skipWallTiles))//skip wall animation tiles.
 						{
 							editor.brushType=9;
+							console.log("changed to "+editor.brushType);
 						}
 					}
 				}
@@ -370,8 +380,45 @@ function mouseClick(e) {  //represents the mouse
 
 		var meg=isOverTiledList(curDungeon.curRoom().objects,32);
 		if(meg)
+		{	
+			var nard=new Array();
+			if(meg.x<curDungeon.curRoom().width-3)
+			{
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x+1,meg.y,false));
+			}
+			if(meg.x>3)
+			{
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x-1,meg.y,false));
+			}
+			if(meg.y>3)
+			{
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false));
+			}
+			if(meg.y<curDungeon.curRoom().height-3)
+			{
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false));
+			}
+			for(var i=0;i<nard.length;i++)
+			{
+				if((miles.x==meg.x) &&  (miles.y==meg.y))
+				{
+					nard[i].push(0);
+				}
+				if(nard[i].length>0)
+				{
+					meg.activate();
+					return;
+				}
+			}
+				bConsoleBox.log("cannot reach that object!");
+		}
+		//if clicking stairs, try to use them
+		if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.UpStair)
 		{
-			meg.activate();
+			curDungeon.changeFloor(true,!editMode);
+		}else if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.DownStair)
+		{
+			curDungeon.changeFloor(false,!editMode);
 		}
 	}
 	
@@ -463,7 +510,7 @@ isOver= function(targ){ //is the mouse over the player/object
 
 
 isOverTiled= function(targ,cam,tileSize){ //is the mouse over the player/object 
-    if((mX>(targ.tileX-cam.tileX)*tileSize) && (mX<((targ.tileX-cam.tileX)*tileSize+targ.width)) &&(mY>((targ.tileY-cam.tileY)*tileSize)) &&(mY<((targ.tileY-cam.tileY)*tileSize+targ.height))) {return true;}
+ 	if((mX-xOffset>targ.x*tileSize) && (mX-xOffset<targ.x*tileSize+targs[i].width) &&(mY-yOffset>targ.y*tileSize) &&(mY-yOffset<targ.y*tileSize+targ.height)) {return true;}
     return false;
 };
 

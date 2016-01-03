@@ -137,6 +137,7 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			this.exists=false;
+			bConsoleBox.log("Aquired a key!");
 			miles.keys++;
 		}
 	}else if (this.type==ObjectID.ToggleSwitch) {
@@ -273,9 +274,11 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 		  //change all blue blockers ons
+		  bConsoleBox.log("Blue barriers switched");
 		  for(var i=0;i<curDungeon.blueBlockers.length;i++)
 			{
 				curDungeon.blueBlockers[i].activate();
+				
 			}
 		}
 	}else if (this.type==ObjectID.RedOrb) { //red orb
@@ -284,8 +287,9 @@ object.prototype.setup=function(id,par)
 	    this.name="Red orb";
 		this.activate=function()
 		{
-			this.on=!this.on; //is this even needed
+			//this.on=!this.on; //is this even needed
 			//change all red blockers ons.
+			bConsoleBox.log("Red barriers switched");
 			for(var i=0;i<curDungeon.redBlockers.length;i++)
 			{
 				curDungeon.redBlockers[i].activate();

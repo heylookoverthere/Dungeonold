@@ -55,7 +55,7 @@ bConsoleBox.lines=4;
 var existingDungeons = new Array();
 existingDungeons.push("dungeon1");
 existingDungeons.push("dungeon2");
-var dungname=prompt();
+var dungname=prompt("If you're confused just hit enter.");
 
 if(existingDungeons.indexOf(dungname)==-1)
 {
@@ -688,7 +688,7 @@ function mainDraw() {
 		canvas.fillRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);*/
 		//canvas.fillRect(0,0,CANVAS_WIDTH/3, CANVAS_HEIGHT);
 		//canvas.fillRect((CANVAS_WIDTH/3)*2,0,CANVAS_WIDTH/3, CANVAS_HEIGHT);
-		curDungeon.curRoom().darken(canvas,9,9);
+		curDungeon.curRoom().darken(canvas,miles.x,miles.y);
 	}
 
 	for(var i=0;i<curDungeon.curRoom().lights.length;i++)
