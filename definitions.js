@@ -86,7 +86,12 @@ objectSprites.push(Sprite("key"));
 objectSprites.push(Sprite("switch"));
 objectSprites.push(Sprite("potstand"));
 objectSprites.push(Sprite("pot"));
-objectSprites.push(Sprite("curtains0"));
+objectSprites.push(Sprite("curtains"));
+objectSprites.push(Sprite("blueblocker"));
+objectSprites.push(Sprite("redblocker"));
+objectSprites.push(Sprite("blueorb"));
+objectSprites.push(Sprite("redorb"));
+objectSprites.push(Sprite("warpoff"));
 
 var editModes={};
 editModes.Pen=0;

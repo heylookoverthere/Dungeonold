@@ -1246,7 +1246,7 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=7;
+	this.numObjectTypes=12;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();

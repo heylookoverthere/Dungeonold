@@ -54,15 +54,73 @@ object.prototype.setup=function(id,par)
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);
 		this.activate();
-	}else if (this.type==21) {
-	    this.sprites=new Array();
-		this.sprites.push(Sprite("rumham"));
-	    this.name="RUM HAM";
+	}else if (this.type==1) {
+		this.sprites=new Array();
+		this.sprites.push( Sprite("sign"));
+		this.name="sign";
+		this.text="Snoke";
+		if(par!=null){
+			this.text=par;
+			}
+		this.messagebox=null;
+		this.activate=function(){
+			//display textbox with text. 
+			if((!this.messagebox) || (!this.messagebox.exists))
+			{
+				var mancy=new textbox();
+				mancy.setup();
+				mancy.x=200;
+				mancy.y=200;
+				mancy.textLim=104;
+				mancy.log(this.text);
+				mancy.hasFocus=true;
+				buttons.push(mancy);
+				this.messagebox=mancy;
+			}
+		}
+		this.activateEdit=function()
+		{
+			this.text = prompt("Enter Sign Text");
+		}
+	}else if (this.type==2) {
+		this.sprites=new Array();
+		this.sprites.push( Sprite("chest"));
+		this.sprites.push( Sprite("chestopen"));
+		this.name="Chest";
+		this.loot="uuh...GEMS!";
+		this.activate=function(){
+			this.curSprite=1;
+			//give item!
+		}
+		this.activateEdit=function(){
+		}
 	}else if (this.type==3) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("key"));
 		this.name="key";
 		this.pickupable=true;
+	}else if (this.type==4) {
+		this.sprites=new Array();
+		this.sprites.push( Sprite("switch"));
+		this.sprites.push( Sprite("switchpressed"));
+		this.name="switch";
+		this.activateEdit=function(){
+			editor.mode=editModes.SwitchLink
+			editor.linkingFrom=this;
+		}
+		this.activate=function(){
+			this.on=!this.on
+			if(this.on)
+			{
+				this.curSprite= 1;
+			}else
+			{
+				this.curSprite= 0;
+			}
+			for(var i=0;i<this.dest.length;i++){
+				this.dest[i].activate();
+			}
+		}
 	}else if (this.type==5) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("potstand"));
@@ -109,68 +167,50 @@ object.prototype.setup=function(id,par)
 				this.curSprite= 0;
 			}
 		}
-	}else if (this.type==4) {
-		this.sprites=new Array();
-		this.sprites.push( Sprite("switch"));
-		this.sprites.push( Sprite("switchpressed"));
-		this.name="switch";
-		this.activateEdit=function(){
-			editor.mode=editModes.SwitchLink
-			editor.linkingFrom=this;
-		}
-		this.activate=function(){
-			this.on=!this.on
-			if(this.on)
-			{
-				this.curSprite= 1;
-			}else
-			{
-				this.curSprite= 0;
-			}
-			for(var i=0;i<this.dest.length;i++){
-				this.dest[i].activate();
-			}
-		}
-	}else if (this.type==2) {
-		this.sprites=new Array();
-		this.sprites.push( Sprite("chest"));
-		this.sprites.push( Sprite("chestopen"));
-		this.name="Chest";
-		this.loot="uuh...GEMS!";
-		this.activate=function(){
-			this.curSprite=1;
-			//give item!
-		}
-		this.activateEdit=function(){
-		}
-	}else if (this.type==1) {
-		this.sprites=new Array();
-		this.sprites.push( Sprite("sign"));
-		this.name="sign";
-		this.text="Snoke";
-		if(par!=null){
-			this.text=par;
-			}
-		this.messagebox=null;
-		this.activate=function(){
-			//display textbox with text. 
-			if((!this.messagebox) || (!this.messagebox.exists))
-			{
-				var mancy=new textbox();
-				mancy.setup();
-				mancy.x=200;
-				mancy.y=200;
-				mancy.textLim=104;
-				mancy.log(this.text);
-				mancy.hasFocus=true;
-				buttons.push(mancy);
-				this.messagebox=mancy;
-			}
-		}
-		this.activateEdit=function()
+	}else if (this.type==8) { //blue blocker
+	    this.sprites=new Array();
+		this.sprites.push(Sprite("blueblocker"));
+		this.sprites.push(Sprite("blueblockerdown"));
+	    this.name="Blue blocker thingy";
+	}else if (this.type==9) { //red blocker
+	    this.sprites=new Array();
+		this.sprites.push(Sprite("redblocker"));
+		this.sprites.push(Sprite("redblockerdown"));
+	    this.name="Red blocker thingy";
+	}else if (this.type==10) { //blue orb
+	    this.sprites=new Array();
+		this.sprites.push(Sprite("blueorb"));
+	    this.name="Blue orb";
+		this.activate=function()
 		{
-			this.text = prompt("Enter Sign Text");
+		  //change all blue blockers ons
 		}
+	}else if (this.type==11) { //red orb
+	    this.sprites=new Array();
+		this.sprites.push(Sprite("redorb"));
+	    this.name="Red orb";
+		this.activate=funtion()
+		{
+			this.on=!this.on; //is this even needed
+			//change all red blockers ons.
+		}
+	}else if (this.type==12) { //warp
+	    this.sprites=new Array();
+		this.active=false;
+		this.sprites.push(Sprite("warpoff"));
+		this.sprites.push(Sprite("warp0"));
+		this.sprites.push(Sprite("warp1"));
+		this.sprites.push(Sprite("warp2"));
+		this.dest=null;
+	    this.name="Warp tile";
+		this.activate=function()
+		{
+			//I dunno warp or something?
+		}
+	}else if (this.type==21) {
+	    this.sprites=new Array();
+		this.sprites.push(Sprite("rumham"));
+	    this.name="RUM HAM";
 	}
 }
 
