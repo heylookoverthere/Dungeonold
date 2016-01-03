@@ -2,11 +2,20 @@
 
 var ObjectID={};
 ObjectID.Lamp=0;
-ObjectID.Key=1;
-ObjectID.ToggleSwitch=2;
-ObjectID.HoldSwitch=3;
-ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
-
+ObjectID.Sign=1;
+ObjectID.Chest=3;
+ObjectID.Key=4;
+ObjectID.ToggleSwitch=5;
+ObjectID.PotStand=6;
+ObjectID.Pot=7;
+ObjectID.Curtains=8;
+ObjectID.BlueBlocker=9;
+ObjectID.RedBlocker=10;
+ObjectID.BlueOrb=11;
+ObjectID.RedOrb=12;
+ObjectID.Warp=13;
+//ObjectID.HoldSwitch=3;
+//ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
 function object(oroom) //not a tile, not an enemy
 {
@@ -20,7 +29,22 @@ function object(oroom) //not a tile, not an enemy
 	this.y=2;
 	this.width=32;
 	this.height=32;
-	this.walkable=false;
+	this.alwaysWalkable=false;
+	this.walkable=function()
+	{
+		if((this.type==ObjectID.Key) || (this.type==ObjectID.PotStand) || (this.type==ObjectID.ToggleSwitch) || (this.type==ObjectID.Warp))
+		{
+			return true;
+		}
+		if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker))
+		{
+			if(!this.on) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 	this.text="";
 	this.dest=new Array(); //i.e. door to be opened on activate
 	this.flame=null;
@@ -169,6 +193,7 @@ object.prototype.setup=function(id,par)
 		}
 	}else if (this.type==8) { //blue blocker
 	    this.sprites=new Array();
+		this.on=true;
 		this.sprites.push(Sprite("blueblocker"));
 		this.sprites.push(Sprite("blueblockerdown"));
 	    this.name="Blue blocker thingy";
@@ -186,6 +211,7 @@ object.prototype.setup=function(id,par)
 		curDungeon.blueBlockers.push(this);
 	}else if (this.type==9) { //red blocker
 	    this.sprites=new Array();
+		this.on=true;
 		this.sprites.push(Sprite("redblocker"));
 		this.sprites.push(Sprite("redblockerdown"));
 	    this.name="Red blocker thingy";
