@@ -9,6 +9,7 @@ var stayDay=true;
 var graphboat=null;
 var graph=null;
 var shiftdown=false;
+var graph=null;
 
 var Darkness=14;
 
@@ -92,6 +93,12 @@ objectSprites.push(Sprite("redblocker"));
 objectSprites.push(Sprite("blueorb"));
 objectSprites.push(Sprite("redorb"));
 objectSprites.push(Sprite("warpoff"));
+objectSprites.push(Sprite("heartcontainer"));
+objectSprites.push(Sprite("feather"));
+objectSprites.push(Sprite("brick2"));
+objectSprites.push(Sprite("bombpickup"));
+objectSprites.push(Sprite("bow"));
+objectSprites.push(Sprite("lantern"));
 
 var editModes={};
 editModes.Pen=0;

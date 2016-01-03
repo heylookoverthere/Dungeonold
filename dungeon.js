@@ -77,8 +77,20 @@ function dungeon(path)
 			{
 				if((this.curRoom().getOpenDoor(0)) &&(this.curRoom().getOpenDoor(0).passable()) || (!limited))
 				{
-					this.roomY--;
-					if(limited){this.curRoom().explored=true;}
+					var purd=this.curRoom().getOpenDoor(0);
+					//console.log(purd,miles);
+					//if((purd) &&(this.curRoom().getPath(miles.x,miles.y,purd.x,3,false)))
+					if(true)
+					{
+						//console.log(purd);
+						this.roomY--;
+						//miles.x=this.curRoom().getOpenDoor(0).x;
+						//miles.y=17;
+						if(limited){this.curRoom().explored=true;}
+					}else
+					{
+						bConsoleBox.log("No path to door!");
+					}
 				}else
 				{
 					bConsoleBox.log("No open door!");

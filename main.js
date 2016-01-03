@@ -1,5 +1,6 @@
 var debugInfo=false;
 var editMode=false;
+var drawingPath=false;
 
 var gameOver=null;
 
@@ -331,6 +332,8 @@ var miles=new dude();
 miles.keys=0;
 miles.AI=false;
 miles.tileX;//todo
+miles.x=9;
+miles.y=17;
 miles.equip(legArmorList[Math.floor(Math.random()*legArmorList.length)]);
 miles.equip(chestArmorList[Math.floor(Math.random()*chestArmorList.length)]);
 miles.gun=miles.guns[0];
@@ -798,6 +801,12 @@ function mainDraw() {
 		buttons[h].draw(canvas);
 	}
 	drawGUI(canvas);
+	
+	if(drawingPath)
+	{
+		curDungeon.curRoom().drawPath(canvas,9,11,editor.x,editor.y);
+	}
+	//curDungeon.curRoom().drawPath(canvas,9,11,9,3);//curDungeon.curRoom().getOpenDoor(0).x,curDungeon.curRoom().getOpenDoor(0).y+2)
 	
 	if(gameOver)
 	{
@@ -1383,7 +1392,10 @@ function mainUpdate()
 		thyme.tock=false
 	}
 	
-	
+	 if(debugkey.check()) {
+		drawingPath=!drawingPath;
+	 }
+	 
 	
 	for(var i=0;i<curDungeon.curRoom().lights.length;i++)
 	{

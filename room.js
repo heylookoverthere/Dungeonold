@@ -252,7 +252,7 @@ function tileToCost(data, canSwim) {
 		if( data == TileType.Bridge ) return 2;
 		if(/*(canSwim.navigateRivers )*/(true) && ( data == TileType.Water )) return 2;
 		return 0;
-	}else
+	}else 
 	{
 		//if(sqd.getFlightHeight()>2) {return 2;}
 		if(( data == TileType.Mountains ) ||( data == TileType.Ocean )) return 0;
@@ -268,26 +268,37 @@ function tileToCost(data, canSwim) {
 	}
 };
 
+function getCost(map,x,y)
+{
+	if(map.walkable(x,y))
+	{
+		return 1;
+	}else
+	{
+		return 0;
+	}
+}
+
 function mapToGraph(map, canSwim) { 
     var tilesArray = [];
     for( var i=0; i<map.width; ++i ) {
         var rowArray = [];
         for( var j=0; j<map.height; ++j ) {
             var tile = map.tiles[i][j];
-            var data = tileToCost(tile.data, canSwim);
-            for( var ii=-1; ii<2; ++ii ) {
+            var data = getCost(map,i,j);
+            /*for( var ii=-1; ii<2; ++ii ) {
                 for( var jj=-1; jj<2; ++jj) {
                     if( i+ii < 0 || i+ii >= ROOM_WIDTH || j+jj < 0 || j+jj >= ROOM_WIDTH ) {
                         continue;
                     }
                     var adjTile = map.tiles[i+ii][j+jj];
                     if( !adjTile ) continue;
-                    adjData = tileToCost(adjTile.data,canSwim);
+                    adjData = getCost(map,i+ii,j+jj);
                     if( data == 0 || adjData == 0 ) { data = 0; } else {
                         data = Math.max(data, adjData);
                     }
                 }
-            }
+            }*/
             rowArray.push(data);
         }
         tilesArray.push(rowArray);
@@ -415,22 +426,10 @@ function room(I) { //room object
 	
     I.getPath = function(startX, startY, endX, endY,booat) {
 		//var snerd=I.getSubMap(0,0,ROOM_WIDTH,ROOM_HEIGHT);//(startX,startY,endX,endY);
-		if(booat){
-			if(graphboat==null)
-			{
-				var graphboat = mapToGraph(I,booat);
-			}
-			return astar.search(graphboat.nodes, graphboat.nodes[startX][startY], graphboat.nodes[endX][endY]);
-		}else
-		{
-			if(graph==null)
-			{
-				var graph = mapToGraph(I,booat);
-			}
-			return astar.search(graph.nodes, graph.nodes[startX][startY], graph.nodes[endX][endY]);
-		}
-        
-    };
+		var graph = mapToGraph(I,booat);
+		
+		return astar.search(graph.nodes, graph.nodes[startX][startY], graph.nodes[endX][endY]);
+	};
 	
 	I.hasDoor=function(dir)
 	{
@@ -557,9 +556,21 @@ function room(I) { //room object
 	}
 	
 	I.walkable=function(x,y){
-		    //also check objects see if they're walkable
-			//console.log(I.tiles[x][y].data);
-			if((I.tiles[x][y].data!=TileType.Mountains) &&(I.tiles[x][y].data!=TileType.RedMountains)&&(I.tiles[x][y].data!=TileType.IceMountains)&& (I.tiles[x][y].data!=TileType.Ice)&& (I.tiles[x][y].data!=TileType.Ocean)&&(I.tiles[x][y].data!=TileType.Water)) {return true;}
+			
+			if((I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||(I.tiles[x][y].data==DungeonTileType.Hole) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
+			{
+				for(var i=0;i<I.objects.length;i++)
+				{
+					if((I.objects[i].x==x) && (I.objects[i].y==y))
+					{
+						if(!I.objects[i].walkable())
+						{
+							return false;
+						}
+					}
+				}
+				return true;
+			}
 			return false;
 	}
 	
@@ -758,11 +769,18 @@ function room(I) { //room object
     };
 	
     
-    I.drawPath = function(x,y,xx,yy) {
-        var path = I.getPath(x, y, xx, yy);
+    I.drawPath = function(can,x,y,xx,yy) {
+        var path = I.getPath(x, y, xx, yy,false);
+		//console.log(path);
+		var snarp=can.fillStyle;
+		can.fillStyle="yellow";
         for( var i=0; i<path.length; ++i ) {
-            I.setTile(path[i].x, path[i].y, 1);
+           // I.setTile(path[i].x, path[i].y, 1);
+		   
+			can.fillRect(path[i].x*32+xOffset,path[i].y*32+yOffset,32,32);
+			
         }
+		can.fillStyle=snarp;
     };
     
 
@@ -1246,7 +1264,7 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=12;
+	this.numObjectTypes=18;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();
@@ -1254,6 +1272,7 @@ function editCursor()
 	this.linkingTo=null;
 	this.linkingFrom=null;
 	this.grabbed=null; 
+	this.warpOpen=null;
 }
 
 editCursor.prototype.clearConfirm=function()

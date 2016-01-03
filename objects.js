@@ -3,17 +3,23 @@
 var ObjectID={};
 ObjectID.Lamp=0;
 ObjectID.Sign=1;
-ObjectID.Chest=3;
-ObjectID.Key=4;
-ObjectID.ToggleSwitch=5;
-ObjectID.PotStand=6;
-ObjectID.Pot=7;
-ObjectID.Curtains=8;
-ObjectID.BlueBlocker=9;
-ObjectID.RedBlocker=10;
-ObjectID.BlueOrb=11;
-ObjectID.RedOrb=12;
-ObjectID.Warp=13;
+ObjectID.Chest=2;
+ObjectID.Key=3;
+ObjectID.ToggleSwitch=4;
+ObjectID.PotStand=5;
+ObjectID.Pot=6;
+ObjectID.Curtains=7;
+ObjectID.BlueBlocker=8;
+ObjectID.RedBlocker=9;
+ObjectID.BlueOrb=10;
+ObjectID.RedOrb=11;
+ObjectID.Warp=12;
+ObjectID.HeartContainer=13;
+ObjectID.Feather=14;
+ObjectID.Brick=15;
+ObjectID.Bomb=16;
+ObjectID.Bow=17;
+ObjectID.Lantern=18;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -25,15 +31,18 @@ function object(oroom) //not a tile, not an enemy
 	this.room=oroom;
 	this.pickupable=false;
 	this.type=0;
+	this.active=false;
 	this.exists=true;
 	this.x=2;
 	this.y=2;
+	this.ani=0;
+	this.aniRate=30;
 	this.width=32;
 	this.height=32;
 	this.alwaysWalkable=false;
 	this.walkable=function()
 	{
-		if((this.type==ObjectID.Key) || (this.type==ObjectID.PotStand) || (this.type==ObjectID.ToggleSwitch) || (this.type==ObjectID.Warp))
+		if(this.alwaysWalkable)
 		{
 			return true;
 		}
@@ -68,7 +77,7 @@ object.prototype.move=function(x,y) //brings along what is needed (like the flam
 object.prototype.setup=function(id,par)
 {
 	if(id) {this.type=id;}
-	if (this.type==0) {
+	if (this.type==ObjectID.Lamp) {
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("lamp"));
 	    this.name="lamp";
@@ -79,7 +88,7 @@ object.prototype.setup=function(id,par)
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);
 		this.activate();
-	}else if (this.type==1) {
+	}else if (this.type==ObjectID.Sign) {
 		this.sprites=new Array();
 		this.sprites.push( Sprite("sign"));
 		this.name="sign";
@@ -107,7 +116,7 @@ object.prototype.setup=function(id,par)
 		{
 			this.text = prompt("Enter Sign Text");
 		}
-	}else if (this.type==2) {
+	}else if (this.type==ObjectID.Chest) {
 		this.sprites=new Array();
 		this.sprites.push( Sprite("chest"));
 		this.sprites.push( Sprite("chestopen"));
@@ -119,21 +128,23 @@ object.prototype.setup=function(id,par)
 		}
 		this.activateEdit=function(){
 		}
-	}else if (this.type==3) {
+	}else if (this.type==ObjectID.Key) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("key"));
 		this.name="key";
 		this.pickupable=true;
+		this.alwaysWalkable=true;
 		this.activate=function()
 		{
 			this.exists=false;
 			miles.keys++;
 		}
-	}else if (this.type==4) {
+	}else if (this.type==ObjectID.ToggleSwitch) {
 		this.sprites=new Array();
 		this.sprites.push( Sprite("switch"));
 		this.sprites.push( Sprite("switchpressed"));
 		this.name="switch";
+		this.alwaysWalkable=true;
 		this.activateEdit=function(){
 			editor.mode=editModes.SwitchLink
 			editor.linkingFrom=this;
@@ -151,15 +162,16 @@ object.prototype.setup=function(id,par)
 				this.dest[i].activate();
 			}
 		}
-	}else if (this.type==5) {
+	}else if (this.type==ObjectID.PotStand) {
 		this.sprites=new Array();
+		this.alwaysWalkable=true;
 		this.sprites.push(Sprite("potstand"));
 		this.name="pot stand";
-	}else if (this.type==6) {
+	}else if (this.type==ObjectID.Pot) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("pot"));
 		this.name="pot";
-	}else if (this.type==7) {
+	}else if (this.type==ObjectID.Curtains) {
 		this.sprites=new Array();
 		this.curSprite=1;
 		this.on=true;
@@ -206,7 +218,7 @@ object.prototype.setup=function(id,par)
 				this.curSprite= 0;
 			}
 		}
-	}else if (this.type==8) { //blue blocker
+	}else if (this.type==ObjectID.BlueBlocker) { //blue blocker
 	    this.sprites=new Array();
 		this.on=true;
 		this.sprites.push(Sprite("blueblocker"));
@@ -224,7 +236,7 @@ object.prototype.setup=function(id,par)
 			}
 		}
 		curDungeon.blueBlockers.push(this);
-	}else if (this.type==9) { //red blocker
+	}else if (this.type==ObjectID.RedBlocker) { //red blocker
 	    this.sprites=new Array();
 		this.on=true;
 		this.sprites.push(Sprite("redblocker"));
@@ -242,7 +254,7 @@ object.prototype.setup=function(id,par)
 			}
 		}
 		curDungeon.redBlockers.push(this);
-	}else if (this.type==10) { //blue orb
+	}else if (this.type==ObjectID.BlueOrb) { //blue orb
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("blueorb"));
 	    this.name="Blue orb";
@@ -254,7 +266,7 @@ object.prototype.setup=function(id,par)
 				curDungeon.blueBlockers[i].activate();
 			}
 		}
-	}else if (this.type==11) { //red orb
+	}else if (this.type==ObjectID.RedOrb) { //red orb
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("redorb"));
 	    this.name="Red orb";
@@ -267,9 +279,10 @@ object.prototype.setup=function(id,par)
 				curDungeon.redBlockers[i].activate();
 			}
 		}
-	}else if (this.type==12) { //warp
+	}else if (this.type==ObjectID.Warp) { //warp
 	    this.sprites=new Array();
 		this.active=false;
+		this.alwaysWalkable=true;
 		this.sprites.push(Sprite("warpoff"));
 		this.sprites.push(Sprite("warp0"));
 		this.sprites.push(Sprite("warp1"));
@@ -280,10 +293,72 @@ object.prototype.setup=function(id,par)
 		{
 			//I dunno warp or something?
 		}
-	}else if (this.type==21) {
+	}else if (this.type==ObjectID.HeartContainer) {
 	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.sprites.push(Sprite("heartcontainer"));
+	    this.name="Heart container";
+		this.pickupable=true;
+		this.activate=function()
+		{
+			this.exists=false;
+			miles.maxHp+=20;
+		}
+	}else if (this.type==ObjectID.Feather) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.sprites.push(Sprite("feather"));
+	    this.name="Roc feather";
+		this.pickupable=true;
+		this.activate=function()
+		{
+			this.exists=false;
+			//miles.hasItem[ObjectID.Feather]
+		}
+	}else if (this.type==ObjectID.Brick) {
+	    this.sprites=new Array();
+		this.sprites.push(Sprite("brick2"));
+	    this.name="Moveable brick";
+	}else if (this.type==ObjectID.Bow) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.sprites.push(Sprite("bow"));
+	    this.name="Bow and Arrows";
+		this.pickupable=true;
+		this.activate=function()
+		{
+			this.exists=false;
+			//miles.hasItem[ObjectID.Bow]
+		}
+	}else if (this.type==ObjectID.Bomb) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.sprites.push(Sprite("bombpickup"));
+	    this.name="Bombs";
+		this.pickupable=true;
+		this.activate=function()
+		{
+			this.exists=false;
+			//miles.hasItem[ObjectID.Bomb]
+			//miles.bombs+=5;
+		}
+	}else if (this.type==ObjectID.Lantern) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.sprites.push(Sprite("lantern"));
+	    this.name="Lantern";
+		this.pickupable=true;
+		this.activate=function()
+		{
+			this.exists=false;
+			//miles.hasItem[ObjectID.Lantern]
+		}
+	}else if (this.type==ObjectID.RumHam) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
 		this.sprites.push(Sprite("rumham"));
 	    this.name="RUM HAM";
+		//miles.has all
 	}
 }
 
@@ -320,6 +395,19 @@ object.prototype.update=function()
 	if((this.type==0)&&(this.on))
 	{
 		this.flame.update();
+	}
+	if((this.type==ObjectID.Warp) && (this.active))
+	{
+		this.ani++;
+		if(this.ani>this.aniRate)
+		{
+			this.ani=0;
+			this.curSprite++
+			if(this.curSprite>this.sprites.length-1)
+			{
+				this.curSprite=1;
+			}
+		}
 	}
 }
 object.prototype.draw=function(can,cam,xOffh,yOffh)

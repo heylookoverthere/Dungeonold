@@ -300,6 +300,22 @@ function mouseClick(e) {  //represents the mouse
 							bConsoleBox.log("Not the best spot for curtains");
 							return;
 						}
+					}else if(editor.objectType==ObjectID.Warp)
+					{
+						var mikey =makeObject(tx,ty,curDungeon.curRoom(),editor.objectType,text);
+						if(editor.warpOpen)
+						{
+							editor.warpOpen.dest=mikey;
+							editor.warpOpen.curSprite=1;
+							editor.warpOpen.active=true;
+							mikey.dest=editor.warpOpen;
+							mikey.active=true;
+							mikey.curSprite=1;
+							editor.warpOpen=null;
+						}else
+						{
+							editor.warpOpen=mikey;
+						}
 					}else
 					{
 						makeObject(tx,ty,curDungeon.curRoom(),editor.objectType,text);
