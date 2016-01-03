@@ -45,7 +45,9 @@ bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
 
-var curDungeon= new dungeon("dungeon2");
+var dungname="dungeon2"//prompt();
+
+var curDungeon= new dungeon(dungname);
 
 var showMap=false;
 
