@@ -281,7 +281,29 @@ function mouseClick(e) {  //represents the mouse
 				}else
 				{
 					var text=randomPhrases[Math.floor(Math.random()*randomPhrases.length)]
-					makeObject(tx,ty,curDungeon.curRoom(),editor.objectType,text);
+					if(editor.objectType==7)//curtains
+					{
+						if(editor.x==2) //left
+						{
+							makeObject(1,editor.y,curDungeon.curRoom(),editor.objectType);
+						}else if(editor.x==17) //right
+						{
+							makeObject(18,editor.y,curDungeon.curRoom(),editor.objectType);
+						}else if(editor.y==2) //top
+						{
+							makeObject(editor.x,1,curDungeon.curRoom(),editor.objectType);
+						}else if(editor.y==12) //bottom
+						{
+							makeObject(editor.x,13,curDungeon.curRoom(),editor.objectType);
+						}else
+						{
+							bConsoleBox.log("Not the best spot for curtains");
+							return;
+						}
+					}else
+					{
+						makeObject(tx,ty,curDungeon.curRoom(),editor.objectType,text);
+					}
 				}
 			}else if(editor.mode==editModes.Pen)
 			{

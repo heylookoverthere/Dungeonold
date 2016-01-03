@@ -49,7 +49,8 @@ var heartsprite=Sprite("heart");
 var emptyheartsprite=Sprite("emptyheart"); 
 var halfheartsprite=Sprite("halfheart"); 
 var lightcirclesprite=Sprite("lightcircle");
-
+var middlelightcirclesprite=Sprite("innerlightcircle");
+var innerlightcirclesprite=Sprite("furtherinnerlightcircle");
 function drawHearts(p,can) {
 	
 	can.font = "14pt Calibri";
@@ -85,6 +86,7 @@ objectSprites.push(Sprite("key"));
 objectSprites.push(Sprite("switch"));
 objectSprites.push(Sprite("potstand"));
 objectSprites.push(Sprite("pot"));
+objectSprites.push(Sprite("curtains0"));
 
 var editModes={};
 editModes.Pen=0;

@@ -876,6 +876,18 @@ function room(I) { //room object
 			}
 		}
 		lightcirclesprite.draw(can,(x-3)*32+xOffset,(y-3)*32+yOffset);
+		can.globalAlpha=I.lightLevel-0.30;
+		if(I.lightLevel-0.30<0)
+		{
+			can.globalAlpha=0;
+		}
+		middlelightcirclesprite.draw(can,(x-3)*32+xOffset,(y-3)*32+yOffset);
+		can.globalAlpha=I.lightLevel-0.50;
+		if(I.lightLevel-0.50<0)
+		{
+			can.globalAlpha=0;
+		}
+		innerlightcirclesprite.draw(can,(x-3)*32+xOffset,(y-3)*32+yOffset);
 	}
 	  
     I.clear =function(){
@@ -1234,7 +1246,7 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=6;
+	this.numObjectTypes=7;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();
