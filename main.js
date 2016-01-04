@@ -57,8 +57,6 @@ bConsoleBox.lines=4;
 var existingDungeons = new Array();
 existingDungeons.push("dungeon1");
 existingDungeons.push("dungeon2");
-var dungname="dungeon1";
-
 var dungname=prompt("If you're confused just hit enter.");
 
 if(existingDungeons.indexOf(dungname)==-1)
@@ -66,6 +64,7 @@ if(existingDungeons.indexOf(dungname)==-1)
 	bConsoleBox.log("No dungeon called "+dungname+" loading dungeon1","Red");
 	dungname="dungeon1";
 }
+
 
 var curDungeon= new dungeon(dungname);
 
@@ -600,19 +599,12 @@ function inventoryScreenDraw(){
 
 
 
-function startGame(nerf)
+function startGame()
 {
 	mode=1;	
 	camera.tileX=0;
 	camera.tileY=0;
-	if(nerf)
-	{	
-		curDungeon.load();
-		curDungeon.curRoom().explored=true;
-	}
-	//curDungeon.loadFloor();
 	
-
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
 	graph = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],false);
 	if(OPTIONS.musicOn){
@@ -680,9 +672,9 @@ function mainMenuUpdate(){
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 	if(controller.buttons[7].check())
 	{
-		startGame(true);
+		startGame();
 	}else if(startkey.check()){
-		startGame(true);
+		startGame();
 	}
 	if(downkey.check()){
 		mmcur=!mmcur;
@@ -1524,11 +1516,10 @@ if (yui==0){
 }
 document.title = tt;
 //curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+curDungeon.load();
+//curDungeon.loadFloor();
+curDungeon.curRoom().explored=true;
 //curDungeon.linkDoors();
-var tong=true;
-
-
-
-startGame(tong);
+startGame();
 
 //console.log(curMap.tiles[Skagos.x/16][Skagos.y/16].data);
