@@ -1,8 +1,3 @@
-//TODO
-//maybe draw up or down arrows in middle of rooms with stairs to represent them? what about multiples?
-
-//way to delete doors and place/delete stars!
-
 function dungeon(path)
 {
 	
@@ -335,6 +330,9 @@ function dungeon(path)
 					if(tempstring[j+(dung.getHeight())*i]==1)
 					{
 						dung.rooms[fl][i][j].load("dungeons/"+dung.name+"/"+"floor"+fl+"/");
+						dung.rooms[fl][i][j].z=fl;
+						dung.rooms[fl][i][j].x=i;
+						dung.rooms[fl][i][j].y=j;
 						dung.rooms[fl][i][j].loadObjects("dungeons/"+dung.name+"/"+"floor"+fl+"/");
 					}else
 					{
@@ -985,6 +983,7 @@ function dungeon(path)
 		var kitchen=new room();
 		kitchen.x=x;
 		kitchen.y=y;
+		kitchen.z=z;
 		if(clone)
 		{
 			//var kitchen=new room(clone);

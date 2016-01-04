@@ -344,6 +344,7 @@ function room(I) { //room object
     var j = 0;
 	I.fogOfWar=false;
 	I.x=0;
+	I.x=0;
 	I.y=0;
 	I.lightLevel=0.00;
 	I.miniMapX=0;

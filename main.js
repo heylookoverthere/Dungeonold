@@ -888,6 +888,9 @@ function mainUpdate()
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
 			curDungeon.curRoom().load("dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
+			curDungeon.curRoom().z=curDungeon.roomZ;
+			curDungeon.curRoom().x=curDungeon.roomX;
+			curDungeon.curRoom().y=curDungeon.roomY;
 			curDungeon.curRoom().loadObjects("dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
 		}
 	}

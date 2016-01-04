@@ -459,6 +459,25 @@ object.prototype.stringify=function()
 	{
 		tempstring+=";";
 		tempstring+=this.on;
+	}else if(this.type==ObjectID.ToggleSwitch)
+	{
+		tempstring+=";";
+		tempstring+=this.dest.length;
+		for(var i=0;i<this.dest.length;i++)
+		{
+			tempstring+=";";
+			tempstring+=this.dest[i].room.z;
+			tempstring+=";";
+			tempstring+=this.dest[i].room.x;
+			tempstring+=";";
+			tempstring+=this.dest[i].room.y;
+			tempstring+=";";
+			tempstring+=this.dest[i].x;
+			tempstring+=";";
+			tempstring+=this.dest[i].y;
+			tempstring+=";";
+			tempstring+=this.dest[i].type;
+		}
 	}
 	return tempstring;
 }
