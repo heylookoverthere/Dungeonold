@@ -57,6 +57,7 @@ bConsoleBox.lines=4;
 var existingDungeons = new Array();
 existingDungeons.push("dungeon1");
 existingDungeons.push("dungeon2");
+existingDungeons.push("Moop");
 var dungname=prompt("If you're confused just hit enter.");
 
 if(existingDungeons.indexOf(dungname)==-1)
@@ -604,7 +605,14 @@ function startGame(lod)
 	mode=1;	
 	camera.tileX=0;
 	camera.tileY=0;
-	curDungeon.load();
+	if(!lod)
+	{
+		curDungeon.name=prompt("Enter new dungeon name");
+		curDungeon.addFloor();
+	}else
+	{
+		curDungeon.load();
+	}
 	//curDungeon.loadFloor();
 	curDungeon.curRoom().explored=true;
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
@@ -626,7 +634,7 @@ function starter()
 }
 
 function inventoryScreenUpdate(){
-	//startGame();
+
 	var tick=0;
 	lasttime=milliseconds;
     timestamp = new Date();
@@ -654,8 +662,8 @@ function inventoryScreenUpdate(){
 	//TODO HERE
 };
 
-function mainMenuUpdate(){
-	//startGame();
+function mainMenuUpdate()
+{
 	var tick=0;
 	lasttime=milliseconds;
     timestamp = new Date();
