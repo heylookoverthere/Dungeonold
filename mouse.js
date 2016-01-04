@@ -431,14 +431,22 @@ function mouseClick(e) {  //represents the mouse
 				bConsoleBox.log("cannot reach that object!");
 		}
 		//if clicking stairs, try to use them
-		if((tx>1) && (tx<18) && (ty>1) &&(ty<13))
+		if((tx>1) && (tx<18) && (ty>1) &&(ty<13)) //check for path!
 		{
 			if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.UpStair)
 			{
 				curDungeon.changeFloor(true,!editMode);
+				miles.x=tx;
+				miles.y=ty;
 			}else if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.DownStair)
 			{
 				curDungeon.changeFloor(false,!editMode);
+				miles.x=tx;
+				miles.y=ty;
+			}else if(curDungeon.curRoom().walkable(tx,ty))
+			{
+				miles.x=tx;
+				miles.y=ty;
 			}
 		}
 	}
