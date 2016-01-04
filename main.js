@@ -599,12 +599,14 @@ function inventoryScreenDraw(){
 
 
 
-function startGame()
+function startGame(lod)
 {
 	mode=1;	
 	camera.tileX=0;
 	camera.tileY=0;
-	
+	curDungeon.load();
+	//curDungeon.loadFloor();
+	curDungeon.curRoom().explored=true;
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
 	graph = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],false);
 	if(OPTIONS.musicOn){
@@ -1516,10 +1518,8 @@ if (yui==0){
 }
 document.title = tt;
 //curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
-curDungeon.load();
-//curDungeon.loadFloor();
-curDungeon.curRoom().explored=true;
+
 //curDungeon.linkDoors();
-startGame();
+startGame(true);
 
 //console.log(curMap.tiles[Skagos.x/16][Skagos.y/16].data);
