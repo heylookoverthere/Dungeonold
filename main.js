@@ -1,6 +1,8 @@
 var debugInfo=false;
 var editMode=false;
 var drawingPath=false;
+var bullshitHack=true; //right click to link doors
+
 
 document.getElementById("mainSong").addEventListener('ended', function() { //loops music
 	this.currentTime = 0;
@@ -824,6 +826,10 @@ function mainDraw() {
 	}else
 	{
 		//miles.draw(canvas,camera);
+		var ploj=canvas.fillStyle;
+		canvas.fillStyle="blue";
+        canvas.fillRect(miles.x*32+xOffset,miles.y*32+yOffset,32,32);
+		canvas.fillStyle=ploj
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{

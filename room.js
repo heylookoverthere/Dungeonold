@@ -726,6 +726,17 @@ function room(I) { //room object
 				ffset=4;
 				mitly++;
 				higgins.setup();
+			}else if(false)//(higgins.type==ObjectID.ToggleSwitch)
+			{
+				var nerp=tempstring[i+3] //number of dests
+				for(var j=0;j<nerp;j++)
+				{
+					var niles={};
+					niles.roomZ=tempstring[i+3]
+				}
+				ffset=4;
+				mitly++;
+				higgins.setup();
 			}else
 			{
 				higgins.setup();

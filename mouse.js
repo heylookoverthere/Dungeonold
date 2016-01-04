@@ -1,6 +1,16 @@
 //Mouse stuff.
 $(document).bind("contextmenu",function(e){
 	
+	if(bullshitHack)
+	{
+		bullshitHack=false;
+		for(var i=0;i<curDungeon.floors;i++)
+		{
+			curDungeon.linkDoors(i);
+		}
+		bConsoleBox.log("Doors linked!","yellow");
+	}
+	
 	if(true)//(mode==1)
 	{
 		mX = e.pageX - canvasElement.get(0).offsetLeft;
@@ -398,14 +408,22 @@ function mouseClick(e) {  //represents the mouse
 			{
 				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false));
 			}
+			
 			for(var i=0;i<nard.length;i++)
 			{
+				var abort=false;
 				if((miles.x==meg.x) &&  (miles.y==meg.y))
 				{
 					nard[i].push(0);
+					abort=true;
 				}
 				if(nard[i].length>0)
 				{
+					if(!abort)
+					{
+						miles.x=nard[i][nard[i].length-1].x;
+						miles.y=nard[i][nard[i].length-1].y;
+					}
 					meg.activate();
 					return;
 				}

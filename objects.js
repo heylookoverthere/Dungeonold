@@ -459,7 +459,7 @@ object.prototype.stringify=function()
 	{
 		tempstring+=";";
 		tempstring+=this.on;
-	}else if(this.type==ObjectID.ToggleSwitch)
+	}else if (false)//(this.type==ObjectID.ToggleSwitch)
 	{
 		tempstring+=";";
 		tempstring+=this.dest.length;
