@@ -184,6 +184,24 @@ function mouseClick(e) {  //represents the mouse
 	var mili=tm.getTime();
 	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	if(mode==0)//menu
+	{
+		console.log(mX,mY);
+		if((mX>99) && (mX<175) && (mY>195))
+		{
+			if(mY<216) //new 
+			{
+				mmcur=true;;
+				startGame(false);
+				
+			}else if((mY>220) && (mY<240)) //load
+			{
+				mmcur=false;
+				startGame(true);
+			}
+		}
+		return;
+	}
 	if(e.which==2)
 	{
 		editMode=!editMode;

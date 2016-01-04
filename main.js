@@ -555,26 +555,21 @@ function menuDraw()
     
 }
 
-if(OPTIONS.musicOn){
-	document.getElementById("titleAudio").volume=OPTIONS.musicVolume;
-	document.getElementById("titleAudio").play(); //starts music
-}
-
 function mainMenuDraw(){
 	canvas.fillStyle = "black";
 	canvas.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 	titlesprite.draw(canvas,0,0);
-	canvas.fillStyle = "black";
+	canvas.fillStyle = "white";
 	canvas.font = "16pt Calibri";
 	//canvas.fillText("Press Enter",200,500);
-	canvas.fillText("  New Map",80,640);
+	canvas.fillText("  New Map",80,210);
 	//canvas.fillStyle = "grey";
-	canvas.fillText("  Load Map",80,665);
+	canvas.fillText("  Load Map",80,235);
 
 	if(mmcur){
-		canvas.fillText("-",78,640);
+		canvas.fillText("-",78,210);
 	}else	{
-		canvas.fillText("-",78,665);
+		canvas.fillText("-",78,235);
 
 	}
 	//monsta.draw(canvas,camera);
@@ -613,16 +608,22 @@ bannedchars.push(",");
 bannedchars.push("/");
 
 
-function acceptableName(attempt)
+function acceptableName(attempt,available)
 {
 	//check for illegal characters, used names
+	if(attempt==null) {return true;}
 	if(attempt.length<3) {return false;}
 	for(var i=0;i<bannedchars.length;i++)
 	{
 		if(attempt.indexOf(bannedchars[i])!=-1)
 		{
+			console.log("contains a banned character");
 			return false;
 		}
+	}
+	if(available) //check that the name isn't already used. 
+	{
+			
 	}
 	return true;
 }
@@ -630,32 +631,36 @@ function acceptableName(attempt)
 
 function startGame(goolp)
 {
-	mode=1;	
-	camera.tileX=0;
-	camera.tileY=0;
+
 	if(!goolp)
 	{
 		
 		var lordCromp=prompt("Enter new dungeon name");
+		if(lordCromp==null) {return;}
 		while (!acceptableName(lordCromp))
 		{
 			lordCromp=prompt("Try again.");
 		}
 		curDungeon.name=lordCromp;
 		curDungeon.floors=1;
+		curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 		editMode=true;
 		
 		//curDungeon.addFloor();
 	}else
 	{
-		pungname=prompt("Enter name of dungeon to load");
-		while (!acceptableName(pungname))
+		pungname=prompt("Enter name of dungeon to load","dungeon1");
+		if(pungname==null) {return;}
+		while (!acceptableName(pungname)) //doesn't exist
 		{
-			pungname=prompt("Try again.");
+			pungname=prompt("Try again.","dungeon1");
 		}
 		curDungeon.name=pungname;
 		curDungeon.load();
 	}
+	mode=1;	
+	camera.tileX=0;
+	camera.tileY=0;
 	//curDungeon.loadFloor();
 	curDungeon.curRoom().explored=true;
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
