@@ -58,13 +58,9 @@ var existingDungeons = new Array();
 existingDungeons.push("dungeon1");
 existingDungeons.push("dungeon2");
 existingDungeons.push("Moop");
-var dungname=prompt("If you're confused just hit enter.");
+var dungname="dungeon1";
 
-if(existingDungeons.indexOf(dungname)==-1)
-{
-	bConsoleBox.log("No dungeon called "+dungname+" loading dungeon1","Red");
-	dungname="dungeon1";
-}
+
 
 
 var curDungeon= new dungeon(dungname);
@@ -571,14 +567,14 @@ function mainMenuDraw(){
 	canvas.fillStyle = "black";
 	canvas.font = "16pt Calibri";
 	//canvas.fillText("Press Enter",200,500);
-	canvas.fillText("  New Game",80,640);
-	canvas.fillStyle = "grey";
-	//canvas.fillText("  Load Game",80,665);
+	canvas.fillText("  New Map",80,640);
+	//canvas.fillStyle = "grey";
+	canvas.fillText("  Load Map",80,665);
 
 	if(mmcur){
-		//canvas.fillText("-",78,640);
+		canvas.fillText("-",78,640);
 	}else	{
-		//canvas.fillText("-",78,665);
+		canvas.fillText("-",78,665);
 
 	}
 	//monsta.draw(canvas,camera);
@@ -597,20 +593,67 @@ function inventoryScreenDraw(){
 	//canvas.fillText("Particles: "+ monsta.particles.length,460,550);
 };
 
+var bannedchars=new Array();
+bannedchars.push("/");
+//bannedchars.push();
+bannedchars.push("!");
+bannedchars.push("@");
+bannedchars.push("#");
+bannedchars.push("$");
+bannedchars.push("%");
+bannedchars.push("^");
+bannedchars.push("&");
+bannedchars.push("*");
+bannedchars.push("(");
+bannedchars.push(")");
+bannedchars.push(".");
+bannedchars.push(";");
+bannedchars.push("'");
+bannedchars.push(",");
+bannedchars.push("/");
 
 
+function acceptableName(attempt)
+{
+	//check for illegal characters, used names
+	if(attempt.length<3) {return false;}
+	for(var i=0;i<bannedchars.length;i++)
+	{
+		if(attempt.indexOf(bannedchars[i])!=-1)
+		{
+			return false;
+		}
+	}
+	return true;
+}
 
-function startGame(lod)
+
+function startGame(goolp)
 {
 	mode=1;	
 	camera.tileX=0;
 	camera.tileY=0;
-	if(!lod)
+	if(!goolp)
 	{
-		curDungeon.name=prompt("Enter new dungeon name");
-		curDungeon.addFloor();
+		
+		var lordCromp=prompt("Enter new dungeon name");
+		while (!acceptableName(lordCromp))
+		{
+			lordCromp=prompt("Try again.");
+		}
+		curDungeon.name=lordCromp;
+		curDungeon.floors=1;
+		editMode=true;
+		
+		//curDungeon.addFloor();
 	}else
 	{
+		pungname=prompt("Enter name of dungeon to load");
+		while (!acceptableName(pungname))
+		{
+			pungname=prompt("Try again.");
+		}
+		curDungeon.name=pungname;
 		curDungeon.load();
 	}
 	//curDungeon.loadFloor();
@@ -682,9 +725,9 @@ function mainMenuUpdate()
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
 	if(controller.buttons[7].check())
 	{
-		startGame();
+		startGame(!mmcur);
 	}else if(startkey.check()){
-		startGame();
+		startGame(!mmcur);
 	}
 	if(downkey.check()){
 		mmcur=!mmcur;
@@ -1528,6 +1571,6 @@ document.title = tt;
 //curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 
 //curDungeon.linkDoors();
-startGame(true);
+//startGame(true);
 
 //console.log(curMap.tiles[Skagos.x/16][Skagos.y/16].data);

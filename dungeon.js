@@ -296,6 +296,13 @@ function dungeon(path)
 	this.saveFloor=function(fl)
 	{
 //		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
+//for now
+		var fgrmath="Dungeon/dungeons/"+this.name+"/main.txt";
+			$.post("/save/", {"data": this.floors, "path": fgrmath}).done(function(response) 
+			{ 
+				bConsoleBox.log("Saved " +fgrmath); 
+
+			});
 		var jmath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
 		for(var i=0;i<this.getWidth();i++)
