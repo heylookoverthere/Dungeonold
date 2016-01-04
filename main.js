@@ -39,9 +39,9 @@ function logControls()
 	bConsoleBox.log("Left Click  - Place");
 	bConsoleBox.log("Right Click  - Change mode/grab object");
 	bConsoleBox.log("Mouse Wheel  - Change selected");
+	bConsoleBox.log("B - Draw path between player and cursor");
 	//bConsoleBox.log("Z - Undo");
 	bConsoleBox.log("Hit E to leave edit mode");
-				//bConsoleBox.log("Someting - Fill!");
 }
 
 bConsoleBox=new textbox();
@@ -72,12 +72,34 @@ var buttonX=156;
 
 var buttons=new Array();
 var timy=new button();
+timy.text="Edit";
+timy.x=56;
+timy.y=127;
+timy.height=17;
+timy.exists=true;
+timy.shiftable=false;
+timy.visible=true;
+timy.doThings=function()
+{
+	editMode=!editMode;
+	if(editMode)
+	{
+		this.text="Play";
+	}else
+	{
+		this.text="Edit";
+	}
+}
+
+buttons.push(timy);
+
+var timy=new button();
 timy.text="Help";
 timy.x=18;
 timy.y=127;
 timy.height=17;
 timy.exists=true;
-timy.shiftable=true;
+timy.shiftable=false;
 timy.visible=true;
 timy.doThings=function()
 {
@@ -103,7 +125,7 @@ timy.doThings=function()
 				blex="Door mode. Place a door of the selected type. A matching door in the adjacent room will be created if possible. Watch out for overlapping doors! Doors can be removed in any mode with Shift + W,A,S,D. Be warned it removes the oldest door on the indicated wall, you don't get to choose. " 
 			}else if(editor.mode==editModes.Objects)
 			{
-				blex="Object mode. Click or hit space to place the selected object. Click an existing object to edit it's special properties (if applicable). Right click an object to pick it up and again to put it down in a new location. (Because right click has been re-purposed in this mode, you'll have to use Q to change edit modes.)"
+				blex="Object mode. Click or hit space to place the selected object. Click an existing object to edit it's special properties (if applicable). Right click an object to pick it up and again to put it down in a new location. (Because right click has been re-purposed in this mode, you'll have to use Q to change edit modes.) Delete kill will delete a currently grabbed object."
 			}else if(editor.mode==editModes.CopyArea)
 			{
 				blex="Copy Area mode. I have enabled this yet, so I don't know how you're seeing this message! I'm not sure if this is even a thing that is needed. Maybe make it selection/delete mode instead, and then you can delete what's selected? ";
@@ -1101,19 +1123,41 @@ function mainUpdate()
 		}
 		if(deletekey.check())
 		{	
-			if(shiftkey.checkDown())
+			if(editor.mode==editModes.Objects)
 			{
-				bConsoleBox.log("Entire floor will be deleted. Confirm? (Y/N)","yellow");
-				editor.confirming=true;
-				editor.confirmingWhat=function(){curDungeon.wipeFloor(curDungeon.roomZ);}
+				if(editor.grabbed)
+				{
+					bConsoleBox.log(editor.grabbed.name+" will be deleted. Confirm? (Y/N)","yellow");
+					editor.confirming=true;
+					editor.confirmingWhat=function()
+					{
+						for(var i=0;i<curDungeon.curRoom().objects.length;i++)
+						{
+							if(curDungeon.curRoom().objects[i]==editor.grabbed)
+							{
+								curDungeon.curRoom().objects.splice(i,1);
+								i--;
+								editor.grabbed=null;
+							}
+						}
+					}
+				}
+			}else
+			{
+				if(shiftkey.checkDown())
+				{
+					bConsoleBox.log("Entire floor will be deleted. Confirm? (Y/N)","yellow");
+					editor.confirming=true;
+					editor.confirmingWhat=function(){curDungeon.wipeFloor(curDungeon.roomZ);}
+				}
+				else
+				{
+					bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)","yellow");
+					editor.confirming=true;
+					editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
+					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;}
+				}
 			}
-			else
-			{
-				bConsoleBox.log(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)","yellow");
-				editor.confirming=true;
-				editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
-				curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;}
-			}	
 		}
 		if(insertkey.check())
 		{

@@ -131,7 +131,7 @@ object.prototype.setup=function(id,par)
 	}else if (this.type==ObjectID.Key) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("key"));
-		this.name="key";
+		this.name="Key";
 		this.pickupable=true;
 		this.alwaysWalkable=true;
 		this.activate=function()
@@ -144,7 +144,7 @@ object.prototype.setup=function(id,par)
 		this.sprites=new Array();
 		this.sprites.push( Sprite("switch"));
 		this.sprites.push( Sprite("switchpressed"));
-		this.name="switch";
+		this.name="Switch";
 		this.alwaysWalkable=true;
 		this.activateEdit=function(){
 			editor.mode=editModes.SwitchLink
@@ -167,11 +167,11 @@ object.prototype.setup=function(id,par)
 		this.sprites=new Array();
 		this.alwaysWalkable=true;
 		this.sprites.push(Sprite("potstand"));
-		this.name="pot stand";
+		this.name="Pot stand";
 	}else if (this.type==ObjectID.Pot) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("pot"));
-		this.name="pot";
+		this.name="Pot";
 	}else if (this.type==ObjectID.Curtains) {
 		this.sprites=new Array();
 		this.curSprite=1;

@@ -395,6 +395,7 @@ function textbox()
 	{
 		//this.textLim=Math.floor(this.width/6);
 		if(!col){col="white";}
+		if(!text) {return;}
 		if(customConsole)
 		{
 			if(text.length>this.textLim)
