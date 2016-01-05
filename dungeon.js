@@ -5,6 +5,9 @@ function dungeon(path)
 	this.roomX=7;
 	this.roomY=7;
 	this.roomZ=0;
+	this.startFloor=0;
+	this.startX=7;
+	this.startY=7;
 	this.name=path;
 	this.entranceFloor=0;
 	this.width=new Array();
@@ -302,13 +305,14 @@ function dungeon(path)
 //		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
 //for now
 		var fgrmath="Dungeon/dungeons/"+this.name+"/main.txt";
-			$.post("/save/", {"data": this.floors, "path": fgrmath}).done(function(response) 
+		var dunpth=this.floors+","+this.startFloor+","+this.startX+","+this.startY;
+			$.post("/save/", {"data": dunpth, "path": fgrmath}).done(function(response) 
 			{ 
 				bConsoleBox.log("Saved " +fgrmath); 
 
 			});
 		var jmath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
-			$.post("/save/", {"data": this.stringifyFloor(), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
+			$.post("/save/", {"data": this.stringifyFloor(fl), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
 		for(var i=0;i<this.getWidth();i++)
 		{
 			for(var j=0;j<this.getHeight();j++)
@@ -414,7 +418,8 @@ function dungeon(path)
 		//read main dungeon file, determine how many floors.
 		var dung=this;
 		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
-			$.post("/save/", {"data": dung.floors, "path": grmath}).done(function(response) 
+		var dunpth=dung.floors+","+dung.startFloor+","+dung.startX+","+dung.startY;
+			$.post("/save/", {"data": dunpth, "path": grmath}).done(function(response) 
 			{ 
 				bConsoleBox.log("Saved " +grmath); 
 
@@ -434,7 +439,14 @@ function dungeon(path)
 		$.get(crmath, function(data) 
 		{ 
 			//console.log("Detected "+data+" floors"); 
-			dung.floors=Math.floor(data);
+			var smarf=data.split(",");
+			dung.floors=Math.floor(smarf[0]);
+			dung.startFloor=Math.floor(smarf[1]);
+			dung.roomZ=dung.startFloor;
+			dung.startX=Math.floor(smarf[2]);
+			dung.startY=Math.floor(smarf[3]);
+			dung.roomX=dung.startX;
+			dung.roomY=dung.startY;
 			console.log(this.floors); 
 			for(var i=0;i<dung.floors;i++)
 			{
@@ -775,6 +787,9 @@ function dungeon(path)
 			this.wipeFloor(i);
 		}
 		this.floors=0;
+		this.roomZ=0;
+		this.roomX=7;
+		this.roomY=7;
 		this.name="blank";
 	}
 	

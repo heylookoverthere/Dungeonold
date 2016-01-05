@@ -396,15 +396,27 @@ function room(I) { //room object
         }
     }
 	
-	I.copyTiles=function(clone)
+	I.copyTiles=function(clone,nowalls)
 	{
-		for(var i=0;i<I.width;i++)
+		if(nowalls)
+		{
+			for(var i=2;i<I.width-2;i++)
+			{
+				for(var j=2;j<I.height-2;j++)
+				{
+					I.tiles[i][j].data=clone.tiles[i][j].data;
+				}
+			}
+		}else
+		{
+			for(var i=0;i<I.width;i++)
 			{
 				for(var j=0;j<I.height;j++)
 				{
 					I.tiles[i][j].data=clone.tiles[i][j].data;
 				}
 			}
+		}
 	}
 	I.redoWalls=function()
 	{
@@ -824,7 +836,9 @@ function room(I) { //room object
 	I.randomizeTiles=function()
 	{
 		var i=Math.floor(Math.random()*stockRooms.length);
-		I.buildMapFromLoadedTiles("nowipe",stockRooms[i]);
+		var buup=new room();
+		buup.buildMapFromLoadedTiles("whatever",stockRooms[i]);
+		I.copyTiles(buup,true);
 	}
     
     I.drawPath = function(can,x,y,xx,yy) {
