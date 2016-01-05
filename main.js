@@ -99,6 +99,94 @@ timy.doThings=function()
 buttons.push(timy);
 
 var timy=new button();
+timy.text="Save";
+timy.x=188;
+timy.y=10;
+timy.height=22;
+timy.exists=true;
+timy.shiftable=false;
+timy.visible=true;
+timy.update=function()
+{	
+	if(editMode)
+	{
+		this.visible=true;
+		
+	}else
+	{
+		this.visible=false;;
+	}
+	if(this.hasFocus)
+	{
+		//holdInput=true;
+			
+			if(startkey.check())
+			{
+				this.doThings();
+				//somehow order ship to move there.
+			}
+	}
+}
+timy.doThings=function()
+{
+	bConsoleBox.log("Saving dungeon. Existing data will be overwritten. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.save();
+		}
+		if(OPTIONS.confirmationPopUps)
+		{
+			popQuestion("Saving dungeon. Existing data will be overwritten. Confirm? (Y/N)");
+		}
+	
+}
+buttons.push(timy);
+
+var timy=new button();
+timy.text="Load";
+timy.x=188;
+timy.y=41;
+timy.height=22;
+timy.exists=true;
+timy.shiftable=false;
+timy.visible=true;
+timy.update=function()
+{	
+	if(editMode)
+	{
+		this.visible=true;
+		
+	}else
+	{
+		this.visible=false;;
+	}
+	if(this.hasFocus)
+	{
+		//holdInput=true;
+			
+			if(startkey.check())
+			{
+				this.doThings();
+				//somehow order ship to move there.
+			}
+	}
+}
+timy.doThings=function()
+{
+	bConsoleBox.log("Loading dungeon from disk. Unsaved data will be overwritten. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.load();
+		}
+		if(OPTIONS.confirmationPopUps)
+		{
+			popQuestion("Loading dungeon from disk. Unsaved data will be overwritten. Confirm? (Y/N)");
+		}
+	
+}
+buttons.push(timy);
+
+var timy=new button();
 timy.text="Exit";
 timy.x=94;
 timy.y=127;
@@ -1100,11 +1188,13 @@ function mainDraw() {
 	{
 		curDungeon.curRoom().fires[i].draw(canvas,camera);
 	}
+	
+	drawGUI(canvas);
 	for (var h=0;h<buttons.length;h++)
 	{
 		buttons[h].draw(canvas);
 	}
-	drawGUI(canvas);
+	
 	
 	if(drawingPath)
 	{
