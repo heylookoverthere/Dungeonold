@@ -99,6 +99,60 @@ timy.doThings=function()
 buttons.push(timy);
 
 var timy=new button();
+timy.text="Exit";
+timy.x=94;
+timy.y=127;
+timy.height=17;
+timy.exists=true;
+timy.shiftable=false;
+timy.visible=true;
+timy.update=function()
+{	
+	if(editMode)
+	{
+		this.text="Mode";
+		
+	}else
+	{
+		this.text="Exit";
+	}
+	if(this.hasFocus)
+	{
+		//holdInput=true;
+			
+			if(startkey.check())
+			{
+				this.doThings();
+				//somehow order ship to move there.
+			}
+	}
+}
+timy.doThings=function()
+{
+	
+	if(editMode)
+	{
+		editor.mode++;
+		editor.penDown=false;
+		if(editor.mode>editor.numModes)
+		{
+			editor.mode=0;
+		}
+	}else
+	{
+		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.cleanSlate();
+			mode=0;
+		}
+	}
+}
+
+buttons.push(timy);
+
+
+var timy=new button();
 timy.text="Help";
 timy.x=18;
 timy.y=127;

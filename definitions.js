@@ -103,6 +103,8 @@ function drawHearts(p,can) {
 	
 }
 
+
+
 var objectSprites=new Array();
 objectSprites.push(Sprite("lamp"));
 objectSprites.push(Sprite("sign"));

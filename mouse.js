@@ -409,6 +409,40 @@ function mouseClick(e) {  //represents the mouse
 				bConsoleBox.log("Learn to fucking click, cuntface.","Yellow");
 			} 
 		}
+		if((mX>25) && (mX<151) && (mY>68) &&(mY<113))
+		{
+			if(editor.mode==editModes.Door)
+			{
+				editor.doorType++;
+				if(editor.doorType>editor.numDoorTypes)
+				{
+					editor.doorType=0;
+				}
+			}else if(editor.mode==editModes.Objects)
+			{
+				editor.objectType++;
+				if(editor.objectType<editor.numObjectTypes)
+				{
+					editor.objectType=0;
+				}
+			}else
+			{
+				editor.brushType++;
+				if(editor.brushType>33)
+				{
+					editor.brushType=0;
+				}else if(editor.brushType==21)//skip water animation tiles
+				{
+					editor.brushType=24;
+				}else if(editor.brushType==25)//skip lava animation tiles.
+				{
+					editor.brushType=33;
+				}else if((editor.brushType==10) && (OPTIONS.skipWallTiles))//skip lava animation tiles.
+				{
+					editor.brushType=18;
+				}
+			}
+		}
 	}else // non-edit mode mouse stuff.
 	{
 
@@ -432,7 +466,19 @@ function mouseClick(e) {  //represents the mouse
 			{
 				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y-1,false));
 			}
-			
+			if((meg.type!=ObjectID.Chest)&&(meg.type!=ObjectID.Sign))
+			{
+				nard.sort(function (a, b) {
+				  if (a.length<b.length) {
+					return -1;
+				  }
+				  if (a.length>b.length) {
+					return 1;
+				  }
+				  // a must be equal to b
+				  return 0;
+				});
+			}
 			
 			for(var i=0;i<nard.length;i++)
 			{
