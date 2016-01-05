@@ -33,6 +33,7 @@ function object(oroom) //not a tile, not an enemy
 	this.type=0;
 	this.active=false;
 	this.exists=true;
+	this.playerUsable=true;
 	this.x=2;
 	this.y=2;
 	this.ani=0;
@@ -85,6 +86,7 @@ object.prototype.setup=function(id,par)
 		this.flame.x=this.x*32+xOffset+2;
 		this.flame.y=this.y*32+yOffset-15;
 		this.flame.type=0;
+		this.playerUsable=true;
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);
 		this.activate();
@@ -221,6 +223,7 @@ object.prototype.setup=function(id,par)
 		}
 	}else if (this.type==ObjectID.BlueBlocker) { //blue blocker
 	    this.sprites=new Array();
+		this.playerUsable=false;
 		if(this.on)
 		{
 			this.curSprite=0;
@@ -245,6 +248,7 @@ object.prototype.setup=function(id,par)
 		curDungeon.blueBlockers.push(this);
 	}else if (this.type==ObjectID.RedBlocker) { //red blocker
 	    this.sprites=new Array();
+		this.playerUsable=false;
 		if(this.on)
 		{
 			this.curSprite=0;

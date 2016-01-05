@@ -83,6 +83,8 @@ function door(or,clone)
 	this.x=0;
 	this.y=0; 
 	//this.source=sorc;
+	this.height=75;
+	this.width=146;
 	this.dest=null;
 	this.orientation=or; //0=top, 1=right, 2= bottom, 3= left. 
 	this.type=0;
@@ -113,6 +115,8 @@ function door(or,clone)
 		if((this.orientation==0) || (this.orientation==2))
 		{
 			this.x=8;
+			this.height=75;
+			this.width=146;
 			if(this.orientation==0)
 			{
 				this.y=0;
@@ -123,6 +127,8 @@ function door(or,clone)
 		}else
 		{
 			this.y=12;
+			this.height=146;
+			this.width=75;
 			if(this.orientation==1)
 			{
 				this.x=17;

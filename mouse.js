@@ -209,6 +209,8 @@ function mouseClick(e) {  //represents the mouse
 	if(e.which==2)
 	{
 		editMode=!editMode;
+		editor.penDown=false;
+		editor.clearConfirm();
 	}
 	for(var i=0;i<buttons.length;i++)
 	{
@@ -414,6 +416,10 @@ function mouseClick(e) {  //represents the mouse
 		if(meg)
 		{	
 			var nard=new Array();
+			if(meg.y<curDungeon.curRoom().height-3)
+			{
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false));
+			}
 			if(meg.x<curDungeon.curRoom().width-3)
 			{
 				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x+1,meg.y,false));
@@ -424,12 +430,9 @@ function mouseClick(e) {  //represents the mouse
 			}
 			if(meg.y>3)
 			{
-				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false));
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y-1,false));
 			}
-			if(meg.y<curDungeon.curRoom().height-3)
-			{
-				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false));
-			}
+			
 			
 			for(var i=0;i<nard.length;i++)
 			{
@@ -446,7 +449,24 @@ function mouseClick(e) {  //represents the mouse
 						miles.x=nard[i][nard[i].length-1].x;
 						miles.y=nard[i][nard[i].length-1].y;
 					}
-					meg.activate();
+					if(meg.playerUsable)
+					{
+						meg.activate();
+					}
+					if(miles.x>meg.x)
+					{
+						miles.dir=3;
+					}else if(miles.x<meg.x)
+					{
+						miles.dir=1;
+					}
+					if(miles.y>meg.y)
+					{
+						miles.dir=0;
+					}else if(miles.y<meg.y)
+					{
+						miles.dir=2;
+					}
 					return;
 				}
 			}
@@ -455,22 +475,107 @@ function mouseClick(e) {  //represents the mouse
 		//if clicking stairs, try to use them
 		if((tx>1) && (tx<18) && (ty>1) &&(ty<13)) //check for path!
 		{
-			if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.UpStair)
+			var nard=curDungeon.curRoom().getPath(miles.x,miles.y,tx,ty,false);
+			if((miles.x==tx) &&  (miles.y==ty))
 			{
-				curDungeon.changeFloor(true,!editMode);
-				miles.x=tx;
-				miles.y=ty;
-			}else if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.DownStair)
+				nard.push(0);
+			}
+			if(nard.length>0)
 			{
-				curDungeon.changeFloor(false,!editMode);
-				miles.x=tx;
-				miles.y=ty;
-			}else if(curDungeon.curRoom().walkable(tx,ty))
+				if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.UpStair)
+				{
+					curDungeon.changeFloor(true,!editMode);
+					if(miles.x>tx)
+					{
+						miles.dir=3;
+					}else if(miles.x<tx)
+					{
+						miles.dir=1;
+					}
+					if(miles.y>ty)
+					{
+						miles.dir=0;
+					}else if(miles.y<ty)
+					{
+						miles.dir=2;
+					}
+					miles.x=tx;
+					miles.y=ty;
+				}else if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.DownStair)
+				{
+					curDungeon.changeFloor(false,!editMode);
+					if(miles.x>tx)
+					{
+						miles.dir=3;
+					}else if(miles.x<tx)
+					{
+						miles.dir=1;
+					}
+					if(miles.y>ty)
+					{
+						miles.dir=0;
+					}else if(miles.y<ty)
+					{
+						miles.dir=2;
+					}
+					miles.x=tx;
+					miles.y=ty;
+				}else if(curDungeon.curRoom().walkable(tx,ty))
+				{
+					if(miles.x>tx)
+					{
+						miles.dir=3;
+					}else if(miles.x<tx)
+					{
+						miles.dir=1;
+					}
+					if(miles.y>ty)
+					{
+						miles.dir=0;
+					}else if(miles.y<ty)
+					{
+						miles.dir=2;
+					}
+					miles.x=tx;
+					miles.y=ty;
+				}
+			}else
 			{
-				miles.x=tx;
-				miles.y=ty;
+				bConsoleBox.log("cannot get there from here.");	
+			}
+
+		}
+		var peg=isOverTiledList(curDungeon.curRoom().exits,32);
+		if(peg)
+		{	
+			var nard;
+			if(peg.orientation==0) 
+			{
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y+1,false);
+			}else if(peg.orientation==1) 
+			{
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x-1,peg.y,false);
+			}else if(peg.orientation==2) 
+			{
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y-1,false);
+			}else if(peg.orientation==3) 
+			{
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x+1,peg.y,false);
+			}
+
+			if((miles.x==peg.x) &&  (miles.y==peg.y))
+			{
+				nard.push(0);
+			}
+			if(nard.length>0)
+			{
+				curDungeon.changeRoom(peg.orientation,true);
+			}else
+			{
+				bConsoleBox.log("cannot reach that door!");	
 			}
 		}
+		
 	}
 	
 		//clearFocus();

@@ -85,6 +85,8 @@ timy.visible=true;
 timy.doThings=function()
 {
 	editMode=!editMode;
+	editor.penDown=false;
+	editor.clearConfirm();;
 	if(editMode)
 	{
 		this.text="Play";
@@ -507,6 +509,8 @@ function drawGUI(can)
 	}else
 	{	
 		drawHearts(miles,can);
+		objectSprites[3].draw(can,0,58);
+		can.fillText("x"+miles.keys,25,85);
 		
 	}
 }
@@ -955,7 +959,7 @@ function mainDraw() {
 		canvas.fillStyle="blue";
         canvas.fillRect(miles.x*32+xOffset,miles.y*32+yOffset,32,32);
 		canvas.fillStyle=ploj*/
-		linksprites[miles.dir].draw(canvas,miles.x*32+xOffset,miles.y*32+yOffset);
+		linksprites[miles.dir].draw(canvas,miles.x*32+xOffset,miles.y*32+yOffset-14);
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
@@ -1588,6 +1592,7 @@ function mainUpdate()
 	if(editkey.check())
 	{
 		editMode=!editMode;
+		editor.penDown=false;
 		editor.clearConfirm();
 		if(editMode){
 			bConsoleBox.log("Welcome to edit mode. Hit H for help.");

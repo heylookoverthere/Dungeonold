@@ -58,23 +58,47 @@ function drawHearts(p,can) {
 	//canvas.textAlign = "center";
 	//can.textBaseline = "middle";
 	can.fillStyle = "white";
-	can.fillText("--Health--", 28, 22);
+	can.fillText("  --Health--", 28, 22);
 	var conts=p.hp/20;
 	for(var h=0;h<p.maxHp/20;h++)
 	{
-		emptyheartsprite.draw(can,20+h*16+h*3, 24);
+		if(h<7)
+		{
+			emptyheartsprite.draw(can,12+h*16+h*3, 24);
+		}else
+		{
+			emptyheartsprite.draw(can,12+(h-8)*16+h*3, 39);
+		}
 	}
 	for(var h=0;h<conts-1;h++)
 	{
-		heartsprite.draw(can,20+h*16+h*3, 24);
+		if(h<7)
+		{
+			heartsprite.draw(can,12+h*16+h*3, 24);
+		}else
+		{
+			heartsprite.draw(can,12+(h-8)*16+h*3, 39);
+		}
 	}
 	
 	if(p.hp%20==0)
 	{
-		heartsprite.draw(canvas,20+h*16+h*3, 24);
+		if(h<7)
+		{
+			heartsprite.draw(canvas,12+h*16+h*3, 24);
+		}else
+		{
+			heartsprite.draw(can,12+(h-8)*16+h*3, 39);
+		}
 	}else
     {
-	    halfheartsprite.draw(canvas,20+h*16+h*3, 24);
+		if(h<7)
+		{
+			halfheartsprite.draw(canvas,12+h*16+h*3, 24);
+		}else
+		{
+			halfheartsprite.draw(can,12+(h-8)*16+h*3, 39);
+		}
 	}
 	
 }
@@ -611,7 +635,7 @@ function rectOverlap(r1,r2){
 
 var FPS=0;
 var numMapPoints=6;
-var mmcur=0;
+var mmcur=1;
 //var bConsoleStr=new Array();
 var bConsoleClr=new Array();
 var bConsoleBox;
