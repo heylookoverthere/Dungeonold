@@ -34,6 +34,8 @@ function button(pt)
 	this.visible=false;
 	this.greyed=false;
 	this.decorative=false;
+	this.hasParent=false;
+	this.parent=null;
 	this.yCenter=true;
 	this.yTop=false
 	this.object=null;
@@ -56,7 +58,18 @@ function button(pt)
 	};
 	this.update=function()
 	{
-		
+		if(this.hasParent)
+		{
+			if((this.parent) && (!this.parent.exists))
+			{
+				this.exists=false;
+				return;
+			}else if(!this.parent)
+			{
+				this.exists=false;
+				return;
+			}
+		}
 		if(this.hasFocus)
 		{
 			//holdInput=true;

@@ -146,6 +146,10 @@ timy.doThings=function()
 			curDungeon.cleanSlate();
 			mode=0;
 		}
+		if(OPTIONS.confirmationPopUps)
+		{
+			popQuestion("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)");
+		}
 	}
 }
 
@@ -357,6 +361,10 @@ timy.doThings=function()
 					curDungeon.addFloor();
 					bConsoleBox.log("New floor created");
 				}
+				if(OPTIONS.confirmationPopUps)
+				{
+					popQuestion("Will create new floor. Confirm? (Y/N)");
+				}
 			}
 	}else
 	{
@@ -449,7 +457,80 @@ mlel.alive=true;
 fires.push(mlel);
 */
 
-
+function popQuestion(question)
+{
+	var mancy=new textbox();
+	mancy.setup();
+	mancy.x=200;
+	mancy.y=200;
+	mancy.unClickable=true;
+	/*mancy.optionTrack=1;
+	mancy.options=2;*/
+	mancy.textLim=104;
+	mancy.log(question);
+	/*mancy.log(" ");
+	mancy.log("    No");
+	mancy.log("    Yes");*/
+	mancy.hasFocus=true;
+	mancy.update=function(){
+		if(!editor.confirming)
+		{this.exists=false;}
+	}
+	
+	buttons.push(mancy);
+	
+	
+	var pancn=new button();
+	pancn.text="  NO";
+	pancn.x=mancy.x+170;
+	pancn.y=mancy.y+27;
+	pancn.height=29;
+	pancn.width=50;
+	pancn.exists=true;
+	pancn.shiftable=false;
+	pancn.visible=true;
+	pancn.hasParent=true;
+	pancn.parent=mancy;
+	pancn.doThings=function()
+	{
+		if(editor.confirming)
+		{
+			editor.confirming=false;
+			bConsoleBox.log("No","Yellow");
+		}
+		this.parent.exists=false;
+		this.exists=false;
+	};
+	
+	buttons.push(pancn);
+	
+	pancn=new button();
+	pancn.text="  Yes";
+	pancn.x=mancy.x+100;
+	pancn.y=mancy.y+27;
+	pancn.height=29;
+	pancn.width=50;
+	pancn.exists=true;
+	pancn.shiftable=false;
+	pancn.visible=true;
+	pancn.hasParent=true;
+	pancn.parent=mancy;
+	pancn.doThings=function()
+	{
+		if(editor.confirming)
+		{
+			editor.confirmed=true;
+			editor.confirming=false;
+			editor.confirmingWhat();
+			editor.confirmingWhat=null;
+			bConsoleBox.log("Yes","Yellow");
+		}
+		this.parent.exists=false;
+		this.exists=false;
+	};
+	buttons.push(pancn);
+	
+}
 
 
 function allPoint(guy)
@@ -1071,6 +1152,10 @@ function mainUpdate()
 			curDungeon.curRoom().save("Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
 			curDungeon.curRoom().saveObjects("Dungeon/dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
 	    }
+		if(OPTIONS.confirmationPopUps)
+		{
+			popQuestion("Existing room save will be overwritten. Confirm? (Y/N)");
+		}
 	}
 	if((editMode) && (loadkey.check()))
 	{
@@ -1083,6 +1168,10 @@ function mainUpdate()
 			curDungeon.curRoom().y=curDungeon.roomY;
 			curDungeon.curRoom().loadObjects("dungeons/"+curDungeon.name+"/"+"floor"+curDungeon.roomZ+"/");
 		}
+		if(OPTIONS.confirmationPopUps)
+		{
+			popQuestion(curDungeon.curRoom().name +" will be overwritten. Confirm? (Y/N)");
+		}
 	}
 		
 	if((editMode) && (savefloorkey.check()))
@@ -1092,6 +1181,10 @@ function mainUpdate()
 		editor.confirmingWhat=function() {
 			curDungeon.saveFloor(curDungeon.roomZ);
 		}
+		if(OPTIONS.confirmationPopUps)
+		{
+			popQuestion("Existing floor save will be overwritten. Confirm? (Y/N)");
+		}
 	}
 	if((editMode) && (loadfloorkey.check()))
 	{
@@ -1099,6 +1192,10 @@ function mainUpdate()
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
 			curDungeon.loadFloor();
+		}
+		if(OPTIONS.confirmationPopUps)
+		{
+			popQuestion("Unsaved data will be lost. Confirm? (Y/N)");
 		}
 	}
 		
@@ -1134,7 +1231,10 @@ function mainUpdate()
 			{
 				curDungeon.curRoom().randomizeTiles();
 			}
-			
+			if(OPTIONS.confirmationPopUps)
+			{
+				popQuestion("Existing room will be overwritten. Confirm? (Y/N)");
+			}
 		}
 	}
 	
@@ -1171,6 +1271,10 @@ function mainUpdate()
 			editor.confirming=true;
 			editor.confirmingWhat=function(){
 				curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY,editor.clipBoard);
+			}
+			if(OPTIONS.confirmationPopUps)
+			{
+				popQuestion(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be overwritten.Confirm? (Y/N)");
 			}
 		}
 	}
@@ -1308,7 +1412,7 @@ function mainUpdate()
 				editor.confirming=false;
 				editor.confirmingWhat();
 				editor.confirmingWhat=null;
-				bConsoleBox.log("Y","Yellow");
+				bConsoleBox.log("Yes","Yellow");
 			}
 		}
 		if(nokey.check())
@@ -1316,7 +1420,7 @@ function mainUpdate()
 			if(editor.confirming)
 			{
 				editor.confirming=false;
-				bConsoleBox.log("N","Yellow");
+				bConsoleBox.log("No","Yellow");
 			}
 		}
 	if(editMode)
@@ -1349,6 +1453,10 @@ function mainUpdate()
 					{
 						curDungeon.curRoom().objects=new Array();
 					}
+					if(OPTIONS.confirmationPopUps)
+					{
+						popQuestion("All objects in this room will be deleted. Confirm? (Y/N)");
+					}
 				}
 				if(editor.grabbed)
 				{
@@ -1366,6 +1474,10 @@ function mainUpdate()
 							}
 						}
 					}
+					if(OPTIONS.confirmationPopUps)
+					{
+						popQuestion(editor.grabbed.name +" will be deleted. Confirm? (Y/N)");
+					}
 				}
 			}else
 			{
@@ -1374,6 +1486,10 @@ function mainUpdate()
 					bConsoleBox.log("Entire floor will be deleted. Confirm? (Y/N)","yellow");
 					editor.confirming=true;
 					editor.confirmingWhat=function(){curDungeon.wipeFloor(curDungeon.roomZ);}
+					if(OPTIONS.confirmationPopUps)
+					{
+						popQuestion("Entire floor will be deleted. Confirm? (Y/N)");
+					}
 				}
 				else
 				{
@@ -1381,6 +1497,10 @@ function mainUpdate()
 					editor.confirming=true;
 					editor.confirmingWhat=function(){curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY]=new room();
 					curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].active=false;}
+					if(OPTIONS.confirmationPopUps)
+					{
+						popQuestion(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name +" will be deleted. Confirm? (Y/N)");
+					}
 				}
 			}
 		}
@@ -1441,6 +1561,10 @@ function mainUpdate()
 					editor.confirmingWhat=function() {
 						curDungeon.addFloor();
 						bConsoleBox.log("New floor created");
+					}
+					if(OPTIONS.confirmationPopUps)
+					{
+						popQuestion("Will create new floor. Confirm? (Y/N)");
 					}
 				}
 			}
@@ -1626,11 +1750,22 @@ function mainUpdate()
 	}	
 	
 	if(escapekey.check()){
-		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
-		editor.confirming=true;
-		editor.confirmingWhat=function() {
-			curDungeon.cleanSlate();
-			mode=0;
+		if(editor.confirming)
+		{
+			editor.clearConfirm();
+		}else
+		{
+			bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
+			editor.confirming=true;
+			editor.confirmingWhat=function() {
+				curDungeon.cleanSlate();
+				mode=0;
+			}
+			console.log(OPTIONS.confirmationPopUps)
+			if(OPTIONS.confirmationPopUps)
+			{
+				popQuestion("Returning to main menu. Unsaved changes will be lost. Confirm?");
+			}
 		}
 	}
 	

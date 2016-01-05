@@ -216,9 +216,26 @@ function mouseClick(e) {  //represents the mouse
 	{
 		if(buttons[i].hasFocus)
 		{
-			buttons[i].hasFocus=false;
-			buttons[i].exists=false;
-			return;
+			if((!buttons[i].unClickable))
+			{
+				buttons[i].hasFocus=false;
+				buttons[i].exists=false;
+				return;
+			}else
+			{
+				bConsoleBox.log("Choose!","yellow");
+			}
+			//hacky
+			/*if(isOver(buttons[i]))
+			{
+			
+			}else
+			{
+				if(buttons[i].optionOne)
+				{
+					buttons[i].optionOne();
+				}
+			}*/
 		}
 	}
 	for(var i=0;i<buttons.length;i++)

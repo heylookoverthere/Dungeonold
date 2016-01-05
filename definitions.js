@@ -142,6 +142,7 @@ OPTIONS.showCracks=false;
 OPTIONS.showUnexploredDoors=false;
 OPTIONS.skipWallTiles=true;
 OPTIONS.musicVolume=0.1;
+OPTIONS.confirmationPopUps=true;
 
 var editHistory=[];
 
@@ -391,10 +392,11 @@ function textbox()
 	this.textLim=44;
 	this.label=false;
 	this.height=55;
-	this.options=2;
+	this.options=0;
+	this.unClickable=false;
 	this.object=null;
 	this.target=null;
-	this.choicesStart=3;
+	this.choicesStart=1;
 	this.optionTrack=0;//draw the liitle -
 	this.colors=[];
 	this.msg=[];
@@ -523,7 +525,7 @@ function textbox()
 			can.fillText(this.displayMsg[i], this.x+6,this.y-5+(18*(i+1)));
 			if((this.options>0) && (this.optionTrack==i))
 			{
-				//can.fillText("-", this.x+17,this.y+12+(18*(i+1)));
+				can.fillText("-", this.x+10,this.y+12+(18*(i+1)));
 			}
 		}	
 		
