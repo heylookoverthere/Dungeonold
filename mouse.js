@@ -191,13 +191,17 @@ function mouseClick(e) {  //represents the mouse
 		{
 			if(mY<216) //new 
 			{
-				mmcur=true;;
+				mmcur=0;
 				startGame(false);
 				
 			}else if((mY>220) && (mY<240)) //load
 			{
-				mmcur=false;
+				mmcur=1;
 				startGame(true);
+			}else if((mY>240) && (mY<260)) //loist
+			{
+				mmcur=2;
+				showMapList()
 			}
 		}
 		return;

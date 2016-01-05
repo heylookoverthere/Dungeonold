@@ -764,6 +764,16 @@ function dungeon(path)
 		
 	};
 	
+	this.cleanSlate=function()
+	{
+		for (var i=0;i<this.floors;i++)
+		{
+			this.wipeFloor(i);
+		}
+		this.floors=0;
+		this.name="blank";
+	}
+	
 	this.wipeFloor=function(fl)
 	{
 		for(var i=0;i<this.getWidth();i++)
@@ -775,6 +785,7 @@ function dungeon(path)
 				this.rooms[fl][i][j].active=false; 
 				this.rooms[fl][i][j].stairs=new Array();
 				this.rooms[fl][i][j].exits=new Array();
+				this.rooms[fl][i][j].objects=new Array();
 			}
 		}
 	};

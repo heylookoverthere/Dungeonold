@@ -286,7 +286,7 @@ function theTime()
 					{
 						this.years++;
 						this.days=0;
-						theWatch.collectTribute();
+//						theWatch.collectTribute();
 					}
 				}
 			}
@@ -611,7 +611,7 @@ function rectOverlap(r1,r2){
 
 var FPS=0;
 var numMapPoints=6;
-var mmcur=false;
+var mmcur=0;
 //var bConsoleStr=new Array();
 var bConsoleClr=new Array();
 var bConsoleBox;
@@ -665,7 +665,6 @@ var mode=0;
 var looseX=0;
 var looseY=0;
 var mapDirty=true;
-var mmcur=true;
 var victoryCount=0;
 var victoryLap=200;
 var victoryReport=200;

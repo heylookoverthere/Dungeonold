@@ -749,8 +749,14 @@ function room(I) { //room object
 	
 	I.buildMapFromLoadedTiles = function(name, hempstring) {
 		tempstring=hempstring.split(",");
-		I.exits=new Array();
-		I.stairs=new Array();
+		if(name=="nowipe")
+		{
+		
+		}else
+		{
+			I.exits=new Array();
+			I.stairs=new Array();
+		}
 		for (i=0;i<ROOM_WIDTH; i++){
 			for (j=0;j<ROOM_HEIGHT; j++)
 			{
@@ -809,6 +815,11 @@ function room(I) { //room object
 	
     };
 	
+	I.randomizeTiles=function()
+	{
+		var i=Math.floor(Math.random()*stockRooms.length);
+		I.buildMapFromLoadedTiles("nowipe",stockRooms[i]);
+	}
     
     I.drawPath = function(can,x,y,xx,yy) {
         var path = I.getPath(x, y, xx, yy,false);
@@ -959,6 +970,18 @@ function room(I) { //room object
         }
     };
     
+	 I.cleanSlate =function(){
+        I.objects=new Array();
+		I.doors= new Array();
+		I.stairs=new Array();
+		for (i=0;i<ROOM_WIDTH; i++){
+            for (j=0;j<ROOM_HEIGHT; j++){
+                I.tiles[i][j]= new Tile();
+                I.tiles[i][j].x=i;
+                I.tiles[i][j].y=j;
+            }
+        }
+    };
 
     I.setTile = function (x,y,data) {
         I.tiles[x][y].data = data;

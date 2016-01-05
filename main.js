@@ -2,7 +2,7 @@ var debugInfo=false;
 var editMode=false;
 var drawingPath=false;
 var bullshitHack=true; //right click to link doors
-
+var existingDungeons=new Array();
 
 document.getElementById("mainSong").addEventListener('ended', function() { //loops music
 	this.currentTime = 0;
@@ -35,6 +35,8 @@ function logControls()
 	bConsoleBox.log("I  - Save room");
 	bConsoleBox.log("O  - Load room");
 	bConsoleBox.log("C  - Copy room");
+	bConsoleBox.log("R  - Random prefab room");
+	//bConsoleBox.log("Shift+R  - Randomize objects");
 	bConsoleBox.log("Shift + C  - Copy room sans doors");
 	bConsoleBox.log("P  - Paste room");
 	bConsoleBox.log("Space - Set Tile/Pen Down/Fill/Place Door");
@@ -54,10 +56,6 @@ bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
 
-var existingDungeons = new Array();
-existingDungeons.push("dungeon1");
-existingDungeons.push("dungeon2");
-existingDungeons.push("Moop");
 var dungname="dungeon1";
 
 
@@ -355,6 +353,7 @@ var pastekey=new akey("p");
 var savefloorkey = new akey("k");
 var loadfloorkey = new akey("l");
 var mutekey= new akey("m");
+var randomkey= new akey("r");
 
 var miles=new dude();
 miles.keys=0;
@@ -476,6 +475,13 @@ var shiftkey=new akey("shift");
 var gamestart=false;
 var radar=true;
 
+$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
+ {
+	existingDungeons=resp.split(",");
+	existingDungeons.splice(0,1);
+ } 
+ )
+
 function drawGUI(can)
 {
 	if(editMode)
@@ -495,6 +501,15 @@ function drawGUI(can)
 	{	
 		drawHearts(miles,can);
 		
+	}
+}
+
+function showMapList()
+{
+	bConsoleBox.log("Existing Maps:","yellow");
+	for(var i=0;i<existingDungeons.length;i++)
+	{
+		bConsoleBox.log(existingDungeons[i]);
 	}
 }
 
@@ -565,13 +580,18 @@ function mainMenuDraw(){
 	canvas.fillText("  New Map",80,210);
 	//canvas.fillStyle = "grey";
 	canvas.fillText("  Load Map",80,235);
+	
+	canvas.fillText("  View Map List",80,260);
 
-	if(mmcur){
+	if(mmcur==0){
 		canvas.fillText("-",78,210);
-	}else	{
+	}else if(mmcur==1)	{
 		canvas.fillText("-",78,235);
 
+	}else if(mmcur==2)	{
+		canvas.fillText("-",78,260);
 	}
+	bConsoleBox.draw(concanvas);
 	//monsta.draw(canvas,camera);
 	//canvas.fillText("Particles: "+ monsta.particles.length,460,550);
 };
@@ -608,7 +628,7 @@ bannedchars.push(",");
 bannedchars.push("/");
 
 
-function acceptableName(attempt,available)
+function acceptableName(attempt,ld)
 {
 	//check for illegal characters, used names
 	if(attempt==null) {return true;}
@@ -621,11 +641,28 @@ function acceptableName(attempt,available)
 			return false;
 		}
 	}
-	if(available) //check that the name isn't already used. 
+	if(!ld) //check that the name isn't already used. 
 	{
-			
+		for(var i=0;i<existingDungeons.length;i++)
+		{
+			if(attempt==existingDungeons[i])
+			{
+				return false;
+			}
+		}
+		return true;
+	}else if(ld) //check that the name is already used. 
+	{
+		for(var i=0;i<existingDungeons.length;i++)
+		{
+			if(attempt==existingDungeons[i])
+			{
+				return true;
+			}
+		}
+		return false;
 	}
-	return true;
+	
 }
 
 
@@ -637,9 +674,10 @@ function startGame(goolp)
 		
 		var lordCromp=prompt("Enter new dungeon name");
 		if(lordCromp==null) {return;}
-		while (!acceptableName(lordCromp))
+		while (!acceptableName(lordCromp,false))
 		{
 			lordCromp=prompt("Try again.");
+			if(lordCromp==null) {return;}
 		}
 		curDungeon.name=lordCromp;
 		curDungeon.floors=1;
@@ -651,9 +689,10 @@ function startGame(goolp)
 	{
 		pungname=prompt("Enter name of dungeon to load","dungeon1");
 		if(pungname==null) {return;}
-		while (!acceptableName(pungname)) //doesn't exist
+		while (!acceptableName(pungname,true)) //doesn't exist
 		{
-			pungname=prompt("Try again.","dungeon1");
+			pungname=prompt("No dungeon called "+pungname,"dungeon1");
+			if(pungname==null) {return;}
 		}
 		curDungeon.name=pungname;
 		curDungeon.load();
@@ -717,6 +756,7 @@ function mainMenuUpdate()
     timestamp = new Date();
     milliseconds = timestamp.getTime();
     tick++;
+	
 	monsta.update();
 	 if(mutekey.check()) {
 		OPTIONS.musicOn=!OPTIONS.musicOn;
@@ -728,19 +768,39 @@ function mainMenuUpdate()
 	
 	
 	gamepad = navigator.getGamepads && navigator.getGamepads()[0];
-	if(controller.buttons[7].check())
+	if(false)//(controller.buttons[7].check())
 	{
-		startGame(!mmcur);
+		if(mmcur==0)
+		{
+			startGame(false);
+		}else if(mmcur==1)
+		{
+			startGame(true);
+		}else if(mmcur==2)
+		{
+			showMapList();
+		}
 	}else if(startkey.check()){
-		startGame(!mmcur);
+		if(mmcur==0)
+		{
+			startGame(false);
+		}else if(mmcur==1)
+		{
+			startGame(true);
+		}else if(mmcur==2)
+		{
+			showMapList();
+		}
 	}
 	if(downkey.check()){
-		mmcur=!mmcur;
+		mmcur++;
+		if(mmcur>2) {mmcur=0;}
 	}
 	if(upkey.check()){
-		mmcur=!mmcur;
+		mmcur--;
+		if(mmcur<0) {mmcur=2;}
 	}
-	
+	bConsoleBox.update();
 };
 
 //------------MAIN DRAW-----------------------------------------
@@ -990,6 +1050,28 @@ function mainUpdate()
 	{
 	    undoEdit(curDungeon.curRoom());
 	}
+	
+	if((editMode) &&(shiftkey.checkDown()))
+	{
+		if(randomkey.check())
+		{	
+			//randomize objects
+		}
+	}else if(editMode)
+	{
+		if(randomkey.check())
+		{	
+			//randomize tiles
+			bConsoleBox.log("Existing room will be overwritten. Confirm? (Y/N)","yellow");
+			editor.confirming=true;
+			editor.confirmingWhat=function()
+			{
+				curDungeon.curRoom().randomizeTiles();
+			}
+			
+		}
+	}
+	
 	if((editMode) &&(shiftkey.checkDown()))
 	{
 		if(copykey.check())
@@ -1152,24 +1234,7 @@ function mainUpdate()
 		}
 		
 	}
-	if(editMode)
-	{
-		/*if(letterkeys[15].check())
-		{
-			editor.penDownMode=!editor.penDownMode;
-		}*/
-		if(letterkeys[7].check())
-		{
-		
-			//HELP
-			logControls();
-
-		}
-		if(numberkeys[0].check())
-		{
-			curDungeon.curRoom().hidden=!curDungeon.curRoom().hidden
-		}
-		if(yeskey.check())
+	if(yeskey.check())
 		{
 			if(editor.confirming)
 			{
@@ -1188,10 +1253,37 @@ function mainUpdate()
 				bConsoleBox.log("N","Yellow");
 			}
 		}
+	if(editMode)
+	{
+		/*if(letterkeys[15].check())
+		{
+			editor.penDownMode=!editor.penDownMode;
+		}*/
+		if(letterkeys[7].check())
+		{
+		
+			//HELP
+			logControls();
+
+		}
+		if(numberkeys[0].check())
+		{
+			curDungeon.curRoom().hidden=!curDungeon.curRoom().hidden
+		}
+		
 		if(deletekey.check())
 		{	
 			if(editor.mode==editModes.Objects)
 			{
+				if(shiftkey.checkDown())
+				{
+					bConsoleBox.log("All objects in this room will be deleted. Confirm? (Y/N)","yellow");
+					editor.confirming=true;
+					editor.confirmingWhat=function()
+					{
+						curDungeon.curRoom().objects=new Array();
+					}
+				}
 				if(editor.grabbed)
 				{
 					bConsoleBox.log(editor.grabbed.name+" will be deleted. Confirm? (Y/N)","yellow");
@@ -1466,6 +1558,15 @@ function mainUpdate()
 	{
 		
 	}	
+	
+	if(escapekey.check()){
+		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
+			curDungeon.cleanSlate();
+			mode=0;
+		}
+	}
 	
 	if(homekey.check())
 	{
