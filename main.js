@@ -4,6 +4,12 @@ var drawingPath=false;
 var bullshitHack=true; //right click to link doors
 var existingDungeons=new Array();
 
+var linksprites=new Array();
+linksprites.push(Sprite("linkup"));
+linksprites.push(Sprite("linkright"));
+linksprites.push(Sprite("linkdown"));
+linksprites.push(Sprite("linkleft"));
+
 document.getElementById("mainSong").addEventListener('ended', function() { //loops music
 	this.currentTime = 0;
 	this.play();
@@ -356,6 +362,7 @@ var mutekey= new akey("m");
 var randomkey= new akey("r");
 
 var miles=new dude();
+miles.dir=0;
 miles.keys=0;
 miles.AI=false;
 miles.tileX;//todo
@@ -944,10 +951,11 @@ function mainDraw() {
 	}else
 	{
 		//miles.draw(canvas,camera);
-		var ploj=canvas.fillStyle;
+		/*var ploj=canvas.fillStyle;
 		canvas.fillStyle="blue";
         canvas.fillRect(miles.x*32+xOffset,miles.y*32+yOffset,32,32);
-		canvas.fillStyle=ploj
+		canvas.fillStyle=ploj*/
+		linksprites[miles.dir].draw(canvas,miles.x*32+xOffset,miles.y*32+yOffset);
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{

@@ -87,8 +87,9 @@ function dungeon(path)
 						//console.log(purd);
 						if(limited)
 						{
-							miles.x=this.curRoom().getOpenDoor(0).x;
+							miles.x=this.curRoom().getOpenDoor(0).x+1;
 							miles.y=12;
+							miles.dir=0;
 						}
 						this.roomY--;
 						if(limited){this.curRoom().explored=true;}
@@ -136,8 +137,9 @@ function dungeon(path)
 					{
 						if(limited)
 						{
-							miles.x=this.curRoom().getOpenDoor(2).x;
-							miles.y=3;
+							miles.x=this.curRoom().getOpenDoor(2).x+1;
+							miles.y=2;
+							miles.dir=2;
 						}
 						this.roomY++;
 						if(limited){this.curRoom().explored=true;}
@@ -186,8 +188,9 @@ function dungeon(path)
 						//console.log(purd);
 						if(limited)
 						{
-							miles.x=3;
+							miles.x=2;
 							miles.y=this.curRoom().getOpenDoor(1).y
+							miles.dir=1;
 						}
 						this.roomX++;
 						if(limited){this.curRoom().explored=true;}
@@ -239,6 +242,7 @@ function dungeon(path)
 						{
 							miles.x=17;
 							miles.y=this.curRoom().getOpenDoor(3).y;
+							miles.dir=3;
 						}
 						this.roomX--;
 						if(limited){this.curRoom().explored=true;}
