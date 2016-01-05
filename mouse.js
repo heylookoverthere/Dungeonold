@@ -552,21 +552,34 @@ function mouseClick(e) {  //represents the mouse
 			if(peg.orientation==0) 
 			{
 				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y+1,false);
+				if((miles.x==peg.x) &&  (miles.y==peg.y+1))
+				{
+					nard.push(0);
+				}
 			}else if(peg.orientation==1) 
 			{
 				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x-1,peg.y,false);
+				if((miles.x==peg.x-1) &&  (miles.y==peg.y))
+				{
+					nard.push(0);
+				}
 			}else if(peg.orientation==2) 
 			{
 				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y-1,false);
+				if((miles.x==peg.x) &&  (miles.y==peg.y-1))
+				{
+					nard.push(0);
+				}
 			}else if(peg.orientation==3) 
 			{
 				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x+1,peg.y,false);
+				if((miles.x==peg.x+1) &&  (miles.y==peg.y))
+				{
+					nard.push(0);
+				}
 			}
 
-			if((miles.x==peg.x) &&  (miles.y==peg.y))
-			{
-				nard.push(0);
-			}
+			
 			if(nard.length>0)
 			{
 				curDungeon.changeRoom(peg.orientation,true);
