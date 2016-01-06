@@ -9,6 +9,7 @@ function dungeon(path)
 	this.startX=7;
 	this.startY=7;
 	this.name=path;
+	this.mapFloor=0;
 	this.entranceFloor=0;
 	this.width=new Array();
 	this.height=new Array();
@@ -304,13 +305,13 @@ function dungeon(path)
 	{
 //		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
 //for now
-		var fgrmath="Dungeon/dungeons/"+this.name+"/main.txt";
+		/*var fgrmath="Dungeon/dungeons/"+this.name+"/main.txt";
 		var dunpth=this.floors+","+this.startFloor+","+this.startX+","+this.startY;
 			$.post("/save/", {"data": dunpth, "path": fgrmath}).done(function(response) 
 			{ 
 				bConsoleBox.log("Saved " +fgrmath); 
 
-			});
+			});*/
 		var jmath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(fl), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
 		for(var i=0;i<this.getWidth();i++)
@@ -447,7 +448,6 @@ function dungeon(path)
 			dung.startY=Math.floor(smarf[3]);
 			dung.roomX=dung.startX;
 			dung.roomY=dung.startY;
-			console.log(this.floors); 
 			for(var i=0;i<dung.floors;i++)
 			{
 				dung.loadFloor(i);
@@ -811,6 +811,8 @@ function dungeon(path)
 	
 	this.drawAdjacent=function(can,cam)
 	{
+		if(!MobileMode)
+		{
 		var tyOffset=-331; //top
 		if((this.roomY>0) && (this.rooms[this.roomZ][this.roomX][this.roomY-1].active) && (!this.rooms[this.roomZ][this.roomX][this.roomY-1].hidden))
 		{
@@ -862,9 +864,14 @@ function dungeon(path)
 				}
 			}*/
 		}
-	
+		
+		}
 		
 		var tyOffset=631;//bottom
+		if(MobileMode)
+		{
+			tyOffset-=140;
+		}
 		if((this.roomY<this.getHeight()-1) && (this.rooms[this.roomZ][this.roomX][this.roomY+1].active)&& (!this.rooms[this.roomZ][this.roomX][this.roomY+1].hidden))
 		{
 			for (i=0;i<ROOM_WIDTH; i++)
@@ -1052,6 +1059,157 @@ function dungeon(path)
 		this.drawAdjacent(can,cam);
 		this.rooms[this.roomZ][this.roomX][this.roomY].draw(can,cam);
 	}
+	
+	this.drawLargeMap=function(can,player) //should also draw stairs, exit door in different color, goal/boss. 
+	{
+		var xFset=218;
+		var yFset=20;
+		can.fillStyle="white";
+		canvas.fillRect(xFset-8,yFset-28,438,754);
+		can.fillStyle="blue";
+		canvas.fillRect(xFset-4,yFset-24,428,744);
+		var size=28;
+		var gjk=2;
+		for(var zzTop=this.mapFloor-1;zzTop<this.mapFloor+gjk;zzTop++)
+		{
+			if(zzTop<0)
+			{
+				gjk+=1;
+				continue;
+			}
+			canvas.font = "14pt Calibri";
+			can.fillStyle="white";
+			var suffix="Who knows";
+			if(zzTop==0)
+			{
+				suffix="Basement";
+			}else if(zzTop==1)
+			{
+				suffix="First Floor";
+			}else if(zzTop==2)
+			{
+				suffix="Second Floor";
+			}else if(zzTop==3)
+			{
+				suffix="Third Floor";
+			}else if(zzTop==4)
+			{
+				suffix="Fourth Floor";
+			}
+			else if(zzTop==5)
+			{
+				suffix="Fifth Floor";
+			}
+			else if(zzTop==6)
+			{
+				suffix="Sixth Floor";
+			}
+			else if(zzTop==7)
+			{
+				suffix="Seventh Floor";
+			}
+			else if(zzTop==8)
+			{
+				suffix="Eighth Floor";
+			}
+			else if(zzTop==9)
+			{
+				suffix="Ninth Floor";
+			}else 
+			{
+				suffix=String(zzTop)+"th Floor";
+			}
+			can.fillText(suffix,xFset,yFset-6);
+			can.globalAlpha=0.5;
+			   for(i=0;i<this.width[zzTop];i++)
+			   {
+					for (k=0;k<this.height[zzTop];k++)
+					{
+						if((!this.rooms[zzTop][i][k].active))
+						{
+							//draw black square? nothing?
+							
+							can.fillStyle="black";
+							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+2,size+2);
+						}else
+						{
+							
+							if(((this.rooms[zzTop][i][k].explored) && (!this.rooms[zzTop][i][k].hidden)) || (editMode))
+							{
+								//can.fillStyle="black";
+								//canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+2,size+2);
+								can.fillStyle="green";
+								canvas.fillRect(xFset+size*i,yFset+size*k,size+1,size+1);
+								
+							}else 
+							{
+								if((!this.rooms[zzTop][i][k].hidden)&&(!OPTIONS.showUnexploredRooms))
+								{
+									can.fillStyle="black";
+									canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+2,size+2);
+								}else
+								{
+									can.fillStyle="grey";
+									//canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+2,size+2);
+								}							
+								
+							}
+							
+								
+						}
+						if((i==this.roomX) && (k==this.roomY)&&(zzTop==this.roomZ)) //todo and right floor?
+						{
+							can.fillStyle="yellow";
+							canvas.fillRect(xFset+size*i+3,yFset+size*k+3,size-6,size-6); //todo: scalig issues.
+						}	
+					}
+				}
+				for(i=0;i<this.width[zzTop];i++)
+				{
+					for (k=0;k<this.height[zzTop];k++)
+					{
+						if(((this.rooms[zzTop][i][k].explored) || (OPTIONS.showUnexploredDoors)) && (!this.rooms[zzTop][i][k].hidden) || (editMode)) 
+						{
+							if(this.rooms[zzTop][i][k].hasDoor(0))
+							{
+								can.fillStyle="white";
+								canvas.fillRect(xFset+size*i+size/2,yFset+size*k,4,2);
+							}
+							if(this.rooms[zzTop][i][k].hasDoor(2))
+							{
+								can.fillStyle="white";
+								canvas.fillRect(xFset+size*i+size/2,yFset+size*k+size,4,2);
+							}
+							if(this.rooms[zzTop][i][k].hasDoor(1))
+							{
+								can.fillStyle="white";
+								canvas.fillRect(xFset+size*i+size,yFset+size*k+size/2,2,4);
+							}
+							if(this.rooms[zzTop][i][k].hasDoor(3))
+							{
+								can.fillStyle="white";
+								canvas.fillRect(xFset+size*i,yFset+size*k+size/2,2,4);
+							}
+							for(var g=0;g<this.rooms[zzTop][i][k].stairs.length;g++)
+							{
+								if(!this.rooms[zzTop][i][k].stairs[g].up)
+								{
+									
+									downarrowsprite.draw(can,xFset+size*i,yFset+size*k);
+								}else if(this.rooms[zzTop][i][k].stairs[g].up)
+								{
+									uparrowsprite.draw(can,xFset+size*i,yFset+size*k);
+								}
+								//canvas.fillRect(xFset+size*i+this.rooms[zzTop][i][k].stairs[g].x,yFset+size*k+this.rooms[zzTop][i][k].stairs[g].y,1,1);
+							}
+						}
+					}
+				}
+			can.globalAlpha=1;
+			yFset+=245;
+		}
+	}
+	
 	this.drawMiniMap=function(can,player) //should also draw stairs, exit door in different color, goal/boss. 
 	{
 		var xFset=620;
@@ -1066,7 +1224,7 @@ function dungeon(path)
 			suffix="Basement";
 		}else if(this.roomZ==1)
 		{
-			suffix="Ground Floor";
+			suffix="First Floor";
 		}else if(this.roomZ==2)
 		{
 			suffix="Second Floor";
@@ -1101,12 +1259,12 @@ function dungeon(path)
 			suffix=String(this.roomZ)+"th Floor";
 		}
 		can.fillText(suffix,xFset,yFset-6);
-		can.globalAlpha=0.5;
+		can.globalAlpha=1;
 		   for(i=0;i<this.width[this.roomZ];i++)
 		   {
 				for (k=0;k<this.height[this.roomZ];k++)
 				{
-					if((!this.rooms[this.roomZ][i][k].active))
+					if(!this.rooms[this.roomZ][i][k].active)
 					{
 						//draw black square? nothing?
 						
@@ -1117,21 +1275,25 @@ function dungeon(path)
 						
 						if(((this.rooms[this.roomZ][i][k].explored) && (!this.rooms[this.roomZ][i][k].hidden)) || (editMode))
 						{
-							can.fillStyle="black";
-							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
+							//can.fillStyle="black";
+							//canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
 							can.fillStyle="blue";
 							canvas.fillRect(xFset+size*i,yFset+size*k,size,size);
+							//canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
 							
 						}else 
 						{
-							can.fillStyle="black";
-							canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+1,size+1);
-							can.fillStyle="black";
-							if((OPTIONS.showUnexploredRooms) && (!this.rooms[this.roomZ][i][k].hidden))
+						
+							if((this.rooms[this.roomZ][i][k].hidden) || (!OPTIONS.showUnexploredRooms))
 							{
+								can.fillStyle="black";
+								canvas.fillRect(xFset+size*i,yFset+size*k,size,size);
+							}else
+							{							
 								can.fillStyle="grey";
-							}							
-							canvas.fillRect(xFset+size*i,yFset+size*k,size,size);
+								canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size,size);
+							}
+							
 						}
 						
 							

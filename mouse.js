@@ -37,6 +37,19 @@ $(document).bind("contextmenu",function(e){
 							editor.grabbed=meg;
 						}
 					}
+				}else if(MobileMode)
+				{
+					bConsoleBox.log("Existing room will be overwritten. Confirm? (Y/N)","yellow");
+					editor.confirming=true;
+					editor.confirmingWhat=function()
+					{
+						curDungeon.curRoom().randomizeTiles();
+					}
+					if(OPTIONS.confirmationPopUps)
+					{
+						popQuestion("Existing room will be overwritten. Confirm? (Y/N)");
+					}
+					return;
 				}else
 				{
 					editor.mode++;
@@ -176,6 +189,20 @@ function mouseWheel(e){
 	e.returnValue = false;
 };
 
+function mouseDblClick(e) {  //represents the mouse
+	e.preventDefault();    
+	mX = e.pageX - canvasElement.get(0).offsetLeft;
+	mY = e.pageY - canvasElement.get(0).offsetTop;
+	tx=Math.floor((mX-xOffset)/32);// 
+	ty=Math.floor((mY-yOffset)/32);// 
+	if(MobileMode)
+	{	
+		bConsoleBox.log("double tap","yellow");  
+	}
+}
+
+var mylatesttap = new Date().getTime();
+
 function mouseClick(e) {  //represents the mouse
 	e.preventDefault();    
 	mX = e.pageX - canvasElement.get(0).offsetLeft;
@@ -187,6 +214,16 @@ function mouseClick(e) {  //represents the mouse
 	if(mode==0)//menu
 	{
 		console.log(mX,mY);
+		if((mX>239) && (mX<383) && (mY>294) && (mY<451))
+		{
+			startGame(false);
+		}else if((mX>549) &&(mX<681) && (mY>294)&&(mY<451))
+		{
+			startGame(true);
+		}else if((mX>367) &&(mX<533) && (mY>60)&&(mY<216))
+		{
+			showMapList();
+		}
 		if((mX>99) && (mX<175) && (mY>195))
 		{
 			if(mY<216) //new 
@@ -194,11 +231,11 @@ function mouseClick(e) {  //represents the mouse
 				mmcur=0;
 				startGame(false);
 				
-			}else if((mY>220) && (mY<240)) //load
+			}else if((mY>220) && (mY<240) && (mY>195)) 
 			{
 				mmcur=1;
 				startGame(true);
-			}else if((mY>240) && (mY<260)) //loist
+			}else if((mY>240) && (mY<260))
 			{
 				mmcur=2;
 				showMapList()
@@ -206,6 +243,9 @@ function mouseClick(e) {  //represents the mouse
 		}
 		return;
 	}
+	
+		
+	
 	if(e.which==2)
 	{
 		editMode=!editMode;
@@ -265,6 +305,11 @@ function mouseClick(e) {  //represents the mouse
 			//editor.penDown=false;
 			editor.x=tx;
 			editor.y=ty;
+			if((MobileMode) && (!curDungeon.curRoom().active))
+			{
+				curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+				return;
+			}
 			if(editor.mode==editModes.SwitchLink)
 			{
 				//if over door
@@ -438,7 +483,7 @@ function mouseClick(e) {  //represents the mouse
 			}else if(editor.mode==editModes.Objects)
 			{
 				editor.objectType++;
-				if(editor.objectType<editor.numObjectTypes)
+				if(editor.objectType>editor.numObjectTypes)
 				{
 					editor.objectType=0;
 				}
@@ -460,6 +505,7 @@ function mouseClick(e) {  //represents the mouse
 				}
 			}
 		}
+		
 	}else // non-edit mode mouse stuff.
 	{
 

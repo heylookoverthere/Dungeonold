@@ -4,17 +4,356 @@ var drawingPath=false;
 var bullshitHack=true; //right click to link doors
 var existingDungeons=new Array();
 
+
 var linksprites=new Array();
 linksprites.push(Sprite("linkup"));
 linksprites.push(Sprite("linkright"));
 linksprites.push(Sprite("linkdown"));
 linksprites.push(Sprite("linkleft"));
 
+
 document.getElementById("mainSong").addEventListener('ended', function() { //loops music
 	this.currentTime = 0;
 	this.play();
     }, false);
 
+if(checkMobile())
+{
+	MobileMode=true;
+	yOffset= 15;
+}else
+{
+	MobileMode=false;
+}
+
+	
+	//document.addEventListener('touchmove', handleTouchMove, false);
+	//document.concanvasElement.addEventListener('touchmove', handleTouchMove, false);
+var xDown = null;                                                        
+var yDown = null;                                                        
+var downSince=new Date().getTime();	
+var downLast=new Date().getTime();	
+
+function handleTouchStart(evt) {  
+	//evt.preventDefault();         
+    downSince=new Date().getTime();	
+    xDown = evt.touches[0].clientX;                                      
+    yDown = evt.touches[0].clientY;                                      
+};
+function handleConTouchStart(evt) {  
+	evt.preventDefault(); 
+		xDown = evt.touches[0].clientX;                                      
+		yDown = evt.touches[0].clientY;    
+		var now=new Date().getTime();
+	
+			
+		if(now-downLast<OPTIONS.DoubleTapThreshold)
+		{
+			//bConsoleBox.log("Double Tap","yellow");
+			if(mode==0)
+			{
+	
+			}else if(mode==1)
+			{
+				curDungeon.mapFloor=curDungeon.roomZ;
+				mode=2;
+			}else if (mode==2)
+			{
+				mode=1;
+			}
+		}else
+		{
+			//bConsoleBox.log("single tap on console");
+		}
+	
+    downLast=new Date().getTime();	
+                                
+};
+function handleTouchEnd(evt) {  
+	//evt.preventDefault();   
+	xDown = evt.touches[0].clientX;                                      
+    yDown = evt.touches[0].clientY;  	
+	var now=new Date.getTime();
+	if(now-downSince>OPTIONS.HoldTime)
+	{
+		//held
+		console.log("held touch");
+	}else
+	{
+		//single
+	}	
+    	
+                                       
+};                                             
+
+function handleTouchMove(evt) {
+	evt.preventDefault();
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+	toux=Math.floor((xUp-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	touy=Math.floor((yUp-yOffset)/32);
+	
+	if((Math.abs(xDiff)<75) &&(Math.abs(yDiff)<75) || (!OPTIONS.EnableSwipes))
+	{
+		return;
+	}else
+	{
+	if(mode==0)
+	{
+	
+	}else if(mode==1)
+	{
+		if((editMode) && (false)) //+edit mode create rooms
+		{
+			if ( Math.abs( xDiff ) > Math.abs( yDiff ) )
+			{
+				if ( xDiff > 0 ) 
+				{
+					/* left swipe */ 
+					if(curDungeon.roomX>0)
+					{
+						if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX-1,curDungeon.roomY)))
+						{
+							//curDungeon.curRoom().addDoor(3)
+							//curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].addDoor(1);
+							curDungeon.smartAddDoor(1,6,3);
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(3,!editMode);
+						}
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				} else 
+				{
+					/* right swipe */
+					if(curDungeon.roomX<curDungeon.getWidth()-1)
+					{
+						if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].active)|| (curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX+1,curDungeon.roomY)))
+						{
+							curDungeon.smartAddDoor(18,6,1);
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(1,!editMode);
+						}
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				}                       
+			} else //up or down swipe
+			{
+				if ( yDiff > 0 )
+				{
+					/* up swipe */ 
+					if(curDungeon.roomY>0)
+					{
+						if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY-1)))
+						{
+							curDungeon.smartAddDoor(8,1,0);
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(0,!editMode);
+						}
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				} else 
+				{ 
+					/* down swipe */
+					if(curDungeon.roomY<curDungeon.getHeight()-1)
+					{
+						if((curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].active) ||(curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY+1)))
+						{
+							curDungeon.smartAddDoor(8,13,2);
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(2,!editMode);
+						}
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				} 
+			}
+		}else if(editMode)
+		{	
+			if ( Math.abs( xDiff ) > Math.abs( yDiff ) )
+			{
+				if ( xDiff > 0 ) 
+				{
+					/* left swipe */ 
+					if(curDungeon.roomX>0)
+					{
+						editor.clearConfirm();
+						editor.penDown=false;
+						curDungeon.changeRoom(3,!editMode);
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				} else 
+				{
+					/* right swipe */
+					if(curDungeon.roomX<curDungeon.getWidth()-1)
+					{
+						editor.clearConfirm();
+						editor.penDown=false;
+						curDungeon.changeRoom(1,!editMode);
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}   
+				}
+			} else 
+			{
+				if ( yDiff > 0 )
+				{
+					/* up swipe */ 
+					if(curDungeon.roomY>0)
+					{
+						editor.clearConfirm();
+						editor.penDown=false;
+						curDungeon.changeRoom(0,!editMode);
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				} else
+				{ 
+					/* down swipe */
+					if(curDungeon.roomY<curDungeon.getHeight()-1)
+					{
+						editor.clearConfirm();
+						editor.penDown=false;
+						curDungeon.changeRoom(2,!editMode);
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				}
+			}
+		}else if(!editMode)
+		{
+			if ( Math.abs( xDiff ) > Math.abs( yDiff ) )
+			{
+				if ( xDiff > 0 ) 
+				{
+					/* left swipe */ 
+					if(curDungeon.roomX>0)
+					{
+						if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].active) 
+						{
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(3,!editMode);
+						}
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				} else 
+				{
+					/* right swipe */
+					if(curDungeon.roomX<curDungeon.getWidth()-1)
+					{
+						if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].active)
+						{
+							
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(1,!editMode);
+						}
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}                      
+				}
+			} else 
+			{
+				if ( yDiff > 0 )
+				{
+					/* up swipe */ 
+					if(curDungeon.roomY>0)
+					{
+						if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].active) 
+						{
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(0,!editMode);
+						}
+					}else
+					{
+						bConsoleBox.log("Can't go off the map");
+					}
+				} else
+				{ 
+					/* down swipe */
+					if(curDungeon.roomY<curDungeon.getHeight()-1)
+					{
+						if(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].active)
+						{
+							editor.clearConfirm();
+							editor.penDown=false;
+							curDungeon.changeRoom(2,!editMode);
+						}else
+						{
+							bConsoleBox.log("Can't go off the map");
+						}
+					}
+				}
+			}
+		}
+	}else if(mode==2)
+	{
+		if ( Math.abs( xDiff ) > Math.abs( yDiff ) )
+			{
+				if ( xDiff > 0 ) 
+				{
+					/* left swipe */ 
+					
+				} else 
+				{
+					/* right swipe */
+					
+				}
+			} else 
+			{
+				if ( yDiff > 0 )
+				{
+					/* up swipe */ 
+					curDungeon.mapFloor--;
+					if(curDungeon.mapFloor<0)
+					{
+						curDungeon.mapFloor=0;
+					}
+				} else
+				{ 
+					/* down swipe */
+					curDungeon.mapFloor++;
+					if(curDungeon.mapFloor>curDungeon.floors-1)
+					{
+						curDungeon.mapFloor=curDungeon.floors-1;
+					}
+				}
+			}
+	}
+	}
+    /* reset values */
+    xDown = null;
+    yDown = null;                                             
+};	
+	
 var gameOver=null;
 
 var editor=new editCursor();
@@ -50,6 +389,7 @@ function logControls()
 	bConsoleBox.log("Right Click  - Change mode/grab object");
 	bConsoleBox.log("Mouse Wheel  - Change selected");
 	bConsoleBox.log("B - Draw path between player and cursor");
+	bConsoleBox.log("G  - Show map");
 	//bConsoleBox.log("Z - Undo");
 	bConsoleBox.log("Hit E to leave edit mode");
 }
@@ -58,6 +398,16 @@ bConsoleBox=new textbox();
 bConsoleBox.width=300;
 bConsoleBox.height=CANVAS_HEIGHT-12;
 bConsoleBox.log("Loading...");
+if(checkMobile())
+{
+	bConsoleBox.log("Mobile Version");
+	MobileMode=true;
+}else
+{
+	bConsoleBox.log("Desktop Version");
+	MobileMode=false;
+}
+
 bConsoleBox.y=18;
 bConsoleBox.x=18;
 bConsoleBox.lines=4;
@@ -79,6 +429,10 @@ timy.text="Edit";
 timy.x=56;
 timy.y=127;
 timy.height=17;
+if(MobileMode)
+{
+	timy.height=32;
+}
 timy.exists=true;
 timy.shiftable=false;
 timy.visible=true;
@@ -98,6 +452,23 @@ timy.doThings=function()
 
 buttons.push(timy);
 
+//console.log(navigator.userAgent);
+function checkMobile()
+ { 
+	 if( navigator.userAgent.match(/Android/i)
+	 || navigator.userAgent.match(/webOS/i)
+	 || navigator.userAgent.match(/iPhone/i)
+	 || navigator.userAgent.match(/iPad/i)
+	 || navigator.userAgent.match(/iPod/i)
+	 || navigator.userAgent.match(/BlackBerry/i)
+	 || navigator.userAgent.match(/Windows Phone/i)
+	 ){
+		return true;
+	  }
+	 else {
+		return false;
+	  }
+}
 var timy=new button();
 timy.text="Save";
 timy.x=188;
@@ -191,6 +562,10 @@ timy.text="Exit";
 timy.x=94;
 timy.y=127;
 timy.height=17;
+if(MobileMode)
+{
+	timy.height=32;
+}
 timy.exists=true;
 timy.shiftable=false;
 timy.visible=true;
@@ -249,6 +624,10 @@ timy.text="Help";
 timy.x=18;
 timy.y=127;
 timy.height=17;
+if(MobileMode)
+{
+	timy.height=32;
+}
 timy.exists=true;
 timy.shiftable=false;
 timy.visible=true;
@@ -512,6 +891,7 @@ var savefloorkey = new akey("k");
 var loadfloorkey = new akey("l");
 var mutekey= new akey("m");
 var randomkey= new akey("r");
+var mapkey=new akey("g");
 
 var miles=new dude();
 miles.dir=0;
@@ -637,7 +1017,7 @@ function allPoint(guy)
 //camera.tileY=3360;
 
 document.body.addEventListener("click", mouseClick, false);
-//document.body.addEventListener("dblclick", mouseDblClick, false);
+document.body.addEventListener("dblclick", mouseDblClick, false);
 document.body.addEventListener("mousewheel",mouseWheel,false);
 document.body.addEventListener("DOMMouseScroll", mouseWheel, false);
 
@@ -670,7 +1050,13 @@ canvasElement.css("position", "absolute").css("z-index", "1");
 canvasElement.appendTo('body');
 canvasElement.css("position", "absolute").css("z-index", "0").css("top", canvasElement.position().top).css("left", canvasElement.position().left);
 canvasElement.get(0).addEventListener("mousemove", mouseXY, false);
-
+if(MobileMode)
+{	
+	canvasElement.get(0).addEventListener('touchstart', handleTouchStart, false);   
+	canvasElement.get(0).addEventListener('touchend', handleTouchEnd, false);   
+	concanvasElement.get(0).addEventListener('touchmove', handleTouchMove, false);
+	concanvasElement.get(0).addEventListener('touchstart', handleConTouchStart, false); 
+}
 var gamepadSupportAvailable = !!navigator.getGamepads || !!navigator.webkitGamepads;
 
 var gamepad = navigator.getGamepads && navigator.getGamepads()[0];
@@ -771,8 +1157,8 @@ FPS=countFPS();
 		mainUpdate();
 		mainDraw();	
 	}else if(mode==2){
-		//troopScreenUpdate();
-		//troopScreenDraw();
+		mapUpdate();
+		mapDraw();
 	}
 	//canvas.beginPath();
 	//osCanvas.drawImage(canvasElement,0,0);
@@ -1037,6 +1423,40 @@ function mainMenuUpdate()
 	bConsoleBox.update();
 };
 
+function mapUpdate()
+{
+	if((mapkey.check()) ||(escapekey.check()))
+	{
+		curDungeon.mapFloor=curDungeon.roomZ;
+		mode=1;
+	}
+	if(upkey.check())
+	{
+		curDungeon.mapFloor--;
+		if(curDungeon.mapFloor<0)
+		{
+			curDungeon.mapFloor=0;
+		}
+	}
+	if(downkey.check())
+	{
+		curDungeon.mapFloor++;
+		if(curDungeon.mapFloor>curDungeon.floors-1)
+		{
+			curDungeon.mapFloor=curDungeon.floors-1;
+		}
+	}
+	
+}
+function mapDraw() {
+	//SHOULDN'T
+	canvas.fillStyle = "black";
+	canvas.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
+
+	curDungeon.draw(canvas,camera);
+	curDungeon.drawLargeMap(canvas)
+}
+
 //------------MAIN DRAW-----------------------------------------
 function mainDraw() {
 	//SHOULDN'T
@@ -1089,7 +1509,13 @@ function mainDraw() {
 		canvas.fillStyle="yellow";
 		canvas.globalAlpha=1;
 		canvas.font = "32pt Calibri";
-		canvas.fillText("Edit Mode",380,125);
+		if(MobileMode)
+		{
+			canvas.fillText("Edit Mode",380,25);
+		}else
+		{
+			canvas.fillText("Edit Mode",380,125);
+		}
 		canvas.font = "16pt Calibri";
 		if(curDungeon.curRoom().hidden)
 		{
@@ -1168,6 +1594,7 @@ function mainDraw() {
 	
 
 	drawDebug(canvas);
+	
 	curDungeon.drawMiniMap(canvas);//,player
 	if(editMode) 
 	{
@@ -1393,7 +1820,7 @@ function mainUpdate()
 		}else if(editor.mode==editModes.Objects)
 		{
 			editor.objectType++;
-			if(editor.objectType<editor.numObjectTypes)
+			if(editor.objectType>editor.numObjectTypes)
 			{
 				editor.objectType=0;
 			}
@@ -1513,6 +1940,12 @@ function mainUpdate()
 				bConsoleBox.log("No","Yellow");
 			}
 		}
+	if(mapkey.check())
+	{
+		//console.log("look");
+		mode=2;
+	}
+		
 	if(editMode)
 	{
 		/*if(letterkeys[15].check())
@@ -1939,6 +2372,7 @@ function mainUpdate()
 
 	
 };
+
 merp();
 var tt="Indiana Jones and the Mystery of the missing title";
 var yui=Math.floor(Math.random()*10);

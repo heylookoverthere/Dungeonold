@@ -10,6 +10,10 @@ var graphboat=null;
 var graph=null;
 var shiftdown=false;
 var graph=null;
+var MobileMode=false;
+
+var downarrowsprite=Sprite("downarrow");
+var uparrowsprite=Sprite("uparrow");
 
 var Darkness=14;
 
@@ -17,10 +21,9 @@ var randomPhrases=new Array();
 randomPhrases.push("I dunno much about computers other than the one I got at my house.");
 randomPhrases.push("You know those guitars that are like....double guitars?");
 randomPhrases.push("Sometimes, cats can be afraid of cucumbers. But sometimes not.");
-randomPhrases.push("Here lies some cunt.");
 
 
- var LightLevels=new Array();
+var LightLevels=new Array();
 LightLevels.push(0.90); //midnight
 LightLevels.push(0.85); //1am
 LightLevels.push(0.80); //2am
@@ -136,6 +139,7 @@ editModes.CopyArea=5;
 editModes.SwitchLink=9;
 
 var OPTIONS={};
+OPTIONS.EnableSwipes=true;
 OPTIONS.musicOn=false;
 OPTIONS.showUnexploredRooms=false;
 OPTIONS.showCracks=false;
@@ -143,6 +147,8 @@ OPTIONS.showUnexploredDoors=false;
 OPTIONS.skipWallTiles=true;
 OPTIONS.musicVolume=0.1;
 OPTIONS.confirmationPopUps=true;
+OPTIONS.DoubleTapThreshold=400;
+OPTIONS.HoldTime=2000;
 
 var editHistory=[];
 
