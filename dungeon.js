@@ -1069,12 +1069,12 @@ function dungeon(path)
 		can.fillStyle="blue";
 		canvas.fillRect(xFset-4,yFset-24,428,744);
 		var size=28;
-		var gjk=2;
-		for(var zzTop=this.mapFloor-1;zzTop<this.mapFloor+gjk;zzTop++)
+		var gjk=3;
+		for(var zzTop=this.mapFloor;zzTop<this.mapFloor+gjk;zzTop++)
 		{
-			if(zzTop<0)
+			if(zzTop>this.floors)
 			{
-				gjk+=1;
+				//gjk+=1;
 				continue;
 			}
 			canvas.font = "14pt Calibri";
@@ -1149,7 +1149,8 @@ function dungeon(path)
 									canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+2,size+2);
 								}else
 								{
-									can.fillStyle="grey";
+									//can.fillStyle="grey";
+									//canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+2,size+2);
 									//canvas.fillRect(xFset+size*i-1,yFset+size*k-1,size+2,size+2);
 								}							
 								
@@ -1259,7 +1260,7 @@ function dungeon(path)
 			suffix=String(this.roomZ)+"th Floor";
 		}
 		can.fillText(suffix,xFset,yFset-6);
-		can.globalAlpha=1;
+		can.globalAlpha=0.70;
 		   for(i=0;i<this.width[this.roomZ];i++)
 		   {
 				for (k=0;k<this.height[this.roomZ];k++)

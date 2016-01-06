@@ -10,7 +10,10 @@ $(document).bind("contextmenu",function(e){
 		}
 		bConsoleBox.log("Doors linked!","yellow");
 	}
-	
+	if(mode==2)
+	{
+	 //console.log("fucl");
+	}
 	if(true)//(mode==1)
 	{
 		mX = e.pageX - canvasElement.get(0).offsetLeft;
@@ -242,7 +245,33 @@ function mouseClick(e) {  //represents the mouse
 			}
 		}
 		return;
+	}else if(mode==2)
+	{
+		if(editMode)
+		{
+			var bobxFset=218;
+			var bobyFset=20;
+			var bobsize=28;
+			var miniMapX=0;
+			var miniMapY=0;
+			//console.log(mX,mY);
+			if((mX>217) && (mY>19)&& (mX<640)&& (mY<245))//and less than width and height. 
+			{ 
+				miniMapx=Math.round((mX+bobxFset)/bobsize)-16;
+				miniMapy=Math.round((mY+bobyFset)/bobsize)-2;
+				//console.log(miniMapx,miniMapy);
+				if((miniMapx>-1) && (miniMapy>-1) && (miniMapx<15) &&( miniMapy<8))
+				{
+					curDungeon.setRoom(curDungeon.mapFloor,miniMapx,miniMapy);
+				}else
+				{
+					console.log("Learn to fucking click.");
+				} 
+			}
+		}
+		return;
 	}
+	
 	
 		
 	
