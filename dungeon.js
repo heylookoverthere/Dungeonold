@@ -435,6 +435,7 @@ function dungeon(path)
 	dungeon.prototype.load=function() 
 	{
 		var dung=this;
+		dung.cleanSlate();
 		//read main dungeon file, determine how many floors.
 		var crmath="dungeons/"+this.name+"/"+"main.txt";
 		$.get(crmath, function(data) 
@@ -722,6 +723,7 @@ function dungeon(path)
 			mindy.x=x;
 			mindy.y=1;
 			mindy.type=type;
+			mindy.room=croom;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomY>0) && (this.rooms[this.roomZ][this.roomX][this.roomY-1].active))
@@ -737,6 +739,7 @@ function dungeon(path)
 			mindy.x=18;
 			mindy.y=y;
 			mindy.type=type;
+			mindy.room=croom;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomX<this.getWidth()-1) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active))
@@ -752,6 +755,7 @@ function dungeon(path)
 			mindy.x=1;
 			mindy.y=y;
 			mindy.type=type;
+			mindy.room=croom;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomX>0) && (this.rooms[this.roomZ][this.roomX-1][this.roomY].active))
@@ -767,6 +771,7 @@ function dungeon(path)
 			mindy.x=x;
 			mindy.y=13;
 			mindy.type=type;
+			mindy.room=croom;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomY<this.getHeight()-1) && (this.rooms[this.roomZ][this.roomX][this.roomY+1].active))
@@ -790,7 +795,7 @@ function dungeon(path)
 		this.roomZ=0;
 		this.roomX=7;
 		this.roomY=7;
-		this.name="blank";
+		//this.name="blank";
 	}
 	
 	this.wipeFloor=function(fl)

@@ -32,6 +32,7 @@ function object(oroom) //not a tile, not an enemy
 	this.pickupable=false;
 	this.type=0;
 	this.active=false;
+	this.linkDescriptions=new Array();
 	this.exists=true;
 	this.playerUsable=true;
 	this.x=2;
@@ -463,7 +464,7 @@ object.prototype.stringify=function()
 	{
 		tempstring+=";";
 		tempstring+=this.on;
-	}else if (false)//(this.type==ObjectID.ToggleSwitch)
+	}else if (this.type==ObjectID.ToggleSwitch)
 	{
 		tempstring+=";";
 		tempstring+=this.dest.length;

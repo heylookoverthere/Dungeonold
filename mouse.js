@@ -391,7 +391,7 @@ function mouseClick(e) {  //represents the mouse
 				if(dork)
 				{
 					editor.linkingTo=dork;
-					//editor.mode=0;
+					editor.mode=editModes.Objects;
 					editor.linkingFrom.dest.push(editor.linkingTo);
 					bConsoleBox.log("Linked switch to door");
 				}else
