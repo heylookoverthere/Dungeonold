@@ -802,6 +802,10 @@ function dungeon(path)
 				this.rooms[fl][i][j].redoWalls();
 				this.rooms[fl][i][j].fillAll(DungeonTileType.GreenFloor);
 				this.rooms[fl][i][j].active=false; 
+				this.rooms[fl][i][j].explored=false; 
+				this.rooms[fl][i][j].lightLevel=0.00;
+				this.rooms[fl][i][j].lights=new Array();
+				this.rooms[fl][i][j].fires=new Array();
 				this.rooms[fl][i][j].stairs=new Array();
 				this.rooms[fl][i][j].exits=new Array();
 				this.rooms[fl][i][j].objects=new Array();

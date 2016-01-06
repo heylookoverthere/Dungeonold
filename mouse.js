@@ -265,7 +265,31 @@ function mouseClick(e) {  //represents the mouse
 					curDungeon.setRoom(curDungeon.mapFloor,miniMapx,miniMapy);
 				}else
 				{
-					console.log("Learn to fucking click.");
+					console.log("Learn to click!");
+				} 
+			}else if((curDungeon.mapFloor+1<curDungeon.floors)&& (mX>217) && (mY>265)&& (mX<640)&& (mY<490))//and less than width and height. 
+			{ 
+				miniMapx=Math.round((mX+bobxFset)/bobsize)-16;
+				miniMapy=Math.round((mY+bobyFset)/bobsize)-11;
+				if((miniMapx>-1) && (miniMapy>-1) && (miniMapx<15) &&( miniMapy<8))
+				{
+					curDungeon.setRoom(curDungeon.mapFloor+1,miniMapx,miniMapy);
+				}else
+				{
+					console.log("Learn to click!");
+				} 
+			}else if((curDungeon.mapFloor+2<curDungeon.floors)&& (mX>217) && (mY>509)&& (mX<640)&& (mY<735))//and less than width and height. 
+			{ 
+				miniMapx=Math.round((mX+bobxFset)/bobsize)-16;
+				miniMapy=Math.round((mY+bobyFset)/bobsize)-19;
+				console.log(mX,mY);
+				console.log(miniMapx,miniMapy);
+				if((miniMapx>-1) && (miniMapy>-1) && (miniMapx<15) &&( miniMapy<8))
+				{
+					curDungeon.setRoom(curDungeon.mapFloor+2,miniMapx,miniMapy);
+				}else
+				{
+					console.log("Learn to click!");
 				} 
 			}
 		}

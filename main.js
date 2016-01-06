@@ -1315,6 +1315,7 @@ function startGame(goolp)
 			if(pungname==null) {return;}
 		}
 		curDungeon.name=pungname;
+		editMode=false;
 		curDungeon.load();
 	}
 	mode=1;	
