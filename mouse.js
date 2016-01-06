@@ -265,7 +265,7 @@ function mouseClick(e) {  //represents the mouse
 					curDungeon.setRoom(curDungeon.mapFloor,miniMapx,miniMapy);
 				}else
 				{
-					console.log("Learn to click!");
+					//console.log("Learn to click!");
 				} 
 			}else if((curDungeon.mapFloor+1<curDungeon.floors)&& (mX>217) && (mY>265)&& (mX<640)&& (mY<490))//and less than width and height. 
 			{ 
@@ -276,7 +276,7 @@ function mouseClick(e) {  //represents the mouse
 					curDungeon.setRoom(curDungeon.mapFloor+1,miniMapx,miniMapy);
 				}else
 				{
-					console.log("Learn to click!");
+					//console.log("Learn to click!");
 				} 
 			}else if((curDungeon.mapFloor+2<curDungeon.floors)&& (mX>217) && (mY>509)&& (mX<640)&& (mY<735))//and less than width and height. 
 			{ 
@@ -289,7 +289,7 @@ function mouseClick(e) {  //represents the mouse
 					curDungeon.setRoom(curDungeon.mapFloor+2,miniMapx,miniMapy);
 				}else
 				{
-					console.log("Learn to click!");
+					//console.log("Learn to click!");
 				} 
 			}
 		}
@@ -316,7 +316,7 @@ function mouseClick(e) {  //represents the mouse
 				return;
 			}else
 			{
-				bConsoleBox.log("Choose!","yellow");
+				//bConsoleBox.log("Choose!","yellow");
 			}
 			//hacky
 			/*if(isOver(buttons[i]))

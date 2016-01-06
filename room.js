@@ -747,13 +747,22 @@ function room(I) { //room object
 			}else if(false)//(higgins.type==ObjectID.ToggleSwitch)
 			{
 				var nerp=tempstring[i+3] //number of dests
+				var plerp=i+3;
+				var todestsp=1;
 				for(var j=0;j<nerp;j++)
 				{
 					var niles={};
-					niles.roomZ=tempstring[i+3]
+					niles.roomZ=Math.floor(tempstring[plerp+1]);
+					niles.roomX=Math.floor(tempstring[plerp+2]);
+					niles.roomY=Math.floor(tempstring[plerp+3]);
+					niles.x=Math.floor(tempstring[plerp+4]);
+					niles.y=Math.floor(tempstring[plerp+5]);
+					niles.type=Math.floor(tempstring[plerp+6]);
+					plerp+=7; //move to the next dest
+					todestsp+=6;
 				}
-				ffset=4;
-				mitly++;
+				ffset=4+todestsp;//j*7;
+				mitly+=todestsp;
 				higgins.setup();
 			}else
 			{
