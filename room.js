@@ -57,6 +57,7 @@ function staircase(up,clone)
 	this.x=0;
 	this.y=0;
 	this.up=up;
+	this.ctype=2;
 	this.room=null;
 	this.hidden=false;
 	if(clone){
@@ -67,7 +68,7 @@ function staircase(up,clone)
 	}
 	this.activate=function()
 	{
-		this.hidden=false;
+		this.hidden=!this.hidden;
 	}
 }
 	
@@ -83,6 +84,7 @@ function door(or,clone)
 	if(!or){or=0;}
 	this.x=0;
 	this.y=0; 
+	this.ctype=1;
 	//this.source=sorc;
 	this.height=75;
 	this.width=146;
@@ -722,7 +724,7 @@ function room(I) { //room object
 		for(var i=1;i<numo*3+mitly;i+=ffset)
 		{
 			ffset=3;
-			var higgins=new object();
+			var higgins=new object(I);
 			higgins.x=Math.floor(tempstring[i]);
 			higgins.y=Math.floor(tempstring[i+1]);
 			higgins.type=Math.floor(tempstring[i+2]);
@@ -760,10 +762,10 @@ function room(I) { //room object
 					niles.x=Math.floor(tempstring[plerp+4]);
 					niles.y=Math.floor(tempstring[plerp+5]);
 					niles.type=Math.floor(tempstring[plerp+6]);
-					console.log(niles);
+					niles.ctype=Math.floor(tempstring[plerp+7]);
 					higgins.linkDescriptions.push(niles);
-					plerp+=6; //move to the next dest
-					todestsp+=6;
+					plerp+=7; //move to the next dest
+					todestsp+=7;
 				}
 				ffset=3+todestsp;//j*7;
 				mitly+=todestsp;
@@ -1189,6 +1191,7 @@ function room(I) { //room object
 		var mindy= new staircase(up);
 		mindy.x=x;
 		mindy.y=y;
+		mindy.room=I;
 		I.stairs.push(mindy);
 		if(up)
 		{

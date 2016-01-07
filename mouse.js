@@ -366,6 +366,14 @@ function mouseClick(e) {  //represents the mouse
 			}
 			if(editor.mode==editModes.SwitchLink)
 			{
+				var glork=null;
+				for(var k=0;k<curDungeon.curRoom().objects.length;k++)
+				{
+					if((editor.x==curDungeon.curRoom().objects[k].x) && (editor.y==curDungeon.curRoom().objects[k].y))
+					{
+						glork=curDungeon.curRoom().objects[k];
+					}
+				}
 				//if over door
 				var dork=null;
 				var pork=curDungeon.curRoom().getSpecificDoor(editor.x,editor.y-1,0)
@@ -395,6 +403,12 @@ function mouseClick(e) {  //represents the mouse
 					editor.mode=editModes.Objects;
 					editor.linkingFrom.dest.push(editor.linkingTo);
 					bConsoleBox.log("Linked switch to door");
+				}else if(glork) //is over an object
+				{
+					editor.linkingTo=glork;
+					editor.mode=editModes.Objects;
+					editor.linkingFrom.dest.push(editor.linkingTo);
+					bConsoleBox.log("Linked switch to "+glork.name);
 				}else
 				{
 					for(var i=0;i<curDungeon.curRoom().stairs.length;i++)

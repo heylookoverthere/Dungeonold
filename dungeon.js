@@ -541,9 +541,9 @@ function dungeon(path)
 		}
 	};
 	
-	this.getObject=function(mupple,door)
+	this.getObject=function(mupple)
 	{
-		if(door)
+		if(mupple.ctype==1)
 		{
 			for(var v=0;v<this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].exits.length;v++)
 			{
@@ -552,11 +552,20 @@ function dungeon(path)
 					return this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].exits[v];
 				}	
 			}
+		}if(mupple.ctype==2)
+		{
+			for(var v=0;v<this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs.length;v++)
+			{
+				if((this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs[v].x==mupple.x) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs[v].y==mupple.y))
+				{
+					return this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs[v];
+				}	
+			}
 		}else
 		{
 			for(var v=0;v<this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects.length;v++)
 			{
-				if((this.this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].x==mupple.x) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].y==mupple.y) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].type==mupple.type))
+				if((this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].x==mupple.x) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].y==mupple.y) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].type==mupple.type))
 				{
 					return this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v];
 				}

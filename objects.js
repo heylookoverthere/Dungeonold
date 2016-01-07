@@ -28,6 +28,7 @@ function object(oroom) //not a tile, not an enemy
 	this.sprites=new Array();
 	this.curSprite=0;
 	this.on=false;
+	this.ctype=0;
 	this.room=oroom;
 	this.pickupable=false;
 	this.type=0;
@@ -482,6 +483,8 @@ object.prototype.stringify=function()
 			tempstring+=this.dest[i].y;
 			tempstring+=";";
 			tempstring+=this.dest[i].type;
+			tempstring+=";";
+			tempstring+=this.dest[i].ctype;
 		}
 	}
 	return tempstring;
