@@ -576,6 +576,7 @@ timy.update=function()
 }
 timy.doThings=function()
 {
+	editor.penDown=false;
 	bConsoleBox.log("Loading dungeon from disk. Unsaved data will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
@@ -625,7 +626,7 @@ timy.update=function()
 }
 timy.doThings=function()
 {
-	
+	editor.penDown=false;
 	if(editMode)
 	{
 		editor.mode++;
@@ -702,6 +703,9 @@ timy.doThings=function()
 			}else if(editor.mode==editModes.SwitchLink)
 			{
 				blex="Switch linking mode. May eventually become anything linking mode. But for now click a switch in object mode and then click any door or staircase to link them. (the staircase will become hidden, and only appear when the switch is activated.) There's no way to unlink at the moment, and the links aren't saved and loaded yet.";
+			}else if(editor.mode==editModes.ChestLoot)
+			{
+				blex="Chest contents mode. Click a chest to fill it with the selected loot.";
 			}
 		}
 	}
@@ -938,6 +942,7 @@ miles.dir=0;
 miles.keys=0;
 miles.AI=false;
 miles.money=0;
+miles.bombs=0;
 miles.wallet=250;
 miles.tileX;//todo
 miles.x=9;
@@ -1587,6 +1592,8 @@ function mainDraw() {
 			canvas.fillText("Stamp mode",18,120);
 		}else if(editor.mode==editModes.SwitchLink){
 			canvas.fillText("Linking mode",18,120);
+		}else if(editor.mode==editModes.ChestLoot){
+			canvas.fillText("Chest mode",18,120);
 		}else if(editor.mode==editModes.Fill){
 			canvas.fillText("Fill mode",18,120);
 		}else if(editor.mode==editModes.Objects){
@@ -1626,6 +1633,16 @@ function mainDraw() {
 			}else
 			{
 				console.log("no sprite for "+editor.objectType);
+			}
+		}else if(editor.mode==editModes.ChestLoot)
+		{
+			canvas.fillText("Selected: ",18,96);
+			if(lootSprites[editor.lootType])
+			{
+				lootSprites[editor.lootType].draw(canvas,110,73);
+			}else
+			{
+				console.log("no sprite for "+editor.lootType);
 			}
 		}else
 		{
@@ -2322,6 +2339,7 @@ function mainUpdate()
 	}	
 	
 	if(escapekey.check()){
+		editor.penDown=false;
 		if(editor.confirming)
 		{
 			editor.clearConfirm();

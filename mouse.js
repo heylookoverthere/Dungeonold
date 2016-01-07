@@ -122,6 +122,13 @@ function mouseWheel(e){
 						{
 							editor.objectType=0;
 						}
+					}else if(editor.mode==editModes.ChestLoot)
+					{
+						editor.lootType++;
+						if(editor.lootType>numLoots-1)
+						{
+							editor.lootType=0;
+						}
 					}else
 					{
 						editor.brushType++;
@@ -159,6 +166,13 @@ function mouseWheel(e){
 						if(editor.objectType<0)
 						{
 							editor.objectType=editor.numObjectTypes;
+						}
+					}else if(editor.mode==editModes.ChestLoot)
+					{
+						editor.lootType--;
+						if(editor.lootType<0)
+						{
+							editor.lootType=numLoots-1;
 						}
 					}else
 					{
@@ -422,6 +436,14 @@ function mouseClick(e) {  //represents the mouse
 							curDungeon.curRoom().stairs[i].hidden=true;
 						}
 					}
+				}
+			}else if(editor.mode==editModes.ChestLoot)
+			{
+				var meg=isOverTiledList(curDungeon.curRoom().objects,32);
+				if(meg.type==ObjectID.Chest)
+				{
+					meg.loot=editor.lootType;
+					bConsoleBox.log("Filled chest at "+meg.x+","+meg.y+" with "+lootName[editor.lootType]);
 				}
 			}else if(editor.mode==editModes.Stamp)
 			{

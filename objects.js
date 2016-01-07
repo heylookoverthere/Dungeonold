@@ -1,19 +1,43 @@
-var numLoots=4;
+var numLoots=10;
 
 var lootTable={};
 lootTable.Key=0;
 lootTable.HeartContainer=1;
 lootTable.GoldTen=2;
 lootTable.GoldHundred=3;
+lootTable.Map=4;
+lootTable.RedPotion=5;
+lootTable.GreenPotion=6;
+lootTable.BluePotion=7;
+lootTable.Bombs=8;
+lootTable.Wallet=9;
 
 var lootName=new Array();
 lootName.push("key");
-lootName.push("heartcontainer");
-lootName.push("tenrupee");
-lootName.push("hundredrupee");
+lootName.push("heart container");
+lootName.push("ten rupees");
+lootName.push("hundred rupees");
+lootName.push("map");
+lootName.push("red potion");
+lootName.push("green potion");
+lootName.push("blue potion");
+lootName.push("bombs");
+lootName.push("wallet");
 
+var lootSprites=new Array();
+lootSprites.push(Sprite("key"));
+lootSprites.push(Sprite("heartcontainer"));
+lootSprites.push(Sprite("tenrupee"));
+lootSprites.push(Sprite("hundredrupee"));
+lootSprites.push(Sprite("map"));
+lootSprites.push(Sprite("redpotion"));
+lootSprites.push(Sprite("greenpotion"));
+lootSprites.push(Sprite("bluepotion"));
+lootSprites.push(Sprite("bombpickup"));
+lootSprites.push(Sprite("wallet"));
 //last
-lootName.push("healmet4");
+lootName.push("helmet4");
+lootSprites.push(Sprite("helmet4"));
 
 var ObjectID={};
 ObjectID.Lamp=0;
@@ -142,24 +166,25 @@ object.prototype.setup=function(id,par)
 		this.name="Chest";
 		//this.loot=0;
 		this.activate=function(){
+			if(this.curSprite==1) {return;}
 			this.curSprite=1;
 			//give item!
 			var btext="You...found a severed pig's head."
 			if(this.loot==lootTable.Key)
 			{
-				bConsoleBox.log("Acquired a key!");
-				btext="Acquired a key!";
+				bConsoleBox.log("You got a key!");
+				btext="You got a a key!";
 				miles.keys++;
 			}else if(this.loot==lootTable.HeartContainer)
 			{
-				bConsoleBox.log("Acquired a heart container!");
-				btext="Acquired a heart container!";
+				bConsoleBox.log("You got a heart container!");
+				btext="You got a a heart container!";
 				miles.maxHp+=20;
 				miles.hp+=20;
 			}else if(this.loot==lootTable.GoldTen)
 			{
-				bConsoleBox.log("Acquired 10 rupees!");
-				btext="Acquired 10 rupees!";
+				bConsoleBox.log("You got 10 rupees!");
+				btext="You got 10 rupees!";
 				miles.money+=10;
 				if(miles.money>miles.wallet)
 				{
@@ -167,25 +192,58 @@ object.prototype.setup=function(id,par)
 				}
 			}else if(this.loot==lootTable.GoldHundred)
 			{
-				bConsoleBox.log("Acquired 100 rupees! Lucky!");
-				btext="Acquired 100 rupees! Lucky!";
+				bConsoleBox.log("You got 100 rupees! Lucky!");
+				btext="You got 100 rupees! Lucky!";
 				miles.money+=100;
 				if(miles.money>miles.wallet)
 				{
 					miles.money=miles.wallet;
 				}
+			}else if(this.loot==lootTable.Map)
+			{
+				bConsoleBox.log("You found the map! Hit G to use it.");
+				btext="You found the map! Hit G to use it.";
+				miles.hasMap=true;
+			}else if(this.loot==lootTable.RedPotion)
+			{
+				bConsoleBox.log("You found a red potion!");
+				btext="You found a red potion!";
+				
+			}else if(this.loot==lootTable.GreenPotion)
+			{
+				bConsoleBox.log("You found a green potion!");
+				btext="You found a green potion!";
+				
+			}else if(this.loot==lootTable.BluePotion)
+			{
+				bConsoleBox.log("You found a blue potion!");
+				btext="You found a blue potion!";
+				
+			}else if(this.loot==lootTable.Bombs)
+			{
+				bConsoleBox.log("You found some bombs!");
+				btext="You found some bombs!";
+				miles.bombs+=3;
+			}else if(this.loot==lootTable.Wallet)
+			{
+				bConsoleBox.log("You found a bigger wallet!");
+				btext="You found a bigger wallet!";
+				miles.wallet=miles.wallet*2;
 			}
 			var mancy=new textbox();
 			mancy.setup();
-			mancy.x=200;
-			mancy.y=200;
-			mancy.textLim=104;
+			mancy.x=340;
+			mancy.y=100;
+			mancy.width=210;
+			mancy.textLim=62;
 			mancy.log(btext);
 			mancy.hasFocus=true;
 			buttons.push(mancy);
 			this.messagebox=mancy;
 		}
 		this.activateEdit=function(){
+			editor.mode=editModes.ChestLoot;
+			editor.lootFor=this;
 		}
 	}else if (this.type==ObjectID.Key) {
 		this.sprites=new Array();
@@ -498,6 +556,12 @@ object.prototype.draw=function(can,cam,xOffh,yOffh)
 	{
 		//draw fire?
 		this.flame.draw(can,cam,xOffh,yOffh);
+	}else (this.type==ObjectID.Chest)
+	{
+		if ((this.messagebox) && (this.messagebox.exists))
+		{
+			lootSprites[this.loot].draw(can, this.x*32+xOffh, this.y*32+yOffh-20);
+		}
 	}
 }
 

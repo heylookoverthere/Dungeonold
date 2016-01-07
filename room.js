@@ -1374,6 +1374,7 @@ function editCursor()
 	this.brush=0;
 	this.brushType=0;
 	this.doorType=0;
+	this.lootType=0;
 	this.penDown=false;
 	this.penDownMode=false;
 	this.confirming=false;
