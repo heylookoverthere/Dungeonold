@@ -424,8 +424,9 @@ function dungeon(path)
 		
 		var dung=this;
 		dung.saveExists=true;
+		dung.lastSaved=new Date();
 		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
-		var dunpth=dung.floors+","+dung.startFloor+","+dung.startX+","+dung.startY;
+		var dunpth=dung.floors+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
 			$.post("/save/", {"data": dunpth, "path": grmath}).done(function(response) 
 			{ 
 				bConsoleBox.log("Saved " +grmath); 
@@ -455,6 +456,7 @@ function dungeon(path)
 			dung.roomZ=dung.startFloor;
 			dung.startX=Math.floor(smarf[2]);
 			dung.startY=Math.floor(smarf[3]);
+			dung.lastSaved=new Date(smarf[4]);
 			dung.roomX=dung.startX;
 			dung.roomY=dung.startY;
 			for(var i=0;i<dung.floors;i++)

@@ -447,11 +447,32 @@ if(MobileMode)
 timy.exists=true;
 timy.shiftable=false;
 timy.visible=true;
+timy.update=function()
+{	
+	if(editMode)
+	{
+		this.text="Play";
+		
+	}else
+	{
+		this.text="Edit";
+	}
+	if(this.hasFocus)
+	{
+		//holdInput=true;
+			
+			if(startkey.check())
+			{
+				this.doThings();
+				//somehow order ship to move there.
+			}
+	}
+}
 timy.doThings=function()
 {
 	editMode=!editMode;
 	editor.penDown=false;
-	editor.clearConfirm();;
+	editor.clearConfirm();
 	if(editMode)
 	{
 		this.text="Play";
