@@ -607,6 +607,13 @@ timy.doThings=function()
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
 			curDungeon.cleanSlate();
+			$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
+			 {
+				existingDungeons=resp.split(",");
+				existingDungeons.splice(0,1);
+			 } 
+			 )
+			bullshitHack=true;
 			mode=0;
 		}
 		if(OPTIONS.confirmationPopUps)
@@ -2283,6 +2290,13 @@ function mainUpdate()
 			editor.confirming=true;
 			editor.confirmingWhat=function() {
 				curDungeon.cleanSlate();
+				$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
+				 {
+					existingDungeons=resp.split(",");
+					existingDungeons.splice(0,1);
+				 } 
+				 )
+				bullshitHack=true;
 				mode=0;
 			}
 			console.log(OPTIONS.confirmationPopUps)

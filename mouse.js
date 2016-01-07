@@ -7,8 +7,9 @@ $(document).bind("contextmenu",function(e){
 		for(var i=0;i<curDungeon.floors;i++)
 		{
 			curDungeon.linkDoors(i);
+			curDungeon.linkSwitches(i);
 		}
-		bConsoleBox.log("Doors linked!","yellow");
+		bConsoleBox.log("Doors and switches linked!","yellow");
 	}
 	if(mode==2)
 	{
@@ -64,7 +65,7 @@ $(document).bind("contextmenu",function(e){
 				}
 			}else
 			{
-				monsta.startOrbit(40000,mX+camera.x,mY+camera.y,60,8,false,12);
+				//monsta.startOrbit(40000,mX+camera.x,mY+camera.y,60,8,false,12);
 			}
 		}else
 		{
@@ -216,7 +217,7 @@ function mouseClick(e) {  //represents the mouse
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	if(mode==0)//menu
 	{
-		console.log(mX,mY);
+		//console.log(mX,mY);
 		if((mX>239) && (mX<383) && (mY>294) && (mY<451))
 		{
 			startGame(false);
@@ -382,7 +383,7 @@ function mouseClick(e) {  //represents the mouse
 				{
 					dork=pork;
 				}
-				pork=curDungeon.curRoom().getSpecificDoor(editor.x-1,editor.y,2)
+				pork=curDungeon.curRoom().getSpecificDoor(editor.x-1,editor.y,3)
 				if(pork)
 				{
 					dork=pork;

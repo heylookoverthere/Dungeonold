@@ -541,6 +541,55 @@ function dungeon(path)
 		}
 	};
 	
+	this.getObject=function(mupple,door)
+	{
+		if(door)
+		{
+			for(var v=0;v<this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].exits.length;v++)
+			{
+				if((this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].exits[v].x==mupple.x) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].exits[v].y==mupple.y) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].exits[v].type==mupple.type) )
+				{
+					return this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].exits[v];
+				}	
+			}
+		}else
+		{
+			for(var v=0;v<this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects.length;v++)
+			{
+				if((this.this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].x==mupple.x) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].y==mupple.y) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v].type==mupple.type))
+				{
+					return this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].objects[v];
+				}
+			}
+		}
+		return false;
+	}
+	
+	this.linkSwitches=function(fl)
+	{
+		
+		for(var i=0;i<this.getWidth();i++)
+		{
+			for(var j=0;j<this.getHeight();j++)
+			{
+				for(var v=0;v<this.rooms[fl][i][j].objects.length;v++)
+				{
+					if(this.rooms[fl][i][j].objects[v].type==ObjectID.ToggleSwitch) //top
+					{
+						for(var f=0;f<this.rooms[fl][i][j].objects[v].linkDescriptions.length;f++)
+						{
+							var narp=this.getObject(this.rooms[fl][i][j].objects[v].linkDescriptions[f],true);
+							if(narp)
+							{
+								this.rooms[fl][i][j].objects[v].dest.push(narp);
+							}
+							
+						}
+					}
+				}
+			}
+		}
+	}
 	this.linkDoors=function(fl)
 	{
 		

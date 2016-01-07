@@ -762,7 +762,7 @@ function room(I) { //room object
 					niles.type=Math.floor(tempstring[plerp+6]);
 					console.log(niles);
 					higgins.linkDescriptions.push(niles);
-					plerp+=7; //move to the next dest
+					plerp+=6; //move to the next dest
 					todestsp+=6;
 				}
 				ffset=3+todestsp;//j*7;
