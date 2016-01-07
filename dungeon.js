@@ -558,6 +558,9 @@ function dungeon(path)
 			{
 				if((this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs[v].x==mupple.x) && (this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs[v].y==mupple.y))
 				{
+					
+					//hack
+					this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs[v].hidden=true;
 					return this.rooms[mupple.roomZ][mupple.roomX][mupple.roomY].stairs[v];
 				}	
 			}

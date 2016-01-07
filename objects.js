@@ -4,7 +4,7 @@ lootTable.HeartContainer=1;
 lootTable.GoldTen=2;
 lootTable.GoldHundred=3;
 
-var lootName={};
+var lootName=new Array();
 lootName.push("key");
 lootName.push("heartcontainer");
 lootName.push("helmet4");
@@ -139,6 +139,16 @@ object.prototype.setup=function(id,par)
 		this.activate=function(){
 			this.curSprite=1;
 			//give item!
+			if(this.loot==lootTable.Key)
+			{
+				bConsoleBox.log("Acquired a key!");
+				miles.keys++;
+			}else if(this.loot==lootTable.HeartContainer)
+			{
+				bConsoleBox.log("Acquired a heart container!");
+				miles.maxHp+=20;
+				miles.hp+=20;
+			}
 		}
 		this.activateEdit=function(){
 		}

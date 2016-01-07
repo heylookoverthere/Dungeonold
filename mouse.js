@@ -416,7 +416,7 @@ function mouseClick(e) {  //represents the mouse
 						if((curDungeon.curRoom().stairs[i].x==editor.x) && (curDungeon.curRoom().stairs[i].y==editor.y))
 						{
 							editor.linkingTo=curDungeon.curRoom().stairs[i];
-							//editor.mode=0;
+							editor.mode=editModes.Objects;
 							editor.linkingFrom.dest.push(editor.linkingTo);
 							bConsoleBox.log("Linked switch to stairs at "+curDungeon.curRoom().stairs[i].x+","+curDungeon.curRoom().stairs[i].y);
 							curDungeon.curRoom().stairs[i].hidden=true;
