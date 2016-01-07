@@ -325,6 +325,7 @@ object.prototype.setup=function(id,par)
 		{
 			this.exists=false;
 			miles.maxHp+=20;
+			miles.hp+=20;
 		}
 	}else if (this.type==ObjectID.Feather) {
 	    this.sprites=new Array();

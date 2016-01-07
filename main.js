@@ -50,6 +50,17 @@ function handleConTouchStart(evt) {
 		if(now-downLast<OPTIONS.DoubleTapThreshold)
 		{
 			//bConsoleBox.log("Double Tap","yellow");
+			if(bullshitHack)
+			{
+				bullshitHack=false;
+				for(var i=0;i<curDungeon.floors;i++)
+				{
+					curDungeon.linkDoors(i);
+					curDungeon.linkSwitches(i);
+				}
+				bConsoleBox.log("Doors and switches linked!","yellow");
+				return;
+			}
 			if(mode==0)
 			{
 	
@@ -1326,6 +1337,9 @@ function startGame(goolp)
 		curDungeon.load();
 	}
 	mode=1;	
+	miles.x=9;
+	miles.y=12;
+	miles.dir=0;
 	camera.tileX=0;
 	camera.tileY=0;
 	//curDungeon.loadFloor();
