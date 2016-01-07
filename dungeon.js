@@ -499,7 +499,7 @@ function dungeon(path)
 		}else if(coor.orientation==1)
 		{
 			this.rooms[fl][x][y].tiles[coor.x][coor.y].data=16;
-			if((x<this.getWidth()) && (this.rooms[fl][x+1][y].active))
+			if((x+1<this.getWidth())  && (this.rooms[fl][x+1][y].active))
 			{
 				var thedoor=this.rooms[fl][x+1][y].getSpecificDoor(1,coor.y,3);
 				if(thedoor)
@@ -511,7 +511,7 @@ function dungeon(path)
 		}else if(coor.orientation==2)
 		{
 			this.rooms[fl][x][y].tiles[coor.x][coor.y].data=17;
-			if((y<this.getHeight()) && (this.rooms[fl][x][y+1].active))
+			if((y+1<this.getHeight())  && (this.rooms[fl][x][y+1].active))
 			{
 				var thedoor=this.rooms[fl][x][y+1].getSpecificDoor(coor.x,1,0);
 				if(thedoor)
@@ -522,7 +522,7 @@ function dungeon(path)
 		}else if(coor.orientation==3)
 		{
 			this.rooms[fl][x][y].tiles[coor.x][coor.y].data=15;
-			if((x>0) && (this.rooms[fl][x-1][y].active))
+			if((x>0) &&(this.rooms[fl][x-1][y].active))
 			{
 				var thedoor=this.rooms[fl][x-1][y].getSpecificDoor(18,coor.y,1);
 				if(thedoor)

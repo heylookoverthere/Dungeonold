@@ -558,6 +558,7 @@ timy.doThings=function()
 	bConsoleBox.log("Loading dungeon from disk. Unsaved data will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
+			bullshitHack=true;
 			curDungeon.load();
 		}
 		if(OPTIONS.confirmationPopUps)

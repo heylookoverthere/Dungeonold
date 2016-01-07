@@ -403,7 +403,7 @@ function mouseClick(e) {  //represents the mouse
 					editor.mode=editModes.Objects;
 					editor.linkingFrom.dest.push(editor.linkingTo);
 					bConsoleBox.log("Linked switch to door");
-				}else if(glork) //is over an object
+				}else if((glork) && (glork.type!=ObjectID.ToggleSwitch))//is over an object
 				{
 					editor.linkingTo=glork;
 					editor.mode=editModes.Objects;

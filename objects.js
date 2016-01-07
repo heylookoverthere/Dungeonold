@@ -1,4 +1,14 @@
+var lootTable={};
+lootTable.Key=0;
+lootTable.HeartContainer=1;
+lootTable.GoldTen=2;
+lootTable.GoldHundred=3;
 
+var lootName={};
+lootName.push("key");
+lootName.push("heartcontainer");
+lootName.push("helmet4");
+lootName.push("healmet4");
 
 var ObjectID={};
 ObjectID.Lamp=0;
@@ -125,7 +135,7 @@ object.prototype.setup=function(id,par)
 		this.sprites.push( Sprite("chest"));
 		this.sprites.push( Sprite("chestopen"));
 		this.name="Chest";
-		this.loot="uuh...GEMS!";
+		this.loot=0;
 		this.activate=function(){
 			this.curSprite=1;
 			//give item!
@@ -462,6 +472,10 @@ object.prototype.stringify=function()
 	{
 		tempstring+=";";
 		tempstring+=this.loot;
+	}else if(this.type==ObjectID.Lamp)
+	{
+		tempstring+=";";
+		tempstring+=this.on;
 	}else if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker))
 	{
 		tempstring+=";";

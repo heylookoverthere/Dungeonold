@@ -737,7 +737,13 @@ function room(I) { //room object
 				higgins.setup(1,higgins.text);
 			}else if(higgins.type==2)//chest
 			{
-				higgins.loot=tempstring[i+3];
+				higgins.loot=Math.floor(tempstring[i+3]);
+				ffset=4;
+				mitly++;
+				higgins.setup();
+			}else if(higgins.type==ObjectID.Lamp)//chest
+			{
+				higgins.on=!stringTrue(tempstring[i+3]);
 				ffset=4;
 				mitly++;
 				higgins.setup();
