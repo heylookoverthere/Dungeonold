@@ -5,6 +5,8 @@ function dungeon(path)
 	this.roomX=7;
 	this.roomY=7;
 	this.roomZ=0;
+	this.lastSaved=null;
+	this.saveExists=false;
 	this.startFloor=0;
 	this.startX=7;
 	this.startY=7;
@@ -419,7 +421,9 @@ function dungeon(path)
 	dungeon.prototype.save=function() 
 	{
 		//read main dungeon file, determine how many floors.
+		
 		var dung=this;
+		dung.saveExists=true;
 		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
 		var dunpth=dung.floors+","+dung.startFloor+","+dung.startX+","+dung.startY;
 			$.post("/save/", {"data": dunpth, "path": grmath}).done(function(response) 
@@ -432,12 +436,14 @@ function dungeon(path)
 				dung.saveFloor(i);
 			}
 		//dung.blank();
+		dung.lastSaved=new Date();
 	}
 	
 	dungeon.prototype.load=function() 
 	{
 		var dung=this;
 		dung.cleanSlate();
+		dung.saveExists=true;
 		//read main dungeon file, determine how many floors.
 		var crmath="dungeons/"+this.name+"/"+"main.txt";
 		$.get(crmath, function(data) 

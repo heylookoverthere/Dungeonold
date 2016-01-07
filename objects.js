@@ -144,18 +144,22 @@ object.prototype.setup=function(id,par)
 		this.activate=function(){
 			this.curSprite=1;
 			//give item!
+			var btext="You...found a severed pig's head."
 			if(this.loot==lootTable.Key)
 			{
 				bConsoleBox.log("Acquired a key!");
+				btext="Acquired a key!";
 				miles.keys++;
 			}else if(this.loot==lootTable.HeartContainer)
 			{
 				bConsoleBox.log("Acquired a heart container!");
+				btext="Acquired a heart container!";
 				miles.maxHp+=20;
 				miles.hp+=20;
 			}else if(this.loot==lootTable.GoldTen)
 			{
 				bConsoleBox.log("Acquired 10 rupees!");
+				btext="Acquired 10 rupees!";
 				miles.money+=10;
 				if(miles.money>miles.wallet)
 				{
@@ -164,12 +168,22 @@ object.prototype.setup=function(id,par)
 			}else if(this.loot==lootTable.GoldHundred)
 			{
 				bConsoleBox.log("Acquired 100 rupees! Lucky!");
+				btext="Acquired 100 rupees! Lucky!";
 				miles.money+=100;
 				if(miles.money>miles.wallet)
 				{
 					miles.money=miles.wallet;
 				}
 			}
+			var mancy=new textbox();
+			mancy.setup();
+			mancy.x=200;
+			mancy.y=200;
+			mancy.textLim=104;
+			mancy.log(btext);
+			mancy.hasFocus=true;
+			buttons.push(mancy);
+			this.messagebox=mancy;
 		}
 		this.activateEdit=function(){
 		}

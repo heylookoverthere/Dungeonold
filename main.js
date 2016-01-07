@@ -534,7 +534,7 @@ timy.shiftable=false;
 timy.visible=true;
 timy.update=function()
 {	
-	if(editMode)
+	if((editMode) && (curDungeon.saveExists))
 	{
 		this.visible=true;
 		
@@ -1324,6 +1324,7 @@ function startGame(goolp)
 		}
 		curDungeon.name=lordCromp;
 		curDungeon.floors=1;
+		curDungeon.saveExists=false;
 		curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 		editMode=true;
 		
