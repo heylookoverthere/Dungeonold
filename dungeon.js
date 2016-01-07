@@ -345,10 +345,12 @@ function dungeon(path)
 				{
 					if(tempstring[j+(dung.getHeight())*i]==1)
 					{
+						dung.rooms[fl][i][j].name="roomX"+String(i)+"Y"+String(j);
 						dung.rooms[fl][i][j].load("dungeons/"+dung.name+"/"+"floor"+fl+"/");
 						dung.rooms[fl][i][j].z=fl;
 						dung.rooms[fl][i][j].x=i;
 						dung.rooms[fl][i][j].y=j;
+						dung.rooms[fl][i][j].active=true;
 						dung.rooms[fl][i][j].loadObjects("dungeons/"+dung.name+"/"+"floor"+fl+"/");
 					}else
 					{

@@ -356,6 +356,7 @@ function room(I) { //room object
 	I.x=0;
 	I.x=0;
 	I.y=0;
+	I.useLighting=false;
 	I.lightLevel=0.00;
 	I.miniMapX=0;
 	I.miniMapY=0;

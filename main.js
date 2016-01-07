@@ -916,6 +916,8 @@ var miles=new dude();
 miles.dir=0;
 miles.keys=0;
 miles.AI=false;
+miles.money=0;
+miles.wallet=250;
 miles.tileX;//todo
 miles.x=9;
 miles.y=12;
@@ -1139,6 +1141,8 @@ function drawGUI(can)
 		drawHearts(miles,can);
 		objectSprites[3].draw(can,0,58);
 		can.fillText("x"+miles.keys,25,85);
+		moneysprite.draw(can,46,58);
+		can.fillText("x"+miles.money,46+25,85);
 		
 	}
 }

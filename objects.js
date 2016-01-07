@@ -1,3 +1,5 @@
+var numLoots=4;
+
 var lootTable={};
 lootTable.Key=0;
 lootTable.HeartContainer=1;
@@ -7,7 +9,10 @@ lootTable.GoldHundred=3;
 var lootName=new Array();
 lootName.push("key");
 lootName.push("heartcontainer");
-lootName.push("helmet4");
+lootName.push("tenrupee");
+lootName.push("hundredrupee");
+
+//last
 lootName.push("healmet4");
 
 var ObjectID={};
@@ -135,7 +140,7 @@ object.prototype.setup=function(id,par)
 		this.sprites.push( Sprite("chest"));
 		this.sprites.push( Sprite("chestopen"));
 		this.name="Chest";
-		this.loot=0;
+		//this.loot=0;
 		this.activate=function(){
 			this.curSprite=1;
 			//give item!
@@ -148,6 +153,22 @@ object.prototype.setup=function(id,par)
 				bConsoleBox.log("Acquired a heart container!");
 				miles.maxHp+=20;
 				miles.hp+=20;
+			}else if(this.loot==lootTable.GoldTen)
+			{
+				bConsoleBox.log("Acquired 10 rupees!");
+				miles.money+=10;
+				if(miles.money>miles.wallet)
+				{
+					miles.money=miles.wallet;
+				}
+			}else if(this.loot==lootTable.GoldHundred)
+			{
+				bConsoleBox.log("Acquired 100 rupees! Lucky!");
+				miles.money+=100;
+				if(miles.money>miles.wallet)
+				{
+					miles.money=miles.wallet;
+				}
 			}
 		}
 		this.activateEdit=function(){
@@ -522,6 +543,10 @@ function makeObject(x,y,broom,t,par)
 	if(!t){t=0;}
 	if(!par){par=0;}
 	pleb.type=t;
+	if(pleb.type==ObjectID.Chest)
+	{
+		pleb.loot=Math.floor(Math.random()*numLoots);
+	}
 	pleb.x=x;
 	pleb.y=y;
 	pleb.setup(t,par);

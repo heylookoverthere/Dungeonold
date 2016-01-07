@@ -14,6 +14,7 @@ var MobileMode=false;
 
 var downarrowsprite=Sprite("downarrow");
 var uparrowsprite=Sprite("uparrow");
+var moneysprite=Sprite("rupee");
 
 var Darkness=14;
 
