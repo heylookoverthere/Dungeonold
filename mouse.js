@@ -595,6 +595,17 @@ function mouseClick(e) {  //represents the mouse
 				}
 			}
 		}
+		if((mX>812) && (mY>110) && (mX<812+32) &&(mY<110+32)) //clicked the bulb
+		{
+			curDungeon.curRoom().lampLighting=!curDungeon.curRoom().lampLighting
+			if(curDungeon.curRoom().lampLighting)
+			{
+				bConsoleBox.log("Light turned off. Room requires lamp light.")
+			}else
+			{
+				bConsoleBox.log("Light turned on.")
+			}
+		}
 		
 	}else // non-edit mode mouse stuff.
 	{

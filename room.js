@@ -356,7 +356,7 @@ function room(I) { //room object
 	I.x=0;
 	I.x=0;
 	I.y=0;
-	I.useLighting=false;
+	I.lampLighting=false;
 	I.lightLevel=0.00;
 	I.miniMapX=0;
 	I.miniMapY=0;
@@ -978,6 +978,35 @@ function room(I) { //room object
 	  
 	I.darken=function(can,x,y) //TODO: don't darken 6x6 grid from x-3 to x+3, 
 	{
+		if(I.lampLighting)
+		{
+			var lamps=0;
+			var litLamps=0;
+			for(var l=0;l<I.objects.length;l++)
+			{
+				if(I.objects[l].type==ObjectID.Lamp)
+				{
+					lamps++;
+					if(I.objects[l].on)
+					{
+						litLamps++;
+					}
+				}
+			}
+			if(litLamps>1)
+			{
+				I.lightLevel=0;
+			}else if(litLamps==1)
+			{
+				I.lightLevel=0.5;
+			}else if(litLamps==0)
+			{
+				I.lightLevel=0.90;
+			}
+		}else
+		{
+			I.lightLevel=0;
+		}
 		can.globalAlpha=I.lightLevel;
 		can.fillStyle="black"; //maybe an RGB slight lighter than black? 
 		for(var i=0;i<I.width;i++)

@@ -11,6 +11,8 @@ linksprites.push(Sprite("linkright"));
 linksprites.push(Sprite("linkdown"));
 linksprites.push(Sprite("linkleft"));
 
+var bulbsprite=Sprite("bulb");
+var bulboffsprite=Sprite("bulboff");
 
 document.getElementById("mainSong").addEventListener('ended', function() { //loops music
 	this.currentTime = 0;
@@ -1160,6 +1162,13 @@ function drawGUI(can)
 		can.fillText(curDungeon.name,8,22);
 		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,44);
 		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,62);
+		if(!curDungeon.curRoom().lampLighting)
+		{
+			bulbsprite.draw(can,812,110);
+		}else
+		{
+			bulboffsprite.draw(can,812,110);
+		}
 		var cont=0;
 		can.globalAlpha=1;
 	}else
