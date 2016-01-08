@@ -1381,6 +1381,7 @@ function startGame(goolp)
 		curDungeon.name=pungname;
 		editMode=false;
 		curDungeon.load();
+		curDungeon.timeStarted=new Date();
 	}
 	mode=1;	
 	miles.x=9;

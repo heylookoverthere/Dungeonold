@@ -130,6 +130,7 @@ objectSprites.push(Sprite("bombpickup"));
 objectSprites.push(Sprite("bow"));
 objectSprites.push(Sprite("lantern"));
 objectSprites.push(Sprite("spikes"));
+objectSprites.push(Sprite("triforce"));
 
 var editModes={};
 editModes.Pen=0;

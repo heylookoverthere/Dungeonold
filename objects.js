@@ -60,6 +60,7 @@ ObjectID.Bomb=16;
 ObjectID.Bow=17;
 ObjectID.Lantern=18;
 ObjectID.Spikes=19;
+ObjectID.Triforce=20;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -511,6 +512,68 @@ object.prototype.setup=function(id,par)
 			//miles.hurt(5);
 			
 		}
+	}else if (this.type==ObjectID.Triforce) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.pickupable=true;
+		this.aniRate=5;
+		this.active=true;
+		this.width=64;
+		this.height=64;
+		this.sprites.push(Sprite("triforce1"));
+		this.sprites.push(Sprite("triforce2"));
+		this.sprites.push(Sprite("triforce3"));
+	    this.name="Triforce";
+		this.activate=function()
+		{
+			//change music
+			var now=new Date().getTime();
+			var timeTaken=now-curDungeon.timeStarted.getTime();
+			var arecord=false;
+			var difference=0
+			if(timeTaken<curDungeon.bestTime)
+			{
+				arecord=true;
+				difference=(curDungeon.bestTime-timeTaken)/1000;
+			}
+			var timeTaken=timeTaken/1000;//now it's in seconds.
+			var mancy=new textbox();
+			mancy.setup();
+			mancy.x=240;
+			mancy.y=100;
+			//mancy.width=210;
+			mancy.textLim=104;
+			if(arecord)
+			{
+				if(difference>90000)
+				{
+					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+timeTaken+" seconds, a new record!. Hit Y to exit.");
+				}else
+				{
+					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+timeTaken+" seconds, beating the old record by "+difference+" seconds!. Hit Y to exit.");
+				}
+				
+				curDungeon.bestTime=timeTaken;
+				bConsoleBox.log("New record!","yellow"); 
+				
+			}else
+			{
+				mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+timeTaken+" seconds. Hit Y to exit.");
+			}
+			mancy.hasFocus=true;
+			buttons.push(mancy);
+			editor.confirming=true;
+			editor.confirmingWhat=function() {
+				editor.penDown=false;
+				if(editor.confirming)
+				{
+					editor.clearConfirm();
+				}
+				bullshitHack=true;
+				mode=0;
+				mancy.exists=false;
+			}
+		}
 	}else if (this.type==ObjectID.RumHam) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -554,7 +617,7 @@ object.prototype.update=function()
 	{
 		this.flame.update();
 	}
-	if((this.type==ObjectID.Warp) && (this.active))
+	if(((this.type==ObjectID.Warp) ||(this.type==ObjectID.Triforce) ) && (this.active))
 	{
 		this.ani++;
 		if(this.ani>this.aniRate)
