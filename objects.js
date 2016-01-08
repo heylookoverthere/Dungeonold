@@ -536,7 +536,7 @@ object.prototype.setup=function(id,par)
 				arecord=true;
 				difference=(curDungeon.bestTime-timeTaken)/1000;
 			}
-			var timeTaken=timeTaken/1000;//now it's in seconds.
+			var secsTaken=timeTaken/1000;//now it's in seconds.
 			var mancy=new textbox();
 			mancy.setup();
 			mancy.x=240;
@@ -545,16 +545,18 @@ object.prototype.setup=function(id,par)
 			mancy.textLim=104;
 			if(arecord)
 			{
-				if(difference>90000)
+				if(curDungeon.bestTime==9999999)
 				{
-					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+timeTaken+" seconds, a new record!. Hit Y to exit.");
+					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, a new record!. Hit Y to exit.");
 				}else
 				{
-					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+timeTaken+" seconds, beating the old record by "+difference+" seconds!. Hit Y to exit.");
+					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, beating the old record by "+difference+" seconds!. Hit Y to exit.");
 				}
 				
 				curDungeon.bestTime=timeTaken;
 				bConsoleBox.log("New record!","yellow"); 
+				var smoth="Dungeon/dungeons/"+curDungeon.name+"/score.txt";
+				$.post("/save/", {"data": timeTaken, "path": smoth}).done(function(response) { bConsoleBox.log("Saved " +smoth); });
 				
 			}else
 			{
@@ -647,7 +649,7 @@ object.prototype.draw=function(can,cam,xOffh,yOffh)
 		{
 			this.flame.sprites[this.flame.aniTrack].draw(can, this.x*32+xOffh, this.y*32+yOffh-16);
 		}
-	}else (this.type==ObjectID.Chest)
+	}else if(this.type==ObjectID.Chest)
 	{
 		if ((this.messagebox) && (this.messagebox.exists))
 		{

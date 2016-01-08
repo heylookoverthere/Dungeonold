@@ -448,6 +448,11 @@ function dungeon(path)
 		dung.cleanSlate();
 		dung.saveExists=true;
 		//read main dungeon file, determine how many floors.
+		var vcrmath="dungeons/"+this.name+"/"+"score.txt";
+		$.get(vcrmath, function(data)
+		{
+			dung.bestTime=new Date(data);
+		});
 		var crmath="dungeons/"+this.name+"/"+"main.txt";
 		$.get(crmath, function(data) 
 		{ 
