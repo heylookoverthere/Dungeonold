@@ -534,6 +534,11 @@ timy.update=function()
 }
 timy.doThings=function()
 {
+	if(bullshitHack)
+	{
+		bConsoleBox.log("Right click to link switches first, or data may be lost.","yellow");
+		return;
+	}
 	bConsoleBox.log("Saving dungeon. Existing data will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
@@ -2409,13 +2414,19 @@ function mainUpdate()
 	{
 		curDungeon.curRoom().fires[i].update();
 	}
-	for(var i=0;i<curDungeon.curRoom().objects.length;i++) //should do adjacent rooms too, no?
+	for(var a=0;a<curDungeon.getWidth();a++)
 	{
-		curDungeon.curRoom().objects[i].update();
-		if(!curDungeon.curRoom().objects[i].exists)
+		for(var b=0;b<curDungeon.getHeight();b++)
 		{
-			curDungeon.curRoom().objects.splice(i,1);
-			i--;
+			for(var i=0;i<curDungeon.rooms[curDungeon.roomZ][a][b].objects.length;i++) //should do adjacent rooms too, no?
+			{
+				curDungeon.rooms[curDungeon.roomZ][a][b].objects[i].update();
+				if(!curDungeon.rooms[curDungeon.roomZ][a][b].objects[i].exists)
+				{
+					curDungeon.rooms[curDungeon.roomZ][a][b].objects.splice(i,1);
+					i--;
+				}
+			}
 		}
 	}
 	

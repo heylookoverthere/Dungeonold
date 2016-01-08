@@ -554,8 +554,14 @@ object.prototype.draw=function(can,cam,xOffh,yOffh)
 	//this.sprite.draw(can, this.x*32+xOffset, this.y*32+yOffset);
 	if((this.type==0) && (this.on))
 	{
-		//draw fire?
-		this.flame.draw(can,cam,xOffh,yOffh);
+		if((this.room.x==curDungeon.roomX)&& (this.room.y==curDungeon.roomY))
+		{
+			//draw fire?
+			this.flame.draw(can,cam,xOffh,yOffh);
+		}else
+		{
+			this.flame.sprites[this.flame.aniTrack].draw(can, this.x*32+xOffh, this.y*32+yOffh-16);
+		}
 	}else (this.type==ObjectID.Chest)
 	{
 		if ((this.messagebox) && (this.messagebox.exists))

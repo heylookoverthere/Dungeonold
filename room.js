@@ -691,6 +691,8 @@ function room(I) { //room object
 	
 	I.stringifyTiles = function(name) {
 		var tempstring= "";
+		tempstring+=I.lampLighting;
+		tempstring+=","
 		for (i=0;i<ROOM_WIDTH; i++){
 			for (j=0;j<ROOM_HEIGHT; j++){
 			tempstring = tempstring +I.tiles[i][j].data;
@@ -789,6 +791,8 @@ function room(I) { //room object
 	
 	I.buildMapFromLoadedTiles = function(name, hempstring) {
 		tempstring=hempstring.split(",");
+		I.lampLighting=stringTrue(tempstring[0]);
+		tempstring.splice(0,1);
 		if(name=="nowipe")
 		{
 		
