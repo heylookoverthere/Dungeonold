@@ -59,6 +59,7 @@ ObjectID.Brick=15;
 ObjectID.Bomb=16;
 ObjectID.Bow=17;
 ObjectID.Lantern=18;
+ObjectID.Spikes=19;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -488,6 +489,27 @@ object.prototype.setup=function(id,par)
 		{
 			this.exists=false;
 			//miles.hasItem[ObjectID.Lantern]
+		}
+	}else if (this.type==ObjectID.Spikes) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.on=true;
+		this.sprites.push(Sprite("spikes"));
+		this.sprites.push(Sprite("spikeslowered"));
+	    this.name="Spikes";
+		
+		this.activate=function()
+		{
+			this.on=!this.on;
+			if(this.on)
+			{
+				this.curSprite=0;
+			}else
+			{
+				this.curSprite=1;
+			}
+			//miles.hurt(5);
+			
 		}
 	}else if (this.type==ObjectID.RumHam) {
 	    this.sprites=new Array();
