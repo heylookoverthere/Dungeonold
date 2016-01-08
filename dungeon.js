@@ -722,6 +722,11 @@ function dungeon(path)
 		}
 	};
 	
+	this.checkLinks=function()//run before saving. make sure nobody is linking to null. 
+	{
+	 // Really need to get on that. 
+	}
+	
 	this.changeFloor=function(up,limited)
 	{
 		if(up)
