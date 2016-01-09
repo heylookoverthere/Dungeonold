@@ -86,6 +86,7 @@ function object(oroom) //not a tile, not an enemy
 	this.width=32;
 	this.height=32;
 	this.alwaysWalkable=false;
+
 	this.walkable=function()
 	{
 		if(this.alwaysWalkable)
@@ -135,16 +136,17 @@ object.prototype.setup=function(id,par)
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);
 		this.activate(); //oooh that's why it's backwards. 
+		this.playerActivate=function()
+		{
+			if((!this.on)&&(!miles.has[hasID.Lantern]))
+			{
+				bConsoleBox.log("Need the lantern!","yellow");
+				return;
+			}
+			this.activate();
+		}
 		this.activate=function()
 		{
-			if(!editMode)
-			{
-				if(!miles.has[hasID.Lantern])
-				{
-					bConsoleBox.log("Need the lantern!","yellow");
-					return;
-				}
-			}
 			this.on=!this.on;
 			if(!this.on)
 			{
@@ -183,6 +185,7 @@ object.prototype.setup=function(id,par)
 				this.messagebox=mancy;
 			}
 		}
+		this.playerActivate=this.activate;
 		this.activateEdit=function()
 		{
 			this.text = prompt("Enter Sign Text");
@@ -270,6 +273,7 @@ object.prototype.setup=function(id,par)
 			buttons.push(mancy);
 			this.messagebox=mancy;
 		}
+		this.playerActivate=this.activate;
 		this.activateEdit=function(){
 			editor.mode=editModes.ChestLoot;
 			editor.lootFor=this;
@@ -286,6 +290,7 @@ object.prototype.setup=function(id,par)
 			bConsoleBox.log("Aquired a key!");
 			miles.keys++;
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.ToggleSwitch) {
 		this.sprites=new Array();
 		this.sprites.push( Sprite("switch"));
@@ -309,15 +314,18 @@ object.prototype.setup=function(id,par)
 				this.dest[i].activate();
 			}
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.PotStand) {
 		this.sprites=new Array();
 		this.alwaysWalkable=true;
 		this.sprites.push(Sprite("potstand"));
 		this.name="Pot stand";
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Pot) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("pot"));
 		this.name="Pot";
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Curtains) {
 		this.sprites=new Array();
 		this.curSprite=1;
@@ -365,6 +373,7 @@ object.prototype.setup=function(id,par)
 				this.curSprite= 0;
 			}
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Peg) { //blue blocker
 	    this.sprites=new Array();
 		this.on=true;
@@ -383,16 +392,17 @@ object.prototype.setup=function(id,par)
 				this.curSprite=1;
 			}
 		}
+		this.playerActivate=function()
+		{
+			if(!miles.has[hasID.Hammer])
+			{
+				bConsoleBox.log("Only the hammer can destroy roadblocks!","yellow");
+				return;
+			}
+			this.activate();
+		}
 		this.activate=function()
 		{
-			if(!editMode)
-			{
-				if(!miles.has[hasID.Hammer])
-				{
-					bConsoleBox.log("Only the hammer can destroy roadblocks!","yellow");
-					return;
-				}
-			}
 			this.on=false;
 			if(this.on)
 			{
@@ -402,6 +412,7 @@ object.prototype.setup=function(id,par)
 				this.curSprite=1;
 			}
 		}
+		
 	}else if (this.type==ObjectID.BlueBlocker) { //blue blocker
 	    this.sprites=new Array();
 		this.playerUsable=false;
@@ -466,6 +477,7 @@ object.prototype.setup=function(id,par)
 				
 			}
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.RedOrb) { //red orb
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("redorb"));
@@ -480,6 +492,7 @@ object.prototype.setup=function(id,par)
 				curDungeon.redBlockers[i].activate();
 			}
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Warp) { //warp
 	    this.sprites=new Array();
 		this.active=false;
@@ -494,6 +507,7 @@ object.prototype.setup=function(id,par)
 		{
 			//I dunno warp or something?
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.HeartContainer) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -502,10 +516,12 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			bConsoleBox.log("You found a heart container!");
 			this.exists=false;
 			miles.maxHp+=20;
 			miles.hp+=20;
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Feather) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -514,9 +530,11 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			bConsoleBox.log("You found the Roc's Feather! Eventually it might let you jump.");
 			this.exists=false;
-			//miles.hasItem[ObjectID.Feather]
+			miles.has[hasID.Feather]=true;
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Brick) {
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("brick2"));
@@ -529,9 +547,11 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			bConsoleBox.log("You found the Bow! It's totally useless for now!");
 			this.exists=false;
-			//miles.hasItem[ObjectID.Bow]
+			miles.has[hasID.Bow]=true;
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Bomb) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -540,10 +560,18 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			if(!miles.has[hasID.Bomb])
+			{
+				bConsoleBox.log("You found your first bombs!");
+			}else
+			{
+				bConsoleBox.log("You found some bombs!");
+			}
 			this.exists=false;
-			//miles.hasItem[ObjectID.Bomb]
-			//miles.bombs+=5;
+			miles.has[hasID.Bomb]=true;
+			miles.bombs+=5;
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Lantern) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -552,9 +580,11 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			bConsoleBox.log("You found the lantern. You can light torches with it.");
 			this.exists=false;
 			miles.has[hasID.Lantern]=true;
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Hammer) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -563,9 +593,11 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			bConsoleBox.log("You found the hammer!");
 			this.exists=false;
 			miles.has[hasID.Hammer]=true;
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Spikes) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -587,6 +619,7 @@ object.prototype.setup=function(id,par)
 			//miles.hurt(5);
 			
 		}
+		this.playerActivate=this.activate; //get hurt?
 	}else if (this.type==ObjectID.Triforce) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -651,12 +684,15 @@ object.prototype.setup=function(id,par)
 				mancy.exists=false;
 			}
 		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.RumHam) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
 		this.sprites.push(Sprite("rumham"));
 	    this.name="RUM HAM";
+		bConsoleBox.log("You found the legendary Rum Ham!");
 		//miles.has all
+		this.playerActivate=this.activate;
 	}
 }
 

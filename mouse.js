@@ -666,7 +666,7 @@ function mouseClick(e) {  //represents the mouse
 					}
 					if(meg.playerUsable)
 					{
-						meg.activate();
+						meg.playerActivate();
 					}
 					if(miles.x>meg.x)
 					{
@@ -797,8 +797,14 @@ function mouseClick(e) {  //represents the mouse
 			
 			if(nard.length>0)
 			{
-				miles.x=tx;
-				miles.y=ty;
+				if((tx>1) && (tx<18))
+				{
+					miles.x=tx;
+				}
+				if((ty>1) && (ty<12))
+				{
+					miles.y=ty;
+				}
 				curDungeon.changeRoom(peg.orientation,true);
 			}else
 			{
