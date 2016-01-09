@@ -1,6 +1,6 @@
 function dungeon(path)
 {
-	
+	this.numRooms=0;
 	this.rooms=new Array();
 	this.roomX=7;
 	this.roomY=7;
@@ -307,15 +307,6 @@ function dungeon(path)
 	
 	this.saveFloor=function(fl)
 	{
-//		if(fl==null) {fl=this.roomZ;console.log("fl=z");}
-//for now
-		/*var fgrmath="Dungeon/dungeons/"+this.name+"/main.txt";
-		var dunpth=this.floors+","+this.startFloor+","+this.startX+","+this.startY;
-			$.post("/save/", {"data": dunpth, "path": fgrmath}).done(function(response) 
-			{ 
-				bConsoleBox.log("Saved " +fgrmath); 
-
-			});*/
 		this.removeDeadLinks(fl);
 		var jmath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(fl), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
@@ -357,6 +348,7 @@ function dungeon(path)
 						dung.rooms[fl][i][j].y=j;
 						dung.rooms[fl][i][j].active=true;
 						dung.rooms[fl][i][j].loadObjects("dungeons/"+dung.name+"/"+"floor"+fl+"/");
+						dung.numRooms++;
 					}else
 					{
 						//console.log("yar");
@@ -429,7 +421,7 @@ function dungeon(path)
 		dung.saveExists=true;
 		dung.lastSaved=new Date();
 		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
-		var dunpth=dung.floors+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
+		var dunpth=dung.floors+","+dung.numRooms+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
 			$.post("/save/", {"data": dunpth, "path": grmath}).done(function(response) 
 			{ 
 				bConsoleBox.log("Saved " +grmath); 
@@ -460,11 +452,11 @@ function dungeon(path)
 			//console.log("Detected "+data+" floors"); 
 			var smarf=data.split(",");
 			dung.floors=Math.floor(smarf[0]);
-			dung.startFloor=Math.floor(smarf[1]);
+			dung.startFloor=Math.floor(smarf[2]);
 			dung.roomZ=dung.startFloor;
-			dung.startX=Math.floor(smarf[2]);
-			dung.startY=Math.floor(smarf[3]);
-			dung.lastSaved=new Date(smarf[4]);
+			dung.startX=Math.floor(smarf[3]);
+			dung.startY=Math.floor(smarf[4]);
+			dung.lastSaved=new Date(smarf[5]);
 			dung.roomX=dung.startX;
 			dung.roomY=dung.startY;
 			for(var i=0;i<dung.floors;i++)
@@ -609,6 +601,7 @@ function dungeon(path)
 			{
 				for(var v=0;v<this.rooms[fl][i][j].objects.length;v++)
 				{
+					if(!this.rooms[fl][i][j].objects[v].dest) {continue;} //whhy
 					for(var l=0;l<this.rooms[fl][i][j].objects[v].dest.length;l++)
 					{
 						if(!this.rooms[fl][i][j].objects[v].dest[l].exists)
@@ -911,6 +904,7 @@ function dungeon(path)
 		this.roomZ=0;
 		this.roomX=7;
 		this.roomY=7;
+		this.numRooms=0;
 		//this.name="blank";
 	}
 	
@@ -1184,7 +1178,7 @@ function dungeon(path)
 		{
 			return false;
 		}
-		
+		this.numRooms++;
 		var kitchen=new room();
 		kitchen.x=x;
 		kitchen.y=y;

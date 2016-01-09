@@ -1169,7 +1169,7 @@ function drawGUI(can)
 		can.fillStyle="blue";
 		canvas.fillRect(6,6,221,60);
 		can.fillStyle="yellow";
-		can.fillText(curDungeon.name,8,22);
+		can.fillText(curDungeon.name + " "+curDungeon.numRooms+" rooms",8,22);
 		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,44);
 		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,62);
 		if(!curDungeon.curRoom().lampLighting)
@@ -1189,6 +1189,14 @@ function drawGUI(can)
 		moneysprite.draw(can,46,58);
 		can.fillText("x"+miles.money,46+25,85);
 		
+	}
+}
+
+function convertSaves()
+{
+	for(var i=0;i<existingDungeons.length;i++)
+	{
+		//hmm.
 	}
 }
 
@@ -1369,6 +1377,7 @@ function startGame(goolp)
 		}
 		curDungeon.name=lordCromp;
 		curDungeon.floors=1;
+		curDungeon.numRooms=0;
 		curDungeon.saveExists=false;
 		curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 		editMode=true;
