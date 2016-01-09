@@ -261,6 +261,10 @@ object.prototype.setup=function(id,par)
 				bConsoleBox.log("You found a bigger wallet!");
 				btext="You found a bigger wallet!";
 				miles.wallet=miles.wallet*2;
+				if(miles.wallet>999)
+				{
+					miles.wallet=999;
+				}
 			}
 			var mancy=new textbox();
 			mancy.setup();
@@ -661,6 +665,9 @@ object.prototype.setup=function(id,par)
 			var timeTaken=now-curDungeon.timeStarted.getTime();
 			var arecord=false;
 			var difference=0
+			//this.x-=1;
+			//this.y-=1;
+			//pickup thing
 			if(timeTaken<curDungeon.bestTime)
 			{
 				arecord=true;
@@ -675,7 +682,7 @@ object.prototype.setup=function(id,par)
 			mancy.textLim=104;
 			if(arecord)
 			{
-				if(curDungeon.bestTime==9999999)
+				if(curDungeon.bestTime>999999)
 				{
 					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, a new record!. Hit Y to exit.");
 				}else

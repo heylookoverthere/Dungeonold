@@ -1184,11 +1184,12 @@ function drawGUI(can)
 	}else
 	{	
 		drawHearts(miles,can);
-		objectSprites[3].draw(can,0,58);
-		can.fillText("x"+miles.keys,25,85);
-		moneysprite.draw(can,46,58);
-		can.fillText("x"+miles.money,46+25,85);
-		
+		objectSprites[3].draw(can,-6,58);
+		can.fillText("x"+miles.keys,18,85);
+		moneysprite.draw(can,84,58);
+		can.fillText("x"+miles.money,84+24,85);
+		bombsprite.draw(can,42,58);
+		can.fillText("x"+miles.bombs,42+24,85);
 	}
 }
 
