@@ -93,7 +93,7 @@ function object(oroom) //not a tile, not an enemy
 		{
 			return true;
 		}
-		if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker)|| (this.type==ObjectID.Peg))
+		if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker)|| (this.type==ObjectID.Peg)|| (this.type==ObjectID.Spikes))
 		{
 			if(!this.on) {
 				return true;
@@ -312,6 +312,28 @@ object.prototype.setup=function(id,par)
 			}
 			for(var i=0;i<this.dest.length;i++){
 				this.dest[i].activate();
+				if(this.dest[i].room.z<this.room.z)
+				{
+					bConsoleBox.log("You hear a sound from below");
+				}else if(this.dest[i].room.z>this.room.z)
+				{
+					bConsoleBox.log("You hear a sound from above");
+				}else
+				{
+					if(this.dest[i].room.x<this.room.x)
+					{
+						bConsoleBox.log("You hear a sound from the west");
+					}else if(this.dest[i].room.x>this.room.x)
+					{
+						bConsoleBox.log("You hear a sound from the east");
+					}else if(this.dest[i].room.y<this.room.y)
+					{
+						bConsoleBox.log("You hear a sound from the north");
+					}else if(this.dest[i].room.y>this.room.y)
+					{
+						bConsoleBox.log("You hear a sound from the south");
+					}
+				}
 			}
 		}
 		this.playerActivate=this.activate;
@@ -600,7 +622,7 @@ object.prototype.setup=function(id,par)
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Spikes) {
 	    this.sprites=new Array();
-		this.alwaysWalkable=true;
+		this.alwaysWalkable=false;
 		this.on=true;
 		this.sprites.push(Sprite("spikes"));
 		this.sprites.push(Sprite("spikeslowered"));
@@ -668,7 +690,7 @@ object.prototype.setup=function(id,par)
 				
 			}else
 			{
-				mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+timeTaken+" seconds. Hit Y to exit.");
+				mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds. The current record is "+curDungeon.bestTime/1000+" seconds. Hit Y to exit.");
 			}
 			mancy.hasFocus=true;
 			buttons.push(mancy);

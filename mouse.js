@@ -445,7 +445,8 @@ function mouseClick(e) {  //represents the mouse
 			}else if(editor.mode==editModes.ChestLoot)
 			{
 				var meg=isOverTiledList(curDungeon.curRoom().objects,32);
-				if(meg.type==ObjectID.Chest)
+			
+				if((meg)&&(meg.type==ObjectID.Chest))
 				{
 					meg.loot=editor.lootType;
 					bConsoleBox.log("Filled chest at "+meg.x+","+meg.y+" with "+lootName[editor.lootType]);

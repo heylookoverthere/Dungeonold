@@ -380,7 +380,7 @@ function logControls()
 	bConsoleBox.log("Shift + Arrow/Page keys - Make or connect room in that direction");
 	bConsoleBox.log("W A S D - Move cursor");
 	bConsoleBox.log("Shift + W A S D - Remove door");
-	bConsoleBox.log("Delete - Delete room");
+	bConsoleBox.log("Delete - If an object is grabbed, deletes that object. Otherwise delete room");
 	bConsoleBox.log("Shift + Delete - Delete floor");
 	bConsoleBox.log("Insert - Create Room");
 	bConsoleBox.log("0 - Toggle hidden room");
@@ -1405,6 +1405,12 @@ function startGame(goolp)
 	miles.dir=0;
 	camera.tileX=0;
 	camera.tileY=0;
+	miles.keys=0;
+	miles.AI=false;
+	miles.money=0;
+	miles.bombs=0;
+	miles.wallet=250;
+	miles.has=new Array();
 	//curDungeon.loadFloor();
 	curDungeon.curRoom().explored=true;
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
