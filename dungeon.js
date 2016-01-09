@@ -444,7 +444,7 @@ function dungeon(path)
 		var vcrmath="dungeons/"+this.name+"/"+"score.txt";
 		$.get(vcrmath, function(data)
 		{
-			dung.bestTime=new Date(data);
+			dung.bestTime=data//new Date(data);
 		});
 		var crmath="dungeons/"+this.name+"/"+"main.txt";
 		$.get(crmath, function(data) 

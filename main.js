@@ -1192,11 +1192,13 @@ function drawGUI(can)
 	}
 }
 
-function convertSaves()
+function convertSaves() //no effin clue if this will work. I suspect not. 
 {
 	for(var i=0;i<existingDungeons.length;i++)
 	{
-		//hmm.
+		curDungeon.name=existingDungeos[i];
+		curDungeon.load();
+		curDungeon.save();
 	}
 }
 

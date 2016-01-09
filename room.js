@@ -1010,8 +1010,8 @@ function room(I) { //room object
 	  
 	I.darken=function(can,x,y) //TODO: don't darken 6x6 grid from x-3 to x+3, 
 	{
-		if(editMode){return;}
-		if(I.lampLighting)
+		//if(editMode){return;} //this was enabling lighting, somehow...
+		if((I.lampLighting) && (!editMode))
 		{
 			var lamps=0;
 			var litLamps=0;
