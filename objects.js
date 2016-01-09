@@ -1,4 +1,5 @@
 var numLoots=10;
+var LOAD_COUNT=0;
 
 var lootTable={};
 lootTable.Key=0;
@@ -682,7 +683,7 @@ object.prototype.setup=function(id,par)
 			mancy.textLim=104;
 			if(arecord)
 			{
-				if(curDungeon.bestTime>999999)
+				if(curDungeon.bestTime>998000)
 				{
 					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, a new record!. Hit Y to exit.");
 				}else

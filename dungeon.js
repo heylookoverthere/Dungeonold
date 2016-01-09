@@ -7,7 +7,7 @@ function dungeon(path)
 	this.roomZ=0;
 	this.lastSaved=null;
 	this.timeStarted=0;
-	this.bestTime=9999999;
+	this.bestTime=999000;
 	this.saveExists=false;
 	this.startFloor=0;
 	this.startX=7;

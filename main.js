@@ -1158,6 +1158,8 @@ $.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
 	existingDungeons.splice(0,1);
  } 
  )
+ 
+ 
 
 function drawGUI(can)
 {
@@ -1397,6 +1399,12 @@ function startGame(goolp)
 		}
 		curDungeon.name=pungname;
 		editMode=false;
+		var crmath="dungeons/"+curDungeon.name+"/"+"main.txt";
+		$.get(crmath, function(data) 
+		{	
+			var bata=data.split(",");
+			LOAD_COUNT=Math.floor(bata[1]);
+		});
 		curDungeon.load();
 		curDungeon.timeStarted=new Date();
 	}

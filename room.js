@@ -883,6 +883,8 @@ function room(I) { //room object
         var path = I.getPath(x, y, xx, yy,false);
 		//console.log(path);
 		var snarp=can.fillStyle;
+		var parp=can.globalAlpha;
+		can.globalAlpha=0.4;
 		can.fillStyle="yellow";
         for( var i=0; i<path.length; ++i ) {
            // I.setTile(path[i].x, path[i].y, 1);
@@ -890,6 +892,7 @@ function room(I) { //room object
 			can.fillRect(path[i].x*32+xOffset,path[i].y*32+yOffset,32,32);
 			
         }
+		can.globalAlpha=parp;
 		can.fillStyle=snarp;
     };
     
