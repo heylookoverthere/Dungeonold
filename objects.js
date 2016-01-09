@@ -61,6 +61,8 @@ ObjectID.Bow=17;
 ObjectID.Lantern=18;
 ObjectID.Spikes=19;
 ObjectID.Triforce=20;
+ObjectID.Peg=21;
+ObjectID.Hammer=22;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -90,7 +92,7 @@ function object(oroom) //not a tile, not an enemy
 		{
 			return true;
 		}
-		if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker))
+		if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker)|| (this.type==ObjectID.Peg))
 		{
 			if(!this.on) {
 				return true;
@@ -132,7 +134,31 @@ object.prototype.setup=function(id,par)
 		this.playerUsable=true;
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);
-		this.activate();
+		this.activate(); //oooh that's why it's backwards. 
+		this.activate=function()
+		{
+			if(!editMode)
+			{
+				if(!miles.has[hasID.Lantern])
+				{
+					bConsoleBox.log("Need the lantern!","yellow");
+					return;
+				}
+			}
+			this.on=!this.on;
+			if(!this.on)
+			{
+				this.flame.flare.alive=false;
+				this.flame.alive=false;
+			}else{
+				this.flame=new flame(this.room.lights);
+				this.flame.x=this.x*32+xOffset;//miles.x;
+				this.flame.y=this.y*32+yOffset-16;//miles.y;
+				this.flame.type=0;
+			}
+		}
+		
+		
 	}else if (this.type==ObjectID.Sign) {
 		this.sprites=new Array();
 		this.sprites.push( Sprite("sign"));
@@ -225,6 +251,7 @@ object.prototype.setup=function(id,par)
 			{
 				bConsoleBox.log("You found some bombs!");
 				btext="You found some bombs!";
+				miles.has[hasID.Bombs]=true;
 				miles.bombs+=3;
 			}else if(this.loot==lootTable.Wallet)
 			{
@@ -336,6 +363,43 @@ object.prototype.setup=function(id,par)
 			}else
 			{
 				this.curSprite= 0;
+			}
+		}
+	}else if (this.type==ObjectID.Peg) { //blue blocker
+	    this.sprites=new Array();
+		this.on=true;
+		this.curSprite=0;
+		this.sprites.push(Sprite("pegup"));
+		this.sprites.push(Sprite("pegdown"));
+	    this.name="peg";
+		this.activateEdit=function()
+		{
+			this.on=!this.on;
+			if(this.on)
+			{
+				this.curSprite=0;
+			}else
+			{
+				this.curSprite=1;
+			}
+		}
+		this.activate=function()
+		{
+			if(!editMode)
+			{
+				if(!miles.has[hasID.Hammer])
+				{
+					bConsoleBox.log("Only the hammer can destroy roadblocks!","yellow");
+					return;
+				}
+			}
+			this.on=false;
+			if(this.on)
+			{
+				this.curSprite=0;
+			}else
+			{
+				this.curSprite=1;
 			}
 		}
 	}else if (this.type==ObjectID.BlueBlocker) { //blue blocker
@@ -489,7 +553,18 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			this.exists=false;
-			//miles.hasItem[ObjectID.Lantern]
+			miles.has[hasID.Lantern]=true;
+		}
+	}else if (this.type==ObjectID.Hammer) {
+	    this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.sprites.push(Sprite("Hammer"));
+	    this.name="Hammer";
+		this.pickupable=true;
+		this.activate=function()
+		{
+			this.exists=false;
+			miles.has[hasID.Hammer]=true;
 		}
 	}else if (this.type==ObjectID.Spikes) {
 	    this.sprites=new Array();

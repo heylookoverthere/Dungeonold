@@ -952,6 +952,11 @@ miles.money=0;
 miles.bombs=0;
 miles.wallet=250;
 miles.tileX;//todo
+miles.has=new Array();
+for(var i=0;i<numHas;i++)
+{
+	miles.has.push(false);
+}
 miles.x=9;
 miles.y=12;
 miles.equip(legArmorList[Math.floor(Math.random()*legArmorList.length)]);

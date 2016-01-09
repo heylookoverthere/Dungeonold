@@ -23,6 +23,21 @@ randomPhrases.push("I dunno much about computers other than the one I got at my 
 randomPhrases.push("You know those guitars that are like....double guitars?");
 randomPhrases.push("Sometimes, cats can be afraid of cucumbers. But sometimes not.");
 
+var numHas=10;
+
+var hasID={};
+hasID.Map=0;
+hasID.Hammer=1;
+hasID.Lantern=2;
+hasID.Bow=3;
+hasID.Bomb=4;
+hasID.Feather=5;
+hasID.Glove=6;
+hasID.Flippers=7;
+hasID.Boots=8;
+hasID.Compass=9;
+hasID.MasterKey=10;
+
 
 var LightLevels=new Array();
 LightLevels.push(0.90); //midnight
@@ -131,6 +146,8 @@ objectSprites.push(Sprite("bow"));
 objectSprites.push(Sprite("lantern"));
 objectSprites.push(Sprite("spikes"));
 objectSprites.push(Sprite("triforce"));
+objectSprites.push(Sprite("pegup"));
+objectSprites.push(Sprite("hammer"));
 
 var editModes={};
 editModes.Pen=0;

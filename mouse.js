@@ -231,7 +231,7 @@ function mouseClick(e) {  //represents the mouse
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	if(mode==0)//menu
 	{
-		//console.log(mX,mY);
+		console.log(mX,mY);
 		if((mX>239) && (mX<383) && (mY>294) && (mY<451))
 		{
 			startGame(false);
@@ -241,6 +241,11 @@ function mouseClick(e) {  //represents the mouse
 		}else if((mX>367) &&(mX<533) && (mY>60)&&(mY<216))
 		{
 			showMapList();
+		}else if((mX>449) &&(mX<470) && (mY>463)&&(mY<482))
+		{
+			bConsoleBox.log("Why are you touching his balls?","red");
+			//I should probably think of a good reason. 
+			return;
 		}
 		if((mX>99) && (mX<175) && (mY>195))
 		{
@@ -792,6 +797,8 @@ function mouseClick(e) {  //represents the mouse
 			
 			if(nard.length>0)
 			{
+				miles.x=tx;
+				miles.y=ty;
 				curDungeon.changeRoom(peg.orientation,true);
 			}else
 			{
