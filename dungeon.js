@@ -316,6 +316,7 @@ function dungeon(path)
 				bConsoleBox.log("Saved " +fgrmath); 
 
 			});*/
+		this.removeDeadLinks(fl);
 		var jmath="Dungeon/dungeons/"+this.name+"/"+"floor"+fl+"/"+"map.txt";
 			$.post("/save/", {"data": this.stringifyFloor(fl), "path": jmath}).done(function(response) { bConsoleBox.log("Saved " +jmath); });
 		for(var i=0;i<this.getWidth();i++)
@@ -510,6 +511,7 @@ function dungeon(path)
 				if(thedoor)
 				{
 					this.rooms[fl][x][y-1].removeSpecificDoor(thedoor);
+					thedoor.exists=false;
 				}
 			}
 
@@ -522,6 +524,7 @@ function dungeon(path)
 				if(thedoor)
 				{
 					this.rooms[fl][x+1][y].removeSpecificDoor(thedoor);
+					thedoor.exists=false;
 				}
 			}
 
@@ -534,6 +537,7 @@ function dungeon(path)
 				if(thedoor)
 				{
 					this.rooms[fl][x][y+1].removeSpecificDoor(thedoor);
+					thedoor.exists=false;
 				}
 			}
 		}else if(coor.orientation==3)
@@ -545,6 +549,7 @@ function dungeon(path)
 				if(thedoor)
 				{
 					this.rooms[fl][x-1][y].removeSpecificDoor(thedoor);
+					thedoor.exists=false;
 				}
 			}
 		}
@@ -552,6 +557,7 @@ function dungeon(path)
 		{
 			if(coor==this.rooms[fl][x][y].exits[i])
 			{
+				this.rooms[fl][x][y].exits[i].exists=false;
 				this.rooms[fl][x][y].exits.splice(i,1)
 				i--;
 			}
@@ -592,6 +598,29 @@ function dungeon(path)
 			}
 		}
 		return false;
+	}
+	
+	this.removeDeadLinks=function(fl)
+	{
+		//TODO
+		for(var i=0;i<this.getWidth();i++)
+		{
+			for(var j=0;j<this.getHeight();j++)
+			{
+				for(var v=0;v<this.rooms[fl][i][j].objects.length;v++)
+				{
+					for(var l=0;l<this.rooms[fl][i][j].objects[v].dest.length;l++)
+					{
+						if(!this.rooms[fl][i][j].objects[v].dest[l].exists)
+						{
+							this.rooms[fl][i][j].objects[v].dest.splice(l,1);
+							l--;
+						}
+					}
+				}
+			}
+			
+		}
 	}
 	
 	this.linkSwitches=function(fl)
@@ -807,6 +836,7 @@ function dungeon(path)
 			mindy.y=1;
 			mindy.type=type;
 			mindy.room=croom;
+			mindy.exists=true;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomY>0) && (this.rooms[this.roomZ][this.roomX][this.roomY-1].active))
@@ -823,6 +853,7 @@ function dungeon(path)
 			mindy.y=y;
 			mindy.type=type;
 			mindy.room=croom;
+			mindy.exists=true;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomX<this.getWidth()-1) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active))
@@ -839,6 +870,7 @@ function dungeon(path)
 			mindy.y=y;
 			mindy.type=type;
 			mindy.room=croom;
+			mindy.exists=true;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;
 			if((this.roomX>0) && (this.rooms[this.roomZ][this.roomX-1][this.roomY].active))
@@ -854,6 +886,7 @@ function dungeon(path)
 			mindy.x=x;
 			mindy.y=13;
 			mindy.type=type;
+			mindy.exists=true;
 			mindy.room=croom;
 			croom.exits.push(mindy);
 			croom.tiles[mindy.x][mindy.y].data=DungeonTileType.Door+type;

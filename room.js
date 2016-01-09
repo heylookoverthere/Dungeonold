@@ -812,6 +812,7 @@ function room(I) { //room object
 						var mindy= new door(1);
 						mindy.x=i;
 						mindy.y=j;
+						mindy.exists=true;
 						mindy.room=I;
 						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
@@ -821,6 +822,7 @@ function room(I) { //room object
 						mindy.x=i;
 						mindy.y=j;
 						mindy.room=I;
+						mindy.exists=true;
 						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
 					}else if((j==1))
@@ -829,6 +831,7 @@ function room(I) { //room object
 						mindy.x=i;
 						mindy.y=j;
 						mindy.room=I;
+						mindy.exists=true;
 						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
 					}else if(j==13)
@@ -837,6 +840,7 @@ function room(I) { //room object
 						mindy.x=i;
 						mindy.y=j;
 						mindy.room=I;
+						mindy.exists=true;
 						mindy.type=I.tiles[i][j].data-DungeonTileType.Door;
 						I.exits.push(mindy);
 					}
@@ -846,6 +850,7 @@ function room(I) { //room object
 					mindy.x=i;
 					mindy.y=j;
 					mindy.room=I;
+					mindy.exists=true;
 					I.stairs.push(mindy);
 				}else if(I.tiles[i][j].data==DungeonTileType.DownStair)
 				{
@@ -853,6 +858,7 @@ function room(I) { //room object
 					mindy.x=i;
 					mindy.y=j;
 					mindy.room=I;
+					mindy.exists=true;
 					I.stairs.push(mindy);
 				}
 			}
@@ -1167,12 +1173,14 @@ function room(I) { //room object
 				var mindy= new staircase(true);
 				mindy.x=xPos;
 				mindy.y=yPos;
+				mindy.exists=true;
 				I.stairs.push(mindy);
 			  }else if (closeEnough(rgba,downstairrgb)) {
 				I.setTile(xPos, yPos, DungeonTileType.DownStair);
 				var mindy= new staircase(false);
 				mindy.x=xPos;
 				mindy.y=yPos;
+				mindy.exists=true;
 				I.stairs.push(mindy);
 			  }else if (closeEnough(rgba,doorrgb)) {
 				I.setTile(xPos, yPos, DungeonTileType.Door);
@@ -1261,6 +1269,9 @@ function room(I) { //room object
 				{
 					I.tiles[coor.x][coor.y].data=15;
 				}
+				I.exits[i].exists=false;
+				console.log("specific");
+				console.log(I.exits[i].exists);
 				I.exits.splice(i,1)
 				i--;
 			}
@@ -1291,6 +1302,8 @@ function room(I) { //room object
 		{
 			if(coor==I.exits[i])
 			{
+				I.exits[i].exists=false;
+				console.log(I.exits[i].exists);
 				I.exits.splice(i,1)
 				i--;
 			}
@@ -1310,6 +1323,7 @@ function room(I) { //room object
 			mindy.x=x;
 			mindy.y=1;
 			mindy.type=type;
+			mindy.exists=true;
 			mindy.room=I;
 			if(link)
 			{
@@ -1323,6 +1337,7 @@ function room(I) { //room object
 			mindy.x=18;
 			mindy.y=y;
 			mindy.type=type;
+			mindy.exists=true;
 			mindy.room=I;
 			if(link)
 			{
@@ -1336,6 +1351,7 @@ function room(I) { //room object
 			mindy.x=1;
 			mindy.y=y;
 			mindy.type=type;
+			mindy.exists=true;
 			mindy.room=I;
 			if(link)
 			{
@@ -1349,6 +1365,7 @@ function room(I) { //room object
 			mindy.x=x;
 			mindy.y=13;
 			mindy.type=type;
+			mindy.exists=true;
 			mindy.room=I;
 			if(link)
 			{

@@ -2060,6 +2060,10 @@ function mainUpdate()
 					editor.confirming=true;
 					editor.confirmingWhat=function()
 					{
+						for(var i=0;i<curDungeon.curRoom().objects.length;i++)
+						{
+							curDungeon.curRoom().objects[i].exists=false;
+						}
 						curDungeon.curRoom().objects=new Array();
 					}
 					if(OPTIONS.confirmationPopUps)
@@ -2077,6 +2081,7 @@ function mainUpdate()
 						{
 							if(curDungeon.curRoom().objects[i]==editor.grabbed)
 							{
+								editor.grabbed.exists=false;
 								curDungeon.curRoom().objects.splice(i,1);
 								i--;
 								editor.grabbed=null;
