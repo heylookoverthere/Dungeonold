@@ -78,12 +78,19 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(0)) || (!limited))
 			{
-				if((this.curRoom().getOpenDoor(0)) &&(this.curRoom().getOpenDoor(0).passable()) || (!limited))
+				var purd=this.curRoom().getSpecificDoor(miles.x,1,0);
+				if((!purd) && (miles.x>2))
 				{
+					purd=this.curRoom().getSpecificDoor(miles.x-1,1,0);
+				}
+				
+				if((purd) &&(purd.passable()) || (!limited))
+				{
+					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,3,false);
 					if(limited)
 					{
-						var purd=this.curRoom().getOpenDoor(0);
-						var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,3,false);
+						
+						
 						if((miles.x==purd.x) && (miles.y==3))
 						{
 							nard.push(0);
@@ -95,7 +102,7 @@ function dungeon(path)
 						//console.log(purd);
 						if(limited)
 						{
-							miles.x=this.curRoom().getOpenDoor(0).x+1;
+							miles.x=purd.x+1;
 							miles.y=12;
 							miles.dir=0;
 						}
@@ -132,12 +139,19 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(2)) || (!limited))
 			{
-				if((this.curRoom().getOpenDoor(2)) &&(this.curRoom().getOpenDoor(2).passable()) || (!limited))
+				var purd=this.curRoom().getSpecificDoor(miles.x,13,2);
+				if((!purd) && (miles.x>2))
 				{
+					purd=this.curRoom().getSpecificDoor(miles.x-1,13,2);
+				}
+				
+				if((purd) &&(purd.passable()) || (!limited))
+				{
+					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,12,false);
 					if(limited)
 					{
-						var purd=this.curRoom().getOpenDoor(2);
-						var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,12,false);
+						
+						
 						if((miles.x==purd.x) && (miles.y==12))
 						{
 							nard.push(0);
@@ -148,7 +162,7 @@ function dungeon(path)
 					{
 						if(limited)
 						{
-							miles.x=this.curRoom().getOpenDoor(2).x+1;
+							miles.x=purd.x+1;
 							miles.y=2;
 							miles.dir=2;
 						}
@@ -185,12 +199,18 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(1)) || (!limited))
 			{
-				if((this.curRoom().getOpenDoor(1)) && (this.curRoom().getOpenDoor(1).passable()) || (!limited))
+				var purd=this.curRoom().getSpecificDoor(18,miles.y,1);
+				if((!purd) && (miles.x>2))
 				{
+					purd=this.curRoom().getSpecificDoor(18,miles.y-1,1);
+				}
+				if((purd) && (purd.passable()) || (!limited))
+				{
+					var nard=this.curRoom().getPath(miles.x,miles.y,17,purd.y,false);
 					if(limited)
 					{
-						var purd=this.curRoom().getOpenDoor(1);
-						var nard=this.curRoom().getPath(miles.x,miles.y,17,purd.y,false);
+						
+						
 						if((miles.y==purd.y) && (miles.x==17))
 						{
 							nard.push(0);
@@ -203,7 +223,7 @@ function dungeon(path)
 						if(limited)
 						{
 							miles.x=2;
-							miles.y=this.curRoom().getOpenDoor(1).y
+							miles.y=purd.y
 							miles.dir=1;
 						}
 						this.roomX++;
@@ -239,12 +259,19 @@ function dungeon(path)
 			
 			if((this.curRoom().hasDoor(3)) || (!limited))
 			{
-				if((this.curRoom().getOpenDoor(3)) &&(this.curRoom().getOpenDoor(3).passable()) || (!limited))
+				var purd=this.curRoom().getSpecificDoor(1,miles.y,3);
+				if((!purd) && (miles.x>1))
 				{
+					purd=this.curRoom().getSpecificDoor(1,miles.y-1,3);
+				}
+				
+				if((purd) &&(purd.passable()) || (!limited))
+				{
+					
+					var nard=this.curRoom().getPath(miles.x,miles.y,3,purd.y,false);
 					if(limited)
 					{
-						var purd=this.curRoom().getOpenDoor(3);
-						var nard=this.curRoom().getPath(miles.x,miles.y,3,purd.y,false);
+												
 						if((miles.y==purd.y) && (miles.x==3))
 						{
 							nard.push(0);
@@ -258,7 +285,7 @@ function dungeon(path)
 						if(limited)
 						{
 							miles.x=17;
-							miles.y=this.curRoom().getOpenDoor(3).y;
+							miles.y=purd.y;
 							miles.dir=3;
 						}
 						this.roomX--;
