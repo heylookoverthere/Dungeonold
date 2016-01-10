@@ -204,6 +204,7 @@ object.prototype.setup=function(id,par)
 		//this.loot=0;
 		this.activate=function(){
 			if(this.curSprite==1) {return;}
+			playSound("chestopen");
 			playSound("itemfanfare");
 			
 			this.curSprite=1;
@@ -737,6 +738,7 @@ object.prototype.setup=function(id,par)
 				bullshitHack=true;
 				mode=0;
 				mancy.exists=false;
+				document.getElementById("mainSong").pause();
 			}
 		}
 		this.playerActivate=this.activate;

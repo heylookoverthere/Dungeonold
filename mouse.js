@@ -759,6 +759,7 @@ function mouseClick(e) {  //represents the mouse
 			}else
 			{
 				bConsoleBox.log("cannot get there from here.");	
+				playSound("error");
 			}
 
 		}
@@ -816,6 +817,7 @@ function mouseClick(e) {  //represents the mouse
 			}else
 			{
 				bConsoleBox.log("cannot reach that door!");	
+				playSound("error");
 			}
 		}
 		

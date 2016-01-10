@@ -104,14 +104,17 @@ function dungeon(path)
 					}else
 					{
 						bConsoleBox.log("No path to door!");
+						playSound("error");
 					}
 				}else
 				{
 					bConsoleBox.log("No open door!");
+					playSound("error");
 				}
 			}else
 			{
 				bConsoleBox.log("No door!");
+				playSound("error");
 			}
 		}else if(dir==2) //going south
 		{
@@ -154,14 +157,17 @@ function dungeon(path)
 					}else
 					{
 						bConsoleBox.log("No path to door!");
+						playSound("error");
 					}
 				}else
 				{
 					bConsoleBox.log("No open door!");
+					playSound("error");
 				}
 			}else
 			{
 				bConsoleBox.log("No door!");
+				playSound("error");
 			}
 		}else if(dir==1) //going east
 		{
@@ -205,14 +211,17 @@ function dungeon(path)
 					}else
 					{
 						bConsoleBox.log("No path to door!");
+						playSound("error");
 					}
 				}else
 				{
 					bConsoleBox.log("No open door!");
+					playSound("error");
 				}
 			}else
 			{
 				bConsoleBox.log("No door!");
+				playSound("error");
 			}
 		}else if(dir==3) //going west
 		{
@@ -257,14 +266,17 @@ function dungeon(path)
 					}else
 					{
 						bConsoleBox.log("No path to door!");
+						playSound("error");
 					}
 				}else
 				{
 					bConsoleBox.log("No open door!");
+					playSound("error");
 				}
 			}else
 			{
 				bConsoleBox.log("No door!");
+				playSound("error");
 			}
 		}
 	}

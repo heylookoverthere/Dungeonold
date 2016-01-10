@@ -657,6 +657,7 @@ timy.doThings=function()
 			 )
 			bullshitHack=true;
 			mode=0;
+			document.getElementById("mainSong").pause();
 		}
 		if(OPTIONS.confirmationPopUps)
 		{
@@ -988,6 +989,7 @@ fires.push(mlel);
 
 function popQuestion(question)
 {
+	playSound("menucursor");
 	var mancy=new textbox();
 	mancy.setup();
 	mancy.x=200;
@@ -1024,6 +1026,7 @@ function popQuestion(question)
 	{
 		if(editor.confirming)
 		{
+			playSound("menucancel");
 			editor.confirming=false;
 			bConsoleBox.log("No","Yellow");
 		}
@@ -1048,6 +1051,7 @@ function popQuestion(question)
 	{
 		if(editor.confirming)
 		{
+			playSound("menuselect");
 			editor.confirmed=true;
 			editor.confirming=false;
 			editor.confirmingWhat();
@@ -1411,6 +1415,11 @@ function startGame(goolp)
 	miles.bombs=0;
 	miles.wallet=250;
 	miles.has=new Array();
+	if(OPTIONS.musicOn)
+	{
+		document.getElementById("mainSong").play();
+	}
+	
 	//curDungeon.loadFloor();
 	curDungeon.curRoom().explored=true;
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
@@ -2062,6 +2071,7 @@ function mainUpdate()
 		{
 			if(editor.confirming)
 			{
+				playSound("menuselect");
 				editor.confirmed=true;
 				editor.confirming=false;
 				editor.confirmingWhat();
@@ -2073,6 +2083,7 @@ function mainUpdate()
 		{
 			if(editor.confirming)
 			{
+				playSound("menucancel");
 				editor.confirming=false;
 				bConsoleBox.log("No","Yellow");
 			}
@@ -2435,6 +2446,7 @@ function mainUpdate()
 				 )
 				bullshitHack=true;
 				mode=0;
+				document.getElementById("mainSong").pause();
 			}
 			console.log(OPTIONS.confirmationPopUps)
 			if(OPTIONS.confirmationPopUps)

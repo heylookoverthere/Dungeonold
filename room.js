@@ -68,6 +68,7 @@ function staircase(up,clone)
 	}
 	this.activate=function()
 	{
+		playSound("secret");
 		this.hidden=!this.hidden;
 	}
 }
@@ -106,9 +107,11 @@ function door(or,clone)
 	{
 		if(this.type==0)
 		{
+			playSound("doorclose");
 			this.close();
 		}else if(this.type==1)
 		{
+			playSound("dooropen");
 			this.open();
 		}
 	}
