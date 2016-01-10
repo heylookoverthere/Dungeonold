@@ -1,7 +1,7 @@
 //Mouse stuff.
 $(document).bind("contextmenu",function(e){
 	
-	if(bullshitHack)
+	/*if(bullshitHack)
 	{
 		bullshitHack=false;
 		for(var i=0;i<curDungeon.floors;i++)
@@ -10,7 +10,7 @@ $(document).bind("contextmenu",function(e){
 			curDungeon.linkSwitches(i);
 		}
 		bConsoleBox.log("Doors and switches linked!","yellow");
-	}
+	}*/
 	if(mode==2)
 	{
 	 //console.log("fucl");

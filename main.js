@@ -3,7 +3,7 @@ var editMode=false;
 var drawingPath=false;
 var bullshitHack=true; //right click to link doors
 var existingDungeons=new Array();
-
+var countIndex=0;
 
 var linksprites=new Array();
 linksprites.push(Sprite("linkup"));
@@ -52,7 +52,7 @@ function handleConTouchStart(evt) {
 		if(now-downLast<OPTIONS.DoubleTapThreshold)
 		{
 			//bConsoleBox.log("Double Tap","yellow");
-			if(bullshitHack)
+			/*if(bullshitHack)
 			{
 				bullshitHack=false;
 				for(var i=0;i<curDungeon.floors;i++)
@@ -62,7 +62,7 @@ function handleConTouchStart(evt) {
 				}
 				bConsoleBox.log("Doors and switches linked!","yellow");
 				return;
-			}
+			}*/
 			if(mode==0)
 			{
 	
@@ -535,11 +535,11 @@ timy.update=function()
 }
 timy.doThings=function()
 {
-	if(bullshitHack)
+	/*if(bullshitHack)
 	{
 		bConsoleBox.log("Right click to link switches first, or data may be lost.","yellow");
 		return;
-	}
+	}*/
 	bConsoleBox.log("Saving dungeon. Existing data will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
@@ -584,11 +584,15 @@ timy.update=function()
 }
 timy.doThings=function()
 {
+	return;
 	editor.penDown=false;
 	bConsoleBox.log("Loading dungeon from disk. Unsaved data will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
-			bullshitHack=true;
+			//bullshitHack=true;
+			//penis
+			var index=existingDungeons.indexOf(curDungeon.name);
+			LOAD_COUNTS[index]=curDungeon.numRooms; //todo problem if the number of rooms has changed. 
 			curDungeon.load();
 		}
 		if(OPTIONS.confirmationPopUps)
@@ -648,14 +652,28 @@ timy.doThings=function()
 		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
-			curDungeon.cleanSlate();
+			
 			$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
 			 {
 				existingDungeons=resp.split(",");
 				existingDungeons.splice(0,1);
+				
+				/*for( var i=0;i<existingDungeons.length;i++)
+				 {
+					 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
+							$.get(crmath, function(data) 
+							{	
+								var bata=data.split(",");
+								LOAD_COUNTS.push(Math.floor(bata[1]));
+								
+							});
+				 }*/
+				 var index=existingDungeons.indexOf(curDungeon.name);
+				LOAD_COUNTS[index]=curDungeon.numRooms;
+				curDungeon.cleanSlate();
 			 } 
 			 )
-			bullshitHack=true;
+			//bullshitHack=true;
 			mode=0;
 			document.getElementById("mainSong").pause();
 		}
@@ -1143,7 +1161,7 @@ var savekey=new akey("i"); //define the different keys
 var loadkey=new akey("o");
 var shiftkey=new akey("shift");
 
-
+ var LOAD_COUNTS=new Array();
 var gamestart=false;
 var radar=true;
 
@@ -1151,8 +1169,22 @@ $.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
  {
 	existingDungeons=resp.split(",");
 	existingDungeons.splice(0,1);
+	LOAD_COUNTS=new Array();
+	for( var i=0;i<existingDungeons.length;i++)
+	 {
+		 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
+				$.get(crmath, function(data) 
+				{	
+					var bata=data.split(",");
+					LOAD_COUNTS.push(Math.floor(bata[1]));
+					
+				});
+	 }
  } 
  )
+ 
+
+ 
  
  
 
@@ -1361,49 +1393,10 @@ function acceptableName(attempt,ld)
 	
 }
 
-
-function startGame(goolp)
+function actuallyStartGame()
 {
-
-	if(!goolp)
-	{
-		
-		var lordCromp=prompt("Enter new dungeon name");
-		if(lordCromp==null) {return;}
-		while (!acceptableName(lordCromp,false))
-		{
-			lordCromp=prompt("Try again.");
-			if(lordCromp==null) {return;}
-		}
-		curDungeon.name=lordCromp;
-		curDungeon.floors=1;
-		curDungeon.numRooms=0;
-		curDungeon.saveExists=false;
-		curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
-		editMode=true;
-		
-		//curDungeon.addFloor();
-	}else
-	{
-		pungname=prompt("Enter name of dungeon to load","dungeon1");
-		if(pungname==null) {return;}
-		while (!acceptableName(pungname,true)) //doesn't exist
-		{
-			pungname=prompt("No dungeon called "+pungname,"dungeon1");
-			if(pungname==null) {return;}
-		}
-		curDungeon.name=pungname;
-		editMode=false;
-		var crmath="dungeons/"+curDungeon.name+"/"+"main.txt";
-		$.get(crmath, function(data) 
-		{	
-			var bata=data.split(",");
-			LOAD_COUNT=Math.floor(bata[1]);
-		});
-		curDungeon.load();
-		curDungeon.timeStarted=new Date();
-	}
-	mode=1;	
+	mode=1;
+	curDungeon.timeStarted=new Date();
 	miles.x=9;
 	miles.y=12;
 	miles.dir=0;
@@ -1429,6 +1422,90 @@ function startGame(goolp)
 		document.getElementById("mainSong").play(); //starts music
 	}
 	starter();
+	for(var i=0;i<curDungeon.floors;i++)
+	{
+		curDungeon.linkDoors(i);
+		curDungeon.linkSwitches(i);
+	}
+	bConsoleBox.log("Doors and switches linked!","yellow");
+}
+
+function startGame(goolp)
+{
+
+	if(!goolp)
+	{
+		
+		var lordCromp=prompt("Enter new dungeon name");
+		if(lordCromp==null) {return;}
+		while (!acceptableName(lordCromp,false))
+		{
+			lordCromp=prompt("Try again.");
+			if(lordCromp==null) {return;}
+		}
+		curDungeon.name=lordCromp;
+		curDungeon.floors=1;
+		curDungeon.numRooms=0;
+		curDungeon.saveExists=false;
+		curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
+		editMode=true;
+		actuallyStartGame();
+		//curDungeon.addFloor();
+	}else
+	{
+		pungname=prompt("Enter name of dungeon to load","dungeon1");
+		if(pungname==null) {return;}
+		while (!acceptableName(pungname,true)) //doesn't exist
+		{
+			pungname=prompt("No dungeon called "+pungname,"dungeon1");
+			if(pungname==null) {return;}
+		}
+		curDungeon.name=pungname;
+		editMode=false;
+		/*var crmath="dungeons/"+curDungeon.name+"/"+"main.txt";
+		$.get(crmath, function(data) 
+		{	
+			var bata=data.split(",");
+			LOAD_COUNT=Math.floor(bata[1]);
+			console.log(LOAD_COUNT);
+			
+		});*/
+		
+		/*function checkLoadCount() 
+		{ 
+			if (LOAD_COUNT > 0)
+			{ 
+				curDungeon.load();
+			}else 
+			{ 	
+				console.log("waiting for load count to be > 0");
+				window.setTimeout(checkLoadCount, 1000); 
+			}
+		}
+		checkLoadCount();*/
+		countIndex=existingDungeons.indexOf(curDungeon.name);
+		console.log(LOAD_COUNTS[countIndex]);
+		curDungeon.load();
+		
+		console.log(LOAD_COUNTS[countIndex]);
+		
+		function checkIfLoaded() 
+		{ 
+			if (LOAD_COUNTS[countIndex] == 0)
+			{ 
+				actuallyStartGame();
+			}else 
+			{ 
+				//console.log("waiting for load count to be 0");
+				window.setTimeout(checkIfLoaded, 1000); 
+			}
+		}
+		checkIfLoaded();
+		
+		
+	}
+		
+	
 }
 
 function starter()
@@ -2437,11 +2514,25 @@ function mainUpdate()
 			bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
 			editor.confirming=true;
 			editor.confirmingWhat=function() {
-				curDungeon.cleanSlate();
+				
 				$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
 				 {
 					existingDungeons=resp.split(",");
 					existingDungeons.splice(0,1);
+					var index=existingDungeons.indexOf(curDungeon.name);
+					LOAD_COUNTS[index]=curDungeon.numRooms;
+					curDungeon.cleanSlate();
+					/*LOAD_COUNTS=new Array();
+					for( var i=0;i<existingDungeons.length;i++)
+					 {
+						 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
+								$.get(crmath, function(data) 
+								{	
+									var bata=data.split(",");
+									LOAD_COUNTS.push(Math.floor(bata[1]));
+									
+								});
+					 }*/
 				 } 
 				 )
 				bullshitHack=true;

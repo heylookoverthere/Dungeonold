@@ -654,6 +654,7 @@ function room(I) { //room object
 			I.buildMapFromLoadedTiles("whatever",data); 
 			I.active=true;
 			bConsoleBox.log("Loaded "+smuth); 
+			LOAD_COUNTS[countIndex]--;
 		});  
 		
 	}

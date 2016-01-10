@@ -511,7 +511,7 @@ object.prototype.setup=function(id,par)
 	    this.name="Blue orb";
 		this.activate=function()
 		{
-			playSound("sword4");
+			playSound("orbhit");
 		  //change all blue blockers ons
 		  bConsoleBox.log("Blue barriers switched");
 		  for(var i=0;i<curDungeon.blueBlockers.length;i++)
@@ -529,7 +529,7 @@ object.prototype.setup=function(id,par)
 		{
 			//this.on=!this.on; //is this even needed
 			//change all red blockers ons.
-			playSound("sword4");
+			playSound("orbhit");
 			bConsoleBox.log("Red barriers switched");
 			for(var i=0;i<curDungeon.redBlockers.length;i++)
 			{
@@ -550,6 +550,7 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			//I dunno warp or something?
+			playSound("warp");
 		}
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.HeartContainer) {
@@ -735,7 +736,24 @@ object.prototype.setup=function(id,par)
 				{
 					editor.clearConfirm();
 				}
-				bullshitHack=true;
+				//bullshitHack=true;
+				$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
+				 {
+					existingDungeons=resp.split(",");
+					existingDungeons.splice(0,1);
+					LOAD_COUNTS=new Array();
+					for( var i=0;i<existingDungeons.length;i++)
+					 {
+						 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
+								$.get(crmath, function(data) 
+								{	
+									var bata=data.split(",");
+									LOAD_COUNTS.push(Math.floor(bata[1]));
+									
+								});
+					 }
+				 } 
+				 )
 				mode=0;
 				mancy.exists=false;
 				document.getElementById("mainSong").pause();

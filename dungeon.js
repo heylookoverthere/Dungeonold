@@ -458,7 +458,8 @@ function dungeon(path)
 		//read main dungeon file, determine how many floors.
 		
 		var dung=this;
-		dung.saveExists=true;
+	
+		
 		dung.lastSaved=new Date();
 		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
 		var dunpth=dung.floors+","+dung.numRooms+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
@@ -472,6 +473,28 @@ function dungeon(path)
 				dung.saveFloor(i);
 			}
 		//dung.blank();
+		if(!dung.saveExists)
+		{
+			/*$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
+			 {
+				existingDungeons=resp.split(",");
+				existingDungeons.splice(0,1);*/
+				dung.saveExists=true;
+				/*//LOAD_COUNTS=new Array();
+				LOAD_COUNTS.push(0);
+				for( var i=0;i<existingDungeons.length;i++)
+				 {
+					 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
+							$.get(crmath, function(data) 
+							{	
+								var bata=data.split(",");
+								LOAD_COUNTS[i]=Math.floor(bata[1]);
+								
+							});
+				 }
+			})*/
+			bConsoleBox.log("refresh page before attempting to load another map.","yellow")
+		}
 		dung.lastSaved=new Date();
 	}
 	
