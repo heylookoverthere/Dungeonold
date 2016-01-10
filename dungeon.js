@@ -845,7 +845,10 @@ function dungeon(path)
 			if((this.curRoom().hasStairs(true)) || (!limited))
 			{
 				this.roomZ++;
-				playSound("stairsup");
+				if(limited)
+				{
+					playSound("stairsup");
+				}
 				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
 			}else
 			{
@@ -879,7 +882,10 @@ function dungeon(path)
 			if((this.curRoom().hasStairs(false)) || (!limited))
 			{
 				this.roomZ--;
-				playSound("stairsdown");
+				if(limited)
+				{
+					playSound("stairsdown");
+				}
 				if(limited){this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;}
 			}else
 			{

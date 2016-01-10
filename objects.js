@@ -672,7 +672,10 @@ object.prototype.setup=function(id,par)
 			//miles.hurt(5);
 			
 		}
-		this.playerActivate=this.activate; //get hurt?
+		this.playerActivate=function()
+		{
+			//do nothing.
+		}
 	}else if (this.type==ObjectID.Triforce) {
 	    this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -703,7 +706,7 @@ object.prototype.setup=function(id,par)
 			}
 			var secsTaken=timeTaken/1000;//now it's in seconds.
 			var mancy=new textbox();
-			this.exist=false;
+			this.exists=false;
 			mancy.setup();
 			mancy.x=240;
 			mancy.y=100;

@@ -1271,7 +1271,7 @@ function showMapList()
 	bConsoleBox.log("Existing Maps:","yellow");
 	for(var i=0;i<existingDungeons.length;i++)
 	{
-		bConsoleBox.log(existingDungeons[i]);
+		bConsoleBox.log(existingDungeons[i]+" - "+LOAD_COUNTS[i]+ " rooms");
 	}
 }
 
