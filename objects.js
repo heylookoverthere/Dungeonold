@@ -175,6 +175,7 @@ object.prototype.setup=function(id,par)
 			//display textbox with text. 
 			if((!this.messagebox) || (!this.messagebox.exists))
 			{
+				playSound("textbox");
 				var mancy=new textbox();
 				mancy.setup();
 				mancy.x=200;
@@ -199,6 +200,8 @@ object.prototype.setup=function(id,par)
 		//this.loot=0;
 		this.activate=function(){
 			if(this.curSprite==1) {return;}
+			playSound("itemfanfare");
+			
 			this.curSprite=1;
 			//give item!
 			var btext="You...found a severed pig's head."
@@ -291,6 +294,7 @@ object.prototype.setup=function(id,par)
 		this.alwaysWalkable=true;
 		this.activate=function()
 		{
+			playSound("key");
 			this.exists=false;
 			bConsoleBox.log("Aquired a key!");
 			miles.keys++;
@@ -307,6 +311,7 @@ object.prototype.setup=function(id,par)
 			editor.linkingFrom=this;
 		}
 		this.activate=function(){
+			playSound("switchhit");
 			this.on=!this.on
 			if(this.on)
 			{
@@ -496,6 +501,7 @@ object.prototype.setup=function(id,par)
 	    this.name="Blue orb";
 		this.activate=function()
 		{
+			playSound("sword4");
 		  //change all blue blockers ons
 		  bConsoleBox.log("Blue barriers switched");
 		  for(var i=0;i<curDungeon.blueBlockers.length;i++)
@@ -513,6 +519,7 @@ object.prototype.setup=function(id,par)
 		{
 			//this.on=!this.on; //is this even needed
 			//change all red blockers ons.
+			playSound("sword4");
 			bConsoleBox.log("Red barriers switched");
 			for(var i=0;i<curDungeon.redBlockers.length;i++)
 			{
@@ -543,6 +550,7 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found a heart container!");
 			this.exists=false;
 			miles.maxHp+=20;
@@ -557,6 +565,7 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found the Roc's Feather! Eventually it might let you jump.");
 			this.exists=false;
 			miles.has[hasID.Feather]=true;
@@ -574,6 +583,7 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found the Bow! It's totally useless for now!");
 			this.exists=false;
 			miles.has[hasID.Bow]=true;
@@ -587,12 +597,15 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+				
 			if(!miles.has[hasID.Bomb])
 			{
 				bConsoleBox.log("You found your first bombs!");
+				playSound("itemfanfare");
 			}else
 			{
 				bConsoleBox.log("You found some bombs!");
+				playSound("item");
 			}
 			this.exists=false;
 			miles.has[hasID.Bomb]=true;
@@ -607,6 +620,7 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found the lantern. You can light torches with it.");
 			this.exists=false;
 			miles.has[hasID.Lantern]=true;
@@ -620,6 +634,7 @@ object.prototype.setup=function(id,par)
 		this.pickupable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found the hammer!");
 			this.exists=false;
 			miles.has[hasID.Hammer]=true;
@@ -662,6 +677,7 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			//change music
+			playSound("heartcontainer");
 			var now=new Date().getTime();
 			var timeTaken=now-curDungeon.timeStarted.getTime();
 			var arecord=false;

@@ -11,6 +11,22 @@ var graph=null;
 var shiftdown=false;
 var graph=null;
 var MobileMode=false;
+var numSouns=0;
+
+function playSound(name){
+    if(!OPTIONS.SFX)
+	{
+		return;
+	}
+	
+    var nerp=document.getElementById(name);
+	nerp.volume=OPTIONS.SFXVolume;
+    if(nerp.ended == true || nerp.currentTime == 0){
+	nerp.play()
+	    numsounds++;
+    }
+    
+};
 
 var downarrowsprite=Sprite("downarrow");
 var uparrowsprite=Sprite("uparrow");
@@ -163,11 +179,13 @@ editModes.ChestLoot=10;
 var OPTIONS={};
 OPTIONS.EnableSwipes=true;
 OPTIONS.musicOn=false;
+OPTIONS.SFX=true;
 OPTIONS.showUnexploredRooms=false;
 OPTIONS.showCracks=false;
 OPTIONS.showUnexploredDoors=false;
 OPTIONS.skipWallTiles=true;
-OPTIONS.musicVolume=0.1;
+OPTIONS.musicVolume=0.2;
+OPTIONS.SFXVolume=0.1;
 OPTIONS.confirmationPopUps=true;
 OPTIONS.DoubleTapThreshold=400;
 OPTIONS.HoldTime=2000;

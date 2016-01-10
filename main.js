@@ -941,6 +941,7 @@ var pastekey=new akey("p");
 var savefloorkey = new akey("k");
 var loadfloorkey = new akey("l");
 var mutekey= new akey("m");
+var soundkey= new akey("f");
 var randomkey= new akey("r");
 var mapkey=new akey("g");
 
@@ -1130,17 +1131,6 @@ window.addEventListener("GamepadDisconnected", function(e) {
   console.log("Gamepad disconnected from index %d: %s",
   e.gamepad.index, e.gamepad.id);
 });
-
-
-function playSound(name){
-    
-    nerp=document.getElementById(name);
-    if(nerp.ended === true || nerp.currentTime === 0){
-        nerp.play();
-        numsounds++;
-    }
-    
-}
 
 controller= new virtualGamePad();
 
@@ -1448,8 +1438,27 @@ function inventoryScreenUpdate(){
     milliseconds = timestamp.getTime();
     tick++;
 	monsta.update();
+	if(soundkey.check())
+	{
+		OPTIONS.SFX=!OPTIONS.SFX;
+		if(OPTIONS.SFX)
+		{
+			bConsoleBox.log("Sound effects turned on.");
+		}else
+		{
+			bConsoleBox.log("Sound effects turned off.");
+		}
+	}
 	 if(mutekey.check()) {
 		OPTIONS.musicOn=!OPTIONS.musicOn;
+		
+		if(OPTIONS.musicOn)
+		{
+			bConsoleBox.log("Music turned on.");
+		}else
+		{
+			bConsoleBox.log("Music turned off.");
+		}
 		document.getElementById("titleAudio").pause();
 		//monsta.startOrbit(40000,Math.floor(Math.random()*CANVAS_WIDTH),Math.floor(Math.random()*CANVAS_HEIGHT),60);
 	 }
@@ -2020,19 +2029,34 @@ function mainUpdate()
 			h--;
 		}
 	}
-	if(mutekey.check())
+	if(soundkey.check())
 	{
+		OPTIONS.SFX=!OPTIONS.SFX;
+		if(OPTIONS.SFX)
+		{
+			bConsoleBox.log("Sound effects turned on.");
+		}else
+		{
+			bConsoleBox.log("Sound effects turned off.");
+		}
+	}
+	 if(mutekey.check()) {
 		OPTIONS.musicOn=!OPTIONS.musicOn;
+		
 		if(OPTIONS.musicOn)
 		{
+			bConsoleBox.log("Music turned on.");
 			document.getElementById("mainSong").volume=OPTIONS.musicVolume;
 			document.getElementById("mainSong").play();
 		}else
 		{
+			bConsoleBox.log("Music turned off.");
 			document.getElementById("mainSong").pause();
 		}
+		document.getElementById("titleAudio").pause();
+		//monsta.startOrbit(40000,Math.floor(Math.random()*CANVAS_WIDTH),Math.floor(Math.random()*CANVAS_HEIGHT),60);
+	 }
 		
-	}
 	if(yeskey.check())
 		{
 			if(editor.confirming)

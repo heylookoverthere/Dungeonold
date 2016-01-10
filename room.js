@@ -194,6 +194,7 @@ function door(or,clone)
 	
 	door.prototype.passable=function()
 	{
+		if(editMode) {return true;}
 		if((this.type==0) || (this.type==doorType.Bombed))
 		{
 			return true;
@@ -204,10 +205,12 @@ function door(or,clone)
 			{
 				this.open();
 				miles.keys--;
+				playSound("unlock");
 				bConsoleBox.log("Unlocked!");
 				return true;
 			}else
 			{
+				playSound("locked");
 				bConsoleBox.log("Need a key!");
 			}
 		}
