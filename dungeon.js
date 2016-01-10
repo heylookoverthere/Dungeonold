@@ -480,6 +480,7 @@ function dungeon(path)
 				existingDungeons=resp.split(",");
 				existingDungeons.splice(0,1);*/
 				dung.saveExists=true;
+				//need to do something to expand LOAD_COUNTS and existing dungeons
 				/*//LOAD_COUNTS=new Array();
 				LOAD_COUNTS.push(0);
 				for( var i=0;i<existingDungeons.length;i++)
@@ -496,6 +497,8 @@ function dungeon(path)
 			bConsoleBox.log("refresh page before attempting to load another map.","yellow")
 		}
 		dung.lastSaved=new Date();
+		var index=existingDungeons.indexOf(curDungeon.name);
+		LOAD_COUNTS[index]=curDungeon.numRooms;
 	}
 	
 	dungeon.prototype.load=function() 

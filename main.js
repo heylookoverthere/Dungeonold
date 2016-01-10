@@ -584,16 +584,33 @@ timy.update=function()
 }
 timy.doThings=function()
 {
-	return;
+	//return;
 	editor.penDown=false;
 	bConsoleBox.log("Loading dungeon from disk. Unsaved data will be overwritten. Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
-			//bullshitHack=true;
-			//penis
-			var index=existingDungeons.indexOf(curDungeon.name);
-			LOAD_COUNTS[index]=curDungeon.numRooms; //todo problem if the number of rooms has changed. 
+			countIndex=existingDungeons.indexOf(curDungeon.name);
+			console.log(LOAD_COUNTS[countIndex]);
 			curDungeon.load();
+			
+			console.log(LOAD_COUNTS[countIndex]);
+			
+			function checkIfLoaded() 
+			{ 
+				if (LOAD_COUNTS[countIndex] == 0)
+				{ 
+					actuallyStartGame();
+				}else if(LOAD_COUNTS[countIndex]<0)
+				{
+					bConsoleBox.log("Load_Counts problem! Reload page.","yellow");
+				}else			
+				{ 
+					//console.log("waiting for load count to be 0");
+					window.setTimeout(checkIfLoaded, 1000); 
+				}
+			}
+			checkIfLoaded();
+
 		}
 		if(OPTIONS.confirmationPopUps)
 		{
@@ -1407,6 +1424,8 @@ function actuallyStartGame()
 	miles.money=0;
 	miles.bombs=0;
 	miles.wallet=250;
+	countIndex=existingDungeons.indexOf(curDungeon.name);
+	LOAD_COUNTS[countIndex]=curDungeon.numRooms;
 	miles.has=new Array();
 	if(OPTIONS.musicOn)
 	{
@@ -1494,7 +1513,10 @@ function startGame(goolp)
 			if (LOAD_COUNTS[countIndex] == 0)
 			{ 
 				actuallyStartGame();
-			}else 
+			}else if(LOAD_COUNTS[countIndex]<0)
+			{
+				bConsoleBox.log("Load_Counts problem! Reload page.","yellow");
+			}else			
 			{ 
 				//console.log("waiting for load count to be 0");
 				window.setTimeout(checkIfLoaded, 1000); 

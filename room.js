@@ -676,6 +676,7 @@ function room(I) { //room object
 		{
 			var smoth=path+I.name+".txt";
 			$.post("/save/", {"data": I.stringifyTiles(), "path": smoth}).done(function(response) { bConsoleBox.log("Saved " +smoth); });
+			
 		}else
 		{
 			//edit floor file to make clear there's no room.
