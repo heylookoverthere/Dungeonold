@@ -393,6 +393,7 @@ function logControls()
 	bConsoleBox.log("L  - Load floor");
 	bConsoleBox.log("I  - Save room");
 	bConsoleBox.log("O  - Load room");
+	bConsoleBox.log("U  - Save copy of dungeon");
 	bConsoleBox.log("C  - Copy room");
 	bConsoleBox.log("R  - Random prefab room");
 	//bConsoleBox.log("Shift+R  - Randomize objects");
@@ -997,6 +998,7 @@ var mutekey= new akey("m");
 var soundkey= new akey("f");
 var randomkey= new akey("r");
 var mapkey=new akey("g");
+var saveaskey=new akey("u");
 
 var miles=new dude();
 miles.dir=0;
@@ -1265,6 +1267,16 @@ function convertSaves() //no effin clue if this will work. I suspect not.
 		curDungeon.save();
 	}
 }
+
+function copyDungeon()
+{
+	curDungeon.name=prompt("Enter new dungeon name");
+	if(curDungeon.name)
+	{
+		curDungeon.save();	
+	}
+}
+
 
 function showMapList()
 {
@@ -1967,7 +1979,12 @@ function mainUpdate()
 			popQuestion("Unsaved data will be lost. Confirm? (Y/N)");
 		}
 	}
-		
+	
+	if(saveaskey.check())
+	{	
+		copyDungeon();
+	}
+	
 	if((editMode) && (modekey.check()))
 	{
 		editor.mode++;
