@@ -752,6 +752,7 @@ names[0]=new Array(120);
 names[1]=new Array(120);
 var mX=120;
 var mY=320;
+var isLoading=false;
 
 Array.prototype.insert = function (index, item) {
   this.splice(index, 0, item);

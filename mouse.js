@@ -231,6 +231,10 @@ function mouseClick(e) {  //represents the mouse
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	if(mode==0)//menu
 	{
+		if(isLoading)
+		{
+			return;
+		}
 		console.log(mX,mY);
 		if((mX>239) && (mX<383) && (mY>294) && (mY<451))
 		{
@@ -321,9 +325,9 @@ function mouseClick(e) {  //represents the mouse
 	
 	if(e.which==2)
 	{
-		editMode=!editMode;
-		editor.penDown=false;
-		editor.clearConfirm();
+		//editMode=!editMode;
+		//editor.penDown=false;
+		//editor.clearConfirm();
 	}
 	for(var i=0;i<buttons.length;i++)
 	{

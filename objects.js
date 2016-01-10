@@ -703,29 +703,36 @@ object.prototype.setup=function(id,par)
 			}
 			var secsTaken=timeTaken/1000;//now it's in seconds.
 			var mancy=new textbox();
+			this.exist=false;
 			mancy.setup();
 			mancy.x=240;
 			mancy.y=100;
 			//mancy.width=210;
 			mancy.textLim=104;
-			if(arecord)
+			if(curDungeon.hasEdited)
 			{
-				if(curDungeon.bestTime>998000)
-				{
-					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, a new record!. Hit Y to exit.");
-				}else
-				{
-					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, beating the old record by "+difference+" seconds!. Hit Y to exit.");
-				}
-				
-				curDungeon.bestTime=timeTaken;
-				bConsoleBox.log("New record!","yellow"); 
-				var smoth="Dungeon/dungeons/"+curDungeon.name+"/score.txt";
-				$.post("/save/", {"data": timeTaken, "path": smoth}).done(function(response) { bConsoleBox.log("Saved " +smoth); });
-				
+				mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, but you used edit mode. Hit Y to exit.");
 			}else
 			{
-				mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds. The current record is "+curDungeon.bestTime/1000+" seconds. Hit Y to exit.");
+				if(arecord)
+				{
+					if(curDungeon.bestTime>998000)
+					{
+						mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, a new record!. Hit Y to exit.");
+					}else
+					{
+						mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds, beating the old record by "+difference+" seconds!. Hit Y to exit.");
+					}
+					
+					curDungeon.bestTime=timeTaken;
+					bConsoleBox.log("New record!","yellow"); 
+					var smoth="Dungeon/dungeons/"+curDungeon.name+"/score.txt";
+					$.post("/save/", {"data": timeTaken, "path": smoth}).done(function(response) { bConsoleBox.log("Saved " +smoth); });
+					
+				}else
+				{
+					mancy.log("Congratulations! You have found the tri-force and beaten this dungeon! It took you "+secsTaken+" seconds. The current record is "+curDungeon.bestTime/1000+" seconds. Hit Y to exit.");
+				}
 			}
 			mancy.hasFocus=true;
 			buttons.push(mancy);

@@ -12,6 +12,7 @@ function dungeon(path)
 	this.startFloor=0;
 	this.startX=7;
 	this.startY=7;
+	this.hasEdited=false;
 	this.name=path;
 	this.mapFloor=0;
 	this.entranceFloor=0;
@@ -506,6 +507,7 @@ function dungeon(path)
 	dungeon.prototype.load=function() 
 	{
 		var dung=this;
+		isLoading=true;
 		dung.cleanSlate();
 		dung.saveExists=true;
 		//read main dungeon file, determine how many floors.

@@ -478,6 +478,7 @@ timy.doThings=function()
 	editor.clearConfirm();
 	if(editMode)
 	{
+		curDungeon.hasEdited=true;
 		this.text="Play";
 	}else
 	{
@@ -666,27 +667,42 @@ timy.doThings=function()
 		}
 	}else
 	{
-		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
+		var plk=new Date().getTime();
+		var mlk=plk-curDungeon.lastSaved.getTime();
+		mlk=mlk/1000;
+		mlk=mlk/60;
+		if(mlk>59)
+		{
+			mlk=(Math.round((mlk/60)*10)/10)+" hours ago.";
+		}else if(mlk<1)
+		{
+			mlk="less than a minute ago. ";
+		}else
+		{
+			mlk=Math.round(mlk*10)/10+" minutes ago.";
+		}
+		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Last saved "+mlk+" Confirm? (Y/N)","yellow");
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
 			
 			$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
 			 {
-				existingDungeons=resp.split(",");
-				existingDungeons.splice(0,1);
+				tempExistingDungeons=resp.split(",");
+				tempExistingDungeons.splice(0,1);
 				
-				/*for( var i=0;i<existingDungeons.length;i++)
-				 {
-					 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
-							$.get(crmath, function(data) 
-							{	
-								var bata=data.split(",");
-								LOAD_COUNTS.push(Math.floor(bata[1]));
-								
-							});
-				 }*/
-				 var index=existingDungeons.indexOf(curDungeon.name);
-				LOAD_COUNTS[index]=curDungeon.numRooms;
+				for(var i=0;i<tempExistingDungeons.length;i++)
+				{
+					if(i%2)
+					{
+						LOAD_COUNTS.push(tempExistingDungeons[i]);
+					}else
+					{
+						existingDungeons.push(tempExistingDungeons[i]);
+					}
+				}
+				 
+				// var index=existingDungeons.indexOf(curDungeon.name);
+				//LOAD_COUNTS[index]=curDungeon.numRooms;
 				curDungeon.cleanSlate();
 			 } 
 			 )
@@ -696,7 +712,7 @@ timy.doThings=function()
 		}
 		if(OPTIONS.confirmationPopUps)
 		{
-			popQuestion("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)");
+			popQuestion("Returning to main menu. Unsaved changes will be lost. Last saved "+mlk+" Confirm? (Y/N)","yellow");
 		}
 	}
 }
@@ -1181,22 +1197,23 @@ var shiftkey=new akey("shift");
  var LOAD_COUNTS=new Array();
 var gamestart=false;
 var radar=true;
+//var sortedExistingDungeons=new Array();
+
 
 $.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
  {
-	existingDungeons=resp.split(",");
-	existingDungeons.splice(0,1);
-	LOAD_COUNTS=new Array();
-	for( var i=0;i<existingDungeons.length;i++)
-	 {
-		 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
-				$.get(crmath, function(data) 
-				{	
-					var bata=data.split(",");
-					LOAD_COUNTS.push(Math.floor(bata[1]));
-					
-				});
-	 }
+	var tempExistingDungeons=resp.split(",");
+	tempExistingDungeons.splice(0,1);
+	for(var i=0;i<tempExistingDungeons.length;i++)
+	{
+		if(i%2)
+		{
+			LOAD_COUNTS.push(tempExistingDungeons[i]);
+		}else
+		{
+			existingDungeons.push(tempExistingDungeons[i]);
+		}
+	}
  } 
  )
  
@@ -1336,6 +1353,10 @@ function mainMenuDraw(){
 	}else if(mmcur==2)	{
 		canvas.fillText("-",78,260);
 	}
+	if(isLoading)
+	{
+		canvas.fillText("LOADING . . .",478,660);
+	}
 	bConsoleBox.draw(concanvas);
 	//monsta.draw(canvas,camera);
 	//canvas.fillText("Particles: "+ monsta.particles.length,460,550);
@@ -1377,7 +1398,7 @@ function acceptableName(attempt,ld)
 {
 	//check for illegal characters, used names
 	if(attempt==null) {return true;}
-	if(attempt.length<3) {return false;}
+	if(attempt.length<1) {return false;}
 	for(var i=0;i<bannedchars.length;i++)
 	{
 		if(attempt.indexOf(bannedchars[i])!=-1)
@@ -1412,6 +1433,7 @@ function acceptableName(attempt,ld)
 
 function actuallyStartGame()
 {
+	isLoading=false;
 	mode=1;
 	curDungeon.timeStarted=new Date();
 	miles.x=9;
@@ -1618,7 +1640,7 @@ function mainMenuUpdate()
 		{
 			showMapList();
 		}
-	}else if(startkey.check()){
+	}else if((!isLoading)&&(startkey.check())){
 		if(mmcur==0)
 		{
 			startGame(false);
@@ -2533,16 +2555,40 @@ function mainUpdate()
 			editor.clearConfirm();
 		}else
 		{
-			bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Confirm? (Y/N)","yellow");
-			editor.confirming=true;
-			editor.confirmingWhat=function() {
+			var plk=new Date().getTime();
+		var mlk=plk-curDungeon.lastSaved.getTime();
+		mlk=mlk/1000;
+		mlk=mlk/60;
+		if(mlk>59)
+		{
+			mlk=(Math.round((mlk/60)*10)/10)+" hours ago.";
+		}else if(mlk<1)
+		{
+			mlk="less than a minute ago. ";
+		}else
+		{
+			mlk=Math.round(mlk*10)/10+" minutes ago.";
+		}
+		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Last saved "+mlk+" Confirm? (Y/N)","yellow");
+		editor.confirming=true;
+		editor.confirmingWhat=function() {
 				
 				$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
 				 {
-					existingDungeons=resp.split(",");
-					existingDungeons.splice(0,1);
-					var index=existingDungeons.indexOf(curDungeon.name);
-					LOAD_COUNTS[index]=curDungeon.numRooms;
+					tempExistingDungeons=resp.split(",");
+					tempExistingDungeons.splice(0,1);
+					for(var i=0;i<tempExistingDungeons.length;i++)
+					{
+						if(i%2)
+						{
+							LOAD_COUNTS.push(tempExistingDungeons[i]);
+						}else
+						{
+							existingDungeons.push(tempExistingDungeons[i]);
+						}
+					}
+					//var index=existingDungeons.indexOf(curDungeon.name);
+					//LOAD_COUNTS[index]=curDungeon.numRooms;
 					curDungeon.cleanSlate();
 					/*LOAD_COUNTS=new Array();
 					for( var i=0;i<existingDungeons.length;i++)
@@ -2564,7 +2610,7 @@ function mainUpdate()
 			console.log(OPTIONS.confirmationPopUps)
 			if(OPTIONS.confirmationPopUps)
 			{
-				popQuestion("Returning to main menu. Unsaved changes will be lost. Confirm?");
+				popQuestion("Returning to main menu. Unsaved changes will be lost. Last saved "+mlk+" Confirm? (Y/N)");
 			}
 		}
 	}
@@ -2584,6 +2630,7 @@ function mainUpdate()
 		editor.penDown=false;
 		editor.clearConfirm();
 		if(editMode){
+			curDungeon.hasEdited=true;
 			bConsoleBox.log("Welcome to edit mode. Hit H for help.");
 		}
 	}
