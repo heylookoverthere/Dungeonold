@@ -756,26 +756,31 @@ function dungeon(path)
 			if(this.roomZ>this.floors-2)
 			{
 				bConsoleBox.log("Already on top floor");
+				playSound("error");
 				return;
 			}
 			
 			if((this.roomX>this.width[this.roomZ+1]-1) || (this.roomY>this.height[this.roomZ+1]-1))
 			{
 				bConsoleBox.log("would be off that floor's map boundaries");
+				playSound("error");
 				return;
 			}
 			
 			if((limited) && (!this.rooms[this.roomZ+1][this.roomX][this.roomY].active)){
 				bConsoleBox.log("No active room above");
+				playSound("error");
 				return;
 			}
 			if((this.curRoom().hasStairs(true)) || (!limited))
 			{
 				this.roomZ++;
+				playSound("stairsup");
 				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
 			}else
 			{
 				bConsoleBox.log("No stairs going up.");
+				playSound("error");
 			}
 	
 		}else
@@ -783,28 +788,33 @@ function dungeon(path)
 			if(this.roomZ<1) 
 			{
 				bConsoleBox.log("Already on lowest floor");
+				playSound("error");
 				return
 			}
 			
 			if((this.roomX>this.width[this.roomZ-1]-1) || (this.roomY>this.height[this.roomZ-1]-1))
 			{
 				bConsoleBox.log("would be off that floor's map boundaries");
+				playSound("error");
 				return;
 			}
 			
 			if((!this.rooms[this.roomZ-1][this.roomX][this.roomY].active) && (limited))
 			{
 				bConsoleBox.log("No active room below");
+				playSound("error");
 				return;
 			}
 			
 			if((this.curRoom().hasStairs(false)) || (!limited))
 			{
 				this.roomZ--;
+				playSound("stairsdown");
 				if(limited){this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;}
 			}else
 			{
 				bConsoleBox.log("No stairs going down.");
+				playSound("error");
 			}
 
 	

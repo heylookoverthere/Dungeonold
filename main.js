@@ -70,6 +70,7 @@ function handleConTouchStart(evt) {
 			{
 				curDungeon.mapFloor=curDungeon.roomZ;
 				mode=2;
+				playSound("map");
 			}else if (mode==2)
 			{
 				mode=1;
@@ -2079,7 +2080,9 @@ function mainUpdate()
 	if(mapkey.check())
 	{
 		//console.log("look");
+		curDungeon.mapFloor=curDungeon.roomZ;
 		mode=2;
+		playSound("map");
 	}
 		
 	if(editMode)

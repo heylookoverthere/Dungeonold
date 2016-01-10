@@ -142,6 +142,7 @@ object.prototype.setup=function(id,par)
 			if((!this.on)&&(!miles.has[hasID.Lantern]))
 			{
 				bConsoleBox.log("Need the lantern!","yellow");
+				playSound("error");
 				return;
 			}
 			this.activate();
@@ -149,15 +150,18 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			this.on=!this.on;
+			
 			if(!this.on)
 			{
 				this.flame.flare.alive=false;
 				this.flame.alive=false;
+				
 			}else{
 				this.flame=new flame(this.room.lights);
 				this.flame.x=this.x*32+xOffset;//miles.x;
 				this.flame.y=this.y*32+yOffset-16;//miles.y;
 				this.flame.type=0;
+				playSound("lamp");
 			}
 		}
 		
@@ -311,7 +315,7 @@ object.prototype.setup=function(id,par)
 			editor.linkingFrom=this;
 		}
 		this.activate=function(){
-			playSound("switchhit");
+			playSound("switch");
 			this.on=!this.on
 			if(this.on)
 			{
@@ -325,9 +329,11 @@ object.prototype.setup=function(id,par)
 				if(this.dest[i].room.z<this.room.z)
 				{
 					bConsoleBox.log("You hear a sound from below");
+					playSound("switchhit");
 				}else if(this.dest[i].room.z>this.room.z)
 				{
 					bConsoleBox.log("You hear a sound from above");
+					playSound("switchhit");
 				}else
 				{
 					if(this.dest[i].room.x<this.room.x)
@@ -397,6 +403,7 @@ object.prototype.setup=function(id,par)
 		this.name="curtains";
 		this.activate=function(){
 			this.on=!this.on
+			playSound("curtains");
 			if(this.on)
 			{
 				this.curSprite= 1;
@@ -429,6 +436,7 @@ object.prototype.setup=function(id,par)
 			if(!miles.has[hasID.Hammer])
 			{
 				bConsoleBox.log("Only the hammer can destroy roadblocks!","yellow");
+				playSound("error");
 				return;
 			}
 			this.activate();
@@ -436,6 +444,7 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			this.on=false;
+			playSound("hammerpost");
 			if(this.on)
 			{
 				this.curSprite=0;

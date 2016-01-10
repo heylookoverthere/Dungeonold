@@ -687,6 +687,7 @@ function mouseClick(e) {  //represents the mouse
 				}
 			}
 				bConsoleBox.log("cannot reach that object!");
+				playSound("error");
 		}
 		//if clicking stairs, try to use them
 		if((tx>1) && (tx<18) && (ty>1) &&(ty<13)) //check for path!
