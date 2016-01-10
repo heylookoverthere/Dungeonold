@@ -494,6 +494,8 @@ function dungeon(path)
 							});
 				 }
 			})*/
+			var smoth="Dungeon/dungeons/"+curDungeon.name+"/score.txt";
+			$.post("/save/", {"data": 999000, "path": smoth}).done(function(response) { bConsoleBox.log("Created default high score file at " +smoth); });
 			bConsoleBox.log("refresh page before attempting to load another map.","yellow")
 		}
 		dung.lastSaved=new Date();
