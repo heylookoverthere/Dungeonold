@@ -86,10 +86,11 @@ function dungeon(path)
 				
 				if((purd) &&(purd.passable()) || (!limited))
 				{
-					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,3,false);
+					
+					
 					if(limited)
 					{
-						
+						var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,3,false);
 						
 						if((miles.x==purd.x) && (miles.y==3))
 						{
@@ -97,7 +98,7 @@ function dungeon(path)
 						}
 					}
 					
-					if((purd) &&(nard.length>0) || (!limited))
+					if((purd) &&(nard)&&(nard.length>0) || (!limited))
 					{
 						//console.log(purd);
 						if(limited)
@@ -147,10 +148,10 @@ function dungeon(path)
 				
 				if((purd) &&(purd.passable()) || (!limited))
 				{
-					var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,12,false);
+					
 					if(limited)
 					{
-						
+						var nard=this.curRoom().getPath(miles.x,miles.y,purd.x,12,false);
 						
 						if((miles.x==purd.x) && (miles.y==12))
 						{
@@ -158,7 +159,7 @@ function dungeon(path)
 						}
 					}
 					
-					if((purd) &&(nard.length>0)|| (!limited))
+					if((purd) &&(nard)&&(nard.length>0)|| (!limited))
 					{
 						if(limited)
 						{
@@ -206,10 +207,10 @@ function dungeon(path)
 				}
 				if((purd) && (purd.passable()) || (!limited))
 				{
-					var nard=this.curRoom().getPath(miles.x,miles.y,17,purd.y,false);
+					
 					if(limited)
 					{
-						
+						var nard=this.curRoom().getPath(miles.x,miles.y,17,purd.y,false);
 						
 						if((miles.y==purd.y) && (miles.x==17))
 						{
@@ -217,7 +218,7 @@ function dungeon(path)
 						}
 					}
 					
-					if((purd) &&(nard.length>0) || (!limited))
+					if((purd) &&(nard)&&(nard.length>0) || (!limited))
 					{
 						//console.log(purd);
 						if(limited)
@@ -268,17 +269,17 @@ function dungeon(path)
 				if((purd) &&(purd.passable()) || (!limited))
 				{
 					
-					var nard=this.curRoom().getPath(miles.x,miles.y,3,purd.y,false);
+					
 					if(limited)
 					{
-												
+						var nard=this.curRoom().getPath(miles.x,miles.y,3,purd.y,false);					
 						if((miles.y==purd.y) && (miles.x==3))
 						{
 							nard.push(0);
 						}
 					}
 					
-					if((purd) &&(nard.length>0) || (!limited))
+					if((purd) &&(nard)&&(nard.length>0) || (!limited))
 					{
 						//console.log(purd);
 							
