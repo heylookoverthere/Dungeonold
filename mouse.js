@@ -664,7 +664,8 @@ function mouseClick(e) {  //represents the mouse
 				}
 				if(nard[i].length>0)
 				{
-					if(!abort)
+					miles.go(nard[i][nard[i].length-1].x,nard[i][nard[i].length-1].y,meg);
+					/*if(!abort)
 					{
 						miles.x=nard[i][nard[i].length-1].x;
 						miles.y=nard[i][nard[i].length-1].y;
@@ -686,7 +687,7 @@ function mouseClick(e) {  //represents the mouse
 					}else if(miles.y<meg.y)
 					{
 						miles.dir=2;
-					}
+					}*/
 					return;
 				}
 			}
@@ -705,7 +706,10 @@ function mouseClick(e) {  //represents the mouse
 			{
 				if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.UpStair)
 				{
-					curDungeon.changeFloor(true,!editMode);
+					miles.onArrival=function()
+					{
+						curDungeon.changeFloor(true,!editMode);
+					}/*
 					if(miles.x>tx)
 					{
 						miles.dir=3;
@@ -721,10 +725,15 @@ function mouseClick(e) {  //represents the mouse
 						miles.dir=2;
 					}
 					miles.x=tx;
-					miles.y=ty;
+					miles.y=ty;*/
+					miles.go(tx,ty);
 				}else if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.DownStair)
 				{
-					curDungeon.changeFloor(false,!editMode);
+					miles.onArrival=function()
+					{
+						curDungeon.changeFloor(false,!editMode);
+					}
+					/*
 					if(miles.x>tx)
 					{
 						miles.dir=3;
@@ -740,10 +749,14 @@ function mouseClick(e) {  //represents the mouse
 						miles.dir=2;
 					}
 					miles.x=tx;
-					miles.y=ty;
+					miles.y=ty;*/
+					miles.go(tx,ty);
+					return;
 				}else if(curDungeon.curRoom().walkable(tx,ty))
 				{
-					if(miles.x>tx)
+					miles.go(tx,ty);
+					return;
+					/*if(miles.x>tx)
 					{
 						miles.dir=3;
 					}else if(miles.x<tx)
@@ -758,7 +771,7 @@ function mouseClick(e) {  //represents the mouse
 						miles.dir=2;
 					}
 					miles.x=tx;
-					miles.y=ty;
+					miles.y=ty;*/
 				}
 			}else
 			{
@@ -804,7 +817,39 @@ function mouseClick(e) {  //represents the mouse
 			
 			if(nard.length>0)
 			{
-				if((peg.orientation==0) || (peg.orientation==2))
+				
+				
+				//if((tx>1) && (tx<18)&&(ty>1) && (ty<12))
+				if(peg.orientation==0) 
+				{
+					miles.onArrival=function()
+					{
+						curDungeon.changeRoom(0,true);
+					}
+					miles.go(tx,ty+1);
+				}else if(peg.orientation==1) 
+				{
+					miles.onArrival=function()
+					{
+						curDungeon.changeRoom(1,true);
+					}
+					miles.go(tx-1,ty);
+				}else if(peg.orientation==2) 
+				{
+					miles.onArrival=function()
+					{
+						curDungeon.changeRoom(2,true);
+					}
+					miles.go(tx,ty-1);
+				}else if(peg.orientation==3) 
+				{
+					miles.onArrival=function()
+					{
+						curDungeon.changeRoom(this.dir,true);
+					}
+					miles.go(tx+1,ty);
+				}
+				/*if((peg.orientation==0) || (peg.orientation==2))
 				{
 					if((tx>1) && (tx<18))
 					{
@@ -817,7 +862,7 @@ function mouseClick(e) {  //represents the mouse
 						miles.y=ty;
 					}
 				}
-				curDungeon.changeRoom(peg.orientation,true);
+				curDungeon.changeRoom(peg.orientation,true);*/
 			}else
 			{
 				bConsoleBox.log("cannot reach that door!");	

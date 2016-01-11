@@ -1009,6 +1009,97 @@ miles.bombs=0;
 miles.wallet=250;
 miles.tileX;//todo
 miles.has=new Array();
+miles.destObj=null;
+miles.destX=0;
+miles.destY=0;
+miles.path=null; 
+miles.walkTrack=0;
+miles.walkSpeed=10;
+miles.going=false;
+miles.pathTrack=0;
+miles.onArrival=function()
+{
+}
+miles.go=function(x,y,obj)
+{
+	miles.destX=x;
+	miles.destY=y;
+	miles.path=curDungeon.curRoom().getPath(miles.x,miles.y,x,y,false);
+	miles.pathTrack=0;
+	if(obj)
+	{
+		miles.destObj=obj;
+	}
+	miles.going=true;
+}
+
+miles.update=function()
+{
+	if(this.going)
+	{
+		this.walkTrack++;
+		if((this.walkTrack>this.walkSpeed) && (this.path)) //if path. length==0, you're there. do function. 
+		{
+			if(this.path.length>0)
+			{
+				this.walkTrack=0;
+				if(this.path[this.pathTrack].x>this.x) //facing east
+				{
+					this.dir=1;
+				}
+				if(this.path[this.pathTrack].x<this.x) //facing west
+				{
+					this.dir=3;
+				}
+				if(this.path[this.pathTrack].y>this.y) //facing south
+				{
+					this.dir=2;
+				}
+				if(this.path[this.pathTrack].y<this.y) //facing north
+				{
+					this.dir=0;
+				}
+				this.x=this.path[this.pathTrack].x;
+				this.y=this.path[this.pathTrack].y;
+				this.pathTrack++;
+			}
+			if(this.pathTrack==this.path.length)
+			{
+				this.going=false;
+				this.walkTrack=0;
+				this.pathTrack=0;
+				this.path=null;
+				if(this.destObj)
+				{
+					if(this.destObj.x>this.x)
+					{
+						this.dir=1;
+					}else if(this.destObj.x<this.x)
+					{
+						this.dir=3;
+					}else if(this.destObj.y>this.y)
+					{
+						this.dir=2;
+					}else if(this.destObj.y<this.y)
+					{
+						this.dir=0;
+					}
+					if(this.destObj.playerUsable)
+					{
+						this.destObj.playerActivate();
+					}
+					this.destObj=null;
+				}
+				miles.onArrival();
+				miles.onArrival=function()
+				{
+				}
+			}
+		}
+	}
+
+}
+
 for(var i=0;i<numHas;i++)
 {
 	miles.has.push(false);
@@ -1271,6 +1362,7 @@ function convertSaves() //no effin clue if this will work. I suspect not.
 function copyDungeon()
 {
 	curDungeon.name=prompt("Enter new dungeon name");
+	curDungeon.saveExists=false;
 	if(curDungeon.name)
 	{
 		curDungeon.save();	
@@ -2564,6 +2656,8 @@ function mainUpdate()
 	{
 		
 	}	
+	
+	miles.update();
 	
 	if(escapekey.check()){
 		editor.penDown=false;
