@@ -617,7 +617,7 @@ function mouseClick(e) {  //represents the mouse
 			}
 		}
 		
-	}else // non-edit mode mouse stuff.
+	}else if(!miles.going)// non-edit mode mouse stuff.
 	{
 
 		var meg=isOverTiledList(curDungeon.curRoom().objects,32);
@@ -754,6 +754,7 @@ function mouseClick(e) {  //represents the mouse
 					return;
 				}else if(curDungeon.curRoom().walkable(tx,ty))
 				{
+					miles.onArrival=function(){};
 					miles.go(tx,ty);
 					return;
 					/*if(miles.x>tx)

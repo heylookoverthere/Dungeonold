@@ -749,19 +749,18 @@ object.prototype.setup=function(id,par)
 				//bullshitHack=true;
 				$.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
 				 {
-					existingDungeons=resp.split(",");
-					existingDungeons.splice(0,1);
-					LOAD_COUNTS=new Array();
-					for( var i=0;i<existingDungeons.length;i++)
-					 {
-						 var crmath="dungeons/"+existingDungeons[i]+"/"+"main.txt";
-								$.get(crmath, function(data) 
-								{	
-									var bata=data.split(",");
-									LOAD_COUNTS.push(Math.floor(bata[1]));
-									
-								});
-					 }
+					var tempExistingDungeons=resp.split(",");
+					tempExistingDungeons.splice(0,1);
+					for(var i=0;i<tempExistingDungeons.length;i++)
+					{
+						if(i%2)
+						{
+							LOAD_COUNTS.push(tempExistingDungeons[i]);
+						}else
+						{
+							existingDungeons.push(tempExistingDungeons[i]);
+						}
+					}
 				 } 
 				 )
 				mode=0;

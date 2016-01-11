@@ -5,11 +5,7 @@ var bullshitHack=true; //right click to link doors
 var existingDungeons=new Array();
 var countIndex=0;
 
-var linksprites=new Array();
-linksprites.push(Sprite("linkup"));
-linksprites.push(Sprite("linkright"));
-linksprites.push(Sprite("linkdown"));
-linksprites.push(Sprite("linkleft"));
+
 
 var bulbsprite=Sprite("bulb");
 var bulboffsprite=Sprite("bulboff");
@@ -1000,116 +996,23 @@ var randomkey= new akey("r");
 var mapkey=new akey("g");
 var saveaskey=new akey("u");
 
-var miles=new dude();
-miles.dir=0;
-miles.keys=0;
-miles.AI=false;
-miles.money=0;
-miles.bombs=0;
-miles.wallet=250;
-miles.tileX;//todo
-miles.has=new Array();
-miles.destObj=null;
-miles.destX=0;
-miles.destY=0;
-miles.path=null; 
-miles.walkTrack=0;
-miles.walkSpeed=6;
-miles.going=false;
-miles.pathTrack=0;
-miles.onArrival=function()
-{
-}
-miles.go=function(x,y,obj)
-{
-	miles.destX=x;
-	miles.destY=y;
-	miles.path=curDungeon.curRoom().getPath(miles.x,miles.y,x,y,false);
-	miles.pathTrack=0;
-	if(obj)
-	{
-		miles.destObj=obj;
-	}
-	miles.going=true;
-}
+var entities=new Array();
 
-miles.update=function()
-{
-	if(this.going)
-	{
-		this.walkTrack++;
-		if((this.walkTrack>this.walkSpeed) && (this.path)) //if path. length==0, you're there. do function. 
-		{
-			if(this.path.length>0)
-			{
-				this.walkTrack=0;
-				if(this.path[this.pathTrack].x>this.x) //facing east
-				{
-					this.dir=1;
-				}
-				if(this.path[this.pathTrack].x<this.x) //facing west
-				{
-					this.dir=3;
-				}
-				if(this.path[this.pathTrack].y>this.y) //facing south
-				{
-					this.dir=2;
-				}
-				if(this.path[this.pathTrack].y<this.y) //facing north
-				{
-					this.dir=0;
-				}
-				this.x=this.path[this.pathTrack].x;
-				this.y=this.path[this.pathTrack].y;
-				this.pathTrack++;
-			}
-			if(this.pathTrack==this.path.length)
-			{
-				this.going=false;
-				this.walkTrack=0;
-				this.pathTrack=0;
-				this.path=null;
-				if(this.destObj)
-				{
-					if(this.destObj.x>this.x)
-					{
-						this.dir=1;
-					}else if(this.destObj.x<this.x)
-					{
-						this.dir=3;
-					}else if(this.destObj.y>this.y)
-					{
-						this.dir=2;
-					}else if(this.destObj.y<this.y)
-					{
-						this.dir=0;
-					}
-					if(this.destObj.playerUsable)
-					{
-						this.destObj.playerActivate();
-					}
-					this.destObj=null;
-				}
-				miles.onArrival();
-				miles.onArrival=function()
-				{
-				}
-			}
-		}
-	}
+var miles= new entity();
+miles.isPlayer=true;
+miles.sprites=new Array();
+miles.sprites.push(Sprite("linkup"));
+miles.sprites.push(Sprite("linkright"));
+miles.sprites.push(Sprite("linkdown"));
+miles.sprites.push(Sprite("linkleft"));
 
-}
-
-for(var i=0;i<numHas;i++)
-{
-	miles.has.push(false);
-}
+entities.push(miles);
 miles.x=9;
 miles.y=12;
-miles.equip(legArmorList[Math.floor(Math.random()*legArmorList.length)]);
+/*miles.equip(legArmorList[Math.floor(Math.random()*legArmorList.length)]);
 miles.equip(chestArmorList[Math.floor(Math.random()*chestArmorList.length)]);
 miles.gun=miles.guns[0];
-miles.torchHand=1;
+miles.torchHand=1;*/
 
 //miles.tileX=221;
 //miles.y=221*tileSize;
@@ -1965,7 +1868,10 @@ function mainDraw() {
 		canvas.fillStyle="blue";
         canvas.fillRect(miles.x*32+xOffset,miles.y*32+yOffset,32,32);
 		canvas.fillStyle=ploj*/
-		linksprites[miles.dir].draw(canvas,miles.x*32+xOffset,miles.y*32+yOffset-14);
+		for(var i=0;i<entities.length;i++)
+		{
+			entities[i].sprites[entities[i].dir].draw(canvas,entities[i].x*32+xOffset,entities[i].y*32+yOffset-14);
+		}
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
@@ -2657,7 +2563,19 @@ function mainUpdate()
 		
 	}	
 	
-	miles.update();
+	if(!editMode)
+	{
+		for (var i=0;i<entities.length;i++)
+		{
+			if(!entities[i].exists)
+			{
+				entities.splice(i,1);
+				i--;
+				continue;
+			}
+			entities[i].update();
+		}
+	}
 	
 	if(escapekey.check()){
 		editor.penDown=false;
