@@ -50,7 +50,7 @@ function entity(croom)
 			this.kill();
 		}else
 		{
-			this.gotHurt=15;
+			this.gotHurt=60;
 		}
 	}
 	this.draw=function(can)
@@ -86,20 +86,37 @@ function entity(croom)
 				return; 
 			}
 		}
+		
 		if(this.isPlayer)
 		{
 			this.room=curDungeon.curRoom();
-			for(var i=0;i<this.room.objects.length;i++)
+		}
+		for(var i=0;i<this.room.objects.length;i++)
+		{
+			if(this.room.objects[i].type==ObjectID.Spikes)
 			{
-				if(this.room.objects[i].type==ObjectID.Spikes)
+				if((this.room.objects[i].on)&&(this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
 				{
-					if((this.room.objects[i].on)&&(this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
-					{
-						this.hurt(10); 
-					}
+					this.hurt(10); 
 				}
 			}
 		}
+		if(this.room.tiles[this.x][this.y].data==DungeonTileType.Hole)
+		{
+			if(curDungeon.roomZ==0){
+				bConsoleBox.log("can't fall any lower");
+				//damage and find nearest standable point. 
+			}else
+			{
+			console.log("player should fall!")
+			//playSound("fall");
+			/*if(this.isPlayer)
+			{
+				curDungeon.roomZ--;
+			}*/
+			}
+		}
+		
 		
 		if((this.AI==1) && (!this.going))
 		{

@@ -2576,12 +2576,13 @@ function mainUpdate()
 	{
 		for (var i=0;i<entities.length;i++)
 		{
+			entities[i].update();
 			if(!entities[i].exists)
 			{
 				entities.splice(i,1);
 				i--;
 			}
-			entities[i].update();
+			
 		}
 	}
 	
