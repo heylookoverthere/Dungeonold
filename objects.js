@@ -94,7 +94,7 @@ function object(oroom) //not a tile, not an enemy
 		{
 			return true;
 		}
-		if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker)|| (this.type==ObjectID.Peg)|| (this.type==ObjectID.Spikes))
+		if((this.type==ObjectID.BlueBlocker) || (this.type==ObjectID.RedBlocker)|| (this.type==ObjectID.Peg))//||(this.type==ObjectID.Spikes))
 		{
 			if(!this.on) {
 				return true;
@@ -653,7 +653,7 @@ object.prototype.setup=function(id,par)
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Spikes) {
 	    this.sprites=new Array();
-		this.alwaysWalkable=false;
+		this.alwaysWalkable=true;
 		this.on=true;
 		this.sprites.push(Sprite("spikes"));
 		this.sprites.push(Sprite("spikeslowered"));

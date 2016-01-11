@@ -44,6 +44,7 @@ function entity(croom)
 	{
 		if(this.gotHurt>0) {return;}
 		this.hp-=dmg;
+		playSound("playerhurt");
 		if (this.hp<1) 
 		{
 			this.kill();
@@ -92,9 +93,9 @@ function entity(croom)
 			{
 				if(this.room.objects[i].type==ObjectID.Spikes)
 				{
-					if((this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
+					if((this.room.objects[i].on)&&(this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
 					{
-						this.hurt(5); 
+						this.hurt(10); 
 					}
 				}
 			}
