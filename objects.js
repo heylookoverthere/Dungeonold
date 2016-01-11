@@ -357,13 +357,28 @@ object.prototype.setup=function(id,par)
 	}else if (this.type==ObjectID.PotStand) {
 		this.sprites=new Array();
 		this.alwaysWalkable=true;
+		this.playerUsable=false;
 		this.sprites.push(Sprite("potstand"));
 		this.name="Pot stand";
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Pot) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("pot"));
+		this.sprites.push(Sprite("shatter0"));
+		this.sprites.push(Sprite("shatter1"));
+		this.sprites.push(Sprite("shatter2"));
+		this.sprites.push(Sprite("shatter3"));
+		this.sprites.push(Sprite("shatter4"));
+		this.sprites.push(Sprite("shatter5"));
+		this.sprites.push(Sprite("shatter6"));
+		this.sprites.push(Sprite("shatter7"));
 		this.name="Pot";
+		this.activate=function()
+		{
+			playSound("shatter");
+			this.curSprite=1;
+			this.aniRate=3;
+		}
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Curtains) {
 		this.sprites=new Array();
@@ -628,6 +643,7 @@ object.prototype.setup=function(id,par)
 		this.alwaysWalkable=true;
 		this.sprites.push(Sprite("lantern"));
 	    this.name="Lantern";
+		this.playerUsable=true;
 		this.pickupable=true;
 		this.activate=function()
 		{
@@ -824,6 +840,20 @@ object.prototype.update=function()
 			if(this.curSprite>this.sprites.length-1)
 			{
 				this.curSprite=1;
+			}
+		}
+	}
+	if((this.type==ObjectID.Pot)&&(this.curSprite>0))
+	{
+		this.ani++;
+		if(this.ani>this.aniRate)
+		{
+			this.ani=0;
+			this.curSprite++
+			if(this.curSprite>this.sprites.length-1)
+			{
+				this.curSprite=0;
+				this.exists=false;
 			}
 		}
 	}

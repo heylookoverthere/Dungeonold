@@ -1271,7 +1271,13 @@ function convertSaves() //no effin clue if this will work. I suspect not.
 
 function copyDungeon()
 {
-	curDungeon.name=prompt("Enter new dungeon name");
+	var lordCromp=prompt("Enter new dungeon name");
+	if(lordCromp==null) {return;}
+	while (!acceptableName(lordCromp,false))
+	{
+		lordCromp=prompt("Try again.");
+		if(lordCromp==null) {return;}
+	}
 	curDungeon.saveExists=false;
 	if(curDungeon.name)
 	{
@@ -1470,6 +1476,7 @@ function actuallyStartGame()
 	
 	//curDungeon.loadFloor();
 	curDungeon.curRoom().explored=true;
+	miles.room=curDungeon.curRoom();
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
 	graph = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],false);
 	if(OPTIONS.musicOn){

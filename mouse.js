@@ -630,7 +630,7 @@ function mouseClick(e) {  //represents the mouse
 			return;
 				
 		}
-		var meg=isOverTiledList(curDungeon.curRoom().objects,32);
+		var meg=isOverTiledList(curDungeon.curRoom().objects,32,true);
 		if(meg)
 		{	
 			var nard=new Array();
@@ -977,19 +977,32 @@ isOverTiled= function(targ,cam,tileSize){ //is the mouse over the player/object
     return false;
 };
 
-isOverTiledList= function(targs,tileSize){ //is the mouse over the player/object 
+isOverTiledList= function(targs,tileSize,selective){ //is the mouse over the player/object 
 	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
 	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
-	for(var i=0;i<targs.length;i++)
+	if(!selective)
 	{
-		if((mX-xOffset>targs[i].x*tileSize) && (mX-xOffset<targs[i].x*tileSize+targs[i].width) &&(mY-yOffset>targs[i].y*tileSize) &&(mY-yOffset<targs[i].y*tileSize+targs[i].height))
+		for(var i=0;i<targs.length;i++)
 		{
-			return targs[i];
+			if((mX-xOffset>targs[i].x*tileSize) && (mX-xOffset<targs[i].x*tileSize+targs[i].width) &&(mY-yOffset>targs[i].y*tileSize) &&(mY-yOffset<targs[i].y*tileSize+targs[i].height))
+			{
+				return targs[i];
+			}
+			/*if((tx==targs[i].x) && (ty==targs[i].y))
+			{
+				return targs[i];
+			}*/
 		}
-		/*if((tx==targs[i].x) && (ty==targs[i].y))
+	}else
+	{
+		for(var i=targs.length-1;i>-1;i--)
 		{
-			return targs[i];
-		}*/
+			if((mX-xOffset>targs[i].x*tileSize) && (mX-xOffset<targs[i].x*tileSize+targs[i].width) &&(mY-yOffset>targs[i].y*tileSize) &&(mY-yOffset<targs[i].y*tileSize+targs[i].height)&&(targs[i].playerUsable))
+			{
+				return targs[i];
+			}
+		
+		}
 	}
     return null;
 };
