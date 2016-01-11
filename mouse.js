@@ -819,7 +819,8 @@ function mouseClick(e) {  //represents the mouse
 			{
 				
 				
-				//if((tx>1) && (tx<18)&&(ty>1) && (ty<12))
+				if((tx>0) && (tx<20)&&(ty>0) && (ty<14))
+				{
 				if(peg.orientation==0) 
 				{
 					miles.onArrival=function()
@@ -845,7 +846,7 @@ function mouseClick(e) {  //represents the mouse
 				{
 					miles.onArrival=function()
 					{
-						curDungeon.changeRoom(this.dir,true);
+						curDungeon.changeRoom(3,true);
 					}
 					miles.go(tx+1,ty);
 				}
@@ -863,6 +864,7 @@ function mouseClick(e) {  //represents the mouse
 					}
 				}
 				curDungeon.changeRoom(peg.orientation,true);*/
+				}
 			}else
 			{
 				bConsoleBox.log("cannot reach that door!");	
