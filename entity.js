@@ -7,6 +7,8 @@ function entity(croom)
 	this.AI=0;
 	this.x=4;
 	this.y=3;
+	this.falling=false;
+	this.fallingY=0;
 	this.room=null;
 	if(croom)
 	{
@@ -57,7 +59,7 @@ function entity(croom)
 	{
 		if(this.gotHurt%2==0)
 		{
-			this.sprites[this.dir].draw(can,this.x*32+xOffset,this.y*32+yOffset-14);
+			this.sprites[this.dir].draw(can,this.x*32+xOffset,this.y*32+yOffset-14-this.fallingY*2);
 		}
 	}
 	this.go=function(x,y,obj)
@@ -87,6 +89,16 @@ function entity(croom)
 			}
 		}
 		
+	
+		if(this.falling)
+		{
+			this.fallingY-=5;
+			if(this.fallingY<1)
+			{
+				this.falling=false;
+				this.fallingY=0;
+			}
+		}
 		if(this.isPlayer)
 		{
 			this.room=curDungeon.curRoom();
@@ -101,19 +113,23 @@ function entity(croom)
 				}
 			}
 		}
-		if(this.room.tiles[this.x][this.y].data==DungeonTileType.Hole)
+		if((this.room.tiles[this.x][this.y].data==DungeonTileType.Hole) &&(!this.falling))
 		{
-			if(curDungeon.roomZ==0){
+			if(curDungeon.roomZ==0)
+			{
 				bConsoleBox.log("can't fall any lower");
 				//damage and find nearest standable point. 
 			}else
 			{
-			console.log("player should fall!")
-			//playSound("fall");
-			/*if(this.isPlayer)
-			{
+				playSound("fall");
+				console.log("you fell down a floor!")
+				//Do better drawing?
+				this.falling=true;
+				this.fallingY=150;
 				curDungeon.roomZ--;
-			}*/
+				this.room=curDungeon.curRoom();
+				//this.room=curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY];
+				
 			}
 		}
 		
