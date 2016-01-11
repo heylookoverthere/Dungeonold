@@ -1876,7 +1876,7 @@ function mainDraw() {
 		canvas.fillStyle=ploj*/
 		for(var i=0;i<entities.length;i++)
 		{
-			if((entities[i].exists) && (entities[i].room.name==curDungeon.curRoom().name))
+			if((entities[i].exists) && (entities[i].room.name==curDungeon.curRoom().name)&&(entities[i].room.z==curDungeon.roomZ))
 			{
 				entities[i].draw(canvas);//.sprites[entities[i].dir].draw(canvas,entities[i].x*32+xOffset,entities[i].y*32+yOffset-14);
 			}

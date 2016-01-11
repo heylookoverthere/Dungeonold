@@ -97,7 +97,14 @@ function entity(croom)
 			{
 				this.falling=false;
 				this.fallingY=0;
+				
 			}
+			this.path=null;
+			this.going=false;
+			this.walkTrack=0;
+			this.destObj=null;
+			this.onArrival=function(){};
+			
 		}
 		if(this.isPlayer)
 		{
@@ -105,39 +112,63 @@ function entity(croom)
 		}
 		for(var i=0;i<this.room.objects.length;i++)
 		{
-			if(this.room.objects[i].type==ObjectID.Spikes)
+			if(this.fallingY<1)
 			{
-				if((this.room.objects[i].on)&&(this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
+		
+				if(this.room.objects[i].type==ObjectID.Spikes)
 				{
-					this.hurt(10); 
-				}
+					if((this.room.objects[i].on)&&(this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
+					{
+						this.hurt(10); 
+					}
+				}else if(this.room.objects[i].type==ObjectID.ToggleSwitch)
+				{
+					
+					if(this.isPlayer)//OPTION?
+					{
+						if((!this.room.objects[i].on)&&(this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
+						{
+							this.room.objects[i].playerActivate();
+						}
+					}
+				}	
 			}
 		}
 		if((this.room.tiles[this.x][this.y].data==DungeonTileType.Hole) &&(!this.falling))
 		{
-			if(curDungeon.roomZ==0)
+			
+			playSound("fall");
+			console.log("you fell down a floor!")
+			//Do better drawing?
+			this.falling=true;
+			this.fallingY=150;
+			if(this.isPlayer)
 			{
-				bConsoleBox.log("can't fall any lower");
-				//damage and find nearest standable point. 
+				if(curDungeon.roomZ==0)
+				{
+					bConsoleBox.log("can't fall any lower");
+					//damage and find nearest standable point. 
+				}else
+				{
+					curDungeon.roomZ--;
+					this.room=curDungeon.curRoom();
+				}
+			}else if (this.roomZ>0)
+			{
+				this.room=curDungeon.rooms[this.roomZ-1][this.roomX][this.roomY];
+
 			}else
 			{
-				playSound("fall");
-				console.log("you fell down a floor!")
-				//Do better drawing?
-				this.falling=true;
-				this.fallingY=150;
-				curDungeon.roomZ--;
-				this.room=curDungeon.curRoom();
-				//this.room=curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY];
-				
+				bConsoleBox.log("npc can't fall any lower");
 			}
+			//this.room=curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY];
 		}
 		
 		
 		if((this.AI==1) && (!this.going))
 		{
 			//this.go(Math.floor(Math.random()*12) need function to find walkable tile.
-			if(this.room.name==miles.room.name)
+			if((this.room.name==miles.room.name) && (this.room.z==miles.room.z))
 			{
 				var neddle=this.room.closestAdj(miles);
 				this.go(neddle.x,neddle.y)
