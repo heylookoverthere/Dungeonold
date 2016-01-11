@@ -74,7 +74,7 @@ function entity(croom)
 
 	this.update=function()
 	{
-		if(this.gotHurt>0)
+		if(this.gotHurt>0) //not so quick?
 		{
 			this.gotHurt--;
 		}
@@ -105,7 +105,8 @@ function entity(croom)
 			//this.go(Math.floor(Math.random()*12) need function to find walkable tile.
 			if(this.room.name==miles.room.name)
 			{
-				this.go(miles.x,miles.y)
+				var neddle=this.room.closestAdj(miles);
+				this.go(neddle.x,neddle.y)
 			}else
 			{
 				

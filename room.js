@@ -670,6 +670,12 @@ function room(I) { //room object
 		
 	}
 	
+	I.closestAdj=function(you,it)
+	{
+		//todo! return cloests walkable tile that is not the tile. 
+		return you;
+	}
+	
 	I.save=function(path)
 	{
 		if(I.active)
