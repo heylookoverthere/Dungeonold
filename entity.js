@@ -1,9 +1,17 @@
-function entity()
+function entity(croom)
 {
 	this.dir=0;
+	this.hp=100;
+	this.maxHp=100;
 	this.keys=0;
 	this.AI=0;
+	this.x=4;
+	this.y=3;
 	this.room=null;
+	if(croom)
+	{
+		this.room=croom;
+	}
 	this.sprites=new Array();
 	this.sprites.push(Sprite("oldman0"));
 	this.sprites.push(Sprite("oldman1"));
@@ -14,7 +22,6 @@ function entity()
 	this.bombs=0;
 	this.wallet=250;
 	this.exists=true; 
-	this.tileX;//todo
 	this.has=new Array();
 	this.destObj=null;
 	this.destX=0;
@@ -44,7 +51,7 @@ function entity()
 	{
 		if(!OPTIONS.UpdateAllRooms)
 		{
-			if((this.room) &&(this.room.name!=curDungeon.curRoom().name))
+			if((this.room) && (this.room.name!=curDungeon.curRoom().name))
 			{
 				return; 
 			}

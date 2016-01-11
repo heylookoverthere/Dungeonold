@@ -617,9 +617,19 @@ function mouseClick(e) {  //represents the mouse
 			}
 		}
 		
-	}else if(!miles.going)// non-edit mode mouse stuff.
+	}else // non-edit mode mouse stuff.
 	{
 
+		if(miles.going)
+		{
+			miles.going=false;
+			miles.path=null;
+			miles.onArrival=function(){};
+			miles.destObj=null;
+			bConsoleBox.log("stopped.");
+			return;
+				
+		}
 		var meg=isOverTiledList(curDungeon.curRoom().objects,32);
 		if(meg)
 		{	

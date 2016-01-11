@@ -1005,8 +1005,14 @@ miles.sprites.push(Sprite("linkup"));
 miles.sprites.push(Sprite("linkright"));
 miles.sprites.push(Sprite("linkdown"));
 miles.sprites.push(Sprite("linkleft"));
-
+ 
 entities.push(miles);
+
+var nancy=new entity();
+nancy.AI=1;
+nancy.room=curDungeon.curRoom();
+entities.push(nancy);
+
 miles.x=9;
 miles.y=12;
 /*miles.equip(legArmorList[Math.floor(Math.random()*legArmorList.length)]);
@@ -1449,7 +1455,7 @@ function actuallyStartGame()
 	camera.tileX=0;
 	camera.tileY=0;
 	miles.keys=0;
-	miles.AI=false;
+	miles.AI=0;
 	miles.money=0;
 	miles.bombs=0;
 	miles.wallet=250;
@@ -2571,7 +2577,6 @@ function mainUpdate()
 			{
 				entities.splice(i,1);
 				i--;
-				continue;
 			}
 			entities[i].update();
 		}
