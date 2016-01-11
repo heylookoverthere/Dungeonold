@@ -1876,7 +1876,10 @@ function mainDraw() {
 		canvas.fillStyle=ploj*/
 		for(var i=0;i<entities.length;i++)
 		{
-			entities[i].sprites[entities[i].dir].draw(canvas,entities[i].x*32+xOffset,entities[i].y*32+yOffset-14);
+			if((entities[i].exists) && (entities[i].room.name==curDungeon.curRoom().name))
+			{
+				entities[i].draw(canvas);//.sprites[entities[i].dir].draw(canvas,entities[i].x*32+xOffset,entities[i].y*32+yOffset-14);
+			}
 		}
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)

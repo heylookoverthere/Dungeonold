@@ -31,8 +31,33 @@ function entity(croom)
 	this.walkSpeed=6;
 	this.going=false;
 	this.pathTrack=0;
+	this.gotHurt=0;
+	this.kill=function()
+	{
+		this.exists=false;
+		this.alive=false;
+	}
 	this.onArrival=function()
 	{
+	}
+	this.hurt=function(dmg)
+	{
+		if(this.gotHurt>0) {return;}
+		this.hp-=dmg;
+		if (this.hp<1) 
+		{
+			this.kill();
+		}else
+		{
+			this.gotHurt=15;
+		}
+	}
+	this.draw=function(can)
+	{
+		if(this.gotHurt%2==0)
+		{
+			this.sprites[this.dir].draw(can,this.x*32+xOffset,this.y*32+yOffset-14);
+		}
 	}
 	this.go=function(x,y,obj)
 	{
@@ -49,6 +74,10 @@ function entity(croom)
 
 	this.update=function()
 	{
+		if(this.gotHurt>0)
+		{
+			this.gotHurt--;
+		}
 		if(!OPTIONS.UpdateAllRooms)
 		{
 			if((this.room) && (this.room.name!=curDungeon.curRoom().name))
@@ -59,6 +88,16 @@ function entity(croom)
 		if(this.isPlayer)
 		{
 			this.room=curDungeon.curRoom();
+			for(var i=0;i<this.room.objects.length;i++)
+			{
+				if(this.room.objects[i].type==ObjectID.Spikes)
+				{
+					if((this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
+					{
+						this.hurt(5); 
+					}
+				}
+			}
 		}
 		
 		if((this.AI==1) && (!this.going))
