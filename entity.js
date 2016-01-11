@@ -138,7 +138,7 @@ function entity(croom)
 		{
 			
 			playSound("fall");
-			console.log("you fell down a floor!")
+			//console.log("you fell down a floor!")
 			//Do better drawing?
 			this.falling=true;
 			this.fallingY=150;
@@ -152,6 +152,7 @@ function entity(croom)
 				{
 					curDungeon.roomZ--;
 					this.room=curDungeon.curRoom();
+					this.room.explored=true;
 				}
 			}else if (this.roomZ>0)
 			{

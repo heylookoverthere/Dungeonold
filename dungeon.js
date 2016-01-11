@@ -1458,7 +1458,7 @@ function dungeon(path)
 		var xFset=620;
 		var yFset=609;
 		var size=18;
-		
+		canvas.globalAlpha=1;
 		canvas.font = "16pt Calibri";
 		can.fillStyle="white";
 		var suffix="Who knows";
