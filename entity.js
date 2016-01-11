@@ -30,7 +30,7 @@ function entity(croom)
 	this.destY=0;
 	this.path=null; 
 	this.walkTrack=0;
-	this.walkSpeed=6;
+	this.walkSpeed=8;
 	this.going=false;
 	this.pathTrack=0;
 	this.gotHurt=0;
@@ -172,6 +172,7 @@ function entity(croom)
 			{
 				var neddle=this.room.closestAdj(miles);
 				this.go(neddle.x,neddle.y)
+				this.path.pop();
 			}else
 			{
 				

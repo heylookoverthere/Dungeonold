@@ -1000,6 +1000,7 @@ var entities=new Array();
 
 var miles= new entity();
 miles.isPlayer=true;
+miles.walkSpeed=6;
 miles.sprites=new Array();
 miles.sprites.push(Sprite("linkup"));
 miles.sprites.push(Sprite("linkright"));
@@ -1538,10 +1539,7 @@ function startGame(goolp)
 		}
 		checkLoadCount();*/
 		countIndex=existingDungeons.indexOf(curDungeon.name);
-		console.log(LOAD_COUNTS[countIndex]);
 		curDungeon.load();
-		
-		console.log(LOAD_COUNTS[countIndex]);
 		
 		function checkIfLoaded() 
 		{ 
@@ -1874,6 +1872,17 @@ function mainDraw() {
 		canvas.fillStyle="blue";
         canvas.fillRect(miles.x*32+xOffset,miles.y*32+yOffset,32,32);
 		canvas.fillStyle=ploj*/
+		this.entities.sort(function(a, b) //todo not this every frame. only when changes. 
+		{
+			if(a.y>b.y)
+			{
+				return 1;
+			}else if(a.y<b.y)
+			{
+				return -1;
+			}
+				return 0;
+		});
 		for(var i=0;i<entities.length;i++)
 		{
 			if((entities[i].exists) && (entities[i].room.name==curDungeon.curRoom().name)&&(entities[i].room.z==curDungeon.roomZ))

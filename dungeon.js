@@ -308,6 +308,7 @@ function dungeon(path)
 				playSound("error");
 			}
 		}
+		miles.room=curDungeon.curRoom();
 	}
 	
 	this.useDoor=function(which) //link to other doors

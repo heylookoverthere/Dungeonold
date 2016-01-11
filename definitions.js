@@ -189,7 +189,7 @@ OPTIONS.SFXVolume=0.1;
 OPTIONS.confirmationPopUps=true;
 OPTIONS.DoubleTapThreshold=400;
 OPTIONS.HoldTime=2000;
-OPTIONS.UpdateAllRooms=true;
+OPTIONS.UpdateAllRooms=false;//true;
 
 var editHistory=[];
 
