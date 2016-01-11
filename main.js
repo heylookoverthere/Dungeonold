@@ -1455,6 +1455,8 @@ function actuallyStartGame()
 {
 	isLoading=false;
 	mode=1;
+	miles.maxHp=100;
+	miles.hp=miles.maxHp;
 	curDungeon.timeStarted=new Date();
 	miles.x=9;
 	miles.y=12;
@@ -1476,6 +1478,7 @@ function actuallyStartGame()
 	
 	//curDungeon.loadFloor();
 	curDungeon.curRoom().explored=true;
+	curDungeon.hasEdited=false;
 	miles.room=curDungeon.curRoom();
 	graphboat = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],true);
 	graph = mapToGraph(curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY],false);

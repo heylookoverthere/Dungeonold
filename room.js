@@ -477,6 +477,15 @@ function room(I) { //room object
 	}
 	
     I.getPath = function(startX, startY, endX, endY,booat) {
+		if((startX==endX) && (startY==endY))
+		{
+			var maph={};
+			maph.x=startX;
+			maph.y=startY;
+			var crap=new Array();
+			crap.push(maph);
+			return crap;
+		}
 		//var snerd=I.getSubMap(0,0,ROOM_WIDTH,ROOM_HEIGHT);//(startX,startY,endX,endY);
 		var graph = mapToGraph(I,booat);
 		

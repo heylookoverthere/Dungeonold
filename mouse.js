@@ -708,6 +708,7 @@ function mouseClick(e) {  //represents the mouse
 		if((tx>1) && (tx<18) && (ty>1) &&(ty<13)) //check for path!
 		{
 			var nard=curDungeon.curRoom().getPath(miles.x,miles.y,tx,ty,false);
+			if(!nard) {nard=new Array();}
 			if((miles.x==tx) &&  (miles.y==ty))
 			{
 				nard.push(0);
@@ -765,7 +766,10 @@ function mouseClick(e) {  //represents the mouse
 				}else if(curDungeon.curRoom().walkable(tx,ty))
 				{
 					miles.onArrival=function(){};
-					miles.go(tx,ty);
+					if((miles.x!=tx) ||  (miles.y!=ty))
+					{
+						miles.go(tx,ty);
+					}
 					return;
 					/*if(miles.x>tx)
 					{
