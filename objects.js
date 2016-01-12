@@ -76,6 +76,7 @@ function object(oroom) //not a tile, not an enemy
 	this.room=oroom;
 	this.pickupable=false;
 	this.type=0;
+	this.hidden=false;
 	this.active=false;
 	this.linkDescriptions=new Array();
 	this.exists=true;
@@ -203,7 +204,7 @@ object.prototype.setup=function(id,par)
 		this.sprites.push( Sprite("chestopen"));
 		this.name="Chest";
 		//this.loot=0;
-		this.activate=function(){
+		this.playerActivate=function(){
 			if(this.curSprite==1) {return;}
 			playSound("chestopen");
 			playSound("itemfanfare");
@@ -264,7 +265,7 @@ object.prototype.setup=function(id,par)
 			{
 				bConsoleBox.log("You found some bombs!");
 				btext="You found some bombs!";
-				miles.has[hasID.Bombs]=true;
+				miles.has[hasID.Bomb]=true;
 				miles.bombs+=3;
 			}else if(this.loot==lootTable.Wallet)
 			{
@@ -287,7 +288,14 @@ object.prototype.setup=function(id,par)
 			buttons.push(mancy);
 			this.messagebox=mancy;
 		}
-		this.playerActivate=this.activate;
+		this.activate=function()
+		{
+			if(this.hidden)
+			{	
+				this.hidden=false;
+				playSound("secret");
+			}
+		}
 		this.activateEdit=function(){
 			editor.mode=editModes.ChestLoot;
 			editor.lootFor=this;
@@ -863,6 +871,7 @@ object.prototype.update=function()
 }
 object.prototype.draw=function(can,cam,xOffh,yOffh)
 {
+	if(this.hidden) {return;}
 	if(!xOffh) {xOffh=0;}
 	if(!yOffh) {yOffh=0;}
 	this.sprites[this.curSprite].draw(can, this.x*32+xOffh, this.y*32+yOffh);
