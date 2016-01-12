@@ -1029,6 +1029,7 @@ if(!OPTIONS.SafeMode)
 	nancy.chatterBank.push("have you ever seen an aardvark penis?");
 	nancy.chatterBank.push("Don't touch me. Nothing gives you that right.");
 	nancy.chatterBank.push("I wrote a poem for you, would you like to hear it? Roses are red / Violets are blue / I'm wearing sweatpants / To conceal my erection.");
+	nancy.chatterBank.push("I'm the reason this game has a 'safe mode' option.");
 }
 nancy.room=curDungeon.curRoom();
 entities.push(nancy);

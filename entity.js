@@ -184,12 +184,19 @@ function entity(croom)
 			this.fallingY-=5;
 			if(this.fallingY<1)
 			{
+				if(this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable)
+				{
+					//playSound("landing");
+					playSound("cavein");
+					this.room.tiles[this.x][this.y].data=DungeonTileType.Hole;
+				}
 				this.falling=false;
 				this.fallingY=0;
 				if(this.room.tiles[this.x][this.y].data!=DungeonTileType.Hole)
 				{
 					playSound("landing");
 				}
+				
 			}
 			this.path=null;
 			this.going=false;
@@ -236,57 +243,59 @@ function entity(croom)
 				}
 			}
 		}
-		if(this.room.tiles[this.x][this.y].data==DungeonTileType.Unstable)
+		if(this.fallingY<1)
 		{
-			
-			if((this.x!=this.lastX) || (this.y!=this.lastY))
+			if(this.room.tiles[this.x][this.y].data==DungeonTileType.Unstable)
 			{
-				this.room.tiles[this.x][this.y].data=DungeonTileType.ReallyUnstable;
-				playSound("unstable");
-				this.lastX=this.x;
-				this.lastY=this.y;
 				
-			}
-		}else if(this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable)
-		{
-			if((this.x!=this.lastX) || (this.y!=this.lastY))
-			{
-				this.room.tiles[this.x][this.y].data=DungeonTileType.Hole;
-				playSound("cavein");
-				//this.lastX=this.x;
-				//this.lastY=this.y;
-			}
-		}else if((this.room.tiles[this.x][this.y].data==DungeonTileType.Hole) &&(!this.falling))
-		{
-			
-			playSound("fall");
-			//console.log("you fell down a floor!")
-			//Do better drawing?
-			this.falling=true;
-			this.fallingY=150;
-			if(this.isPlayer)
-			{
-				if(curDungeon.roomZ==0)
+				if((this.x!=this.lastX) || (this.y!=this.lastY))
 				{
-					bConsoleBox.log("can't fall any lower");
-					//damage and find nearest standable point. 
+					this.room.tiles[this.x][this.y].data=DungeonTileType.ReallyUnstable;
+					playSound("unstable");
+					this.lastX=this.x;
+					this.lastY=this.y;
+					
+				}
+			}else if(this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable)
+			{
+				if((this.x!=this.lastX) || (this.y!=this.lastY))
+				{
+					this.room.tiles[this.x][this.y].data=DungeonTileType.Hole;
+					playSound("cavein");
+					//this.lastX=this.x;
+					//this.lastY=this.y;
+				}
+			}else if((this.room.tiles[this.x][this.y].data==DungeonTileType.Hole) &&(!this.falling))
+			{
+				
+				playSound("fall");
+				//console.log("you fell down a floor!")
+				//Do better drawing?
+				this.falling=true;
+				this.fallingY=150;
+				if(this.isPlayer)
+				{
+					if(curDungeon.roomZ==0)
+					{
+						bConsoleBox.log("can't fall any lower");
+						//damage and find nearest standable point. 
+					}else
+					{
+						curDungeon.roomZ--;
+						this.room=curDungeon.curRoom();
+						this.room.explored=true;
+					}
+				}else if (this.roomZ>0)
+				{
+					this.room=curDungeon.rooms[this.roomZ-1][this.roomX][this.roomY];
+
 				}else
 				{
-					curDungeon.roomZ--;
-					this.room=curDungeon.curRoom();
-					this.room.explored=true;
+					bConsoleBox.log("npc can't fall any lower");
 				}
-			}else if (this.roomZ>0)
-			{
-				this.room=curDungeon.rooms[this.roomZ-1][this.roomX][this.roomY];
-
-			}else
-			{
-				bConsoleBox.log("npc can't fall any lower");
+				//this.room=curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY];
 			}
-			//this.room=curDungeon.rooms[curDungeon.roomZ-1][curDungeon.roomX][curDungeon.roomY];
 		}
-		
 		
 		if((this.AI==1) && (!this.going))
 		{

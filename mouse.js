@@ -634,10 +634,11 @@ function mouseClick(e) {  //represents the mouse
 		
 	}else // non-edit mode mouse stuff.
 	{
-		for(var i=1;i<entities.length;i++)//don't include miles
+		for(var i=0;i<entities.length;i++)//don't include miles
 		{
 			if((entities[i].room.z==curDungeon.roomZ)&&(entities[i].room.x==curDungeon.roomX)&&(entities[i].room.y==curDungeon.roomY)&&(isOverTiled(entities[i],32)))
 			{//and next to player!
+				if(entities[i].isPlayer) {continue;}
 				playSound("textbox");
 				entities[i].talkBox=new textbox();
 				entities[i].talkBox.setup();

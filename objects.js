@@ -708,6 +708,8 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			//change music
+			//temp!
+			nancy.textBank.push("Nice, you found a shiney triangle. We're still stuck down here you know.");
 			playSound("heartcontainer");
 			var now=new Date().getTime();
 			var timeTaken=now-curDungeon.timeStarted.getTime();
