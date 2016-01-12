@@ -7,13 +7,17 @@ function entity(croom)
 	this.AI=0;
 	this.x=4;
 	this.y=3;
+	this.featherCount=0;
 	this.falling=false;
 	this.fallingY=0;
 	this.room=null;
+	this.equippedSprites=new Array();
+	this.equippedTrack=0;
 	if(croom)
 	{
 		this.room=croom;
 	}
+	this.status="not set";
 	this.sprites=new Array();
 	this.sprites.push(Sprite("oldman0"));
 	this.sprites.push(Sprite("oldman1"));
@@ -34,6 +38,7 @@ function entity(croom)
 	this.going=false;
 	this.pathTrack=0;
 	this.gotHurt=0;
+	this.has=new Array();
 	this.kill=function()
 	{
 		this.exists=false;
@@ -62,11 +67,23 @@ function entity(croom)
 			this.sprites[this.dir].draw(can,this.x*32+xOffset,this.y*32+yOffset-14-this.fallingY*2);
 		}
 	}
+	this.goHole=function(x,y,obj)
+	{
+		this.destX=x;
+		this.destY=y;
+		this.path=curDungeon.curRoom().getPath(this.x,this.y,x,y,false,false);
+		this.pathTrack=0;
+		if(obj)
+		{
+			this.destObj=obj;
+		}
+		this.going=true;
+	}
 	this.go=function(x,y,obj)
 	{
 		this.destX=x;
 		this.destY=y;
-		this.path=curDungeon.curRoom().getPath(this.x,this.y,x,y,false);
+		this.path=curDungeon.curRoom().getPath(this.x,this.y,x,y,false,true);
 		this.pathTrack=0;
 		if(obj)
 		{
@@ -131,6 +148,16 @@ function entity(croom)
 							this.room.objects[i].playerActivate();
 						}
 					}
+				}else if(this.room.objects[i].type==ObjectID.Pot)
+				{
+					
+					if(this.isPlayer)//OPTION?
+					{
+						if((this.room.objects[i].curSprite==0)&&(this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
+						{
+							this.room.objects[i].playerActivate();
+						}
+					}
 				}	
 			}
 		}
@@ -171,13 +198,135 @@ function entity(croom)
 			//this.go(Math.floor(Math.random()*12) need function to find walkable tile.
 			if((this.room.name==miles.room.name) && (this.room.z==miles.room.z))
 			{
-				var neddle=this.room.closestAdj(miles);
+				var neddle=miles;
 				this.go(neddle.x,neddle.y)
 				this.path.pop();
-			}else
+				this.status="Target is in the same room!";
+			}else if(this.room.z>miles.room.z) //find stairs (or hole?) down and head there
+			{	
+				this.status="Target is below";
+				if(this.room.hasStairs(false))
+				{
+					this.status+=" and there are stairs!";
+					this.onArrival=function()
+					{
+						this.room=curDungeon.rooms[this.room.z-1][this.room.x][this.room.y]
+					}
+					var nex=this.room.getStairs(false);
+					this.go(nex.x,nex.y);
+				}
+			}else if(this.room.z<miles.room.z) //find stairs up and head there
+			{
+				this.status="Target is above";
+				if(this.room.hasStairs(true))
+				{
+					this.status+=" and there are stairs!";
+					this.onArrival=function()
+					{
+						this.room=curDungeon.rooms[this.room.z+1][this.room.x][this.room.y]
+					}
+					var nex=this.room.getStairs(true)
+					this.go(nex.x,nex.y);
+				}
+			}else //you have the right floor.
 			{
 				
-			}
+				this.status="Target is on the same floor";
+				if((miles.room.y<this.room.y) && (this.room.getOpenDoor(0)))
+				{
+					this.status="he's to the north and there is an open door!";
+					var peg=this.room.getOpenDoor(0);
+					nard=this.room.getPath(this.x,this.y,peg.x,peg.y+1,false,true);
+					if((this.x==peg.x) &&  (this.y==peg.y+1))
+					{
+						nard.push(0);
+					}
+				}if((miles.room.x>this.room.x) && (this.room.getOpenDoor(1)))
+				{
+					this.status="he's to the east and there is an open door!";
+					var peg=this.room.getOpenDoor(1);
+					nard=this.room.getPath(this.x,this.y,peg.x-1,peg.y,false,true);
+					if((this.x==peg.x-1) &&  (this.y==peg.y))
+					{
+						nard.push(0);
+					}
+				}if((miles.room.y>this.room.y) && (this.room.getOpenDoor(2)))
+				{
+					this.status="he's to the south and there is an open door!";
+					var peg=this.room.getOpenDoor(2);
+					nard=this.room.getPath(this.x,this.y,peg.x,peg.y-1,false,true);
+					if((this.x==peg.x) &&  (this.y==peg.y-1))
+					{
+						nard.push(0);
+					}
+				} if((miles.room.x<this.room.x) && (this.room.getOpenDoor(3)))
+				{
+					this.status="he's to the west and there is an open door!";
+					var peg=this.room.getOpenDoor(3);
+					nard=this.room.getPath(this.x,this.y,peg.x+1,peg.y,false,true);
+					if((this.x==peg.x+1) &&  (this.y==peg.y))
+					{
+						nard.push(0);
+					}
+				}
+				if(nard.length>0)
+				{
+								
+					if(peg)
+					{
+						if(peg.orientation==0) 
+						{
+							this.onArrival=function()
+							{
+								//curDungeon.changeRoom(0,true);
+								if(this.room.y>0){
+									this.room=curDungeon.rooms[this.room.z][this.room.x][this.room.y-1]
+									this.y=12;
+									this.x=peg.x;
+								}
+							}
+							this.go(peg.x,peg.y+1);
+						}else if(peg.orientation==1) 
+						{
+							
+							this.onArrival=function()
+							{
+								if(this.room.x<curDungeon.getWidth()-1){
+									this.room=curDungeon.rooms[this.room.z][this.room.x+1][this.room.y]
+									this.x=2;
+									this.y=peg.y;
+								}
+							}
+							
+							this.go(peg.x-1,peg.y);
+						}else if(peg.orientation==2) 
+						{
+							this.onArrival=function()
+							{
+								if(this.room.y<curDungeon.getHeight()-1){
+									this.room=curDungeon.rooms[this.room.z][this.room.x][this.room.y+1]
+									this.y=2;
+									this.x=peg.x;
+								}
+							}
+							this.go(peg.x,peg.y-1);
+						}else if(peg.orientation==3) 
+						{
+							this.onArrival=function()
+							{
+								if(this.room.x>0){
+									this.room=curDungeon.rooms[this.room.z][this.room.x-1][this.room.y]
+									this.x=17;
+									this.y=peg.y;
+								}
+							}
+							this.go(peg.x+1,peg.y);
+						}
+					}
+				}
+				
+				
+			}	
 		}
 		if(this.going)
 		{
@@ -248,5 +397,6 @@ function entity(croom)
 	{
 		this.has.push(false);
 	}
+	this.has[5]=true;
 
 }

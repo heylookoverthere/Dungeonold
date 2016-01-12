@@ -306,9 +306,9 @@ function tileToCost(data, canSwim) {
 	}
 };
 
-function getCost(map,x,y)
+function getCost(map,x,y,avoidHoles)
 {
-	if(map.walkable(x,y))
+	if(map.walkable(x,y,avoidHoles))
 	{
 		return 1;
 	}else
@@ -317,13 +317,13 @@ function getCost(map,x,y)
 	}
 }
 
-function mapToGraph(map, canSwim) { 
+function mapToGraph(map, avoidHoles) { 
     var tilesArray = [];
     for( var i=0; i<map.width; ++i ) {
         var rowArray = [];
         for( var j=0; j<map.height; ++j ) {
             var tile = map.tiles[i][j];
-            var data = getCost(map,i,j);
+            var data = getCost(map,i,j,avoidHoles);
             /*for( var ii=-1; ii<2; ++ii ) {
                 for( var jj=-1; jj<2; ++jj) {
                     if( i+ii < 0 || i+ii >= ROOM_WIDTH || j+jj < 0 || j+jj >= ROOM_WIDTH ) {
@@ -476,7 +476,8 @@ function room(I) { //room object
 		I.copyStairs(clone);
 	}
 	
-    I.getPath = function(startX, startY, endX, endY,booat) {
+    I.getPath = function(startX, startY, endX, endY,booat,avoidHoles) {
+		//if(avoidHoles==null){avoidHoles=true;}
 		if((startX==endX) && (startY==endY))
 		{
 			var maph={};
@@ -487,7 +488,7 @@ function room(I) { //room object
 			return crap;
 		}
 		//var snerd=I.getSubMap(0,0,ROOM_WIDTH,ROOM_HEIGHT);//(startX,startY,endX,endY);
-		var graph = mapToGraph(I,booat);
+		var graph = mapToGraph(I,avoidHoles);
 		
 		return astar.search(graph.nodes, graph.nodes[startX][startY], graph.nodes[endX][endY]);
 	};
@@ -576,6 +577,18 @@ function room(I) { //room object
 		return false;
 	};
 	
+	I.getStairs=function(up)
+	{
+		for(var i=0;i<I.stairs.length;i++)
+		{
+			if((I.stairs[i]) && (I.stairs[i].up==up)&& (!I.stairs[i].hidden))
+			{
+				return I.stairs[i];
+			}
+		}
+		return null;
+	};
+	
 	I.recursiveFill=function(x,y,targID,newID)
 	{
 		if((x<0) || (x>I.width)||(y<0)||(y>I.height)) {return;}
@@ -616,9 +629,42 @@ function room(I) { //room object
 		return false;
 	}
 	
-	I.walkable=function(x,y){
+	I.walkable=function(x,y,avoidHoles,aplayer){
+		/*if((aplayer) && (aplayer.has[hasID.Feather]))
+		{
+			if(I.tiles[x][y].data==DungeonTileType.Hole)
+			{
+				if(aplayer.featherCount==0)
+				{
+					console.log("must jump a hole!");
+					aplayer.featherCount++;
+					return true;
+				}else
+				{
+					console.log("too many holes to jump");
+					return false;
+				}
+			}else if((I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
+			{
+				for(var i=0;i<I.objects.length;i++)
+				{
+					if((I.objects[i].x==x) && (I.objects[i].y==y))
+					{
+						if(!I.objects[i].walkable())
+						{
+							return false;
+						}
+					}
+				}
+				console.log("trash");
+				aplayer.featherCount=0;
+				return true;
+			}
+			return false;
+		}else
+		{*/
 			
-			if((I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||(I.tiles[x][y].data==DungeonTileType.Hole) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
+			if((I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||((I.tiles[x][y].data==DungeonTileType.Hole) && (!avoidHoles)) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
 			{
 				for(var i=0;i<I.objects.length;i++)
 				{
@@ -633,6 +679,7 @@ function room(I) { //room object
 				return true;
 			}
 			return false;
+		//}
 	}
 	
 	I.setStairs=function()
@@ -679,10 +726,77 @@ function room(I) { //room object
 		
 	}
 	
+	I.closestWalkable=function(x,y)
+	{
+		var ned={};
+		ned.x=x;
+		ned.y=y;
+		if((x<0) || (x>I.width)||(y<0)||(y>I.height)) {return null;}
+		if(I.walkable(x,y)) {return ned;}
+		ned=I.closestWalkable(x-1,y);
+		if(ned){return ned;}
+		ned=I.closestWalkable(x+1,y);
+		if(ned){return ned;}
+		ned=I.closestWalkable(x,y-1);
+		if(ned){return ned;}
+		ned=I.closestWalkable(x,y+1);
+		if(ned){return ned;}
+		return null;
+	}
+
+	
 	I.closestAdj=function(you,it)
 	{
-		//todo! return cloests walkable tile that is not the tile. 
-		return you;
+		//todo! return closest walkable tile that is not the tile. make list of walkable ajacents, then sort by distance to it?
+		var alist=new Array();
+		if(I.walkable(you.x-1,you.y))
+		{
+			var gurp={};
+			gurp.x=you.x+1;
+			gurp.y=you.y;
+			alist.push(gurp);
+		}
+		if(I.walkable(you.x-1,you.y))
+		{
+			var gurp={};
+			gurp.x=you.x-1;
+			gurp.y=you.y;
+			alist.push(gurp);
+		}
+		if(I.walkable(you.x,you.y+1))
+		{
+			var gurp={};
+			gurp.x=you.x;
+			gurp.y=you.y+1;
+			alist.push(gurp);
+		}
+		if(I.walkable(you.x,you.y-1))
+		{
+			var gurp={};
+			gurp.x=you.x;
+			gurp.y=you.y-1;
+			alist.push(gurp);
+		}
+		alist.sort(function(a, b) //todo not this every frame. only when changes. 
+		{
+			if(distance(a,it)>distance(b,it))
+			{
+				return 1;
+			}else if(distance(a,it)<distance(b,it))
+			{
+				return -1;
+			}else
+			{
+				return 0;
+			}
+			
+		
+		});
+		if(alist.length<1)
+		{
+				return null;
+		}
+		return alist[0];
 	}
 	
 	I.save=function(path)
@@ -1498,7 +1612,8 @@ editCursor.prototype.clearConfirm=function()
 	{
 		bConsoleBox.log("Nevermind","Yellow");
 	}
-		
+	this.grabbed=null;
+	this.penDown=false;
 	this.confirming=false;
 	this.confirmingWhat=null;
 	this.confirmed=false;

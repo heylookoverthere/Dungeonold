@@ -636,19 +636,19 @@ function mouseClick(e) {  //represents the mouse
 			var nard=new Array();
 			if(meg.y<curDungeon.curRoom().height-3)
 			{
-				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false));
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y+1,false,true));
 			}
 			if(meg.x<curDungeon.curRoom().width-3)
 			{
-				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x+1,meg.y,false));
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x+1,meg.y,false,true));
 			}
 			if(meg.x>3)
 			{
-				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x-1,meg.y,false));
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x-1,meg.y,false,true));
 			}
 			if(meg.y>3)
 			{
-				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y-1,false));
+				nard.push(curDungeon.curRoom().getPath(miles.x,miles.y,meg.x,meg.y-1,false,true));
 			}
 			if((meg.type!=ObjectID.Chest)&&(meg.type!=ObjectID.Sign))
 			{
@@ -707,7 +707,11 @@ function mouseClick(e) {  //represents the mouse
 		//if clicking stairs, try to use them
 		if((tx>1) && (tx<18) && (ty>1) &&(ty<13)) //check for path!
 		{
-			var nard=curDungeon.curRoom().getPath(miles.x,miles.y,tx,ty,false);
+			var nard=curDungeon.curRoom().getPath(miles.x,miles.y,tx,ty,false,true);
+			if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.Hole)
+			{
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,tx,ty,false,false);
+			}
 			if(!nard) {nard=new Array();}
 			if((miles.x==tx) &&  (miles.y==ty))
 			{
@@ -763,6 +767,14 @@ function mouseClick(e) {  //represents the mouse
 					miles.y=ty;*/
 					miles.go(tx,ty);
 					return;
+				}else if(curDungeon.curRoom().tiles[tx][ty].data==DungeonTileType.Hole)
+				{
+					miles.onArrival=function(){};
+					if((miles.x!=tx) ||  (miles.y!=ty))
+					{
+						miles.goHole(tx,ty);
+					}
+					return;
 				}else if(curDungeon.curRoom().walkable(tx,ty))
 				{
 					miles.onArrival=function(){};
@@ -801,28 +813,28 @@ function mouseClick(e) {  //represents the mouse
 			var nard;
 			if(peg.orientation==0) 
 			{
-				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y+1,false);
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y+1,false,true);
 				if((miles.x==peg.x) &&  (miles.y==peg.y+1))
 				{
 					nard.push(0);
 				}
 			}else if(peg.orientation==1) 
 			{
-				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x-1,peg.y,false);
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x-1,peg.y,false,true);
 				if((miles.x==peg.x-1) &&  (miles.y==peg.y))
 				{
 					nard.push(0);
 				}
 			}else if(peg.orientation==2) 
 			{
-				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y-1,false);
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x,peg.y-1,false,true);
 				if((miles.x==peg.x) &&  (miles.y==peg.y-1))
 				{
 					nard.push(0);
 				}
 			}else if(peg.orientation==3) 
 			{
-				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x+1,peg.y,false);
+				nard=curDungeon.curRoom().getPath(miles.x,miles.y,peg.x+1,peg.y,false,true);
 				if((miles.x==peg.x+1) &&  (miles.y==peg.y))
 				{
 					nard.push(0);

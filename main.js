@@ -1006,7 +1006,9 @@ miles.sprites.push(Sprite("linkup"));
 miles.sprites.push(Sprite("linkright"));
 miles.sprites.push(Sprite("linkdown"));
 miles.sprites.push(Sprite("linkleft"));
- 
+miles.equippedSprites.push(Sprite("helmet4"));
+miles.equippedSprites.push(Sprite("bomb1"));
+
 entities.push(miles);
 
 var nancy=new entity();
@@ -1238,6 +1240,7 @@ function drawGUI(can)
 		can.fillText(curDungeon.name + " "+curDungeon.numRooms+" rooms",8,22);
 		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,44);
 		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,62);
+		can.fillText("Nancy: "+nancy.status,508,62);
 		if(!curDungeon.curRoom().lampLighting)
 		{
 			bulbsprite.draw(can,812,110);
@@ -1256,6 +1259,23 @@ function drawGUI(can)
 		can.fillText("x"+miles.money,84+24,85);
 		bombsprite.draw(can,42,58);
 		can.fillText("x"+miles.bombs,42+24,85);
+		can.globalAlpha=0.75;
+		can.fillStyle="white";
+		canvas.fillRect(500,2,390,68);
+		can.fillStyle="blue";
+		canvas.fillRect(504,6,383,60);
+		can.fillStyle="white";
+		can.fillText("Nancy: "+nancy.status,508,24);
+		can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y,508,48);
+		can.globalAlpha=1;
+		can.fillStyle="white";
+		canvas.fillRect(808,76,40,40);
+		can.fillStyle="black";
+		canvas.fillRect(812,80,32,32);
+		if(miles.equippedTrack>0)
+		{
+			miles.equippedSprites[miles.equippedTrack].draw(can,812,80);
+		}
 	}
 }
 
@@ -1470,7 +1490,7 @@ function actuallyStartGame()
 	miles.wallet=250;
 	countIndex=existingDungeons.indexOf(curDungeon.name);
 	LOAD_COUNTS[countIndex]=curDungeon.numRooms;
-	miles.has=new Array();
+	
 	if(OPTIONS.musicOn)
 	{
 		document.getElementById("mainSong").play();
@@ -2740,8 +2760,18 @@ function mainUpdate()
 		thyme.tock=false
 	}
 	
-	 if(debugkey.check()) {
+	 if(debugkey.check())
+	 {
 		drawingPath=!drawingPath;
+		/*var mpu=curDungeon.curRoom().closestAdj(editor,miles);
+		if(mpu)
+		{
+			editor.x=mpu.x;
+			editor.y=mpu.y;
+		}else
+		{
+			console.log("no walkable adjacent space");
+		}*/
 	 }
 	 
 	
