@@ -186,7 +186,7 @@ function entity(croom)
 			{
 				if(this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable)
 				{
-					//playSound("landing");
+					playSound("landing");
 					playSound("cavein");
 					this.room.tiles[this.x][this.y].data=DungeonTileType.Hole;
 				}
@@ -302,10 +302,11 @@ function entity(croom)
 			//this.go(Math.floor(Math.random()*12) need function to find walkable tile.
 			if((this.room.name==miles.room.name) && (this.room.z==miles.room.z))
 			{
-				var neddle=miles.room.closestAdj(miles,this);
+				var neddle=miles;//.room.closestAdj(miles,this);
 				if((this.x!=neddle.x) || (this.y!=neddle.y))
 				{
 					this.go(neddle.x,neddle.y)
+					this.path.pop();
 					this.status="Target is in the same room!";
 				}else
 				{
@@ -327,7 +328,7 @@ function entity(croom)
 					}
 						
 				}
-				//this.path.pop();
+				
 				
 			}else if(this.room.z>miles.room.z) //find stairs (or hole?) down and head there
 			{	
@@ -493,6 +494,30 @@ function entity(croom)
 					this.walkTrack=0;
 					this.pathTrack=0;
 					this.path=null;
+					if((this.AI>0) && (this.tracking))
+					{
+						var bup=this.room.closestAdj(this.tracking,this);
+						if((this.x==bup.x) && (this.y==bup.y))
+						{
+							this.status="Arrived." 
+							
+							//if arrived at player, which we'll assume for now.
+							if((this.textTrack<this.getOffChest) && (!this.talkBox.exists))
+							{
+								playSound("textbox");
+								this.talkbox=new textbox();
+								this.talkBox.setup();
+								this.talkBox.x=200;
+								this.talkBox.y=200;
+								this.talkBox.textLim=104;
+								this.talkBox.log(this.textBank[this.textTrack]);
+								this.talkBox.hasFocus=true;
+								buttons.push(this.talkBox);
+								this.textTrack++;
+								//this.textBank.splice(0,1);
+							}
+						}
+					}
 					if(this.destObj)
 					{
 						if(this.destObj.x>this.x)

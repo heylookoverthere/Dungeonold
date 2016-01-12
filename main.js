@@ -1014,6 +1014,7 @@ nancy.AI=1;
 nancy.x=3;
 nancy.y=11;
 nancy.walkSpeed=6;
+nancy.tracking=miles;
 nancy.textBank.push("Oh thank god! I've been stuck down here for days! We have to find a way out!");
 nancy.textBank.push("My name is Nancy. I guess I'll follow you!");
 nancy.textBank.push("Lead on, I have no idea where to go.");
