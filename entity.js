@@ -1,3 +1,10 @@
+var equippedID={};
+equippedID.Bomb=1;
+equippedID.Bow=2;
+equippedID.Boomerang=3;
+
+var numEquippable=2;
+
 function entity(croom)
 {
 	this.dir=0;
@@ -13,7 +20,6 @@ function entity(croom)
 	this.falling=false;
 	this.fallingY=0;
 	this.room=null;
-	this.equippedSprites=new Array();
 	this.equippedTrack=0;
 	if(croom)
 	{
@@ -28,6 +34,7 @@ function entity(croom)
 	this.isPlayer=false;
 	this.money=0;
 	this.bombs=0;
+	this.arrows=0;
 	this.wallet=250;
 	this.exists=true; 
 	this.has=new Array();
@@ -40,11 +47,65 @@ function entity(croom)
 	this.going=false;
 	this.pathTrack=0;
 	this.gotHurt=0;
+	this.inventory=new Array();
 	this.has=new Array();
 	this.kill=function()
 	{
 		this.exists=false;
 		this.alive=false;
+	}
+	this.getUsableInventory=function()
+	{
+		var snart=new Array();
+		var tart=new object();
+		tart.type=ObjectID.PotStand;
+		tart.setup();
+		tart.sprites[0]=nullSprite;
+		snart.push(tart);//unequipped
+		if((this.has[hasID.Bomb]) && (this.bombs>0))
+		{
+			//console.log("has bombs");
+			var nart=new object();
+			nart.type=ObjectID.Bomb;
+			nart.sprites=new Array();
+			nart.sprites.push(bombsprite);
+			snart.push(nart);
+		}if((this.has[hasID.Bow]) && (this.arrows>0))
+		{
+			var nart=new object();
+			nart.type=ObjectID.Bow;
+			nart.sprites=new Array();
+			nart.sprites.push(objectSprites[ObjectID.Bow]);
+			snart.push(nart);
+		}
+		for(var i=0;i<this.inventory.length;i++)
+		{
+			if(this.inventory[i].usable)
+			{
+				snart.push(inventory[i]);
+			}
+		}
+		return snart;
+	}
+	this.cycleEquipped=function(up)
+	{
+		var mup=this.getUsableInventory();
+		if(up)
+		{
+			this.equippedTrack++;
+			if(this.equippedTrack>mup.length-1)
+			{
+				this.equippedTrack=mup.length-1;
+			}
+		}else
+		{
+			this.equippedTrack--;
+			if(this.equippedTrack<0)
+			{
+				this.equippedTrack=0;
+			}
+		}
+		
 	}
 	this.onArrival=function()
 	{
@@ -116,7 +177,10 @@ function entity(croom)
 			{
 				this.falling=false;
 				this.fallingY=0;
-				
+				if(this.room.tiles[this.x][this.y].data!=DungeonTileType.Hole)
+				{
+					playSound("landing");
+				}
 			}
 			this.path=null;
 			this.going=false;
@@ -168,8 +232,8 @@ function entity(croom)
 			
 			if((this.x!=this.lastX) || (this.y!=this.lastY))
 			{
-				console.log(this.x,this.y,this.lastX,this.lastY);
 				this.room.tiles[this.x][this.y].data=DungeonTileType.ReallyUnstable;
+				playSound("unstable");
 				this.lastX=this.x;
 				this.lastY=this.y;
 				
@@ -179,6 +243,7 @@ function entity(croom)
 			if((this.x!=this.lastX) || (this.y!=this.lastY))
 			{
 				this.room.tiles[this.x][this.y].data=DungeonTileType.Hole;
+				playSound("cavein");
 				//this.lastX=this.x;
 				//this.lastY=this.y;
 			}

@@ -198,6 +198,15 @@ function mouseWheel(e){
 					}
 				}
 				
+			}else //non-edit mousewheel stuff
+			{
+				if(delta>0)
+				{
+					miles.cycleEquipped(true);
+				}else if(delta<0)
+				{
+					miles.cycleEquipped(false);
+				}
 			}
 		}
 		

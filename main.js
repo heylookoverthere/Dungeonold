@@ -588,10 +588,10 @@ timy.doThings=function()
 		editor.confirming=true;
 		editor.confirmingWhat=function() {
 			countIndex=existingDungeons.indexOf(curDungeon.name);
-			console.log(LOAD_COUNTS[countIndex]);
+			//console.log(LOAD_COUNTS[countIndex]);
 			curDungeon.load();
 			
-			console.log(LOAD_COUNTS[countIndex]);
+			//console.log(LOAD_COUNTS[countIndex]);
 			
 			function checkIfLoaded() 
 			{ 
@@ -1006,8 +1006,6 @@ miles.sprites.push(Sprite("linkup"));
 miles.sprites.push(Sprite("linkright"));
 miles.sprites.push(Sprite("linkdown"));
 miles.sprites.push(Sprite("linkleft"));
-miles.equippedSprites.push(Sprite("helmet4"));
-miles.equippedSprites.push(Sprite("bomb1"));
 
 entities.push(miles);
 
@@ -1299,7 +1297,9 @@ function drawGUI(can)
 		canvas.fillRect(812,80,32,32);
 		if(miles.equippedTrack>0)
 		{
-			miles.equippedSprites[miles.equippedTrack].draw(can,812,80);
+			//miles.equippedSprites[miles.equippedTrack].draw(can,812,80);
+			var nep=miles.getUsableInventory();
+			nep[miles.equippedTrack].sprites[0].draw(can,812,80);
 		}
 	}
 }

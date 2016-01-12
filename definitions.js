@@ -166,6 +166,8 @@ objectSprites.push(Sprite("triforce"));
 objectSprites.push(Sprite("pegup"));
 objectSprites.push(Sprite("hammer"));
 
+var nullSprite=new Sprite("blank");
+
 var editModes={};
 editModes.Pen=0;
 editModes.Stamp=1;
