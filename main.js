@@ -1241,16 +1241,22 @@ function drawGUI(can)
 		can.fillStyle="yellow";
 		can.fillText(curDungeon.name + " "+curDungeon.numRooms+" rooms",8,22);
 		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,44);
+	
 		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,62);
 		can.fillStyle="white";
 		if(showNancyInfo)
 		{
+				var surd="";
+			if(nancy.going)
+			{
+				surd+=" Going";
+			}
 			canvas.fillRect(500,2,390,68);
 			can.fillStyle="blue";
 			canvas.fillRect(504,6,383,60);
 			can.fillStyle="white";
 			can.fillText("Nancy: "+nancy.status,508,24);
-			can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y,508,48);
+			can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y+surd,508,48);
 		}
 		if(!curDungeon.curRoom().lampLighting)
 		{
@@ -1273,13 +1279,18 @@ function drawGUI(can)
 		can.globalAlpha=0.75;
 		if(showNancyInfo)
 		{
+			var surd="";
+			if(nancy.going)
+			{
+				surd+=" Going "+nancy.destX+","+nancy.destY;
+			}
 			can.fillStyle="white";
 			canvas.fillRect(500,2,390,68);
 			can.fillStyle="blue";
 			canvas.fillRect(504,6,383,60);
 			can.fillStyle="white";
 			can.fillText("Nancy: "+nancy.status,508,24);
-			can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y,508,48);
+			can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y+surd,508,48);
 		}
 		can.globalAlpha=1;
 		can.fillStyle="white";
@@ -2777,7 +2788,7 @@ function mainUpdate()
 	
 	 if(debugkey.check())
 	 {
-		drawingPath=!drawingPath;
+		//drawingPath=!drawingPath;
 		showNancyInfo=!showNancyInfo;
 		/*var mpu=curDungeon.curRoom().closestAdj(editor,miles);
 		if(mpu)

@@ -195,7 +195,7 @@ function door(or,clone)
 		return doorSprite[this.type][this.orientation];
 	}
 	
-	door.prototype.passable=function()
+	door.prototype.passable=function(p)
 	{
 		if(editMode) {return true;}
 		if((this.type==0) || (this.type==doorType.Bombed))
@@ -204,14 +204,14 @@ function door(or,clone)
 		}
 		if((this.type==doorType.Locked)) 
 		{
-			if(miles.keys>0)
+			if(p.keys>0)
 			{
 				this.open();
-				miles.keys--;
+				p.keys--;
 				playSound("unlock");
 				bConsoleBox.log("Unlocked!");
 				return true;
-			}else
+			}else if(p.AI==0)
 			{
 				playSound("locked");
 				bConsoleBox.log("Need a key!");
@@ -547,12 +547,12 @@ function room(I) { //room object
 		return palst;
 	};
 	
-	I.getOpenDoor=function(dir)
+	I.getOpenDoor=function(dir,p)
 	{
 		if(!I.hasDoor(dir))		{return null;}
 		for(var i=0;i<I.exits.length;i++)
 		{
-			if((I.exits[i]) && (I.exits[i].orientation==dir) &&(I.exits[i].passable()))
+			if((I.exits[i]) && (I.exits[i].orientation==dir) &&(I.exits[i].passable(p)))
 			{
 				return I.exits[i];
 			}
@@ -664,7 +664,7 @@ function room(I) { //room object
 		}else
 		{*/
 			
-			if((I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||((I.tiles[x][y].data==DungeonTileType.Hole) && (!avoidHoles)) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
+			if((I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||(I.tiles[x][y].data==DungeonTileType.ReallyUnstable)||((I.tiles[x][y].data==DungeonTileType.Hole) && (!avoidHoles)) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
 			{
 				for(var i=0;i<I.objects.length;i++)
 				{
@@ -941,7 +941,7 @@ function room(I) { //room object
 		for (i=0;i<ROOM_WIDTH; i++){
 			for (j=0;j<ROOM_HEIGHT; j++)
 			{
-				I.tiles[i][j].data = tempstring[j+ROOM_HEIGHT*i];
+				I.tiles[i][j].data = Math.floor(tempstring[j+ROOM_HEIGHT*i]);
 				if((I.tiles[i][j].data>DungeonTileType.Door-1) && (I.tiles[i][j].data<DungeonTileType.Door+numDoorTypes)) //door
 				{
 					if((i==18))

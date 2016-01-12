@@ -7,6 +7,8 @@ function entity(croom)
 	this.AI=0;
 	this.x=4;
 	this.y=3;
+	this.lastX=4;
+	this.y=3;
 	this.featherCount=0;
 	this.falling=false;
 	this.fallingY=0;
@@ -71,7 +73,7 @@ function entity(croom)
 	{
 		this.destX=x;
 		this.destY=y;
-		this.path=curDungeon.curRoom().getPath(this.x,this.y,x,y,false,false);
+		this.path=this.room.getPath(this.x,this.y,x,y,false,false);
 		this.pathTrack=0;
 		if(obj)
 		{
@@ -83,7 +85,7 @@ function entity(croom)
 	{
 		this.destX=x;
 		this.destY=y;
-		this.path=curDungeon.curRoom().getPath(this.x,this.y,x,y,false,true);
+		this.path=this.room.getPath(this.x,this.y,x,y,false,true);
 		this.pathTrack=0;
 		if(obj)
 		{
@@ -125,7 +127,7 @@ function entity(croom)
 		}
 		if(this.isPlayer)
 		{
-			this.room=curDungeon.curRoom();
+			//this.room=curDungeon.curRoom();
 		}
 		for(var i=0;i<this.room.objects.length;i++)
 		{
@@ -158,10 +160,29 @@ function entity(croom)
 							this.room.objects[i].playerActivate();
 						}
 					}
-				}	
+				}
 			}
 		}
-		if((this.room.tiles[this.x][this.y].data==DungeonTileType.Hole) &&(!this.falling))
+		if(this.room.tiles[this.x][this.y].data==DungeonTileType.Unstable)
+		{
+			
+			if((this.x!=this.lastX) || (this.y!=this.lastY))
+			{
+				console.log(this.x,this.y,this.lastX,this.lastY);
+				this.room.tiles[this.x][this.y].data=DungeonTileType.ReallyUnstable;
+				this.lastX=this.x;
+				this.lastY=this.y;
+				
+			}
+		}else if(this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable)
+		{
+			if((this.x!=this.lastX) || (this.y!=this.lastY))
+			{
+				this.room.tiles[this.x][this.y].data=DungeonTileType.Hole;
+				//this.lastX=this.x;
+				//this.lastY=this.y;
+			}
+		}else if((this.room.tiles[this.x][this.y].data==DungeonTileType.Hole) &&(!this.falling))
 		{
 			
 			playSound("fall");
@@ -198,10 +219,17 @@ function entity(croom)
 			//this.go(Math.floor(Math.random()*12) need function to find walkable tile.
 			if((this.room.name==miles.room.name) && (this.room.z==miles.room.z))
 			{
-				var neddle=miles;
-				this.go(neddle.x,neddle.y)
-				this.path.pop();
-				this.status="Target is in the same room!";
+				var neddle=miles.room.closestAdj(miles,this);
+				if((this.x!=neddle.x) || (this.y!=neddle.y))
+				{
+					this.go(neddle.x,neddle.y)
+					this.status="Target is in the same room!";
+				}else
+				{
+					this.status="Arrived."
+				}
+				//this.path.pop();
+				
 			}else if(this.room.z>miles.room.z) //find stairs (or hole?) down and head there
 			{	
 				this.status="Target is below";
@@ -232,37 +260,37 @@ function entity(croom)
 			{
 				var nard=new Array();
 				this.status="Target is on the same floor";
-				if((miles.room.y<this.room.y) && (this.room.getOpenDoor(0)))
+				if((miles.room.y<this.room.y) && (this.room.getOpenDoor(0,this)))
 				{
 					this.status="he's to the north and there is an open door!";
-					var peg=this.room.getOpenDoor(0);
+					var peg=this.room.getOpenDoor(0,this);
 					nard=this.room.getPath(this.x,this.y,peg.x,peg.y+1,false,true);
 					if((this.x==peg.x) &&  (this.y==peg.y+1))
 					{
 						nard.push(0);
 					}
-				}if((miles.room.x>this.room.x) && (this.room.getOpenDoor(1)))
+				}if((miles.room.x>this.room.x) && (this.room.getOpenDoor(1,this)))
 				{
 					this.status="he's to the east and there is an open door!";
-					var peg=this.room.getOpenDoor(1);
+					var peg=this.room.getOpenDoor(1,this);
 					nard=this.room.getPath(this.x,this.y,peg.x-1,peg.y,false,true);
 					if((this.x==peg.x-1) &&  (this.y==peg.y))
 					{
 						nard.push(0);
 					}
-				}if((miles.room.y>this.room.y) && (this.room.getOpenDoor(2)))
+				}if((miles.room.y>this.room.y) && (this.room.getOpenDoor(2,this)))
 				{
 					this.status="he's to the south and there is an open door!";
-					var peg=this.room.getOpenDoor(2);
+					var peg=this.room.getOpenDoor(2,this);
 					nard=this.room.getPath(this.x,this.y,peg.x,peg.y-1,false,true);
 					if((this.x==peg.x) &&  (this.y==peg.y-1))
 					{
 						nard.push(0);
 					}
-				} if((miles.room.x<this.room.x) && (this.room.getOpenDoor(3)))
+				} if((miles.room.x<this.room.x) && (this.room.getOpenDoor(3,this)))
 				{
 					this.status="he's to the west and there is an open door!";
-					var peg=this.room.getOpenDoor(3);
+					var peg=this.room.getOpenDoor(3,this);
 					nard=this.room.getPath(this.x,this.y,peg.x+1,peg.y,false,true);
 					if((this.x==peg.x+1) &&  (this.y==peg.y))
 					{
@@ -354,6 +382,8 @@ function entity(croom)
 					{
 						this.dir=0;
 					}
+					this.lastX=this.x;
+					this.lastY=this.y;
 					this.x=this.path[this.pathTrack].x;
 					this.y=this.path[this.pathTrack].y;
 					this.pathTrack++;

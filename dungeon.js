@@ -85,7 +85,7 @@ function dungeon(path)
 					purd=this.curRoom().getSpecificDoor(miles.x-1,1,0);
 				}
 				
-				if((purd) &&(purd.passable()) || (!limited))
+				if((purd) &&(purd.passable(miles)) || (!limited))
 				{
 					
 					
@@ -147,7 +147,7 @@ function dungeon(path)
 					purd=this.curRoom().getSpecificDoor(miles.x-1,13,2);
 				}
 				
-				if((purd) &&(purd.passable()) || (!limited))
+				if((purd) &&(purd.passable(miles)) || (!limited))
 				{
 					
 					if(limited)
@@ -206,7 +206,7 @@ function dungeon(path)
 				{
 					purd=this.curRoom().getSpecificDoor(18,miles.y-1,1);
 				}
-				if((purd) && (purd.passable()) || (!limited))
+				if((purd) && (purd.passable(miles)) || (!limited))
 				{
 					
 					if(limited)
@@ -267,7 +267,7 @@ function dungeon(path)
 					purd=this.curRoom().getSpecificDoor(1,miles.y-1,3);
 				}
 				
-				if((purd) &&(purd.passable()) || (!limited))
+				if((purd) &&(purd.passable(miles)) || (!limited))
 				{
 					
 					
@@ -308,7 +308,10 @@ function dungeon(path)
 				playSound("error");
 			}
 		}
-		miles.room=curDungeon.curRoom();
+		if(limited)
+		{
+			miles.room=curDungeon.curRoom();
+		}
 	}
 	
 	this.useDoor=function(which) //link to other doors
@@ -849,6 +852,7 @@ function dungeon(path)
 				if(limited)
 				{
 					playSound("stairsup");
+					miles.room=curDungeon.curRoom();
 				}
 				this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;
 			}else
@@ -886,6 +890,7 @@ function dungeon(path)
 				if(limited)
 				{
 					playSound("stairsdown");
+					miles.room=curDungeon.curRoom();
 				}
 				if(limited){this.rooms[this.roomZ][this.roomX][this.roomY].explored=true;}
 			}else
