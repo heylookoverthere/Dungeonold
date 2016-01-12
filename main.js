@@ -1013,6 +1013,23 @@ var nancy=new entity();
 nancy.AI=1;
 nancy.x=3;
 nancy.y=11;
+nancy.walkSpeed=6;
+nancy.textBank.push("Oh thank god! I've been stuck down here for days! We have to find a way out!");
+nancy.textBank.push("My name is Nancy. I guess I'll follow you!");
+nancy.textBank.push("Lead on, I have no idea where to go.");
+nancy.getOffChest=2;
+nancy.chatterBank.push("In my youth I was a popular children's aardvark. Then...there was some unpleasantness. I'd rather not talk about it.");
+nancy.chatterBank.push("Did you hear that!?");
+nancy.chatterBank.push("It is said that in the far east there lives an elephant who never forgets...TO KILL.");
+nancy.chatterBank.push("Do you ever stop and wonder how many whales the ocean has?");
+if(!OPTIONS.SafeMode)
+{
+	nancy.chatterBank.push("Back in town I am a known homosexual.");
+	nancy.chatterBank.push("You have to sleep sometime!");
+	nancy.chatterBank.push("have you ever seen an aardvark penis?");
+	nancy.chatterBank.push("Don't touch me. Nothing gives you that right.");
+	nancy.chatterBank.push("I wrote a poem for you, would you like to hear it? Roses are red / Violets are blue / I'm wearing sweatpants / To conceal my erection.");
+}
 nancy.room=curDungeon.curRoom();
 entities.push(nancy);
 

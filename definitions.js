@@ -187,6 +187,7 @@ OPTIONS.showCracks=false;
 OPTIONS.showUnexploredDoors=false;
 OPTIONS.skipWallTiles=true;
 OPTIONS.musicVolume=0.2;
+OPTIONS.SafeMode=false;
 OPTIONS.SFXVolume=0.1;
 OPTIONS.confirmationPopUps=true;
 OPTIONS.DoubleTapThreshold=400;
@@ -506,6 +507,8 @@ function textbox()
 		//this.msg.push(firsttext);
 		this.exists=true;
 		holdEverything=true;
+		this.msg=new Array();
+		this.colors=new Array();
 		//this.colors.push("white");
 		this.x=x;
 		this.y=y;

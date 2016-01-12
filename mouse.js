@@ -256,8 +256,11 @@ function mouseClick(e) {  //represents the mouse
 			showMapList();
 		}else if((mX>449) &&(mX<470) && (mY>463)&&(mY<482))
 		{
-			bConsoleBox.log("Why are you touching his balls?","red");
-			//I should probably think of a good reason. 
+			if(!OPTIONS.SafeMode)
+			{
+				bConsoleBox.log("Why are you touching his balls?","red");
+				//I should probably think of a good reason. 
+			}
 			return;
 		}
 		if((mX>99) && (mX<175) && (mY>195))
@@ -577,7 +580,10 @@ function mouseClick(e) {  //represents the mouse
 				curDungeon.setRoom(curDungeon.roomZ,miniMapx,miniMapy);
 			}else
 			{
-				bConsoleBox.log("Learn to fucking click, cuntface.","Yellow");
+				if(!OPTIONS.SafeMode)
+				{
+					bConsoleBox.log("Learn to fucking click, cuntface.","Yellow");
+				}
 			} 
 		}
 		if((mX>25) && (mX<151) && (mY>68) &&(mY<113))
@@ -628,7 +634,30 @@ function mouseClick(e) {  //represents the mouse
 		
 	}else // non-edit mode mouse stuff.
 	{
-
+		for(var i=1;i<entities.length;i++)//don't include miles
+		{
+			if((entities[i].room.z==curDungeon.roomZ)&&(entities[i].room.x==curDungeon.roomX)&&(entities[i].room.y==curDungeon.roomY)&&(isOverTiled(entities[i],32)))
+			{//and next to player!
+				playSound("textbox");
+				entities[i].talkBox=new textbox();
+				entities[i].talkBox.setup();
+				entities[i].talkBox.x=200;
+				entities[i].talkBox.y=200;
+				entities[i].talkBox.textLim=104;
+				if(entities[i].textTrack<entities[i].textBank.length)
+				{
+					entities[i].talkBox.log(entities[i].textBank[entities[i].textTrack]);
+					entities[i].textTrack++;
+				}else
+				{
+					var k=Math.floor(Math.random()*entities[i].chatterBank.length);
+					entities[i].talkBox.log(entities[i].chatterBank[k]);
+				}
+				entities[i].talkBox.hasFocus=true;
+				buttons.push(entities[i].talkBox);
+				return;
+			}
+		}
 		if(miles.going)
 		{
 			miles.going=false;
@@ -997,8 +1026,8 @@ isOver= function(targ){ //is the mouse over the player/object
 
 
 
-isOverTiled= function(targ,cam,tileSize){ //is the mouse over the player/object 
- 	if((mX-xOffset>targ.x*tileSize) && (mX-xOffset<targ.x*tileSize+targs[i].width) &&(mY-yOffset>targ.y*tileSize) &&(mY-yOffset<targ.y*tileSize+targ.height)) {return true;}
+isOverTiled= function(targ,tileSize){ //is the mouse over the player/object 
+ 	if((mX-xOffset>targ.x*tileSize) && (mX-xOffset<targ.x*tileSize+targ.width) &&(mY-yOffset>targ.y*tileSize) &&(mY-yOffset<targ.y*tileSize+targ.height)) {return true;}
     return false;
 };
 

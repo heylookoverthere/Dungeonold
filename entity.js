@@ -16,10 +16,19 @@ function entity(croom)
 	this.y=3;
 	this.lastX=4;
 	this.y=3;
+	this.width=32;
+	this.height=48;
 	this.featherCount=0;
 	this.falling=false;
 	this.fallingY=0;
 	this.room=null;
+	this.tracker=false;
+	this.tracking=null;
+	this.talkBox=new textbox();
+	this.getOffChest=0; //how many elemets of talkBank should be said without prompting him
+	this.textBank=new Array();
+	this.textTrack=0;
+	this.chatterBank=new Array(); //random stuff said
 	this.equippedTrack=0;
 	if(croom)
 	{
@@ -291,7 +300,23 @@ function entity(croom)
 					this.status="Target is in the same room!";
 				}else
 				{
-					this.status="Arrived."
+					this.status="Arrived." 
+					//if arrived at player, which we'll assume for now.
+					if((this.textTrack<this.getOffChest) && (!this.talkBox.exists))
+					{
+						playSound("textbox");
+						this.talkbox=new textbox();
+						this.talkBox.setup();
+						this.talkBox.x=200;
+						this.talkBox.y=200;
+						this.talkBox.textLim=104;
+						this.talkBox.log(this.textBank[this.textTrack]);
+						this.talkBox.hasFocus=true;
+						buttons.push(this.talkBox);
+						this.textTrack++;
+						//this.textBank.splice(0,1);
+					}
+						
 				}
 				//this.path.pop();
 				
