@@ -1072,6 +1072,16 @@ function dungeon(path)
 					}
 				}
 			}
+			for(var g=0;g<entities.length;g++)
+			{
+				if((entities[g].room.z==curDungeon.roomZ) && (entities[g].room.name==curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].name))
+				{
+					if(entities[g].y>10)
+					{
+						entities[g].sprites[entities[g].dir].draw(can,(entities[g].x)*32+xOffset, (entities[g].y)*32+tyOffset)
+					}
+				}
+			}
 		}
 		
 		}
@@ -1132,6 +1142,16 @@ function dungeon(path)
 					}
 				}
 			}
+			for(var g=0;g<entities.length;g++)
+			{
+				if((entities[g].room.z==curDungeon.roomZ) && (entities[g].room.name==curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY+1].name))
+				{
+					if(entities[g].y<4)
+					{
+						entities[g].sprites[entities[g].dir].draw(can,(entities[g].x)*32+xOffset, (entities[g].y)*32+tyOffset)
+					}
+				}
+			}
 		}
 	var txOffset=-491;//left
 		if((this.roomX>0) && (this.rooms[this.roomZ][this.roomX-1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX-1][this.roomY].hidden))
@@ -1183,6 +1203,16 @@ function dungeon(path)
 					}
 				}
 			}
+			for(var g=0;g<entities.length;g++)
+			{
+				if((entities[g].room.z==curDungeon.roomZ) && (entities[g].room.name==curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX-1][curDungeon.roomY].name))
+				{
+					if(entities[g].x>15)
+					{
+						entities[g].sprites[entities[g].dir].draw(can,(entities[g].x)*32+txOffset, (entities[g].y)*32+yOffset)
+					}
+				}
+			}
 		}
 		var txOffset=791;//right
 		if((this.roomX<this.getWidth()-1) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX+1][this.roomY].hidden))
@@ -1231,6 +1261,16 @@ function dungeon(path)
 					if(simplicity.hidden)
 					{
 						dungeonTileSprite[DungeonTileType.GreenFloor].draw(can, (simplicity.x)*32+txOffset, (simplicity.y)*32+yOffset);
+					}
+				}
+			}
+			for(var g=0;g<entities.length;g++)
+			{
+				if((entities[g].room.z==curDungeon.roomZ) && (entities[g].room.name==curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX+1][curDungeon.roomY].name))
+				{
+					if(entities[g].x<4)
+					{
+						entities[g].sprites[entities[g].dir].draw(can,(entities[g].x)*32+txOffset, (entities[g].y)*32+yOffset)
 					}
 				}
 			}

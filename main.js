@@ -1013,6 +1013,8 @@ entities.push(miles);
 
 var nancy=new entity();
 nancy.AI=1;
+nancy.x=3;
+nancy.y=11;
 nancy.room=curDungeon.curRoom();
 entities.push(nancy);
 
@@ -1223,7 +1225,7 @@ $.post("/listdir/", {"path": "C:/JS/Dungeon/dungeons/"}, function(resp)
  )
  
 
- 
+ var showNancyInfo=false;
  
  
 
@@ -1240,7 +1242,16 @@ function drawGUI(can)
 		can.fillText(curDungeon.name + " "+curDungeon.numRooms+" rooms",8,22);
 		can.fillText("Floor: "+curDungeon.roomZ+"/"+(curDungeon.floors-1),8,44);
 		can.fillText("Room: "+curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY].name,8,62);
-		can.fillText("Nancy: "+nancy.status,508,62);
+		can.fillStyle="white";
+		if(showNancyInfo)
+		{
+			canvas.fillRect(500,2,390,68);
+			can.fillStyle="blue";
+			canvas.fillRect(504,6,383,60);
+			can.fillStyle="white";
+			can.fillText("Nancy: "+nancy.status,508,24);
+			can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y,508,48);
+		}
 		if(!curDungeon.curRoom().lampLighting)
 		{
 			bulbsprite.draw(can,812,110);
@@ -1260,13 +1271,16 @@ function drawGUI(can)
 		bombsprite.draw(can,42,58);
 		can.fillText("x"+miles.bombs,42+24,85);
 		can.globalAlpha=0.75;
-		can.fillStyle="white";
-		canvas.fillRect(500,2,390,68);
-		can.fillStyle="blue";
-		canvas.fillRect(504,6,383,60);
-		can.fillStyle="white";
-		can.fillText("Nancy: "+nancy.status,508,24);
-		can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y,508,48);
+		if(showNancyInfo)
+		{
+			can.fillStyle="white";
+			canvas.fillRect(500,2,390,68);
+			can.fillStyle="blue";
+			canvas.fillRect(504,6,383,60);
+			can.fillStyle="white";
+			can.fillText("Nancy: "+nancy.status,508,24);
+			can.fillText("Floor: "+nancy.room.z+" "+"RoomX: "+nancy.room.x+" RoomY: "+nancy.room.y,508,48);
+		}
 		can.globalAlpha=1;
 		can.fillStyle="white";
 		canvas.fillRect(808,76,40,40);
@@ -1895,7 +1909,8 @@ function mainDraw() {
 		{
 			editor.draw(canvas);
 		}
-	}else
+	}
+	if(true)
 	{
 		//miles.draw(canvas,camera);
 		/*var ploj=canvas.fillStyle;
@@ -2763,6 +2778,7 @@ function mainUpdate()
 	 if(debugkey.check())
 	 {
 		drawingPath=!drawingPath;
+		showNancyInfo=!showNancyInfo;
 		/*var mpu=curDungeon.curRoom().closestAdj(editor,miles);
 		if(mpu)
 		{

@@ -230,7 +230,7 @@ function entity(croom)
 				}
 			}else //you have the right floor.
 			{
-				
+				var nard=new Array();
 				this.status="Target is on the same floor";
 				if((miles.room.y<this.room.y) && (this.room.getOpenDoor(0)))
 				{
@@ -269,7 +269,7 @@ function entity(croom)
 						nard.push(0);
 					}
 				}
-				if(nard.length>0)
+				if((nard) && (nard.length>0))
 				{
 								
 					if(peg)
@@ -323,8 +323,10 @@ function entity(croom)
 							this.go(peg.x+1,peg.y);
 						}
 					}
+				}else
+				{
+					this.status="on same floor, but no open door";
 				}
-				
 				
 			}	
 		}
