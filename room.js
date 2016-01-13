@@ -859,45 +859,46 @@ function room(I) { //room object
 		tempstring=hempstring.split(";");
 		I.objects=new Array(); //get first bit of data, that's the number of objects. then loop that many times loading each objects x,y,type
 		var numo =Math.floor(tempstring[0]);
-		var ffset=3;
+		var ffset=4;
 		var mitly=0;
-		for(var i=1;i<numo*3+mitly;i+=ffset)
+		for(var i=1;i<numo*4+mitly;i+=ffset)
 		{
-			ffset=3;
+			ffset=4;
 			var higgins=new object(I);
 			higgins.x=Math.floor(tempstring[i]);
 			higgins.y=Math.floor(tempstring[i+1]);
 			higgins.type=Math.floor(tempstring[i+2]);
+			higgins.hidden=stringTrue(tempstring[i+3]);
 			higgins.room=I;
 			if(higgins.type==1)//sign
 			{
-				higgins.text=tempstring[i+3];
-				ffset=4;
+				higgins.text=tempstring[i+4];
+				ffset=5;
 				mitly++;
 				higgins.setup(1,higgins.text);
 			}else if(higgins.type==2)//chest
 			{
-				higgins.loot=Math.floor(tempstring[i+3]);
-				ffset=4;
+				higgins.loot=Math.floor(tempstring[i+4]);
+				ffset=5;
 				mitly++;
 				higgins.setup();
 			}else if(higgins.type==ObjectID.Lamp)//chest
 			{
-				higgins.on=!stringTrue(tempstring[i+3]);
-				ffset=4;
+				higgins.on=!stringTrue(tempstring[i+4]);
+				ffset=5;
 				mitly++;
 				higgins.setup();
 			}else if((higgins.type==ObjectID.BlueBlocker) ||(higgins.type==ObjectID.RedBlocker))
 			{
-				var nerp=tempstring[i+3]
+				var nerp=tempstring[i+4]
 				higgins.on=stringTrue(nerp);
-				ffset=4;
+				ffset=5;
 				mitly++;
 				higgins.setup();
 			}else if(higgins.type==ObjectID.ToggleSwitch)
 			{
-				var nerp=tempstring[i+3] //number of dests
-				var plerp=i+3;
+				var nerp=tempstring[i+4] //number of dests
+				var plerp=i+4;
 				var todestsp=1;
 				for(var j=0;j<nerp;j++)
 				{
@@ -913,7 +914,7 @@ function room(I) { //room object
 					plerp+=7; //move to the next dest
 					todestsp+=7;
 				}
-				ffset=3+todestsp;//j*7;
+				ffset=4+todestsp;//j*7;
 				mitly+=todestsp;
 				higgins.setup();
 			}else

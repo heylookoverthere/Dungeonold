@@ -467,7 +467,7 @@ function dungeon(path)
 		
 		dung.lastSaved=new Date();
 		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
-		var dunpth=curVersion+","+dung.floors+","+dung.numRooms+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
+		var dunpth="0.2a"+","+dung.floors+","+dung.numRooms+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
 			$.post("/save/", {"data": dunpth, "path": grmath}).done(function(response) 
 			{ 
 				bConsoleBox.log("Saved " +grmath); 

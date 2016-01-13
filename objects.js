@@ -909,6 +909,8 @@ object.prototype.stringify=function()
 	tempstring+=this.y;
 	tempstring+=";";
 	tempstring+=this.type;
+	tempstring+=";";
+	tempstring+=this.hidden;
 	if(this.type==1)
 	{
 		tempstring+=";";

@@ -12,7 +12,7 @@ var shiftdown=false;
 var graph=null;
 var MobileMode=false;
 var numSouns=0;
-var curVersion="0.1a";
+var curVersion="0.2a";
 
 
 function playSound(name){
