@@ -12,6 +12,8 @@ var shiftdown=false;
 var graph=null;
 var MobileMode=false;
 var numSouns=0;
+var curVersion="0.1a";
+
 
 function playSound(name){
     if(!OPTIONS.SFX)

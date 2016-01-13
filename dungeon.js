@@ -467,7 +467,7 @@ function dungeon(path)
 		
 		dung.lastSaved=new Date();
 		grmath="Dungeon/dungeons/"+this.name+"/main.txt";
-		var dunpth=dung.floors+","+dung.numRooms+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
+		var dunpth=curVersion+","+dung.floors+","+dung.numRooms+","+dung.startFloor+","+dung.startX+","+dung.startY+","+dung.lastSaved;
 			$.post("/save/", {"data": dunpth, "path": grmath}).done(function(response) 
 			{ 
 				bConsoleBox.log("Saved " +grmath); 
@@ -525,12 +525,18 @@ function dungeon(path)
 		{ 
 			//console.log("Detected "+data+" floors"); 
 			var smarf=data.split(",");
-			dung.floors=Math.floor(smarf[0]);
-			dung.startFloor=Math.floor(smarf[2]);
+			if(curVersion!=smarf[0])
+			{
+				isLoading=false;
+				bConsoleBox.log("WARNING: MAP VERSION NOT COMPATIBALE","red");
+				return;
+			}
+			dung.floors=Math.floor(smarf[1]);
+			dung.startFloor=Math.floor(smarf[3]);
 			dung.roomZ=dung.startFloor;
-			dung.startX=Math.floor(smarf[3]);
-			dung.startY=Math.floor(smarf[4]);
-			dung.lastSaved=new Date(smarf[5]);
+			dung.startX=Math.floor(smarf[4]);
+			dung.startY=Math.floor(smarf[5]);
+			dung.lastSaved=new Date(smarf[6]);
 			dung.roomX=dung.startX;
 			dung.roomY=dung.startY;
 			for(var i=0;i<dung.floors;i++)

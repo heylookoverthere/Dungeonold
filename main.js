@@ -1006,7 +1006,7 @@ miles.sprites.push(Sprite("linkup"));
 miles.sprites.push(Sprite("linkright"));
 miles.sprites.push(Sprite("linkdown"));
 miles.sprites.push(Sprite("linkleft"));
-
+miles.name="Miles";
 entities.push(miles);
 
 var nancy=new entity();
@@ -1039,7 +1039,9 @@ if(!OPTIONS.SafeMode)
 	nancy.chatterBank.push("I'm the reason this game has a 'safe mode' option.");
 }
 nancy.room=curDungeon.curRoom();
+nancy.name="Nancy";
 entities.push(nancy);
+
 
 miles.x=9;
 miles.y=12;

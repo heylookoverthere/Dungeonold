@@ -666,12 +666,12 @@ function mouseClick(e) {  //represents the mouse
 				entities[i].talkBox.textLim=104;
 				if(entities[i].textTrack<entities[i].textBank.length)
 				{
-					entities[i].talkBox.log(entities[i].textBank[entities[i].textTrack]);
+					entities[i].talkBox.log(entities[i].name+": "+entities[i].textBank[entities[i].textTrack]);
 					entities[i].textTrack++;
 				}else
 				{
 					var k=Math.floor(Math.random()*entities[i].chatterBank.length);
-					entities[i].talkBox.log(entities[i].chatterBank[k]);
+					entities[i].talkBox.log(entities[i].name+": "+entities[i].chatterBank[k]);
 				}
 				entities[i].talkBox.hasFocus=true;
 				buttons.push(entities[i].talkBox);

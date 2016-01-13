@@ -14,6 +14,7 @@ function entity(croom)
 	this.AI=0;
 	this.x=4;
 	this.y=3;
+	this.name="Waffles";
 	this.lastX=4;
 	this.y=3;
 	this.width=32;
@@ -510,7 +511,7 @@ function entity(croom)
 								this.talkBox.x=200;
 								this.talkBox.y=200;
 								this.talkBox.textLim=104;
-								this.talkBox.log(this.textBank[this.textTrack]);
+								this.talkBox.log(this.name+": "+this.textBank[this.textTrack]);
 								this.talkBox.hasFocus=true;
 								buttons.push(this.talkBox);
 								this.textTrack++;
