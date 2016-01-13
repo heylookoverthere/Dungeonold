@@ -1304,6 +1304,8 @@ function drawGUI(can)
 		can.fillText("x"+miles.money,84+24,85);
 		bombsprite.draw(can,42,58);
 		can.fillText("x"+miles.bombs,42+24,85);
+		arrowsprite.draw(can,42,90);
+		can.fillText("x"+miles.arrows,42+24,117);
 		can.globalAlpha=0.75;
 		if(showNancyInfo)
 		{
@@ -1329,6 +1331,7 @@ function drawGUI(can)
 		{
 			//miles.equippedSprites[miles.equippedTrack].draw(can,812,80);
 			var nep=miles.getUsableInventory();
+			//console.log(nep[miles.equippedTrack]);
 			nep[miles.equippedTrack].sprites[0].draw(can,812,80);
 		}
 	}

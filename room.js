@@ -222,9 +222,29 @@ function door(or,clone)
 	
 	door.prototype.draw=function(can,cam)
 	{
-		if((this.type!=doorType.Bombable) || (editMode))
+		if(this.type!=doorType.Bombable) 
 		{
 			this.getSprite().draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+		}else
+		{
+			if(this.orientation==0)
+			{
+				dungeonTileSprite[DungeonTileType.WallTop].draw(can,this.x*ROOM_TILE_SIZE+xOffset, this.y*ROOM_TILE_SIZE+yOffset);
+			}else if(this.orientation==1)
+			{
+				dungeonTileSprite[DungeonTileType.WallRight].draw(can,this.x*ROOM_TILE_SIZE+xOffset, this.y*ROOM_TILE_SIZE+yOffset);
+			}else if(this.orientation==2)
+			{
+				dungeonTileSprite[DungeonTileType.WallBottom].draw(can,this.x*ROOM_TILE_SIZE+xOffset, this.y*ROOM_TILE_SIZE+yOffset);
+			}else if(this.orientation==3)
+			{
+				dungeonTileSprite[DungeonTileType.WallLeft].draw(can,this.x*ROOM_TILE_SIZE+xOffset,this.y*ROOM_TILE_SIZE+yOffset);
+			}
+			if(editMode)
+			{
+				this.getSprite().draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+			}
+			
 		}
 	  
 	}
@@ -1596,7 +1616,7 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=22;
+	this.numObjectTypes=25;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();

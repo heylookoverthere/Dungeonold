@@ -64,6 +64,9 @@ ObjectID.Spikes=19;
 ObjectID.Triforce=20;
 ObjectID.Peg=21;
 ObjectID.Hammer=22;
+ObjectID.RedPotion=23;
+ObjectID.BluePotion=24;
+ObjectID.GreenPotion=25;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -93,6 +96,10 @@ function object(oroom) //not a tile, not an enemy
 	this.walkable=function()
 	{
 		if(this.alwaysWalkable)
+		{
+			return true;
+		}
+		if(this.hidden==true)
 		{
 			return true;
 		}
@@ -251,16 +258,31 @@ object.prototype.setup=function(id,par)
 			{
 				bConsoleBox.log("You found a red potion!");
 				btext="You found a red potion!";
+				var shinex=new object();
+				shinex.usable=true;
+				shinex.type=ObjectID.RedPotion;
+				shinex.setup();
+				miles.inventory.push(shinex);
 				
 			}else if(this.loot==lootTable.GreenPotion)
 			{
 				bConsoleBox.log("You found a green potion!");
 				btext="You found a green potion!";
+				var shinex=new object();
+				shinex.usable=true;
+				shinex.type=ObjectID.GreenPotion;
+				shinex.setup();
+				miles.inventory.push(shinex);
 				
 			}else if(this.loot==lootTable.BluePotion)
 			{
 				bConsoleBox.log("You found a blue potion!");
 				btext="You found a blue potion!";
+				var shinex=new object();
+				shinex.usable=true;
+				shinex.type=ObjectID.BluePotion;
+				shinex.setup();
+				miles.inventory.push(shinex);
 				
 			}else if(this.loot==lootTable.Bombs)
 			{
@@ -301,6 +323,55 @@ object.prototype.setup=function(id,par)
 			editor.mode=editModes.ChestLoot;
 			editor.lootFor=this;
 		}
+	}else if(this.type==ObjectID.RedPotion)
+	{
+		this.sprites=new Array();
+		this.sprites.push(Sprite("redpotion"));
+		this.name="Red potion";
+		this.pickupable=true;
+		this.alwaysWalkable=true;
+		this.usable=true;
+		this.activate=function()
+		{
+			bConsoleBox.log("You found a red potion!");
+			btext="You found a red potion!";
+			miles.inventory.push(this);
+			this.exists=false;
+		}
+		this.playerActivate=this.activate;
+	}else if(this.type==ObjectID.GreenPotion)
+	{
+		this.sprites=new Array();
+		this.sprites.push(Sprite("greenpotion"));
+		this.name="Green potion";
+		this.pickupable=true;
+		this.alwaysWalkable=true;
+		this.usable=true;
+		this.activate=function()
+		{
+			bConsoleBox.log("You found a green potion!");
+			btext="You found a green potion!";
+			miles.inventory.push(this);
+			this.exists=false;
+		}
+		this.playerActivate=this.activate;
+		
+	}else if(this.type==ObjectID.BluePotion)
+	{
+		this.sprites=new Array();
+		this.sprites.push(Sprite("bluepotion"));
+		this.name="Blue potion";
+		this.pickupable=true;
+		this.alwaysWalkable=true;
+		this.usable=true;
+		this.activate=function()
+		{
+			bConsoleBox.log("You found a blue potion!");
+			btext="You found a blue potion!";
+			miles.inventory.push(this);
+			this.exists=false;
+		}
+		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Key) {
 		this.sprites=new Array();
 		this.sprites.push(Sprite("key"));

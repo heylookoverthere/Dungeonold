@@ -77,6 +77,7 @@ function entity(croom)
 			//console.log("has bombs");
 			var nart=new object();
 			nart.type=ObjectID.Bomb;
+			nart.usable=true;
 			nart.sprites=new Array();
 			nart.sprites.push(bombsprite);
 			snart.push(nart);
@@ -84,6 +85,7 @@ function entity(croom)
 		{
 			var nart=new object();
 			nart.type=ObjectID.Bow;
+			nart.usable=true;
 			nart.sprites=new Array();
 			nart.sprites.push(objectSprites[ObjectID.Bow]);
 			snart.push(nart);
@@ -92,7 +94,7 @@ function entity(croom)
 		{
 			if(this.inventory[i].usable)
 			{
-				snart.push(inventory[i]);
+				snart.push(this.inventory[i]);
 			}
 		}
 		return snart;

@@ -34,6 +34,7 @@ var downarrowsprite=Sprite("downarrow");
 var uparrowsprite=Sprite("uparrow");
 var moneysprite=Sprite("rupee");
 var bombsprite=Sprite("bomb1");
+var arrowsprite=Sprite("arrow");
 
 var Darkness=14;
 
@@ -167,6 +168,10 @@ objectSprites.push(Sprite("spikes"));
 objectSprites.push(Sprite("triforce"));
 objectSprites.push(Sprite("pegup"));
 objectSprites.push(Sprite("hammer"));
+
+objectSprites.push(Sprite("redpotion"));
+objectSprites.push(Sprite("bluepotion"));
+objectSprites.push(Sprite("greenpotion"));
 
 var nullSprite=new Sprite("blank");
 
