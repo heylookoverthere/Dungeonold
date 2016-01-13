@@ -590,7 +590,7 @@ timy.doThings=function()
 			countIndex=existingDungeons.indexOf(curDungeon.name);
 			//console.log(LOAD_COUNTS[countIndex]);
 			curDungeon.load();
-			
+			editor.penDown=false;
 			//console.log(LOAD_COUNTS[countIndex]);
 			
 			function checkIfLoaded() 
@@ -1021,8 +1021,14 @@ nancy.textBank.push("Lead on, I have no idea where to go.");
 nancy.getOffChest=2;
 nancy.chatterBank.push("In my youth I was a popular children's aardvark. Then...there was some unpleasantness. I'd rather not talk about it.");
 nancy.chatterBank.push("Did you hear that!?");
+nancy.chatterBank.push("Let me know if you find a restroom. By the way I wouldn't recommend breaking that pot in the corner where I was trapped...");
 nancy.chatterBank.push("It is said that in the far east there lives an elephant who never forgets...TO KILL.");
 nancy.chatterBank.push("Do you ever stop and wonder how many whales the ocean has?");
+nancy.chatterBank.push("Sometimes at night I look up at the stars and wonder about the nature of outer space. Surely there must be a poorly programmed copyright infringing adventure awaiting us up there, if only we could reach it.")
+nancy.chatterBank.push("My butt itches.");
+nancy.chatterBank.push("I came here because I heard this dungeon housed great treasure. ...Triforce? No, I never heard of that. I'm here for the legendary Arybs Horsey Sauce recipe.");
+nancy.chatterBank.push("It is said that at the far northern border of the known world, there exists a magnificent wall of ice."); 
+nancy.chatterBank.push("While serious historians question if the Asparagus Emperor ever truly existed, he is revered as a god-king to this day by the people of Beoropolis");
 if(!OPTIONS.SafeMode)
 {
 	nancy.chatterBank.push("Back in town I am a known homosexual.");

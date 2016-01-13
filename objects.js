@@ -206,6 +206,7 @@ object.prototype.setup=function(id,par)
 		//this.loot=0;
 		this.playerActivate=function(){
 			if(this.curSprite==1) {return;}
+			if(this.hidden) {return;}
 			playSound("chestopen");
 			playSound("itemfanfare");
 			
@@ -871,7 +872,10 @@ object.prototype.update=function()
 }
 object.prototype.draw=function(can,cam,xOffh,yOffh)
 {
-	if(this.hidden) {return;}
+	if((editMode) && (this.hidden))
+	{
+		can.globalAlpha=0.5;
+	}else if(this.hidden) {return;}
 	if(!xOffh) {xOffh=0;}
 	if(!yOffh) {yOffh=0;}
 	this.sprites[this.curSprite].draw(can, this.x*32+xOffh, this.y*32+yOffh);
@@ -888,11 +892,13 @@ object.prototype.draw=function(can,cam,xOffh,yOffh)
 		}
 	}else if(this.type==ObjectID.Chest)
 	{
+		can.globalAlpha=1;
 		if ((this.messagebox) && (this.messagebox.exists))
 		{
 			lootSprites[this.loot].draw(can, this.x*32+xOffh, this.y*32+yOffh-20);
 		}
 	}
+	can.globalAlpha=1;
 }
 
 object.prototype.stringify=function()

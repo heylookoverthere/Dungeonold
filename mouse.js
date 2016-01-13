@@ -41,6 +41,21 @@ $(document).bind("contextmenu",function(e){
 							editor.grabbed=meg;
 						}
 					}
+				}else if(editor.mode==editModes.ChestLoot)
+				{
+					var meg=isOverTiledList(curDungeon.curRoom().objects,32);
+				
+					if((meg)&&(meg.type==ObjectID.Chest))
+					{
+						meg.hidden=!meg.hidden;
+						if(meg.hidden)
+						{
+							bConsoleBox.log("Hid chest at "+meg.x+","+meg.y);
+						}else
+						{
+							bConsoleBox.log("Unhid chest at "+meg.x+","+meg.y);
+						}
+					}
 				}else if(MobileMode)
 				{
 					bConsoleBox.log("Existing room will be overwritten. Confirm? (Y/N)","yellow");
@@ -407,6 +422,10 @@ function mouseClick(e) {  //represents the mouse
 					if((editor.x==curDungeon.curRoom().objects[k].x) && (editor.y==curDungeon.curRoom().objects[k].y))
 					{
 						glork=curDungeon.curRoom().objects[k];
+						if(glork.type==ObjectID.Chest)
+						{
+							glork.hidden=true;
+						}
 					}
 				}
 				//if over door
