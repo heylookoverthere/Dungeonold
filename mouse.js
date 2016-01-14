@@ -148,7 +148,7 @@ function mouseWheel(e){
 					{
 						editor.brushType++;
 						//console.log(editor.brushType);
-						if(editor.brushType>46)
+						if(editor.brushType>49)
 						{
 							editor.brushType=0;
 						}else if(editor.brushType==34)
@@ -198,7 +198,7 @@ function mouseWheel(e){
 						//console.log(editor.brushType);
 						if(editor.brushType<0)
 						{
-							editor.brushType=46;
+							editor.brushType=49;
 							//console.log("changed to "+editor.brushType);
 						}else if(editor.brushType==42)//skip water animation tiles
 						{
@@ -409,8 +409,8 @@ function mouseClick(e) {  //represents the mouse
 			return;
 		}
 	}
-	console.log(curDungeon.curRoom().objects.length);
-	console.log(curDungeon.curRoom().objects);
+//	console.log(curDungeon.curRoom().objects.length);
+	//console.log(curDungeon.curRoom().objects);
 	if((editMode))
 	{
 		if((tx>1) && (tx<18) && (ty>1) &&(ty<13))
@@ -639,7 +639,7 @@ function mouseClick(e) {  //represents the mouse
 			}else
 			{
 				editor.brushType++;
-				if(editor.brushType>33)
+				if(editor.brushType>49)
 				{
 					editor.brushType=0;
 				}else if(editor.brushType==21)//skip water animation tiles

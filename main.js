@@ -1031,8 +1031,8 @@ nancy.walkSpeed=6;
 nancy.tracking=miles;
 nancy.textBank.push("Oh thank god! I've been stuck down here for days! We have to find a way out!");
 nancy.textBank.push("My name is Nancy. I am a professor at the local university. Despite my vast knowledge I must say I find myself at something of a loss. I suppose I'll follow you!");
-nancy.textBank.push("Lead on, I have no idea where to go.");
 nancy.textBank.push("Let me know if you find a restroom. By the way I wouldn't recommend breaking that pot in the corner where I was trapped...");
+nancy.textBank.push("Lead on, I have no idea where to go.");
 nancy.getOffChest=2;
 nancy.chatterBank.push("In my youth I was a popular children's aardvark. Then...there was some unpleasantness. I'd rather not talk about it.");
 nancy.chatterBank.push("Did you hear that!?");
@@ -2224,7 +2224,7 @@ function mainUpdate()
 		}else
 		{
 			editor.brushType++;
-			if(editor.brushType>46)
+			if(editor.brushType>49)
 			{
 				editor.brushType=0;
 			}else if(editor.brushType>33)

@@ -70,6 +70,9 @@ ObjectID.GreenPotion=25;
 ObjectID.Poo=27;
 ObjectID.Table=26;
 ObjectID.TallLamp=28;
+ObjectID.StumpSeat=29;
+ObjectID.Statue=30;
+ObjectID.Bookcase=31;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -521,6 +524,57 @@ object.prototype.setup=function(id,par)
 		this.height=64;
 		this.sprites.push(Sprite("table1"));
 		this.name="Table";
+		this.playerActivate=this.activate;
+	}else if (this.type==ObjectID.StumpSeat) {
+		this.sprites=new Array();
+		this.alwaysWalkable=false;
+		this.playerUsable=false;
+		this.sprites.push(Sprite("stumpseat"));
+		this.name="Seat";
+		this.playerActivate=this.activate;
+	}else if (this.type==ObjectID.Bookcase) {
+		this.sprites=new Array();
+		this.alwaysWalkable=false;
+		this.playerUsable=false;
+
+		if(this.y==1)
+		{
+			this.sprites.push(Sprite("bookcase0"));
+			this.topLayer.push(Sprite("bookcase0top"));
+			this.width=96;
+			this.height=32;
+		}else if(this.x==18)
+		{
+			this.sprites.push(Sprite("bookcase1"));
+			this.width=64;
+			this.height=96;
+		}else if(this.y==13)
+		{
+			this.sprites.push(Sprite("bookcase2"));
+			this.width=96;
+			this.height=64;
+		}else if(this.x==1)
+		{
+			this.sprites.push(Sprite("bookcase3"));
+			this.width=64;
+			this.height=96;
+		}else
+		{
+			this.width=96;
+			this.height=32;
+			this.sprites.push(Sprite("bookcase0"));
+			this.topLayer.push(Sprite("bookcase0top"));
+		}
+		this.name="Bookcase";
+		this.playerActivate=this.activate;
+	}else if (this.type==ObjectID.Statue) {
+		this.sprites=new Array();
+		this.alwaysWalkable=false;
+		this.playerUsable=false;
+		//this.height=64;
+		this.sprites.push(Sprite("statue1"));
+		this.topLayer.push(Sprite("statue1top"));
+		this.name="Statue";
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Pot) {
 		this.sprites=new Array();
