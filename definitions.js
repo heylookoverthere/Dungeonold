@@ -172,6 +172,7 @@ objectSprites.push(Sprite("hammer"));
 objectSprites.push(Sprite("redpotion"));
 objectSprites.push(Sprite("bluepotion"));
 objectSprites.push(Sprite("greenpotion"));
+objectSprites.push(Sprite("poo"));
 
 var nullSprite=new Sprite("blank");
 

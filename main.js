@@ -1006,6 +1006,7 @@ miles.sprites.push(Sprite("linkup"));
 miles.sprites.push(Sprite("linkright"));
 miles.sprites.push(Sprite("linkdown"));
 miles.sprites.push(Sprite("linkleft"));
+miles.sprites.push(Sprite("linkholding"));
 miles.name="Miles";
 entities.push(miles);
 
@@ -1018,20 +1019,21 @@ nancy.tracking=miles;
 nancy.textBank.push("Oh thank god! I've been stuck down here for days! We have to find a way out!");
 nancy.textBank.push("My name is Nancy. I am a professor at the local university. Despite my vast knowledge I must say I find myself at something of a loss. I suppose I'll follow you!");
 nancy.textBank.push("Lead on, I have no idea where to go.");
+nancy.textBank.push("Let me know if you find a restroom. By the way I wouldn't recommend breaking that pot in the corner where I was trapped...");
 nancy.getOffChest=2;
 nancy.chatterBank.push("In my youth I was a popular children's aardvark. Then...there was some unpleasantness. I'd rather not talk about it.");
 nancy.chatterBank.push("Did you hear that!?");
 nancy.chatterBank.push("Let me know if you find a restroom. By the way I wouldn't recommend breaking that pot in the corner where I was trapped...");
 nancy.chatterBank.push("It is said that in the far east there lives an elephant who never forgets...TO KILL.");
 nancy.chatterBank.push("Do you ever stop and wonder how many whales the ocean has?");
-nancy.chatterBank.push("Sometimes at night I look up at the stars and wonder about the nature of outer space. Surely there must be a poorly programmed copyright infringing adventure awaiting us up there, if only we could reach it.")
+nancy.chatterBank.push("Sometimes at night I look up at the stars and wonder about the nature of outer space. Surely there must be a poorly programmed adventure awaiting us up there, if only we could reach it.")
 nancy.chatterBank.push("My butt itches.");
 nancy.chatterBank.push("I came here because I heard this dungeon housed great treasure. ...Triforce? No, I never heard of that. I'm here for the legendary Arybs Horsey Sauce recipe.");
 nancy.chatterBank.push("It is said that at the far northern border of the known world, there exists a magnificent wall of ice."); 
 nancy.chatterBank.push("While serious historians question if the Asparagus Emperor ever truly existed, he is revered as a god-king to this day by the people of Beoropolis");
-nancy.chatterBank.push("One of the few fragments of The Chronicles of Beoropolis known to exist in the west resides in the Library of Meullos. I have had the fortune of viewing it. It speaks of a legendary artifact known as Ed's Shovel.");
-nancy.chatterBank.push("Archaeology tells us frustratingly little about civilizations that did not yet have or value the written word. The earliest written records know to exist are no more than 2000 years old, their meanings mostly lost to time. ")
-nancy.chatterBank.push("Many of my colleges subscribe to the theory that the earliest human civilizations were wiped out around 22,000 years ago, in an as of yet unexplained extinction event. In fact there are those in the scientific community who claim there have been up to six extinction events, but their theories are without evidence and conveniently unprovable. ") //eventually this time should randomize slightly and change with time. the idea is it's when the NES cart battery died in the late 90's, in miliseconds. 
+nancy.chatterBank.push("One of the few fragments of The Chronicles of the Bear-kings known to exist in the west resides in the Library of Meullos. I have had the fortune of viewing it. It speaks of a legendary artifact known as Ed's Shovel.");
+nancy.chatterBank.push("Archaeology tells us frustratingly little about civilizations that did not yet have the written word. The earliest written records know to exist are no more than 2000 years old, their meanings mostly lost to time. ")
+nancy.chatterBank.push("Many of my colleges subscribe to the theory that the earliest human civilizations were wiped out around 22,000 years ago, in an as of yet unexplained extinction event. In fact there are those in the scientific community who claim there have been multiple extinction events, but their theories are without evidence and conveniently unprovable. ") //eventually this time should randomize slightly and change with time. the idea is it's when the NES cart battery died in the late 90's, in miliseconds. 
 if(!OPTIONS.SafeMode)
 {
 	nancy.chatterBank.push("Back in town I am a known homosexual.");

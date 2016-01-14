@@ -67,6 +67,7 @@ ObjectID.Hammer=22;
 ObjectID.RedPotion=23;
 ObjectID.BluePotion=24;
 ObjectID.GreenPotion=25;
+ObjectID.Poo=26;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -336,6 +337,7 @@ object.prototype.setup=function(id,par)
 			bConsoleBox.log("You found a red potion!");
 			btext="You found a red potion!";
 			miles.inventory.push(this);
+			miles.holding=this.sprites[0];
 			this.exists=false;
 		}
 		this.playerActivate=this.activate;
@@ -352,6 +354,7 @@ object.prototype.setup=function(id,par)
 			bConsoleBox.log("You found a green potion!");
 			btext="You found a green potion!";
 			miles.inventory.push(this);
+			miles.holding=this.sprites[0];
 			this.exists=false;
 		}
 		this.playerActivate=this.activate;
@@ -369,6 +372,7 @@ object.prototype.setup=function(id,par)
 			bConsoleBox.log("You found a blue potion!");
 			btext="You found a blue potion!";
 			miles.inventory.push(this);
+			miles.holding=this.sprites[0];
 			this.exists=false;
 		}
 		this.playerActivate=this.activate;
@@ -383,7 +387,26 @@ object.prototype.setup=function(id,par)
 			playSound("key");
 			this.exists=false;
 			bConsoleBox.log("Aquired a key!");
+			miles.holding=this.sprites[0];
 			miles.keys++;
+		}
+		this.playerActivate=this.activate;
+	}else if(this.type==ObjectID.Poo)
+	{
+		this.sprites=new Array();
+		this.sprites.push(Sprite("poo"));
+		this.name="Poop";
+		this.pickupable=true;
+		this.alwaysWalkable=true;
+		this.usable=true;
+		this.activate=function()
+		{
+			playSound("itemfanfare");
+			bConsoleBox.log("You've found... the professor's leavings. Gross.");
+			btext="You've found... the professor's leavings. Gross.";
+			miles.holding=this.sprites[0];
+			miles.inventory.push(this);
+			this.exists=false;
 		}
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.ToggleSwitch) {
@@ -659,6 +682,7 @@ object.prototype.setup=function(id,par)
 		{
 			playSound("itemfanfare");
 			bConsoleBox.log("You found a heart container!");
+			miles.holding=this.sprites[0];
 			this.exists=false;
 			miles.maxHp+=20;
 			miles.hp+=20;
@@ -674,6 +698,7 @@ object.prototype.setup=function(id,par)
 		{
 			playSound("itemfanfare");
 			bConsoleBox.log("You found the Roc's Feather! Eventually it might let you jump.");
+			miles.holding=this.sprites[0];
 			this.exists=false;
 			miles.has[hasID.Feather]=true;
 		}
@@ -692,6 +717,7 @@ object.prototype.setup=function(id,par)
 		{
 			playSound("itemfanfare");
 			bConsoleBox.log("You found the Bow! It's totally useless for now!");
+			miles.holding=this.sprites[0];
 			this.exists=false;
 			miles.has[hasID.Bow]=true;
 		}
@@ -709,6 +735,7 @@ object.prototype.setup=function(id,par)
 			{
 				bConsoleBox.log("You found your first bombs!");
 				playSound("itemfanfare");
+				miles.holding=this.sprites[0];
 			}else
 			{
 				bConsoleBox.log("You found some bombs!");
@@ -730,6 +757,7 @@ object.prototype.setup=function(id,par)
 		{
 			playSound("itemfanfare");
 			bConsoleBox.log("You found the lantern. You can light torches with it.");
+			miles.holding=this.sprites[0];
 			this.exists=false;
 			miles.has[hasID.Lantern]=true;
 		}
@@ -744,6 +772,7 @@ object.prototype.setup=function(id,par)
 		{
 			playSound("itemfanfare");
 			bConsoleBox.log("You found the hammer!");
+			miles.holding=this.sprites[0];
 			this.exists=false;
 			miles.has[hasID.Hammer]=true;
 		}
@@ -784,6 +813,7 @@ object.prototype.setup=function(id,par)
 		this.sprites.push(Sprite("triforce1"));
 		this.sprites.push(Sprite("triforce2"));
 		this.sprites.push(Sprite("triforce3"));
+		
 	    this.name="Triforce";
 		this.activate=function()
 		{
@@ -798,6 +828,7 @@ object.prototype.setup=function(id,par)
 			//this.x-=1;
 			//this.y-=1;
 			//pickup thing
+			//miles.holding=this.sprites[0];
 			if(timeTaken<curDungeon.bestTime)
 			{
 				arecord=true;
@@ -874,6 +905,7 @@ object.prototype.setup=function(id,par)
 		this.sprites.push(Sprite("rumham"));
 	    this.name="RUM HAM";
 		bConsoleBox.log("You found the legendary Rum Ham!");
+		miles.holding=this.sprites[0];
 		//miles.has all
 		this.playerActivate=this.activate;
 	}

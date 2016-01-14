@@ -137,10 +137,19 @@ function entity(croom)
 	}
 	this.draw=function(can)
 	{
-		if(this.gotHurt%2==0)
+		
+		if((this.isPlayer) && (this.holding))
 		{
-			this.sprites[this.dir].draw(can,this.x*32+xOffset,this.y*32+yOffset-14-this.fallingY*2);
+			this.sprites[4].draw(can,this.x*32+xOffset,this.y*32+yOffset-14-this.fallingY*2);
+			this.holding.draw(can,this.x*32+xOffset,this.y*32+yOffset-14-16-this.fallingY*2);
+		}else
+		{
+			if(this.gotHurt%2==0)
+			{
+				this.sprites[this.dir].draw(can,this.x*32+xOffset,this.y*32+yOffset-14-this.fallingY*2);
+			}
 		}
+		
 	}
 	this.goHole=function(x,y,obj)
 	{

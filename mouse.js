@@ -678,6 +678,10 @@ function mouseClick(e) {  //represents the mouse
 				return;
 			}
 		}
+		if(miles.holding)
+		{
+			miles.holding=false;
+		}
 		if(miles.going)
 		{
 			miles.going=false;
