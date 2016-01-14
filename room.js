@@ -1196,7 +1196,6 @@ function room(I) { //room object
 	  
 	I.darkenAdj=function(can,rxOffset,ryOffset) 
 	{
-
 		if((I.lampLighting) && (!editMode))
 		{
 			var lamps=0;

@@ -616,9 +616,12 @@ object.prototype.setup=function(id,par)
 		this.name="Pot";
 		this.activate=function()
 		{
-			playSound("shatter");
-			this.curSprite=1;
-			this.aniRate=3;
+			if(this.curSprite==0)
+			{
+				playSound("shatter");
+				this.curSprite=1;
+				this.aniRate=3;
+			}
 		}
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Curtains) {

@@ -1352,7 +1352,7 @@ function drawGUI(can)
 		var cont=0;
 		can.globalAlpha=1;
 	}else
-	{	
+	{	can.globalAlpha=1;
 		drawHearts(miles,can);
 		objectSprites[3].draw(can,-6,58);
 		can.fillText("x"+miles.keys,18,85);
