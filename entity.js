@@ -28,6 +28,7 @@ function entity(croom)
 	this.talkBox=new textbox();
 	this.getOffChest=0; //how many elemets of talkBank should be said without prompting him
 	this.textBank=new Array();
+	this.textConditions=new Array();
 	this.textTrack=0;
 	this.chatterBank=new Array(); //random stuff said
 	this.equippedTrack=0;
@@ -36,6 +37,7 @@ function entity(croom)
 		this.room=croom;
 	}
 	this.status="not set";
+	
 	this.sprites=new Array();
 	this.sprites.push(Sprite("prof0"));
 	this.sprites.push(Sprite("prof1"));
@@ -176,6 +178,35 @@ function entity(croom)
 		this.going=true;
 	}
 
+	this.say=function(saywhat)
+	{
+		playSound("textbox");
+		this.talkBox=new textbox();
+		this.talkBox.setup();
+		this.talkBox.x=200;
+		this.talkBox.y=200;
+		this.talkBox.textLim=104;
+		if(saywhat==null)
+		{
+			if((this.textTrack<this.textBank.length) && (this.textConditions[this.textTrack]()))
+			{
+				this.talkBox.log(this.name+": "+this.textBank[this.textTrack]);
+				this.textTrack++;
+
+			}else
+			{
+				var k=Math.floor(Math.random()*this.chatterBank.length);
+				this.talkBox.log(this.name+": "+this.chatterBank[k]);
+			}
+		}else
+		{
+			this.talkBox.log(this.name+": "+saywhat);
+		}
+		this.talkBox.hasFocus=true;
+		buttons.push(this.talkBox);
+		return;
+	}
+	
 	this.update=function()
 	{
 		if(this.gotHurt>0) //not so quick?
@@ -565,6 +596,6 @@ function entity(croom)
 	{
 		this.has.push(false);
 	}
-	this.has[5]=true;
+	//this.has[5]=true;
 
 }

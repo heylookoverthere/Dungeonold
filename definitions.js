@@ -43,7 +43,7 @@ randomPhrases.push("I dunno much about computers other than the one I got at my 
 randomPhrases.push("You know those guitars that are like....double guitars?");
 randomPhrases.push("Sometimes, cats can be afraid of cucumbers. But sometimes not.");
 
-var numHas=10;
+var numHas=12;
 
 var hasID={};
 hasID.Map=0;
@@ -57,6 +57,7 @@ hasID.Flippers=7;
 hasID.Boots=8;
 hasID.Compass=9;
 hasID.MasterKey=10;
+hasID.Poo=11;
 
 
 var LightLevels=new Array();

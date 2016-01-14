@@ -569,7 +569,7 @@ function mouseClick(e) {  //represents the mouse
 						}
 					}else
 					{
-						console.log("making object");
+						//console.log("making object");
 						makeObject(tx,ty,curDungeon.curRoom(),editor.objectType,text);
 					}
 				}
@@ -673,24 +673,7 @@ function mouseClick(e) {  //represents the mouse
 			if((entities[i].room.z==curDungeon.roomZ)&&(entities[i].room.x==curDungeon.roomX)&&(entities[i].room.y==curDungeon.roomY)&&(isOverTiled(entities[i],32)))
 			{//and next to player!
 				if(entities[i].isPlayer) {continue;}
-				playSound("textbox");
-				entities[i].talkBox=new textbox();
-				entities[i].talkBox.setup();
-				entities[i].talkBox.x=200;
-				entities[i].talkBox.y=200;
-				entities[i].talkBox.textLim=104;
-				if(entities[i].textTrack<entities[i].textBank.length)
-				{
-					entities[i].talkBox.log(entities[i].name+": "+entities[i].textBank[entities[i].textTrack]);
-					entities[i].textTrack++;
-				}else
-				{
-					var k=Math.floor(Math.random()*entities[i].chatterBank.length);
-					entities[i].talkBox.log(entities[i].name+": "+entities[i].chatterBank[k]);
-				}
-				entities[i].talkBox.hasFocus=true;
-				buttons.push(entities[i].talkBox);
-				return;
+				entities[i].say();
 			}
 		}
 		if(miles.holding)

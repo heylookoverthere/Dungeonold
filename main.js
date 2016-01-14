@@ -1023,8 +1023,42 @@ function resetMiles()
 	miles.arrows=0;
 }
 
-var nancy=new entity();
-nancy.AI=1;
+var Krugman=new entity();
+Krugman.AI=1;
+Krugman.x=3;
+Krugman.y=11;
+Krugman.walkSpeed=6;
+Krugman.tracking=miles;
+Krugman.textBank.push("Oh thank god! I've been stuck down here for days! We have to find a way out!");
+var lop=function(){return true;}
+Krugman.textConditions.push(lop);
+Krugman.textBank.push("My name is Paul Krugman. I am a respected economist. I shat in that bucket over there.");
+lop=function(){return true;}
+Krugman.textConditions.push(lop);
+Krugman.textBank.push("Paul Ryan pushed me down a well and I found myself here.");
+lop=function(){return true;}
+Krugman.textConditions.push(lop);
+Krugman.textBank.push("Lead on, I have no idea where to go.");
+lop=function(){return true;}
+Krugman.textConditions.push(lop);
+Krugman.getOffChest=2;
+Krugman.chatterBank.push("Supply side economics, and so forth.");
+Krugman.chatterBank.push("I was in a movie!");
+Krugman.chatterBank.push("I'll get that Paul Ryan if it's the last thing I do!");
+Krugman.chatterBank.push("You can increase your liquidity by selling your extra bombs and arrows!");
+Krugman.chatterBank.push("Do you ever stop and wonder how many whales the ocean has? I don't, cause I'm Paul Fucking Krugman. They fucking told me how many whales the ocean has. It's six. ");
+Krugman.chatterBank.push("I'm Paul Krugman, and I have exhausted my list of things I know about myself.")
+Krugman.name="Krugman";
+Krugman.sprites=new Array();
+Krugman.sprites.push(Sprite("krugman0"));
+Krugman.sprites.push(Sprite("krugman1"));
+Krugman.sprites.push(Sprite("krugman2"));
+Krugman.sprites.push(Sprite("krugman3"));
+Krugman.room=curDungeon.curRoom();
+entities.push(Krugman);
+
+var nancy=Krugman;//new entity();
+/*nancy.AI=1;
 nancy.x=3;
 nancy.y=11;
 nancy.walkSpeed=6;
@@ -1058,7 +1092,8 @@ if(!OPTIONS.SafeMode)
 }
 nancy.room=curDungeon.curRoom();
 nancy.name="Nancy";
-entities.push(nancy);
+
+entities.push(nancy);*/
 
 
 miles.x=9;

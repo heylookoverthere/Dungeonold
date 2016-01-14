@@ -96,6 +96,7 @@ function object(oroom) //not a tile, not an enemy
 	this.topLayer=new Array();
 	this.ani=0;
 	this.aniRate=30;
+	this.curTopSprite=0;
 	this.width=32;
 	this.height=32;
 	this.alwaysWalkable=false;
@@ -142,9 +143,13 @@ object.prototype.setup=function(id,par)
 {
 	if(id) {this.type=id;}
 	if (this.type==ObjectID.TallLamp) {
+		this.aniRate=5;
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("talllamp"));
-		this.topLayer.push(Sprite("talllamptop"));
+		this.topLayer.push(Sprite("talllamptop0"));
+		this.topLayer.push(Sprite("talllamptop1"));
+		this.topLayer.push(Sprite("talllamptop2"));
+		this.topLayer.push(Sprite("talllamptop3"));
 	    this.name="Tall lamp";
 		this.flame=new flame(this.room.lights);
 		this.flame.x=this.x*32+xOffset+2;
@@ -453,7 +458,24 @@ object.prototype.setup=function(id,par)
 		this.activate=function()
 		{
 			playSound("itemfanfare");
-			bConsoleBox.log("You've found... the professor's leavings. Gross.");
+			miles.has[hasID.Poo]=true;
+			if(Krugman)
+			{
+				Krugman.say("Eeeww!! You're touching it!!");
+				Krugman.textBank.push("If we're going to keep travelling together, I feel I have a right to know why you're carrying my feces around in your bag." );
+				var loj=function()
+				{
+					if(miles.has[hasID.Poo])
+					{
+						return true;
+					}else {return false;}
+				}
+				Krugman.textConditions.push(loj);
+			}else if(nancy)
+			{
+				nancy.say("Eeeww!! You're touching it!!");
+			}
+			bConsoleBox.log("You've found... Krugman's leavings. Gross.");
 			btext="You've found... the professor's leavings. Gross.";
 			miles.holding=this.sprites[0];
 			miles.inventory.push(this);
@@ -599,6 +621,7 @@ object.prototype.setup=function(id,par)
 		this.sprites=new Array();
 		this.curSprite=1;
 		this.on=true;
+		this.alwaysWalkable=true;
 //		console.log(this.x,this.y);
 		if(this.y==1)
 		{
@@ -931,6 +954,8 @@ object.prototype.setup=function(id,par)
 			//change music
 			//temp!
 			nancy.textBank.push("Nice, you found a shiney triangle. We're still stuck down here you know.");
+			var hlop=function(){return true;}
+			nancy.textConditions.push(hlop);
 			playSound("heartcontainer");
 			var now=new Date().getTime();
 			var timeTaken=now-curDungeon.timeStarted.getTime();
@@ -1069,6 +1094,20 @@ object.prototype.update=function()
 			}
 		}
 	}
+	if((this.type==ObjectID.TallLamp)) // && (this.active))
+	{
+		this.ani++;
+		if(this.ani>this.aniRate)
+		{
+			this.ani=0;
+			this.curTopSprite++;
+			if(this.curTopSprite>this.topLayer.length-1)
+			{
+				this.curTopSprite=0;
+			}
+			//console.log(this.curTopSprite);
+		}
+	}
 	if((this.type==ObjectID.Pot)&&(this.curSprite>0))
 	{
 		this.ani++;
@@ -1093,7 +1132,7 @@ object.prototype.drawTop=function(can,cam,xOffh,yOffh)
 	}else if(this.hidden) {return;}
 	if(!xOffh) {xOffh=0;}
 	if(!yOffh) {yOffh=0;}
-	this.topLayer[this.ani].draw(can, this.x*32+xOffh, (this.y-1)*32+1+yOffh);
+	this.topLayer[this.curTopSprite].draw(can, this.x*32+xOffh, (this.y-1)*32+1+yOffh);
 	can.globalAlpha=1;
 }
 object.prototype.draw=function(can,cam,xOffh,yOffh)
