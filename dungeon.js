@@ -1093,6 +1093,7 @@ function dungeon(path)
 					}
 				}
 			}
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].darkenAdj(can,xOffset,tyOffset);
 		}
 		
 		}
@@ -1163,6 +1164,7 @@ function dungeon(path)
 					}
 				}
 			}
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].darkenAdj(can,xOffset,tyOffset);
 		}
 	var txOffset=-491;//left
 		if((this.roomX>0) && (this.rooms[this.roomZ][this.roomX-1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX-1][this.roomY].hidden))
@@ -1224,6 +1226,7 @@ function dungeon(path)
 					}
 				}
 			}
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].darkenAdj(can,txOffset,yOffset);
 		}
 		var txOffset=791;//right
 		if((this.roomX<this.getWidth()-1) && (this.rooms[this.roomZ][this.roomX+1][this.roomY].active)&& (!this.rooms[this.roomZ][this.roomX+1][this.roomY].hidden))
@@ -1285,6 +1288,7 @@ function dungeon(path)
 					}
 				}
 			}
+			curDungeon.rooms[curDungeon.roomZ][curDungeon.roomX][curDungeon.roomY-1].darkenAdj(can,txOffset,yOffset);
 		}
 	}
 	 

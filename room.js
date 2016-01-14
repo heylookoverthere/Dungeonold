@@ -1194,6 +1194,52 @@ function room(I) { //room object
 		}
 	  };
 	  
+	I.darkenAdj=function(can,rxOffset,ryOffset) 
+	{
+
+		if((I.lampLighting) && (!editMode))
+		{
+			var lamps=0;
+			var litLamps=0;
+			for(var l=0;l<I.objects.length;l++)
+			{
+				if(I.objects[l].type==ObjectID.Lamp)
+				{
+					lamps++;
+					if(I.objects[l].on)
+					{
+						litLamps++;
+					}
+				}
+			}
+			if(litLamps>1)
+			{
+				I.lightLevel=0;
+			}else if(litLamps==1)
+			{
+				I.lightLevel=0.5;
+			}else if(litLamps==0)
+			{
+				I.lightLevel=0.90;
+			}
+		}else
+		{
+			I.lightLevel=0;
+		}
+		var gar=can.globalAlpha;
+		can.globalAlpha=I.lightLevel;
+		can.fillStyle="black"; //maybe an RGB slight lighter than black? 
+		for(var i=0;i<I.width;i++)
+		{
+			for(var j=0;j<I.height;j++)
+			{
+							
+					can.fillRect(i*32+rxOffset,j*32+ryOffset,32,32);
+			}
+		}
+		can.globalAlpha=gar;
+	}
+	
 	I.darken=function(can,x,y) //TODO: don't darken 6x6 grid from x-3 to x+3, 
 	{
 		//if(editMode){return;} //this was enabling lighting, somehow...
