@@ -665,18 +665,24 @@ timy.doThings=function()
 	}else
 	{
 		var plk=new Date().getTime();
-		var mlk=plk-curDungeon.lastSaved.getTime();
-		mlk=mlk/1000;
-		mlk=mlk/60;
-		if(mlk>59)
+		if(curDungeon.lastSaved)
 		{
-			mlk=(Math.round((mlk/60)*10)/10)+" hours ago.";
-		}else if(mlk<1)
-		{
-			mlk="less than a minute ago. ";
+			var mlk=plk-curDungeon.lastSaved.getTime();
+			mlk=mlk/1000;
+			mlk=mlk/60;
+			if(mlk>59)
+			{
+				mlk=(Math.round((mlk/60)*10)/10)+" hours ago.";
+			}else if(mlk<1)
+			{
+				mlk="less than a minute ago. ";
+			}else
+			{
+				mlk=Math.round(mlk*10)/10+" minutes ago.";
+			}
 		}else
 		{
-			mlk=Math.round(mlk*10)/10+" minutes ago.";
+			var mlk="never.";
 		}
 		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Last saved "+mlk+" Confirm? (Y/N)","yellow");
 		editor.confirming=true;
@@ -1643,6 +1649,7 @@ function startGame(goolp)
 		curDungeon.saveExists=false;
 		curDungeon.createRoom(curDungeon.roomZ,curDungeon.roomX,curDungeon.roomY);
 		editMode=true;
+		curDungeon.lastSaved=null;
 		actuallyStartGame();
 		//curDungeon.addFloor();
 	}else
@@ -2757,18 +2764,24 @@ function mainUpdate()
 		}else
 		{
 			var plk=new Date().getTime();
-		var mlk=plk-curDungeon.lastSaved.getTime();
-		mlk=mlk/1000;
-		mlk=mlk/60;
-		if(mlk>59)
+		if(curDungeon.lastSaved)
 		{
-			mlk=(Math.round((mlk/60)*10)/10)+" hours ago.";
-		}else if(mlk<1)
-		{
-			mlk="less than a minute ago. ";
+			var mlk=plk-curDungeon.lastSaved.getTime();
+			mlk=mlk/1000;
+			mlk=mlk/60;
+			if(mlk>59)
+			{
+				mlk=(Math.round((mlk/60)*10)/10)+" hours ago.";
+			}else if(mlk<1)
+			{
+				mlk="less than a minute ago. ";
+			}else
+			{
+				mlk=Math.round(mlk*10)/10+" minutes ago.";
+			}
 		}else
 		{
-			mlk=Math.round(mlk*10)/10+" minutes ago.";
+			var mlk="never."
 		}
 		bConsoleBox.log("Returning to main menu. Unsaved changes will be lost. Last saved "+mlk+" Confirm? (Y/N)","yellow");
 		editor.confirming=true;
