@@ -1098,6 +1098,7 @@ function room(I) { //room object
 				if((!this.fogOfWar) || (this.seenMap[i][j])|| (true))
 				{
 					/*if(dominantType.type && dominantType.type <22) {
+					/*if(dominantType.type && dominantType.type <22) {
 					//HACK to get rid of error
 						if(dungeonTileSprite[dominantType.type])
 						{
@@ -1617,7 +1618,7 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=27;
+	this.numObjectTypes=28;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();

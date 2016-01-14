@@ -173,8 +173,10 @@ objectSprites.push(Sprite("redpotion"));
 objectSprites.push(Sprite("bluepotion"));
 objectSprites.push(Sprite("greenpotion"));
 objectSprites.push(Sprite("smalltable"));
-
 objectSprites.push(Sprite("poo"));
+objectSprites.push(Sprite("talllampsmall"));
+
+
 var nullSprite=new Sprite("blank");
 
 var editModes={};

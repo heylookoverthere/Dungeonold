@@ -69,6 +69,7 @@ ObjectID.BluePotion=24;
 ObjectID.GreenPotion=25;
 ObjectID.Poo=27;
 ObjectID.Table=26;
+ObjectID.TallLamp=28;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -89,6 +90,7 @@ function object(oroom) //not a tile, not an enemy
 	this.usable=false; //is an item that can be used like a bomb or a potion.
 	this.x=2;
 	this.y=2;
+	this.topLayer=new Array();
 	this.ani=0;
 	this.aniRate=30;
 	this.width=32;
@@ -136,7 +138,49 @@ object.prototype.move=function(x,y) //brings along what is needed (like the flam
 object.prototype.setup=function(id,par)
 {
 	if(id) {this.type=id;}
-	if (this.type==ObjectID.Lamp) {
+	if (this.type==ObjectID.TallLamp) {
+	    this.sprites=new Array();
+		this.sprites.push(Sprite("talllamp"));
+		this.topLayer.push(Sprite("talllamptop"));
+	    this.name="Tall lamp";
+		this.flame=new flame(this.room.lights);
+		this.flame.x=this.x*32+xOffset+2;
+		this.flame.y=this.y*32+yOffset-32;
+		this.flame.type=0;
+		this.playerUsable=true;
+		this.flame.alive=false;
+		this.room.fires.push(this.flame);
+		this.activate(); //oooh that's why it's backwards. 
+		this.playerActivate=function()
+		{
+			if((!this.on)&&(!miles.has[hasID.Lantern]))
+			{
+				bConsoleBox.log("Need the lantern!","yellow");
+				playSound("error");
+				return;
+			}
+			this.activate();
+		}
+		this.activate=function()
+		{
+			this.on=!this.on;
+			
+			if(!this.on)
+			{
+				this.flame.flare.alive=false;
+				this.flame.alive=false;
+				
+			}else{
+				this.flame=new flame(this.room.lights);
+				this.flame.x=this.x*32+xOffset;//miles.x;
+				this.flame.y=this.y*32+yOffset-16;//miles.y;
+				this.flame.type=0;
+				playSound("lamp");
+			}
+		}
+		
+		
+	}else if (this.type==ObjectID.Lamp) {
 	    this.sprites=new Array();
 		this.sprites.push(Sprite("lamp"));
 	    this.name="lamp";
@@ -982,6 +1026,18 @@ object.prototype.update=function()
 			}
 		}
 	}
+}
+
+object.prototype.drawTop=function(can,cam,xOffh,yOffh)
+{
+	if((editMode) && (this.hidden))
+	{
+		can.globalAlpha=0.5;
+	}else if(this.hidden) {return;}
+	if(!xOffh) {xOffh=0;}
+	if(!yOffh) {yOffh=0;}
+	this.topLayer[this.ani].draw(can, this.x*32+xOffh, (this.y-1)*32+yOffh);
+	can.globalAlpha=1;
 }
 object.prototype.draw=function(can,cam,xOffh,yOffh)
 {

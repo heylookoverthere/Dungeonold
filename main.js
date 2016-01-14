@@ -1996,6 +1996,13 @@ function mainDraw() {
 			}
 		}
 	}
+	for(var i=0;i<curDungeon.curRoom().objects.length;i++)
+	{
+		if(curDungeon.curRoom().objects[i].topLayer.length>0)
+		{
+			curDungeon.curRoom().objects[i].drawTop(canvas,camera,xOffset,yOffset);
+		}
+	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
 		curDungeon.curRoom().fires[i].draw(canvas,camera);
