@@ -151,16 +151,17 @@ object.prototype.setup=function(id,par)
 		this.topLayer.push(Sprite("talllamptop2"));
 		this.topLayer.push(Sprite("talllamptop3"));
 	    this.name="Tall lamp";
-		this.flame=new flame(this.room.lights);
-		this.flame.x=this.x*32+xOffset+2;
-		this.flame.y=this.y*32+yOffset-32;
-		this.flame.type=0;
 		this.playerUsable=true;
-		this.flame.alive=false;
+		this.flame=new flame(this.room.lights);
+		this.flame.x=this.x*32+xOffset;
+		this.flame.y=(this.y-1)*32+yOffset-12;
+		this.flame.flare.alive=true;
+		this.flame.type=0;
+		this.flame.alive=true;
 		this.room.fires.push(this.flame);
-		this.activate(); //oooh that's why it's backwards. 
 		this.playerActivate=function()
 		{
+			return;//for now
 			if((!this.on)&&(!miles.has[hasID.Lantern]))
 			{
 				bConsoleBox.log("Need the lantern!","yellow");
@@ -171,6 +172,7 @@ object.prototype.setup=function(id,par)
 		}
 		this.activate=function()
 		{
+			return;//for now
 			this.on=!this.on;
 			
 			if(!this.on)
@@ -181,8 +183,10 @@ object.prototype.setup=function(id,par)
 			}else{
 				this.flame=new flame(this.room.lights);
 				this.flame.x=this.x*32+xOffset;//miles.x;
-				this.flame.y=this.y*32+yOffset-16;//miles.y;
+				this.flame.y=(this.y-1)*32+yOffset-16;//miles.y;
 				this.flame.type=0;
+				this.flame.alive=false;
+				this.flame.flare.alive=false;
 				playSound("lamp");
 			}
 		}

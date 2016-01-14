@@ -1874,14 +1874,10 @@ function mainDraw() {
 		canvas.fillRect(0,0,CANVAS_WIDTH, CANVAS_HEIGHT);*/
 		//canvas.fillRect(0,0,CANVAS_WIDTH/3, CANVAS_HEIGHT);
 		//canvas.fillRect((CANVAS_WIDTH/3)*2,0,CANVAS_WIDTH/3, CANVAS_HEIGHT);
-		curDungeon.curRoom().darken(canvas,miles.x,miles.y);
+		
 	}
 
-	for(var i=0;i<curDungeon.curRoom().lights.length;i++)
-	{
-		//lights[i].draw(canvas,camera);
-		lightenGradient(canvas,camera,curDungeon.curRoom().lights[i], curDungeon.curRoom().lights[i].radius)
-	}
+	
 	mapDirty=true;
 	
 	//canvas.globalAlpha=1;
@@ -2038,11 +2034,19 @@ function mainDraw() {
 			curDungeon.curRoom().objects[i].drawTop(canvas,camera,xOffset,yOffset);
 		}
 	}
+	for(var i=0;i<curDungeon.curRoom().lights.length;i++)
+	{
+		//lights[i].draw(canvas,camera);
+		if(curDungeon.curRoom().lights[i].alive)
+		{
+			lightenGradient(canvas,camera,curDungeon.curRoom().lights[i], curDungeon.curRoom().lights[i].radius)
+		}
+	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
 	{
 		curDungeon.curRoom().fires[i].draw(canvas,camera);
 	}
-	
+	curDungeon.curRoom().darken(canvas,miles.x,miles.y);
 	drawGUI(canvas);
 	for (var h=0;h<buttons.length;h++)
 	{
