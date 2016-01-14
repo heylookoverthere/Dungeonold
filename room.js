@@ -743,6 +743,7 @@ function room(I) { //room object
 		{ 
 			I.buildLoadedObjects("whatever",data); 
 			bConsoleBox.log("Loaded "+smuth); 
+			
 		});  
 		
 	}
@@ -945,6 +946,28 @@ function room(I) { //room object
 			
 			I.objects.push(higgins);
 		}
+		I.objects.sort(function(a, b) //todo not this every frame. only when changes. 
+		{
+			if(a.y>b.y)
+			{
+				return 1;
+			}else if(a.y<b.y)
+			{
+				return -1;
+			}else
+			{
+				if((a.type==ObjectID.PotStand) && (b.type==ObjectID.Pot))
+				{
+					return -1;
+				}else if((b.type==ObjectID.PotStand) && (a.type==ObjectID.Pot))
+				{
+					return 1;
+				}
+				return 0;
+			}
+			
+			return 0;
+		});
 		
 	}
 	
@@ -1142,7 +1165,7 @@ function room(I) { //room object
 		{
 			this.exits[p].draw(can,cam);
 		}
-		this.objects.sort(function(a, b) //todo not this every frame. only when changes. 
+		/*this.objects.sort(function(a, b) //todo not this every frame. only when changes. 
 		{
 			if(a.y>b.y)
 			{
@@ -1152,7 +1175,7 @@ function room(I) { //room object
 				return -1;
 			}else
 			{
-				if((a.type==ObjectID.PotStand) && ((b.type==ObjectID.Pot) || (b.type==ObjectID.Poop)))
+				/*if((a.type==ObjectID.PotStand) && ((b.type==ObjectID.Pot) || (b.type==ObjectID.Poop)))
 				{
 					return -1;
 				}else if((b.type==ObjectID.PotStand) && (a.type==ObjectID.Pot))
@@ -1163,7 +1186,7 @@ function room(I) { //room object
 			}
 			
 			return 0;
-		});
+		});*/
 		
 		for(var p=0;p<this.objects.length;p++)
 		{
