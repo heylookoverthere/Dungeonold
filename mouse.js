@@ -259,7 +259,7 @@ function mouseClick(e) {  //represents the mouse
 	var tm=new Date();
 	var mili=tm.getTime();
 	tx=Math.floor((mX-xOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
-	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);
+	ty=Math.floor((mY-yOffset)/32);// * Math.pow(2, 1);//curMap.zoom-1);'
 	if(mode==0)//menu
 	{
 		if(isLoading)
@@ -409,6 +409,8 @@ function mouseClick(e) {  //represents the mouse
 			return;
 		}
 	}
+	console.log(curDungeon.curRoom().objects.length);
+	console.log(curDungeon.curRoom().objects);
 	if((editMode))
 	{
 		if((tx>1) && (tx<18) && (ty>1) &&(ty<13))
@@ -522,6 +524,7 @@ function mouseClick(e) {  //represents the mouse
 				if(meg)
 				{
 					meg.activateEdit();
+					return;
 				}else
 				{
 					var text=randomPhrases[Math.floor(Math.random()*randomPhrases.length)]
@@ -530,15 +533,19 @@ function mouseClick(e) {  //represents the mouse
 						if(editor.x==2) //left
 						{
 							makeObject(1,editor.y,curDungeon.curRoom(),editor.objectType);
+							return;
 						}else if(editor.x==17) //right
 						{
 							makeObject(18,editor.y,curDungeon.curRoom(),editor.objectType);
+							return;
 						}else if(editor.y==2) //top
 						{
 							makeObject(editor.x,1,curDungeon.curRoom(),editor.objectType);
+							return;
 						}else if(editor.y==12) //bottom
 						{
 							makeObject(editor.x,13,curDungeon.curRoom(),editor.objectType);
+							return;
 						}else
 						{
 							bConsoleBox.log("Not the best spot for curtains");
@@ -562,6 +569,7 @@ function mouseClick(e) {  //represents the mouse
 						}
 					}else
 					{
+						console.log("making object");
 						makeObject(tx,ty,curDungeon.curRoom(),editor.objectType,text);
 					}
 				}

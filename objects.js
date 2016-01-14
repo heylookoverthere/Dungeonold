@@ -379,6 +379,7 @@ object.prototype.setup=function(id,par)
 		this.usable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found a red potion!");
 			btext="You found a red potion!";
 			miles.inventory.push(this);
@@ -396,6 +397,7 @@ object.prototype.setup=function(id,par)
 		this.usable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found a green potion!");
 			btext="You found a green potion!";
 			miles.inventory.push(this);
@@ -414,6 +416,7 @@ object.prototype.setup=function(id,par)
 		this.usable=true;
 		this.activate=function()
 		{
+			playSound("itemfanfare");
 			bConsoleBox.log("You found a blue potion!");
 			btext="You found a blue potion!";
 			miles.inventory.push(this);
@@ -432,7 +435,7 @@ object.prototype.setup=function(id,par)
 			playSound("key");
 			this.exists=false;
 			bConsoleBox.log("Aquired a key!");
-			miles.holding=this.sprites[0];
+			//miles.holding=this.sprites[0];
 			miles.keys++;
 		}
 		this.playerActivate=this.activate;
@@ -1036,7 +1039,7 @@ object.prototype.drawTop=function(can,cam,xOffh,yOffh)
 	}else if(this.hidden) {return;}
 	if(!xOffh) {xOffh=0;}
 	if(!yOffh) {yOffh=0;}
-	this.topLayer[this.ani].draw(can, this.x*32+xOffh, (this.y-1)*32+yOffh);
+	this.topLayer[this.ani].draw(can, this.x*32+xOffh, (this.y-1)*32+1+yOffh);
 	can.globalAlpha=1;
 }
 object.prototype.draw=function(can,cam,xOffh,yOffh)

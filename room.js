@@ -1152,7 +1152,7 @@ function room(I) { //room object
 				return -1;
 			}else
 			{
-				if((a.type==ObjectID.PotStand) && (b.type==ObjectID.Pot))
+				if((a.type==ObjectID.PotStand) && ((b.type==ObjectID.Pot) || (b.type==ObjectID.Poop)))
 				{
 					return -1;
 				}else if((b.type==ObjectID.PotStand) && (a.type==ObjectID.Pot))
@@ -1162,7 +1162,7 @@ function room(I) { //room object
 				return 0;
 			}
 			
-		
+			return 0;
 		});
 		
 		for(var p=0;p<this.objects.length;p++)
