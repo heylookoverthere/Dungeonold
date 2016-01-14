@@ -37,10 +37,10 @@ function entity(croom)
 	}
 	this.status="not set";
 	this.sprites=new Array();
-	this.sprites.push(Sprite("oldman0"));
-	this.sprites.push(Sprite("oldman1"));
-	this.sprites.push(Sprite("oldman2"));
-	this.sprites.push(Sprite("oldman3"));
+	this.sprites.push(Sprite("prof0"));
+	this.sprites.push(Sprite("prof1"));
+	this.sprites.push(Sprite("prof2"));
+	this.sprites.push(Sprite("prof3"));
 	this.isPlayer=false;
 	this.money=0;
 	this.bombs=0;

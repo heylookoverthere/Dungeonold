@@ -172,8 +172,9 @@ objectSprites.push(Sprite("hammer"));
 objectSprites.push(Sprite("redpotion"));
 objectSprites.push(Sprite("bluepotion"));
 objectSprites.push(Sprite("greenpotion"));
-objectSprites.push(Sprite("poo"));
+objectSprites.push(Sprite("smalltable"));
 
+objectSprites.push(Sprite("poo"));
 var nullSprite=new Sprite("blank");
 
 var editModes={};
@@ -617,6 +618,9 @@ var numDoorTypes=4;
 
 var DungeonTileType={};
 DungeonTileType.GreenFloor=1;
+DungeonTileType.FloorOne=44;
+DungeonTileType.FloorTwo=45;
+DungeonTileType.FloorThree=46;
 DungeonTileType.Ice=2;
 DungeonTileType.Water=20;
 DungeonTileType.Lava=24; 
@@ -855,6 +859,9 @@ dungeonTileSprite[DungeonTileType.GreenFloor] = Sprite("dungeontiles/greenfloor"
 //dungeonTileSprite[DungeonTileType.Plains] = Sprite("dirt");
 //dungeonTileSprite[DungeonTileType.Road] = Sprite("road");
 dungeonTileSprite[DungeonTileType.Sand] = Sprite("dungeontiles/sand");
+dungeonTileSprite[DungeonTileType.FloorOne] = Sprite("dungeontiles/floor1");
+dungeonTileSprite[DungeonTileType.FloorTwo] = Sprite("dungeontiles/floor2");
+dungeonTileSprite[DungeonTileType.FloorThree] = Sprite("dungeontiles/floor3");
 
 var tileColors=new Array(39);
 tileColors[TileType.Grass] = "#008000";

@@ -67,7 +67,8 @@ ObjectID.Hammer=22;
 ObjectID.RedPotion=23;
 ObjectID.BluePotion=24;
 ObjectID.GreenPotion=25;
-ObjectID.Poo=26;
+ObjectID.Poo=27;
+ObjectID.Table=26;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -464,6 +465,15 @@ object.prototype.setup=function(id,par)
 		this.playerUsable=false;
 		this.sprites.push(Sprite("potstand"));
 		this.name="Pot stand";
+		this.playerActivate=this.activate;
+	}else if (this.type==ObjectID.Table) {
+		this.sprites=new Array();
+		this.alwaysWalkable=false;
+		this.playerUsable=false;
+		this.width=96;
+		this.height=64;
+		this.sprites.push(Sprite("table1"));
+		this.name="Table";
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Pot) {
 		this.sprites=new Array();

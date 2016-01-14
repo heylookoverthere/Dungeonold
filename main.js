@@ -592,7 +592,7 @@ timy.doThings=function()
 			curDungeon.load();
 			editor.penDown=false;
 			//console.log(LOAD_COUNTS[countIndex]);
-			
+			resetMiles();
 			function checkIfLoaded() 
 			{ 
 				if (LOAD_COUNTS[countIndex] == 0)
@@ -1009,6 +1009,19 @@ miles.sprites.push(Sprite("linkleft"));
 miles.sprites.push(Sprite("linkholding"));
 miles.name="Miles";
 entities.push(miles);
+
+function resetMiles()
+{
+	miles.equippedTrack=0;
+	miles.inventory=new Array();
+	miles.maxHp=100;
+	miles.hp=miles.maxHp;
+	miles.dir=0;
+	miles.wallet=250;
+	miles.money=0;
+	miles.bombs=0;
+	miles.arrows=0;
+}
 
 var nancy=new entity();
 nancy.AI=1;
@@ -1547,6 +1560,7 @@ function actuallyStartGame()
 	miles.AI=0;
 	miles.money=0;
 	miles.bombs=0;
+	miles.arrows=0;
 	miles.wallet=250;
 	countIndex=existingDungeons.indexOf(curDungeon.name);
 	LOAD_COUNTS[countIndex]=curDungeon.numRooms;
@@ -2203,9 +2217,12 @@ function mainUpdate()
 		}else
 		{
 			editor.brushType++;
-			if(editor.brushType>33)
+			if(editor.brushType>46)
 			{
 				editor.brushType=0;
+			}else if(editor.brushType>33)
+			{
+				editor.brushType=43;
 			}else if(editor.brushType==21)//skip water animation tiles
 			{
 				editor.brushType=24;
