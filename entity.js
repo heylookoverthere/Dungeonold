@@ -100,7 +100,7 @@ function bomb(croom)
 			{
 				blow=true;
 			}
-			if((blow) && (entities[i].room.z==curDungeon.roomZ))
+			if((blow) && (entities[i].room.z==this.room.z)&&(entities[i].room.x==this.room.x)&&(entities[i].room.y==this.room.y))
 			{
 				entities[i].hurt(20);
 			}
@@ -138,21 +138,23 @@ function bomb(croom)
 	}
 	this.draw=function(can)
 	{
-		var millip= new Date().getTime();
-		if((millip-this.timePlaced>this.fuse*800) && (this.armed))
+		if((this.room.z==curDungeon.roomZ) &&(this.room.y==curDungeon.roomY) &&(this.room.y==curDungeon.roomY))
 		{
-			if(millip%2==0)
+			var millip= new Date().getTime();
+			if((millip-this.timePlaced>this.fuse*800) && (this.armed))
 			{
-				this.sprites[1].draw(can,this.x*32+xOffset,this.y*32+yOffset);
+				if(millip%2==0)
+				{
+					this.sprites[1].draw(can,this.x*32+xOffset,this.y*32+yOffset);
+				}else
+				{
+					this.sprites[0].draw(can,this.x*32+xOffset,this.y*32+yOffset);
+				}
 			}else
 			{
 				this.sprites[0].draw(can,this.x*32+xOffset,this.y*32+yOffset);
 			}
-		}else
-		{
-			this.sprites[0].draw(can,this.x*32+xOffset,this.y*32+yOffset);
 		}
-		
 	}
 }
 
