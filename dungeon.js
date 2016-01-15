@@ -12,6 +12,7 @@ function dungeon(path)
 	this.startFloor=0;
 	this.startX=7;
 	this.startY=7;
+	this.entities=entities;
 	this.hasEdited=false;
 	this.name=path;
 	this.mapFloor=0;

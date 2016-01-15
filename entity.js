@@ -5,6 +5,157 @@ equippedID.Boomerang=3;
 
 var numEquippable=2;
 
+function bomb(croom)
+{
+
+	this.x=0;
+	this.y=0;
+	this.exists=false;
+	this.timePlaced=0;
+	this.fuse=4;
+	this.room=croom;
+	this.armed=false;
+	this.sprites=new Array();
+	this.sprites.push(Sprite("bomb1"));
+	this.sprites.push(Sprite("bomb2"));
+	this.update=function()
+	{
+		var millip=new Date().getTime();
+		if((millip-this.timePlaced>this.fuse*1000) && (this.armed))
+		{
+			this.explode();
+		}
+	}
+	this.explode=function()
+	{
+		playSound("switchhit");
+		this.exists=false;
+		//particles, sprites, trigger switches, destroy walls and cracked floors
+		for(var i=0;i<this.room.exits.length;i++)
+		{
+			var blow=false;
+			if((this.room.exits[i].x==this.x) && (this.room.exits[i].y==this.y))
+			{
+				blow=true;
+			}else if((this.room.exits[i].x+1==this.x) && (this.room.exits[i].y==this.y))
+			{
+				blow=true;
+			}else if((this.room.exits[i].x-1==this.x) && (this.room.exits[i].y==this.y))
+			{
+				blow=true;
+			}else if((this.room.exits[i].x==this.x) && (this.room.exits[i].y-1==this.y))
+			{
+				blow=true;
+			}else if((this.room.exits[i].x==this.x) && (this.room.exits[i].y+1==this.y))
+			{
+				blow=true;
+			}
+			if((blow) && (this.room.exits[i].type==3))
+			{
+				playSound("secret");
+				this.room.exits[i].open();
+			}
+		}
+		for(var i=0;i<this.room.objects.length;i++)
+		{
+			var blow=false;
+			if((this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y))
+			{
+				blow=true;
+			}else if((this.room.objects[i].x==this.x+1) && (this.room.objects[i].y==this.y))
+			{
+				blow=true;
+			}else if((this.room.objects[i].x==this.x-1) && (this.room.objects[i].y==this.y))
+			{
+				blow=true;
+			}else if((this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y-1))
+			{
+				blow=true;
+			}else if((this.room.objects[i].x==this.x) && (this.room.objects[i].y==this.y+1))
+			{
+				blow=true;
+			}
+			if((blow) && ((this.room.objects[i].type==ObjectID.BlueOrb) || (this.room.objects[i].type==ObjectID.RedOrb)))
+			{
+				this.room.objects[i].activate();
+			}
+			
+		}
+		for(var i=0;i<entities.length;i++)
+		{
+			var blow=false;
+			if((entities[i].x==this.x) && (entities[i].y==this.y))
+			{
+				blow=true;
+			}else if((entities[i].x==this.x+1) && (entities[i].y==this.y))
+			{
+				blow=true;
+			}else if((entities[i].x==this.x-1) && (entities[i].y==this.y))
+			{
+				blow=true;
+			}else if((entities[i].x==this.x) && (entities[i].y==this.y-1))
+			{
+				blow=true;
+			}else if((entities[i].x==this.x) && (entities[i].y==this.y+1))
+			{
+				blow=true;
+			}
+			if((blow) && (entities[i].room.z==curDungeon.roomZ))
+			{
+				entities[i].hurt(20);
+			}
+		}
+		var blow=false;
+		if((this.room.tiles[this.x][this.y].data==DungeonTileType.Unstable) || (this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable))
+		{
+			blow=true;
+			this.room.tiles[this.x][this.y].data=DungeonTileType.Hole;
+		}
+		if((this.room.tiles[this.x+1][this.y].data==DungeonTileType.Unstable) || (this.room.tiles[this.x+1][this.y].data==DungeonTileType.ReallyUnstable))
+		{
+			blow=true;
+			this.room.tiles[this.x+1][this.y].data=DungeonTileType.Hole;
+		}
+		if((this.room.tiles[this.x-1][this.y].data==DungeonTileType.Unstable) || (this.room.tiles[this.x-1][this.y].data==DungeonTileType.ReallyUnstable))
+		{
+			blow=true;
+			this.room.tiles[this.x-1][this.y].data=DungeonTileType.Hole;
+		}
+		if((this.room.tiles[this.x][this.y+1].data==DungeonTileType.Unstable) || (this.room.tiles[this.x][this.y+1].data==DungeonTileType.ReallyUnstable))
+		{
+			blow=true;
+			this.room.tiles[this.x][this.y+1].data=DungeonTileType.Hole;
+		}
+		if((this.room.tiles[this.x][this.y-1].data==DungeonTileType.Unstable) || (this.room.tiles[this.x][this.y-1].data==DungeonTileType.ReallyUnstable))
+		{
+			blow=true;
+			this.room.tiles[this.x][this.y-1].data=DungeonTileType.Hole;
+		}			
+		if(blow)
+		{
+			playSound("secret");
+		}
+	}
+	this.draw=function(can)
+	{
+		var millip= new Date().getTime();
+		if((millip-this.timePlaced>this.fuse*800) && (this.armed))
+		{
+			if(millip%2==0)
+			{
+				this.sprites[1].draw(can,this.x*32+xOffset,this.y*32+yOffset);
+			}else
+			{
+				this.sprites[0].draw(can,this.x*32+xOffset,this.y*32+yOffset);
+			}
+		}else
+		{
+			this.sprites[0].draw(can,this.x*32+xOffset,this.y*32+yOffset);
+		}
+		
+	}
+}
+
 function entity(croom)
 {
 	this.dir=0;
@@ -59,13 +210,35 @@ function entity(croom)
 	this.going=false;
 	this.pathTrack=0;
 	this.gotHurt=0;
+	this.activebombs=new Array();
 	this.inventory=new Array();
+	this.inventoryAmounts=new Array();
 	this.has=new Array();
 	this.kill=function()
 	{
 		this.exists=false;
 		this.alive=false;
 	}
+	
+	this.placeBomb=function()
+	{
+		if(!this.has[hasID.Bomb]) {return;}
+		if(this.bombs<1) {return;}
+		this.bombs--;
+		var edsbomb=new bomb(this.room);
+		edsbomb.x=this.x;
+		edsbomb.y=this.y;
+		edsbomb.exists=true;
+		edsbomb.armed=true;
+		edsbomb.timePlaced=new Date().getTime();
+		this.activebombs.push(edsbomb);
+	}
+	this.getEquipped=function()
+	{
+		
+		return this.getUsableInventory()[this.equippedTrack].type;//==ObjectID.Bomb
+	}
+	
 	this.getUsableInventory=function()
 	{
 		var snart=new Array();
@@ -74,7 +247,7 @@ function entity(croom)
 		tart.setup();
 		tart.sprites[0]=nullSprite;
 		snart.push(tart);//unequipped
-		if((this.has[hasID.Bomb]) && (this.bombs>0))
+		/*if((this.has[hasID.Bomb]) && (this.bombs>0))
 		{
 			//console.log("has bombs");
 			var nart=new object();
@@ -91,16 +264,77 @@ function entity(croom)
 			nart.sprites=new Array();
 			nart.sprites.push(objectSprites[ObjectID.Bow]);
 			snart.push(nart);
-		}
+		}*/
 		for(var i=0;i<this.inventory.length;i++)
 		{
-			if(this.inventory[i].usable)
+			if(true)//(this.inventory[i].usable)
 			{
 				snart.push(this.inventory[i]);
 			}
 		}
 		return snart;
 	}
+	
+	this.hasItem=function(id)
+	{
+		for(var i=0;i<this.inventory.length;i++)
+		{
+			if(this.inventory[i].type==id)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	this.giveItem=function(obj,amt)
+	{
+		if(!amt){amt=1;}
+		if(!this.hasItem(obj.type))
+		{
+			this.inventory.push(obj);
+			this.inventoryAmounts.push(amt); 
+		}else
+		{
+			for(var i=0;i<this.inventory.length;i++)
+			{
+				if(this.inventory[i].type==obj.type)
+				{
+					this.inventoryAmounts[i]++;
+				}
+			}
+		}
+	}
+	
+	this.removeItem=function(obj,amt)
+	{
+		
+		for(var i=0;i<this.inventory.length;i++)
+		{
+			if(this.inventory[i].type==obj)
+			{
+				if(amt)
+				{
+					this.inventoryAmounts[i]-=amt;
+					if(this.inventoryAmounts[i]<1)
+					{
+						this.inventory.splice(i,1);
+						this.inventoryAmounts.splice(i,1);
+						i--;
+						miles.equippedTrack=0;
+					}
+				}else
+				{
+					this.inventory.splice(i,1);
+					this.inventoryAmounts.splice(i,1);
+					i--;
+					miles.equippedTrack=0;
+				}
+			}
+		}
+
+	}
+	
 	this.cycleEquipped=function(up)
 	{
 		var mup=this.getUsableInventory();
@@ -151,6 +385,14 @@ function entity(croom)
 				this.sprites[this.dir].draw(can,this.x*32+xOffset,this.y*32+yOffset-14-this.fallingY*2);
 			}
 		}
+		for(var i=0;i<this.activebombs.length;i++)
+		{
+			if(this.activebombs[i].exists)
+			{
+				this.activebombs[i].draw(can);
+			}
+		}
+		
 		
 	}
 	this.goHole=function(x,y,obj)
@@ -224,6 +466,16 @@ function entity(croom)
 			}
 		}
 		
+		for(var i=0;i<this.activebombs.length;i++)
+		{
+			this.activebombs[i].update();
+			if(!this.activebombs[i].exists)
+			{
+				this.activebombs.splice(i,1);
+				//i--;
+			}
+			
+		}
 	
 		if(this.falling)
 		{
@@ -291,7 +543,7 @@ function entity(croom)
 		}
 		if(this.fallingY<1)
 		{
-			if(this.room.tiles[this.x][this.y].data==DungeonTileType.Unstable)
+			if((this.room.tiles[this.x][this.y].data==DungeonTileType.Unstable) && (OPTIONS.UnsafeWalking))
 			{
 				
 				if((this.x!=this.lastX) || (this.y!=this.lastY))
@@ -302,7 +554,7 @@ function entity(croom)
 					this.lastY=this.y;
 					
 				}
-			}else if(this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable)
+			}else if((this.room.tiles[this.x][this.y].data==DungeonTileType.ReallyUnstable)&& (OPTIONS.UnsafeWalking))
 			{
 				if((this.x!=this.lastX) || (this.y!=this.lastY))
 				{

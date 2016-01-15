@@ -15,6 +15,34 @@ $(document).bind("contextmenu",function(e){
 	{
 	 //console.log("fucl");
 	}
+	if((mode==1) && (!editMode)) //non-edit right click
+	{
+		if(miles.getEquipped()==ObjectID.Bomb)
+		{
+			miles.placeBomb();
+		}else if (miles.getEquipped()==ObjectID.Poo)
+		{
+			//remove poop, make new poop object
+			miles.has[hasID.Poo]=false;
+			console.log("poop");
+			miles.removeItem(ObjectID.Poo); 
+			if(miles.dir==0)
+			{
+				var hio= makeObject(miles.x,miles.y-1,curDungeon.curRoom(),ObjectID.Poo);
+			}else if(miles.dir==1)
+			{
+				var hio= makeObject(miles.x+1,miles.y,curDungeon.curRoom(),ObjectID.Poo);
+			}else if(miles.dir==2)
+			{
+				var hio= makeObject(miles.x,miles.y+1,curDungeon.curRoom(),ObjectID.Poo);
+			}else if(miles.dir==3)
+			{
+				var hio= makeObject(miles.x-1,miles.y,curDungeon.curRoom(),ObjectID.Poo);
+			}
+			hio.on=true;
+		}
+		return false; 
+	}
 	if(true)//(mode==1)
 	{
 		mX = e.pageX - canvasElement.get(0).offsetLeft;
@@ -349,6 +377,10 @@ function mouseClick(e) {  //represents the mouse
 		}else if(bup==8)
 		{
 			OPTIONS.confirmationPopUps=!OPTIONS.confirmationPopUps;
+		
+		}else if(bup==9)
+		{
+			OPTIONS.UnsafeWalking=!OPTIONS.UnsafeWalking;
 		
 		}
 		return;

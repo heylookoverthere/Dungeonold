@@ -323,7 +323,7 @@ object.prototype.setup=function(id,par)
 				shinex.usable=true;
 				shinex.type=ObjectID.RedPotion;
 				shinex.setup();
-				miles.inventory.push(shinex);
+				miles.giveItem(shinex);
 				
 			}else if(this.loot==lootTable.GreenPotion)
 			{
@@ -333,7 +333,7 @@ object.prototype.setup=function(id,par)
 				shinex.usable=true;
 				shinex.type=ObjectID.GreenPotion;
 				shinex.setup();
-				miles.inventory.push(shinex);
+				miles.giveItem(shinex);
 				
 			}else if(this.loot==lootTable.BluePotion)
 			{
@@ -343,7 +343,7 @@ object.prototype.setup=function(id,par)
 				shinex.usable=true;
 				shinex.type=ObjectID.BluePotion;
 				shinex.setup();
-				miles.inventory.push(shinex);
+				miles.giveItem(shinex);
 				
 			}else if(this.loot==lootTable.Bombs)
 			{
@@ -351,6 +351,11 @@ object.prototype.setup=function(id,par)
 				btext="You found some bombs!";
 				miles.has[hasID.Bomb]=true;
 				miles.bombs+=3;
+				var shinex=new object();
+				shinex.usable=true;
+				shinex.type=ObjectID.Bomb;
+				shinex.setup();
+				miles.giveItem(shinex,3);
 			}else if(this.loot==lootTable.Wallet)
 			{
 				bConsoleBox.log("You found a bigger wallet!");
@@ -397,7 +402,7 @@ object.prototype.setup=function(id,par)
 			playSound("itemfanfare");
 			bConsoleBox.log("You found a red potion!");
 			btext="You found a red potion!";
-			miles.inventory.push(this);
+			miles.giveItem(this);
 			miles.holding=this.sprites[0];
 			this.exists=false;
 		}
@@ -415,7 +420,7 @@ object.prototype.setup=function(id,par)
 			playSound("itemfanfare");
 			bConsoleBox.log("You found a green potion!");
 			btext="You found a green potion!";
-			miles.inventory.push(this);
+			miles.giveItem(this);
 			miles.holding=this.sprites[0];
 			this.exists=false;
 		}
@@ -434,7 +439,7 @@ object.prototype.setup=function(id,par)
 			playSound("itemfanfare");
 			bConsoleBox.log("You found a blue potion!");
 			btext="You found a blue potion!";
-			miles.inventory.push(this);
+			miles.giveItem(this);
 			miles.holding=this.sprites[0];
 			this.exists=false;
 		}
@@ -466,7 +471,8 @@ object.prototype.setup=function(id,par)
 		{
 			playSound("itemfanfare");
 			miles.has[hasID.Poo]=true;
-			if(Krugman)
+			//miles.inventory.push(this);
+			if((Krugman) && (!this.on))
 			{
 				Krugman.say("Eeeww!! You're touching it!!");
 				Krugman.textBank.push("If we're going to keep travelling together, I feel I have a right to know why you're carrying my feces around in your bag." );
@@ -478,14 +484,15 @@ object.prototype.setup=function(id,par)
 					}else {return false;}
 				}
 				Krugman.textConditions.push(loj);
-			}else if(nancy)
+				this.on=true;
+			}else if((nancy) && (!this.on))
 			{
 				nancy.say("Eeeww!! You're touching it!!");
 			}
 			bConsoleBox.log("You've found... Krugman's leavings. Gross.");
 			btext="You've found... the professor's leavings. Gross.";
 			miles.holding=this.sprites[0];
-			miles.inventory.push(this);
+			miles.giveItem(this);
 			this.exists=false;
 		}
 		this.playerActivate=this.activate;
@@ -663,11 +670,12 @@ object.prototype.setup=function(id,par)
 		this.name="Pot";
 		this.activate=function()
 		{
-			if(this.curSprite==0)
+			if(!this.on)
 			{
 				playSound("shatter");
 				this.curSprite=1;
 				this.aniRate=3;
+				this.on=true;
 			}
 		}
 		this.playerActivate=this.activate;
@@ -908,6 +916,7 @@ object.prototype.setup=function(id,par)
 			miles.holding=this.sprites[0];
 			this.exists=false;
 			miles.has[hasID.Bow]=true;
+			miles.giveItem(this,10);
 		}
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.Bomb) {
@@ -931,6 +940,7 @@ object.prototype.setup=function(id,par)
 			}
 			this.exists=false;
 			miles.has[hasID.Bomb]=true;
+			miles.giveItem(this,5);
 			miles.bombs+=5;
 		}
 		this.playerActivate=this.activate;

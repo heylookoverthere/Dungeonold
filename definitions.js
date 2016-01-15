@@ -14,6 +14,7 @@ var MobileMode=false;
 var numSouns=0;
 var curVersion="0.2a";
 
+var entities=new Array();
 
 function playSound(name){
     if(!OPTIONS.SFX)
@@ -210,6 +211,8 @@ OPTIONS.confirmationPopUps=true;
 OPTIONS.DoubleTapThreshold=400;
 OPTIONS.HoldTime=2000;
 OPTIONS.UpdateAllRooms=true;
+OPTIONS.UnsafeWalking=true;
+
 
 var editHistory=[];
 

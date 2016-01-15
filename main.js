@@ -1003,7 +1003,6 @@ var randomkey= new akey("r");
 var mapkey=new akey("g");
 var saveaskey=new akey("u");
 
-var entities=new Array();
 
 var miles= new entity();
 miles.isPlayer=true;
@@ -1940,12 +1939,12 @@ function optionsDraw() {
 	canvas.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
 	curDungeon.draw(canvas,camera);
-	var xFset=218;
+	var xFset=160;
 	var yFset=35;
 	canvas.fillStyle="white";
-	canvas.fillRect(xFset-8,yFset-28,438,754);
+	canvas.fillRect(xFset-8,yFset-28,548,754);
 	canvas.fillStyle="blue";
-	canvas.fillRect(xFset-4,yFset-24,428,744);
+	canvas.fillRect(xFset-4,yFset-24,538,744);
 	canvas.font = "20pt Calibri";
 	canvas.fillStyle="white";
 	canvas.fillText("OPTIONS: ",xFset+100,yFset+20-6);
@@ -1953,11 +1952,12 @@ function optionsDraw() {
 	canvas.fillText("2) Sound Effects On: "+OPTIONS.SFX,xFset+15,yFset+100-6);
 	canvas.fillText("3) Lighting on: "+OPTIONS.LightingOn,xFset+15,yFset+125-6);
 	canvas.fillText("4) Update all rooms: "+OPTIONS.UpdateAllRooms,xFset+15,yFset+150-6);
-	canvas.fillText("5) Show Unexplored Rooms: "+OPTIONS.showUnexploredRooms,xFset+15,yFset+175-6);
+	canvas.fillText("5) Show Unexplored Rooms on map/radar: "+OPTIONS.showUnexploredRooms,xFset+15,yFset+175-6);
 	canvas.fillText("6) Show bomable cracks: "+OPTIONS.showCracks,xFset+15,yFset+200-6);
 	canvas.fillText("7) Show unexplored doors: "+OPTIONS.showUnexploredDoors,xFset+15,yFset+225-6);
-	canvas.fillText("8) Safe Mode On: "+OPTIONS.SafeMode,xFset+15,yFset+250-6);
+	canvas.fillText("8) Kid Friendly mode: "+OPTIONS.SafeMode,xFset+15,yFset+250-6);
 	canvas.fillText("9) Confirmation pop ups: "+OPTIONS.confirmationPopUps,xFset+15,yFset+275-6);
+	canvas.fillText("10) Walking breaks unstable ground: "+OPTIONS.UnsafeWalking,xFset+15,yFset+300-6);
 
 	
 }
@@ -2122,7 +2122,7 @@ function mainDraw() {
 		canvas.fillStyle="blue";
         canvas.fillRect(miles.x*32+xOffset,miles.y*32+yOffset,32,32);
 		canvas.fillStyle=ploj*/
-		this.entities.sort(function(a, b) //todo not this every frame. only when changes. 
+		entities.sort(function(a, b) //todo not this every frame. only when changes. 
 		{
 			if(a.y>b.y)
 			{
