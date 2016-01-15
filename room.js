@@ -1695,7 +1695,7 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=32;
+	this.numObjectTypes=33;
 	this.numBrushTypes=54;
 	this.objectType=0;
 	this.numDoorTypes=4;

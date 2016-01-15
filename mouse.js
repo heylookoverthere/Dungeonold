@@ -733,6 +733,7 @@ function mouseClick(e) {  //represents the mouse
 			{//and next to player!
 				if(entities[i].isPlayer) {continue;}
 				entities[i].say();
+				return;
 			}
 		}
 		if(miles.holding)

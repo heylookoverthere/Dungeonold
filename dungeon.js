@@ -1042,7 +1042,16 @@ function dungeon(path)
 				for (j=ROOM_HEIGHT-4;j<ROOM_HEIGHT; j++)
 				{
 					var aTile=this.rooms[this.roomZ][this.roomX][this.roomY-1].tiles[i][j];
-					if ((aTile&& aTile<24) && (aTile.data>19))
+					if(aTile.data==DungeonTileType.BirdHead)
+					{
+						if(i<11)
+						{
+							dungeonTileSprite[aTile.data].draw(can, i*32+xOffset, j*32+tyOffset);
+						}else
+						{
+							reverseBird.draw(can, i*32+xOffset, j*32+tyOffset);
+						}
+					}else if ((aTile&& aTile<24) && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
 					}else if ((aTile&& aTile<28) &&(aTile.data>23))
@@ -1112,7 +1121,16 @@ function dungeon(path)
 					var aTile=this.rooms[this.roomZ][this.roomX][this.roomY+1].tiles[i][j];
 					
 						
-					if((aTile&& aTile<24) && (aTile.data>19))
+					if(aTile.data==DungeonTileType.BirdHead)
+					{
+						if(i<11)
+						{
+							dungeonTileSprite[aTile.data].draw(can, i*32+xOffset, j*32+tyOffset);
+						}else
+						{
+							reverseBird.draw(can, i*32+xOffset, j*32+tyOffset);
+						}
+					}else if((aTile&& aTile<24) && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+xOffset, (j-0)*32+tyOffset);
 					}else if ((aTile&& aTile<28)  && (aTile.data>23))
@@ -1174,7 +1192,16 @@ function dungeon(path)
 				for (j=0;j<ROOM_HEIGHT; j++)
 				{
 					var aTile=this.rooms[this.roomZ][this.roomX-1][this.roomY].tiles[i][j];
-					if((aTile&& aTile<24)  && (aTile.data>19))
+					if(aTile.data==DungeonTileType.BirdHead)
+					{
+						if(i<11)
+						{
+							dungeonTileSprite[aTile.data].draw(can, i*32+txOffset, j*32+yOffset);
+						}else
+						{
+							reverseBird.draw(can, i*32+txOffset, j*32+yOffset);
+						}
+					}else if((aTile&& aTile<24)  && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
 					}else if ((aTile&& aTile<28)  && (aTile.data>23))
@@ -1236,7 +1263,16 @@ function dungeon(path)
 				for (j=0;j<ROOM_HEIGHT; j++)
 				{
 					var aTile=this.rooms[this.roomZ][this.roomX+1][this.roomY].tiles[i][j];
-					if((aTile&& aTile<24) && (aTile.data>19))
+					if(aTile.data==DungeonTileType.BirdHead)
+					{
+						if(i<11)
+						{
+							dungeonTileSprite[aTile.data].draw(can, i*32+txOffset, j*32+yOffset);
+						}else
+						{
+							reverseBird.draw(can, i*32+txOffset, j*32+yOffset);
+						}
+					}else if((aTile&& aTile<24) && (aTile.data>19))
 					{
 						dungeonTileSprite[20+tileani].draw(can, (i-0)*32+txOffset, (j-0)*32+yOffset);
 					}else if ((aTile&& aTile<28) && (aTile.data>23))

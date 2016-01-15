@@ -203,7 +203,6 @@ function entity(croom)
 		}else
 		{
 			//this.talkBox.log(this.name+": "+saywhat);
-			console.log(saywhat);
 			$("<div id='dialogBox'>").text(this.name+": "+saywhat).appendTo("body");
 		}
 		//this.talkBox.hasFocus=true;

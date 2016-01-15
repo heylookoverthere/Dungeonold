@@ -1050,13 +1050,22 @@ lop=function(){return true;}
 Krugman.textConditions.push(lop);
 Krugman.getOffChest=2;
 Krugman.chatterBank.push("Supply side economics, and so forth.");
-Krugman.chatterBank.push("I was in a movie!");
+Krugman.chatterBank.push("I was in a movie! Do you have movies in this world?");
 Krugman.chatterBank.push("I'll get that Paul Ryan if it's the last thing I do!");
+Krugman.chatterBank.push("Beware the foe who uses Voodo-Economics.");
+Krugman.chatterBank.push("We're going to need to find at least 240 rupees to cover our losses on this expedition. Most of that will go towards buying a new intern. But if we find a little extra maybe we can get hats!");
+if(!OPTIONS.SafeMode)
+{
+	Krugman.chatterBank.push("Hey, what do you guys call a Cleveland Steamer in this world?") 
+}
 Krugman.chatterBank.push("You can increase your liquidity by selling your extra bombs and arrows!");
+Krugman.chatterBank.push("It is dangerous to go alone. Take this full-term life insurance policy.");// It indemnifies against suicide after three floors!");
+Krugman.chatterBank.push("If an enemy proves especially difficult, aim for the reverse-mortgage. ");
 Krugman.chatterBank.push("Do you ever stop and wonder how many whales the ocean has? I don't, cause I'm Paul Fucking Krugman. They fucking told me how many whales the ocean has. It's six. ");
 Krugman.chatterBank.push("You may not know who I am, but I promise you that your dad loves my shit.")
 Krugman.chatterBank.push("I'm Paul Krugman, and I have exhausted my list of things I know about myself.")
 Krugman.chatterBank.push("I really hope we get out of here soon. I need to refill my prescription. You may not have noticed, but I suffer from Blurry Face Syndrome.")
+Krugman.chatterBank.push("Not a lot of people know this, but I had fourteen confirmed kills in Vietnam. It's not something I talk about a lot. Mostly because I got them in the late 90's.");//, long after such pursuits had gone out of style.")
 
 Krugman.name="Krugman";
 Krugman.sprites=new Array();

@@ -180,6 +180,7 @@ objectSprites.push(Sprite("stumpseat"));
 objectSprites.push(Sprite("statue"));
 objectSprites.push(Sprite("bookcasesmall"));
 objectSprites.push(Sprite("bones"));
+objectSprites.push(Sprite("keybrick"));
 
 var nullSprite=new Sprite("blank");
 

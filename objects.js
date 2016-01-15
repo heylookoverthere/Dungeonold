@@ -74,6 +74,7 @@ ObjectID.StumpSeat=29;
 ObjectID.Statue=30;
 ObjectID.Bookcase=31;
 ObjectID.Bones=32;
+ObjectID.KeyBrick=33;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -544,6 +545,28 @@ object.prototype.setup=function(id,par)
 		this.sprites.push(Sprite("potstand"));
 		this.name="Pot stand";
 		this.playerActivate=this.activate;
+	}else if (this.type==ObjectID.KeyBrick) {
+		this.sprites=new Array();
+		this.alwaysWalkable=false;
+		this.playerUsable=true;
+		this.sprites.push(Sprite("keybrick"));
+		this.name="Key Block"; 
+		this.playerActivate=function()
+		{
+			if(miles.keys>0)
+			{
+				this.exists=false;
+				miles.keys--;
+				playSound("unlock");
+				bConsoleBox.log("Unlocked!");
+				return true;
+			}else 
+			{
+				playSound("locked");
+				bConsoleBox.log("Need a key!");
+				return false;
+			}
+		}
 	}else if (this.type==ObjectID.Bones) {
 		this.sprites=new Array();
 		this.alwaysWalkable=true;
@@ -559,11 +582,17 @@ object.prototype.setup=function(id,par)
 			{
 				Krugman.say("Ah yes, poor Edward. He was my intern. He died of... non-suspicious causes shortly after we fell down here.");
 				Krugman.chatterBank.push("I'm starting to get hungry. Do you have any food? Well I hope we find something to eat soon. I'm not a doctor but I could tell Edward's fate was sealed when we ran out of rations.");
-				Krugman.textBank.push("I'm starting to sense some tension in the air, and I feel like if my therapist were here she'd tell me to that I should just came out and said it. So here goes. ...I ate Edward. He was delicious. But I swear I didn't kill him! At best it was an assist. ")
+				Krugman.textBank.push("I'm starting to sense some tension in the air, and I feel like I should just be honest. So here it goes. I'm putting it all on the line here, so you'll have to promise you won't  judge me...")
 				var plo=function ()
 				{
 					if(miles.room.z>0)
 					{
+						Krugman.textBank.push("...I ate Edward. He was delicious. But I swear I didn't kill him! At best it was an assist.");
+						//Krugman.getOffChest=Krugman.textTrack+1;//Bank.length-1;
+						golp=function(){return true;};
+						Krugman.textConditions.push(golp);
+						Krugman.textBank.push("Phew I'm so glad that's all out in the open now. Lets keep going. And let me know if you get hungry I still have some Edward in my pack.");
+						Krugman.textConditions.push(golp);
 						return true;
 					}else
 					{
