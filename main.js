@@ -382,13 +382,14 @@ function logControls()
 	bConsoleBox.log("Insert - Create Room");
 	bConsoleBox.log("0 - Toggle hidden room");
 	bConsoleBox.log("Tab - Change selected tile/door");
+	bConsoleBox.log("O - Options");
 	bConsoleBox.log("F - Fill entire floor");
 	bConsoleBox.log("Q  - Cycle edit modes");
 	bConsoleBox.log("M  - Toggle sound");
 	bConsoleBox.log("K  - Save floor");
 	bConsoleBox.log("L  - Load floor");
 	bConsoleBox.log("I  - Save room");
-	bConsoleBox.log("O  - Load room");
+	bConsoleBox.log("T  - Load room");
 	bConsoleBox.log("U  - Save copy of dungeon");
 	bConsoleBox.log("C  - Copy room");
 	bConsoleBox.log("R  - Random prefab room");
@@ -1053,6 +1054,7 @@ Krugman.chatterBank.push("I was in a movie!");
 Krugman.chatterBank.push("I'll get that Paul Ryan if it's the last thing I do!");
 Krugman.chatterBank.push("You can increase your liquidity by selling your extra bombs and arrows!");
 Krugman.chatterBank.push("Do you ever stop and wonder how many whales the ocean has? I don't, cause I'm Paul Fucking Krugman. They fucking told me how many whales the ocean has. It's six. ");
+Krugman.chatterBank.push("You may not know who I am, but I promise you that your dad loves my shit.")
 Krugman.chatterBank.push("I'm Paul Krugman, and I have exhausted my list of things I know about myself.")
 Krugman.name="Krugman";
 Krugman.sprites=new Array();
@@ -1282,7 +1284,8 @@ window.addEventListener("GamepadDisconnected", function(e) {
 controller= new virtualGamePad();
 
 var savekey=new akey("i"); //define the different keys
-var loadkey=new akey("o");
+var loadkey=new akey("t");
+var optionskey=new akey("o");
 var shiftkey=new akey("shift");
 
  var LOAD_COUNTS=new Array();
@@ -1455,6 +1458,9 @@ FPS=countFPS();
 	}else if(mode==2){
 		mapUpdate();
 		mapDraw();
+	}else if(mode==3){
+		optionsUpdate();
+		optionsDraw();
 	}
 	//canvas.beginPath();
 	//osCanvas.drawImage(canvasElement,0,0);
@@ -1853,7 +1859,53 @@ function mapDraw() {
 	curDungeon.draw(canvas,camera);
 	curDungeon.drawLargeMap(canvas)
 }
+function optionsUpdate()
+{
+	if((escapekey.check()))
+	{
+		mode=1;
+	}
+	if(optionskey.check())
+	{
+		mode=1;
+	}
+	if(upkey.check())
+	{
+		
+	}
+	if(downkey.check())
+	{
+		
+	}
+	
+}
+function optionsDraw() {
+	//SHOULDN'T
+	canvas.fillStyle = "black";
+	canvas.fillRect(0,0,CANVAS_WIDTH,CANVAS_HEIGHT);
 
+	curDungeon.draw(canvas,camera);
+	var xFset=218;
+	var yFset=35;
+	canvas.fillStyle="white";
+	canvas.fillRect(xFset-8,yFset-28,438,754);
+	canvas.fillStyle="blue";
+	canvas.fillRect(xFset-4,yFset-24,428,744);
+	canvas.font = "20pt Calibri";
+	canvas.fillStyle="white";
+	canvas.fillText("OPTIONS: ",xFset+100,yFset+20-6);
+	canvas.fillText("1) Music On: "+OPTIONS.musicOn,xFset,yFset+75-6);
+	canvas.fillText("2) Sound Effects On: "+OPTIONS.SFX,xFset,yFset+100-6);
+	canvas.fillText("3) Lighting on: "+OPTIONS.LightingOn,xFset,yFset+125-6);
+	canvas.fillText("4) Update all rooms: "+OPTIONS.UpdateAllRooms,xFset,yFset+150-6);
+	canvas.fillText("5) Show Unexplored Rooms: "+OPTIONS.showUnexploredRooms,xFset,yFset+175-6);
+	canvas.fillText("6) Show bomable cracks: "+OPTIONS.showCracks,xFset,yFset+200-6);
+	canvas.fillText("7) Show unexplored doors: "+OPTIONS.showUnexploredDoors,xFset,yFset+225-6);
+	canvas.fillText("8) Safe Mode On: "+OPTIONS.SafeMode,xFset,yFset+250-6);
+	canvas.fillText("9) Confirmation pop ups: "+OPTIONS.confirmationPopUps,xFset,yFset+275-6);
+
+	
+}
 //------------MAIN DRAW-----------------------------------------
 function mainDraw() {
 	//SHOULDN'T
@@ -2041,12 +2093,15 @@ function mainDraw() {
 			curDungeon.curRoom().objects[i].drawTop(canvas,camera,xOffset,yOffset);
 		}
 	}
-	for(var i=0;i<curDungeon.curRoom().lights.length;i++)
+	if(OPTIONS.LightingOn)
 	{
-		//lights[i].draw(canvas,camera);
-		if(curDungeon.curRoom().lights[i].alive)
+		for(var i=0;i<curDungeon.curRoom().lights.length;i++)
 		{
-			lightenGradient(canvas,camera,curDungeon.curRoom().lights[i], curDungeon.curRoom().lights[i].radius)
+			//lights[i].draw(canvas,camera);
+			if(curDungeon.curRoom().lights[i].alive)
+			{
+				lightenGradient(canvas,camera,curDungeon.curRoom().lights[i], curDungeon.curRoom().lights[i].radius)
+			}
 		}
 	}
 	for(var i=0;i<curDungeon.curRoom().fires.length;i++)
@@ -2099,6 +2154,10 @@ function mainUpdate()
     milliseconds = timestamp.getTime();
     tick++;
 	thyme.update();
+	if(optionskey.check())
+	{
+		mode=3;
+	}
 	if((editMode) && (savekey.check()))
 	{
 		bConsoleBox.log("Existing room save will be overwritten. Confirm? (Y/N)","yellow");

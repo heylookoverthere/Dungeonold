@@ -200,6 +200,7 @@ OPTIONS.SFX=true;
 OPTIONS.showUnexploredRooms=false;
 OPTIONS.showCracks=false;
 OPTIONS.showUnexploredDoors=false;
+OPTIONS.LightingOn=true;
 OPTIONS.skipWallTiles=true;
 OPTIONS.musicVolume=0.2;
 OPTIONS.SafeMode=false;

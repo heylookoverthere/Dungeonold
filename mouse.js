@@ -303,6 +303,57 @@ function mouseClick(e) {  //represents the mouse
 			}
 		}
 		return;
+	}else if(mode==3)
+	{
+		var bup=Math.floor((mY-75)/25);
+	
+		if(bup==0)
+		{
+			OPTIONS.musicOn=!OPTIONS.musicOn;
+			if(OPTIONS.musicOn)
+			{
+				document.getElementById("mainSong").volume=OPTIONS.musicVolume;
+				document.getElementById("mainSong").play();
+			}else
+			{
+				document.getElementById("mainSong").pause();
+			}
+		}else if(bup==1)
+		{
+			OPTIONS.SFX=!OPTIONS.SFX;
+		
+		}else if(bup==2)
+		{
+			OPTIONS.LightingOn=!OPTIONS.LightingOn;
+		
+		}else if(bup==3)
+		{
+			OPTIONS.UpdateAllRooms=!OPTIONS.UpdateAllRooms;
+		
+		}else if(bup==4)
+		{
+			OPTIONS.showUnexploredRooms=!OPTIONS.showUnexploredRooms;
+			
+		}else if(bup==5)
+		{
+			OPTIONS.showCracks=!OPTIONS.showCracks;
+		
+		}else if(bup==6)
+		{
+			OPTIONS.showUnexploredDoors=!OPTIONS.showUnexploredDoors;
+		
+		}else if(bup==7)
+		{
+			OPTIONS.SafeMode=!OPTIONS.SafeMode;
+		
+		}else if(bup==8)
+		{
+			OPTIONS.confirmationPopUps=!OPTIONS.confirmationPopUps;
+		
+		}
+		return;
+
+
 	}else if(mode==2)
 	{
 		if(editMode)
@@ -668,6 +719,14 @@ function mouseClick(e) {  //represents the mouse
 		
 	}else // non-edit mode mouse stuff.
 	{
+		if ($("#dialogBox").length > 0) 
+		{
+			$("#dialogBox").remove();
+			return;
+		} else 
+		{
+		
+		} 
 		for(var i=0;i<entities.length;i++)//don't include miles
 		{
 			if((entities[i].room.z==curDungeon.roomZ)&&(entities[i].room.x==curDungeon.roomX)&&(entities[i].room.y==curDungeon.roomY)&&(isOverTiled(entities[i],32)))

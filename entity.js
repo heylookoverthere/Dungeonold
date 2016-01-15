@@ -181,29 +181,33 @@ function entity(croom)
 	this.say=function(saywhat)
 	{
 		playSound("textbox");
-		this.talkBox=new textbox();
+		/*this.talkBox=new textbox();
 		this.talkBox.setup();
 		this.talkBox.x=200;
 		this.talkBox.y=200;
-		this.talkBox.textLim=104;
+		this.talkBox.textLim=102;*/
 		if(saywhat==null)
 		{
 			if((this.textTrack<this.textBank.length) && (this.textConditions[this.textTrack]()))
 			{
-				this.talkBox.log(this.name+": "+this.textBank[this.textTrack]);
+				//this.talkBox.log(this.name+": "+this.textBank[this.textTrack]);
+				$("<div id='dialogBox'>").text(this.name+": "+this.textBank[this.textTrack]).appendTo("body");
 				this.textTrack++;
 
 			}else
 			{
 				var k=Math.floor(Math.random()*this.chatterBank.length);
-				this.talkBox.log(this.name+": "+this.chatterBank[k]);
+				//this.talkBox.log(this.name+": "+this.chatterBank[k]);
+				$("<div id='dialogBox'>").text(this.name+": "+this.chatterBank[k]).appendTo("body");
 			}
 		}else
 		{
-			this.talkBox.log(this.name+": "+saywhat);
+			//this.talkBox.log(this.name+": "+saywhat);
+			console.log(saywhat);
+			$("<div id='dialogBox'>").text(this.name+": "+saywhat).appendTo("body");
 		}
-		this.talkBox.hasFocus=true;
-		buttons.push(this.talkBox);
+		//this.talkBox.hasFocus=true;
+		//buttons.push(this.talkBox);
 		return;
 	}
 	
@@ -355,18 +359,9 @@ function entity(croom)
 				{
 					this.status="Arrived." 
 					//if arrived at player, which we'll assume for now.
-					if((this.textTrack<this.getOffChest) && (!this.talkBox.exists))
+					if((this.textTrack<this.getOffChest) && ($("#dialogBox").length < 1))//(!this.talkBox.exists))
 					{
-						playSound("textbox");
-						this.talkbox=new textbox();
-						this.talkBox.setup();
-						this.talkBox.x=200;
-						this.talkBox.y=200;
-						this.talkBox.textLim=104;
-						this.talkBox.log(this.textBank[this.textTrack]);
-						this.talkBox.hasFocus=true;
-						buttons.push(this.talkBox);
-						this.textTrack++;
+						this.say();
 						//this.textBank.splice(0,1);
 					}
 						
@@ -545,18 +540,9 @@ function entity(croom)
 							this.status="Arrived." 
 							
 							//if arrived at player, which we'll assume for now.
-							if((this.textTrack<this.getOffChest) && (!this.talkBox.exists))
+							if((this.textTrack<this.getOffChest) && ($("#dialogBox").length < 1))//(!this.talkBox.exists))
 							{
-								playSound("textbox");
-								this.talkbox=new textbox();
-								this.talkBox.setup();
-								this.talkBox.x=200;
-								this.talkBox.y=200;
-								this.talkBox.textLim=104;
-								this.talkBox.log(this.name+": "+this.textBank[this.textTrack]);
-								this.talkBox.hasFocus=true;
-								buttons.push(this.talkBox);
-								this.textTrack++;
+								this.say();
 								//this.textBank.splice(0,1);
 							}
 						}

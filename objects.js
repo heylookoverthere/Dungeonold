@@ -159,6 +159,7 @@ object.prototype.setup=function(id,par)
 		this.flame.type=0;
 		this.flame.alive=true;
 		this.room.fires.push(this.flame);
+
 		this.playerActivate=function()
 		{
 			return;//for now
@@ -203,7 +204,7 @@ object.prototype.setup=function(id,par)
 		this.playerUsable=true;
 		this.flame.alive=false;
 		this.room.fires.push(this.flame);
-		this.activate(); //oooh that's why it's backwards. 
+		
 		this.playerActivate=function()
 		{
 			if((!this.on)&&(!miles.has[hasID.Lantern]))
@@ -231,7 +232,7 @@ object.prototype.setup=function(id,par)
 				playSound("lamp");
 			}
 		}
-		
+		this.activate(); //oooh that's why it's backwards. 
 		
 	}else if (this.type==ObjectID.Sign) {
 		this.sprites=new Array();
@@ -550,6 +551,7 @@ object.prototype.setup=function(id,par)
 		this.height=64;
 		this.sprites.push(Sprite("table1"));
 		this.name="Table";
+		this.activate=function() {};
 		this.playerActivate=this.activate;
 	}else if (this.type==ObjectID.StumpSeat) {
 		this.sprites=new Array();
@@ -1056,18 +1058,7 @@ object.prototype.setup=function(id,par)
 
 object.prototype.activate=function()
 {
-	this.on=!this.on;
-	if(!this.on)
-	{
-		this.flame.flare.alive=false;
-		this.flame.alive=false;
-	}else{
-		this.flame=new flame(this.room.lights);
-		this.flame.x=this.x*32+xOffset;//miles.x;
-		this.flame.y=this.y*32+yOffset-16;//miles.y;
-		this.flame.type=0;
-	}
-
+	
 }
 
 object.prototype.activateEdit=function()
