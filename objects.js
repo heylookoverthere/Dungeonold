@@ -73,6 +73,7 @@ ObjectID.TallLamp=28;
 ObjectID.StumpSeat=29;
 ObjectID.Statue=30;
 ObjectID.Bookcase=31;
+ObjectID.Bones=32;
 //ObjectID.HoldSwitch=3;
 //ObjectID.Pickup=4; //maybe instead of having one for each item there's one for pickup and then it get a .type?
 
@@ -543,6 +544,37 @@ object.prototype.setup=function(id,par)
 		this.sprites.push(Sprite("potstand"));
 		this.name="Pot stand";
 		this.playerActivate=this.activate;
+	}else if (this.type==ObjectID.Bones) {
+		this.sprites=new Array();
+		this.alwaysWalkable=true;
+		this.playerUsable=true;
+		this.sprites.push(Sprite("bones"));
+		this.name="Bones";
+		this.width=48;
+		this.height=32;
+		this.on=false;
+		this.playerActivate=function()
+		{
+			if((Krugman) && (!this.on))
+			{
+				Krugman.say("Ah yes, poor Edward. He was my intern. He died of... non-suspicious causes shortly after we fell down here.");
+				Krugman.chatterBank.push("I'm starting to get hungry. Do you have any food? Well I hope we find something to eat soon. I'm not a doctor but I could tell Edward's fate was sealed when we ran out of rations.");
+				Krugman.textBank.push("I'm starting to sense some tension in the air, and I feel like if my therapist were here she'd tell me to that I should just came out and said it. So here goes. ...I ate Edward. He was delicious. But I swear I didn't kill him! At best it was an assist. ")
+				var plo=function ()
+				{
+					if(miles.room.z>0)
+					{
+						return true;
+					}else
+					{
+						return false;
+					}
+				}
+				Krugman.textConditions.push(plo);
+				this.on=true;
+			}
+		}
+
 	}else if (this.type==ObjectID.Table) {
 		this.sprites=new Array();
 		this.alwaysWalkable=false;
@@ -563,38 +595,22 @@ object.prototype.setup=function(id,par)
 	}else if (this.type==ObjectID.Bookcase) {
 		this.sprites=new Array();
 		this.alwaysWalkable=false;
-		this.playerUsable=false;
-
-		if(this.y==1)
-		{
-			this.sprites.push(Sprite("bookcase0"));
-			this.topLayer.push(Sprite("bookcase0top"));
-			this.width=96;
-			this.height=32;
-		}else if(this.x==18)
-		{
-			this.sprites.push(Sprite("bookcase1"));
-			this.width=64;
-			this.height=96;
-		}else if(this.y==13)
-		{
-			this.sprites.push(Sprite("bookcase2"));
-			this.width=96;
-			this.height=64;
-		}else if(this.x==1)
-		{
-			this.sprites.push(Sprite("bookcase3"));
-			this.width=64;
-			this.height=96;
-		}else
-		{
-			this.width=96;
-			this.height=32;
-			this.sprites.push(Sprite("bookcase0"));
-			this.topLayer.push(Sprite("bookcase0top"));
-		}
+		this.playerUsable=true;
+		this.width=96;
+		this.height=32;
+		this.sprites.push(Sprite("bookcase0"));
+		this.topLayer.push(Sprite("bookcase0top"));
 		this.name="Bookcase";
-		this.playerActivate=this.activate;
+		this.playerActivate=function()
+		{
+			if(OPTIONS.SafeMode)
+			{
+				$("<div id='dialogBox'>").text("Books on various subjects.").appendTo("body");
+			}else
+			{
+				$("<div id='dialogBox'>").text("Books on various subjects. You scan for pornography but find none.").appendTo("body");
+			}
+		};
 	}else if (this.type==ObjectID.Statue) {
 		this.sprites=new Array();
 		this.alwaysWalkable=false;

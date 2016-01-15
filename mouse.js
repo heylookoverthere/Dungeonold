@@ -148,7 +148,7 @@ function mouseWheel(e){
 					{
 						editor.brushType++;
 						//console.log(editor.brushType);
-						if(editor.brushType>49)
+						if(editor.brushType>editor.numBrushTypes)
 						{
 							editor.brushType=0;
 						}else if(editor.brushType==34)
@@ -198,7 +198,7 @@ function mouseWheel(e){
 						//console.log(editor.brushType);
 						if(editor.brushType<0)
 						{
-							editor.brushType=49;
+							editor.brushType=editor.numBrushTypes;
 							//console.log("changed to "+editor.brushType);
 						}else if(editor.brushType==42)//skip water animation tiles
 						{
@@ -690,7 +690,7 @@ function mouseClick(e) {  //represents the mouse
 			}else
 			{
 				editor.brushType++;
-				if(editor.brushType>49)
+				if(editor.brushType>editor.numBrushTypes)
 				{
 					editor.brushType=0;
 				}else if(editor.brushType==21)//skip water animation tiles

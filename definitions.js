@@ -179,7 +179,7 @@ objectSprites.push(Sprite("talllampsmall"));
 objectSprites.push(Sprite("stumpseat"));
 objectSprites.push(Sprite("statue"));
 objectSprites.push(Sprite("bookcasesmall"));
-
+objectSprites.push(Sprite("bones"));
 
 var nullSprite=new Sprite("blank");
 
@@ -631,6 +631,11 @@ DungeonTileType.FloorThree=46;
 DungeonTileType.FloorFour=47;
 DungeonTileType.FloorFive=48;
 DungeonTileType.FloorSix=49;
+DungeonTileType.FloorSeven=50;
+DungeonTileType.FloorEight=51;
+DungeonTileType.FloorNine=52;
+DungeonTileType.FloorTen=53;
+DungeonTileType.FloorEleven=54;
 DungeonTileType.Ice=2;
 DungeonTileType.Water=20;
 DungeonTileType.Lava=24; 
@@ -875,6 +880,14 @@ dungeonTileSprite[DungeonTileType.FloorThree] = Sprite("dungeontiles/floor3");
 dungeonTileSprite[DungeonTileType.FloorFour] = Sprite("dungeontiles/floor4");
 dungeonTileSprite[DungeonTileType.FloorFive] = Sprite("dungeontiles/floor5");
 dungeonTileSprite[DungeonTileType.FloorSix] = Sprite("dungeontiles/floor6");
+dungeonTileSprite[DungeonTileType.FloorSeven] = Sprite("dungeontiles/floor7");
+dungeonTileSprite[DungeonTileType.FloorEight] = Sprite("dungeontiles/floor8");
+dungeonTileSprite[DungeonTileType.FloorNine] = Sprite("dungeontiles/floor9");
+dungeonTileSprite[DungeonTileType.FloorTen] = Sprite("dungeontiles/floor10");
+dungeonTileSprite[DungeonTileType.FloorEleven] = Sprite("dungeontiles/sand2");
+
+var reverseBird = Sprite("dungeontiles/dungeonthing1");
+
 
 var tileColors=new Array(39);
 tileColors[TileType.Grass] = "#008000";

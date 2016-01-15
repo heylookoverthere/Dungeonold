@@ -535,7 +535,7 @@ function entity(croom)
 					if((this.AI>0) && (this.tracking))
 					{
 						var bup=this.room.closestAdj(this.tracking,this);
-						if((this.x==bup.x) && (this.y==bup.y))
+						if((bup)&&(this.x==bup.x) && (this.y==bup.y))
 						{
 							this.status="Arrived." 
 							

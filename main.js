@@ -1033,7 +1033,7 @@ function resetMiles()
 var Krugman=new entity();
 Krugman.AI=1;
 Krugman.x=3;
-Krugman.y=11;
+Krugman.y=10;
 Krugman.walkSpeed=6;
 Krugman.tracking=miles;
 Krugman.textBank.push("Oh thank god! I've been stuck down here for days! We have to find a way out!");
@@ -1056,6 +1056,8 @@ Krugman.chatterBank.push("You can increase your liquidity by selling your extra 
 Krugman.chatterBank.push("Do you ever stop and wonder how many whales the ocean has? I don't, cause I'm Paul Fucking Krugman. They fucking told me how many whales the ocean has. It's six. ");
 Krugman.chatterBank.push("You may not know who I am, but I promise you that your dad loves my shit.")
 Krugman.chatterBank.push("I'm Paul Krugman, and I have exhausted my list of things I know about myself.")
+Krugman.chatterBank.push("I really hope we get out of here soon. I need to refill my prescription. You may not have noticed, but I suffer from Blurry Face Syndrome.")
+
 Krugman.name="Krugman";
 Krugman.sprites=new Array();
 Krugman.sprites.push(Sprite("krugman0"));
@@ -1877,7 +1879,51 @@ function optionsUpdate()
 	{
 		
 	}
-	
+		if(numberkeys[1].check())
+		{
+			OPTIONS.musicOn=!OPTIONS.musicOn;
+			if(OPTIONS.musicOn)
+			{
+				document.getElementById("mainSong").volume=OPTIONS.musicVolume;
+				document.getElementById("mainSong").play();
+			}else
+			{
+				document.getElementById("mainSong").pause();
+			}
+		}
+		else if(numberkeys[2].check())
+		{
+			OPTIONS.SFX=!OPTIONS.SFX;
+		
+		}else if(numberkeys[3].check())
+		{
+			OPTIONS.LightingOn=!OPTIONS.LightingOn;
+		
+		}else if(numberkeys[4].check())
+		{
+			OPTIONS.UpdateAllRooms=!OPTIONS.UpdateAllRooms;
+		
+		}else if(numberkeys[5].check())
+		{
+			OPTIONS.showUnexploredRooms=!OPTIONS.showUnexploredRooms;
+			
+		}else if(numberkeys[6].check())
+		{
+			OPTIONS.showCracks=!OPTIONS.showCracks;
+		
+		}else if(numberkeys[7].check())
+		{
+			OPTIONS.showUnexploredDoors=!OPTIONS.showUnexploredDoors;
+		
+		}else if(numberkeys[8].check())
+		{
+			OPTIONS.SafeMode=!OPTIONS.SafeMode;
+		
+		}else if(numberkeys[9].check())
+		{
+			OPTIONS.confirmationPopUps=!OPTIONS.confirmationPopUps;
+		
+		}
 }
 function optionsDraw() {
 	//SHOULDN'T
@@ -1894,15 +1940,15 @@ function optionsDraw() {
 	canvas.font = "20pt Calibri";
 	canvas.fillStyle="white";
 	canvas.fillText("OPTIONS: ",xFset+100,yFset+20-6);
-	canvas.fillText("1) Music On: "+OPTIONS.musicOn,xFset,yFset+75-6);
-	canvas.fillText("2) Sound Effects On: "+OPTIONS.SFX,xFset,yFset+100-6);
-	canvas.fillText("3) Lighting on: "+OPTIONS.LightingOn,xFset,yFset+125-6);
-	canvas.fillText("4) Update all rooms: "+OPTIONS.UpdateAllRooms,xFset,yFset+150-6);
-	canvas.fillText("5) Show Unexplored Rooms: "+OPTIONS.showUnexploredRooms,xFset,yFset+175-6);
-	canvas.fillText("6) Show bomable cracks: "+OPTIONS.showCracks,xFset,yFset+200-6);
-	canvas.fillText("7) Show unexplored doors: "+OPTIONS.showUnexploredDoors,xFset,yFset+225-6);
-	canvas.fillText("8) Safe Mode On: "+OPTIONS.SafeMode,xFset,yFset+250-6);
-	canvas.fillText("9) Confirmation pop ups: "+OPTIONS.confirmationPopUps,xFset,yFset+275-6);
+	canvas.fillText("1) Music On: "+OPTIONS.musicOn,xFset+15,yFset+75-6);
+	canvas.fillText("2) Sound Effects On: "+OPTIONS.SFX,xFset+15,yFset+100-6);
+	canvas.fillText("3) Lighting on: "+OPTIONS.LightingOn,xFset+15,yFset+125-6);
+	canvas.fillText("4) Update all rooms: "+OPTIONS.UpdateAllRooms,xFset+15,yFset+150-6);
+	canvas.fillText("5) Show Unexplored Rooms: "+OPTIONS.showUnexploredRooms,xFset+15,yFset+175-6);
+	canvas.fillText("6) Show bomable cracks: "+OPTIONS.showCracks,xFset+15,yFset+200-6);
+	canvas.fillText("7) Show unexplored doors: "+OPTIONS.showUnexploredDoors,xFset+15,yFset+225-6);
+	canvas.fillText("8) Safe Mode On: "+OPTIONS.SafeMode,xFset+15,yFset+250-6);
+	canvas.fillText("9) Confirmation pop ups: "+OPTIONS.confirmationPopUps,xFset+15,yFset+275-6);
 
 	
 }
@@ -2329,7 +2375,7 @@ function mainUpdate()
 		}else
 		{
 			editor.brushType++;
-			if(editor.brushType>49)
+			if(editor.brushType>editor.numBrushTypes)
 			{
 				editor.brushType=0;
 			}else if(editor.brushType>33)

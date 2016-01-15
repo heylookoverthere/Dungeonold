@@ -684,7 +684,7 @@ function room(I) { //room object
 		}else
 		{*/
 			
-			if((I.tiles[x][y].data==DungeonTileType.FloorFour) ||(I.tiles[x][y].data==DungeonTileType.FloorFive) ||(I.tiles[x][y].data==DungeonTileType.FloorSix) ||(I.tiles[x][y].data==DungeonTileType.FloorThree) ||(I.tiles[x][y].data==DungeonTileType.FloorTwo) ||(I.tiles[x][y].data==DungeonTileType.FloorOne) ||(I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||(I.tiles[x][y].data==DungeonTileType.ReallyUnstable)||((I.tiles[x][y].data==DungeonTileType.Hole) && (!avoidHoles)) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
+			if((I.tiles[x][y].data==DungeonTileType.FloorSeven) ||(I.tiles[x][y].data==DungeonTileType.FloorEight) ||(I.tiles[x][y].data==DungeonTileType.FloorNine) ||(I.tiles[x][y].data==DungeonTileType.FloorTen) ||(I.tiles[x][y].data==DungeonTileType.FloorEleven)|| (I.tiles[x][y].data==DungeonTileType.FloorFour) ||(I.tiles[x][y].data==DungeonTileType.FloorFive) ||(I.tiles[x][y].data==DungeonTileType.FloorSix) ||(I.tiles[x][y].data==DungeonTileType.FloorThree) ||(I.tiles[x][y].data==DungeonTileType.FloorTwo) ||(I.tiles[x][y].data==DungeonTileType.FloorOne) ||(I.tiles[x][y].data==DungeonTileType.GreenFloor) ||(I.tiles[x][y].data==DungeonTileType.UpStair)||(I.tiles[x][y].data==DungeonTileType.DownStair) ||(I.tiles[x][y].data==DungeonTileType.Unstable) ||(I.tiles[x][y].data==DungeonTileType.ReallyUnstable)||((I.tiles[x][y].data==DungeonTileType.Hole) && (!avoidHoles)) ||(I.tiles[x][y].data==DungeonTileType.Grass)||(I.tiles[x][y].data==DungeonTileType.Sand) ||(I.tiles[x][y].data==DungeonTileType.Ice))
 			{
 				for(var i=0;i<I.objects.length;i++)
 				{
@@ -1127,7 +1127,16 @@ function room(I) { //room object
 						{
 							dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
 						}*/
-					if(dominantType.type&& (dominantType.type<24)&&(dominantType.type>19)){ //water
+					if(dominantType.type==DungeonTileType.BirdHead)
+					{
+						if(i<11)
+						{
+							dungeonTileSprite[dominantType.type].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
+						}else
+						{
+							reverseBird.draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
+						}
+					}else if(dominantType.type&& (dominantType.type<24)&&(dominantType.type>19)){ //water
 						dungeonTileSprite[20+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
 					}else if (dominantType.type&& (dominantType.type<28)&&(dominantType.type>23)) { //lava
 						dungeonTileSprite[24+tileani].draw(can, (i-cam.tileX)*32/Math.pow(2,I.zoom-1)+xOffset, (j-cam.tileY)*32/Math.pow(2,I.zoom-1)+yOffset);
@@ -1686,7 +1695,8 @@ function editCursor()
 	this.confirmingWhat=null;
 	this.mode=0;
 	this.numModes=4;
-	this.numObjectTypes=31;
+	this.numObjectTypes=32;
+	this.numBrushTypes=54;
 	this.objectType=0;
 	this.numDoorTypes=4;
 	this.clipBoard=new room();
