@@ -1070,7 +1070,29 @@ function dungeon(path)
 			{
 				var aDoorList=this.rooms[this.roomZ][this.roomX][this.roomY-1].getDoors(2);
 				for(var g=0;g<aDoorList.length;g++){
-					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
+					
+					if(aDoorList[g].type==doorType.Bombable)
+					{
+						if(aDoorList[g].orientation==0)
+						{
+							dungeonTileSprite[DungeonTileType.WallTop].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset, aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}else if(aDoorList[g].orientation==1)
+						{
+							dungeonTileSprite[DungeonTileType.WallRight].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset, aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}else if(aDoorList[g].orientation==2)
+						{
+							dungeonTileSprite[DungeonTileType.WallBottom].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset, aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}else if(aDoorList[g].orientation==3)
+						{
+							dungeonTileSprite[DungeonTileType.WallLeft].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset,aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}
+					}
+					
+					if((aDoorList[g].type!=doorType.Bombable) || (OPTIONS.showCracks)|| (editMode))
+					{
+						aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
+					}
+					
 				}
 			}
 			for(var g=0;g<this.rooms[this.roomZ][this.roomX][this.roomY-1].objects.length;g++)
@@ -1149,7 +1171,27 @@ function dungeon(path)
 			{
 				var aDoorList=this.rooms[this.roomZ][this.roomX][this.roomY+1].getDoors(0);
 				for(var g=0;g<aDoorList.length;g++){
-					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
+					if(aDoorList[g].type==doorType.Bombable)
+					{
+						if(aDoorList[g].orientation==0)
+						{
+							dungeonTileSprite[DungeonTileType.WallTop].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset, aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}else if(aDoorList[g].orientation==1)
+						{
+							dungeonTileSprite[DungeonTileType.WallRight].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset, aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}else if(aDoorList[g].orientation==2)
+						{
+							dungeonTileSprite[DungeonTileType.WallBottom].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset, aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}else if(aDoorList[g].orientation==3)
+						{
+							dungeonTileSprite[DungeonTileType.WallLeft].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+xOffset,aDoorList[g].y*ROOM_TILE_SIZE+tyOffset);
+						}
+					}
+					if((aDoorList[g].type!=doorType.Bombable) || (OPTIONS.showCracks)|| (editMode))
+					{
+						aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+tyOffset-30);
+					}
+					
 				}
 			}
 			for(var g=0;g<this.rooms[this.roomZ][this.roomX][this.roomY+1].objects.length;g++)
@@ -1220,7 +1262,29 @@ function dungeon(path)
 			{
 				var aDoorList=this.rooms[this.roomZ][this.roomX-1][this.roomY].getDoors(1);
 				for(var g=0;g<aDoorList.length;g++){
-					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+					
+					if(aDoorList[g].type==doorType.Bombable)
+					{
+						if(aDoorList[g].orientation==0)
+						{
+							dungeonTileSprite[DungeonTileType.WallTop].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset, aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}else if(aDoorList[g].orientation==1)
+						{
+							dungeonTileSprite[DungeonTileType.WallRight].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset, aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}else if(aDoorList[g].orientation==2)
+						{
+							dungeonTileSprite[DungeonTileType.WallBottom].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset, aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}else if(aDoorList[g].orientation==3)
+						{
+							dungeonTileSprite[DungeonTileType.WallLeft].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset,aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}
+					}
+					
+					if((aDoorList[g].type!=doorType.Bombable) || (OPTIONS.showCracks)|| (editMode))
+					{
+						aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+					}
+					
 				}
 			}
 			for(var g=0;g<this.rooms[this.roomZ][this.roomX-1][this.roomY].objects.length;g++)
@@ -1291,7 +1355,28 @@ function dungeon(path)
 			{
 				var aDoorList=this.rooms[this.roomZ][this.roomX+1][this.roomY].getDoors(3);
 				for(var g=0;g<aDoorList.length;g++){
-					aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+					if(aDoorList[g].type==doorType.Bombable)
+					{
+						if(aDoorList[g].orientation==0)
+						{
+							dungeonTileSprite[DungeonTileType.WallTop].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset, aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}else if(aDoorList[g].orientation==1)
+						{
+							dungeonTileSprite[DungeonTileType.WallRight].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset, aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}else if(aDoorList[g].orientation==2)
+						{
+							dungeonTileSprite[DungeonTileType.WallBottom].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset, aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}else if(aDoorList[g].orientation==3)
+						{
+							dungeonTileSprite[DungeonTileType.WallLeft].draw(can,aDoorList[g].x*ROOM_TILE_SIZE+txOffset,aDoorList[g].y*ROOM_TILE_SIZE+yOffset);
+						}
+					}
+					
+					if((aDoorList[g].type!=doorType.Bombable) || (OPTIONS.showCracks)|| (editMode))
+					{
+						aDoorList[g].getSprite().draw(can,(aDoorList[g].x-cam.tileX)*ROOM_TILE_SIZE+txOffset-30, (aDoorList[g].y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
+					}
+					
 				}
 			}
 			for(var g=0;g<this.rooms[this.roomZ][this.roomX+1][this.roomY].objects.length;g++)

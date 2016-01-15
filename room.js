@@ -222,7 +222,7 @@ function door(or,clone)
 	
 	door.prototype.draw=function(can,cam)
 	{
-		if(this.type!=doorType.Bombable) 
+		if((this.type!=doorType.Bombable) || (OPTIONS.showCracks))
 		{
 			this.getSprite().draw(can,(this.x-cam.tileX)*ROOM_TILE_SIZE+xOffset-30, (this.y-cam.tileY)*ROOM_TILE_SIZE+yOffset-30);
 		}else
